@@ -6,6 +6,7 @@ Vue.use(Router);
 // pages
 const PageNotFoundPage = () => import("./pages/PageNotFound.vue");
 const LoginPage = () => import("./pages/LoginPage.vue");
+const StudentLoginPage = () => import("./pages/StudentLoginPage.vue");
 
 export default new Router({
   mode: "history",
@@ -13,6 +14,9 @@ export default new Router({
   routes: [{
     path: "/login",
     component: LoginPage,
+  }, {
+    path: "/login/student",
+    component: StudentLoginPage,
   }, {
     path: "*",
     component: PageNotFoundPage,
