@@ -13,14 +13,6 @@ export default class LeftHalfPageTemplate extends Vue {}
 </script>
 
 <style scoped lang="scss">
-.viewport {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
-
 .leftHalfWindowSection {
   width: 50%;
   height: 100%;
@@ -30,10 +22,6 @@ export default class LeftHalfPageTemplate extends Vue {}
   align-items: center;
   justify-content: center;
   box-shadow: 0px 0px 10px 1px black;
-}
-
-h1 {
-  font-weight: 200;
 }
 
 div {
