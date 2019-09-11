@@ -58,9 +58,6 @@ export default class LoginPage extends Vue {}
 }
 
 .loginBox {
-  h1 {
-    font-weight: 200;
-  }
   padding: 5%;
   background: $white;
   text-align: center;

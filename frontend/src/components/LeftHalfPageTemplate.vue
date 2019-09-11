@@ -31,4 +31,22 @@ export default class LeftHalfPageTemplate extends Vue {}
   justify-content: center;
   box-shadow: 0px 0px 10px 1px black;
 }
+
+h1 {
+  font-weight: 200;
+}
+
+div {
+  flex-direction: row;
+}
+
+input {
+  font-weight: 100;
+  border: 1px solid $blue;
+  border-radius: 0.5rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  padding: 1rem;
+  width: inherit;
+}
 </style>
