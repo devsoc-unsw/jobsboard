@@ -3,6 +3,7 @@
     <br />
     <div class="jobsBox">
       <div class="companyLogo">
+        <font-awesome-icon icon="building" />
       </div>
       <div class="jobDescriptionBox">
         {{ role }} at {{ company }} with description "{{ description }}"
@@ -32,10 +33,25 @@ export default class JobsList extends Vue {
   background: $white;
   margin: auto;
   padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  &:hover {
+    box-shadow: 0px 0px 10px 1px black;
+  }
 }
 
 .companyLogo {
-  min-width: 20%;
-  max-width: 20%;
+  min-width: 5%;
+  max-width: 5%;
+  font-size: 3em;
+  color: $grey;
+  text-decoration: none;
+}
+
+.jobDescriptionBox {
+  margin-left: 3%;
+  width: 95%;
+  text-align: left;
 }
 </style>

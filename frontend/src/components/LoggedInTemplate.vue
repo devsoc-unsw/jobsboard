@@ -16,7 +16,9 @@
         </div>
         <h1>Discover student jobs and internships</h1>
         <br />
-        <input class="searchBar" type="text" placeholder="Search all jobs..."/>
+        <div>
+          <input class="searchBar" type="text" placeholder="Search all jobs..."/>
+        </div>
       </div>
       <div class="content">
         <slot />
@@ -34,17 +36,17 @@ export default class LoggedInTemplate extends Vue {}
 <style scoped lang="scss">
 .navbar {
   background: $blue;
-  padding: 2rem;
   color: $white;
   width: 50%;
   margin: auto;
+  padding: 1.5rem;
 }
 
 .searchBar {
-  padding: 1rem;
-  width: 100%;
+  padding: 1.25%;
   border-radius: 0.75rem;
   text-align: center;
+  width: 95%;
 }
 
 .content {
