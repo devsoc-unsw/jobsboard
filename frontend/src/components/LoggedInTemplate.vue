@@ -21,7 +21,9 @@
         </div>
       </div>
       <div class="content">
-        <slot />
+        <div class="contentWidth">
+          <slot />
+        </div>
       </div>
     </div>
   </div>
@@ -54,6 +56,11 @@ export default class LoggedInTemplate extends Vue {}
   padding: 2rem;
   min-height: 70%;
   flex: 1 1 auto;
+}
+
+.contentWidth {
+  width: 70%;
+  margin: auto;
 }
 
 .stretchyPage {

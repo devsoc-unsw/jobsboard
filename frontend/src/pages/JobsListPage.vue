@@ -1,12 +1,22 @@
 <template>
   <LoggedInTemplate>
     <div class="jobsBox">
+      <div class="resultsFound">
+        <div v-if="jobs.length === 1">
+          {{ jobs.length }} Job Found
+        </div>
+        <div v-else>
+          {{ jobs.length }} Jobs Found
+        </div>
+      </div>
       <JobListingMinimal
         v-for="job in jobs"
-        :key="job.d"
+        :key="job.key"
+        :jobID="job.id"
         :role="job.role"
         :company="job.company"
         :description="job.description"
+        :location="job.location"
         />
     </div>
   </LoggedInTemplate>
@@ -29,22 +39,28 @@ export default class JobsListPage extends Vue {
     return {
       jobs: [
         {
-          id: "job1",
+          id: 42,
+          key: "job1",
           role: "Software Engineer",
           description: "Software Engineering role description",
           company: "Company A",
+          location: "Sydney, Australia",
         },
         {
-          id: "job2",
+          id: 57,
+          key: "job2",
           role: "Software Engineer",
           description: "Software Engineering role description",
           company: "Company B",
+          location: "Melbourne, Australia",
         },
         {
-          id: "job3",
+          id: 61,
+          key: "job3",
           role: "Mechanical Engineer",
           description: "Mechanical Engineering role description",
           company: "Company C",
+          location: "San Francisco, California",
         },
       ],
     };
@@ -57,5 +73,9 @@ export default class JobsListPage extends Vue {
   width: 75%;
   margin: auto;
   padding: 2rem;
+}
+
+.resultsFound {
+  font-weight: 100;
 }
 </style>

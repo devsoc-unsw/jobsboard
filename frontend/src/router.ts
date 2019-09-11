@@ -9,6 +9,7 @@ const LoginPage = () => import("./pages/LoginPage.vue");
 const StudentLoginPage = () => import("./pages/StudentLoginPage.vue");
 const CompanyLoginPage = () => import("./pages/CompanyLoginPage.vue");
 const JobsListPage = () => import("./pages/JobsListPage.vue");
+const SingleJobPage = () => import("./pages/SingleJobPage.vue");
 
 export default new Router({
   mode: "history",
@@ -25,6 +26,9 @@ export default new Router({
   }, {
     path: "/jobs",
     component: JobsListPage,
+  }, {
+    path: "/job",
+    component: SingleJobPage,
   }, {
     path: "*",
     component: PageNotFoundPage,

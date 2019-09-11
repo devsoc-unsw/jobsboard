@@ -34,6 +34,10 @@ html, body {
   h1 {
     font-weight: 200;
   }
+
+  h2 {
+    font-weight: 100;
+  }
 }
 
 .viewport {
