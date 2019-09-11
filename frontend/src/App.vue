@@ -27,5 +27,8 @@ export default class App extends Vue {}
 html, body {
   margin: 0;
   height: 100%;
+  a {
+    text-decoration: none;
+  }
 }
 </style>

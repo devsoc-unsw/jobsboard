@@ -17,8 +17,6 @@
         </div>
       </div>
     </div>
-    <div class="displayBox">
-    </div>
   </div>
 </template>
 
@@ -30,7 +28,6 @@ export default class PageNotFoundPage extends Vue {}
 
 <style scoped lang="scss">
 .viewport {
-  display: flex;
   position: absolute;
   left: 0;
   top: 0;
@@ -42,7 +39,11 @@ export default class PageNotFoundPage extends Vue {}
   width: 50%;
   height: 100%;
   background: $white;
-  margin: auto;
+  margin-left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 10px 1px black;
 }
 
 .displayBox {
@@ -56,8 +57,6 @@ export default class PageNotFoundPage extends Vue {}
     font-weight: 200;
   }
   padding: 5%;
-  margin-top: 25%;
-  height: 50%;
   background: $white;
   text-align: center;
   text-decoration: none;
@@ -76,16 +75,17 @@ export default class PageNotFoundPage extends Vue {}
   padding-bottom: 2%;
   padding-left: 5%;
   padding-right: 5%;
-  text-decoration: none;
   margin: 1%;
 }
 
 .studentButton {
   background: $blue;
+  color: $white;
 }
 
 .companyButton {
   border: 1px solid $blue;
   background: $white;
+  color: $blue;
 }
 </style>
