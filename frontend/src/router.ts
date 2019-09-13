@@ -15,14 +15,14 @@ export default new Router({
   mode: "history",
   scrollBehavior: () => ({ y: 0 }),
   routes: [{
-    path: "/login",
-    component: LoginPage,
-  }, {
     path: "/login/student",
     component: StudentLoginPage,
   }, {
     path: "/login/company",
     component: CompanyLoginPage,
+  }, {
+    path: "/login",
+    component: LoginPage,
   }, {
     path: "/jobs",
     component: JobsListPage,
