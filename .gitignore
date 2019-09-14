@@ -6,3 +6,6 @@ node_modules
 
 # ignore compiled javascript code
 dist
+
+# ignore mochawesome generated files
+mochawesome-report

@@ -1,6 +1,9 @@
 // modules
+import bodyParser from "body-parser";
+import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import { NextFunction, Request, Response } from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -30,6 +33,10 @@ Logger.Init();
 const app = express();
 const port = process.env.SERVER_PORT;
 const API_URL = "http://localhost";
+app.use(bodyParser.json());
+app.use(genericLoggingMiddleware);
+app.options("*", cors());
+// app.use(bodyParser.urlencoded());
 
 const activeEntities = [
   Company,
@@ -90,6 +97,11 @@ function requireParameters(result: any): void {
   if (result === undefined) {
     throw new Error("Missing parameters.");
   }
+}
+
+function genericLoggingMiddleware(req: Request, res: Response, next: NextFunction): void {
+  Logger.Info(req.path);
+  next();
 }
 
 /**
@@ -157,8 +169,9 @@ app.get("/jobs", Auth.authenticateStudentMiddleware, async (req, res) => {
  *      400:
  *        description: failed to find job
  */
-app.get("/jobs/:jobID", Auth.authenticateStudentMiddleware, async (req, res) => {
+app.get("/job", Auth.authenticateStudentMiddleware, async (req, res) => {
   try {
+    requireParameters(req.query.jobID);
     const conn: Connection = await getConnection();
     const jobInfo = await conn.getRepository(Job).find({id: parseInt(req.params.jobID, 10)});
     // ensure that only one is acquired
@@ -247,10 +260,10 @@ app.get("/company/:companyID", Auth.authenticateStudentMiddleware, async (req, r
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/student", async (req, res) => {
+app.post("/authenticate/student", (req, res) => {
   try {
-    const msg = JSON.parse(req.body);
-    requireParameters(msg.username && msg.password);
+    const msg = req.body; // JSON.parse(req.body);
+    requireParameters(msg.zID && msg.password);
     if (Auth.authenticateStudent(msg.zID, msg.password)) {
       // successful login
       res.send({ token: JWT.create({ username: msg.zID }) });
@@ -407,7 +420,7 @@ app.put("/jobs", Auth.authenticateCompanyMiddleware, async (req: any, res) => {
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
-app.listen( port, async () => {
+app.listen(port, async () => {
   await bootstrap();
   Logger.Info(`Server started at ${API_URL}:${port}`);
 });
