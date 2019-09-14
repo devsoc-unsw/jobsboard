@@ -5,9 +5,9 @@
       Welcome back! Please log in to your account.
       <br/>
       <br/>
-      <input type="text" placeholder="zID"/>
+      <input name="zID" v-model="zID" type="text" placeholder="zID" @keyup.enter="performLogin()"/>
       <br/>
-      <input type="password" placeholder="zPass"/>
+      <input name="password" v-model="password" type="password" placeholder="zPass" @keyup.enter="performLogin()"/>
       <br/>
       <br/>
       Not a student? <router-link to="/login/company">Company Login</router-link>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "../components/LeftHalfPageTemplate.vue";
 
 @Component({
@@ -25,7 +25,43 @@ import LeftHalfPageTemplate from "../components/LeftHalfPageTemplate.vue";
   },
 })
 
-export default class LoginPage extends Vue {}
+export default class LoginPage extends Vue {
+  public data() {
+    return {
+      zID: "",
+      password: "",
+    };
+  }
+
+  public computed() {
+    return {
+      apiToken: () => {
+        return this.$store.state.apiToken;
+      },
+    };
+  }
+
+  public performLogin() {
+    fetch("http://localhost:8080/authenticate/student", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // mode: "no-cors",
+      body: JSON.stringify({
+        zID: this.zID,
+        password: this.password,
+      }),
+    })
+      .then((response: any) => response.json())
+      .then((response: any) => {
+        this.$store.dispatch("setApiToken", response.token);
+        this.$router.push("/jobs");
+      })
+    // TODO(adam): Better error handling
+    .catch((response) => console.log(response));
+  }
+}
 </script>
 
 <style scoped lang="scss">

@@ -5,6 +5,8 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faBuilding, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+import store from "./store/store";
+
 library.add(faBuilding, faChevronLeft);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
@@ -14,6 +16,7 @@ Vue.config.productionTip = false;
 import router from "./router";
 
 new Vue({
+  store,
   render: (h) => h(App),
   router,
 }).$mount("#app");

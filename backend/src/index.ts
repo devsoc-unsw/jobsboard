@@ -35,8 +35,11 @@ const port = process.env.SERVER_PORT;
 const API_URL = "http://localhost";
 app.use(bodyParser.json());
 app.use(genericLoggingMiddleware);
-app.options("*", cors());
+// app.options("*", cors());
 // app.use(bodyParser.urlencoded());
+if (process.env.NODE_ENV === "development") {
+  app.use(cors());
+}
 
 const activeEntities = [
   Company,
@@ -262,7 +265,7 @@ app.get("/company/:companyID", Auth.authenticateStudentMiddleware, async (req, r
  */
 app.post("/authenticate/student", (req, res) => {
   try {
-    const msg = req.body; // JSON.parse(req.body);
+    const msg = req.body;
     requireParameters(msg.zID && msg.password);
     if (Auth.authenticateStudent(msg.zID, msg.password)) {
       // successful login

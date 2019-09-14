@@ -65,6 +65,19 @@ export default class JobsListPage extends Vue {
       ],
     };
   }
+
+  public computed() {
+    return {
+      apiToken: () => this.$store.state.apiToken,
+    };
+  }
+
+  public mounted() {
+    // determine whether there is an API key present and redirect if not present
+    if (this.$store.state.apiToken === undefined) {
+      this.$router.push("/login");
+    }
+  }
 }
 </script>
 
