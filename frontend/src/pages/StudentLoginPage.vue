@@ -47,7 +47,7 @@ export default Vue.extend({
   },
   methods: {
     performLogin() {
-      fetch("http://localhost:8080/authenticate/student", {
+      fetch("http://localhost:8081/authenticate/student", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,6 @@ export default Vue.extend({
           this.$store.dispatch("setApiToken", response.token);
           this.$router.push("/jobs");
         })
-      // TODO(adam): Better error handling
         .catch((response) => {
           this.error = true;
           this.errorMsg = "Invalid credentials. Please try again.";

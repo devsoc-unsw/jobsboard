@@ -8,11 +8,9 @@
               Jobs
             </div>
           </router-link>
-          <router-link to="/">
-            <div class="navButtons logoutButton">
-              Log Out
-            </div>
-          </router-link>
+          <div class="navButtons logoutButton" @click="logOut()">
+            Log Out
+          </div>
         </div>
         <h1>Discover student jobs and internships</h1>
         <br />
@@ -32,7 +30,15 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-export default class LoggedInTemplate extends Vue {}
+export default Vue.extend({
+  name: "LoggedInTemplate",
+  methods: {
+    logOut() {
+      this.$store.dispatch("clearApiToken");
+      this.$router.push("/login/student");
+    },
+  },
+});
 </script>
 
 <style scoped lang="scss">
