@@ -23,19 +23,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import LoggedInTemplate from "../components/LoggedInTemplate.vue";
 import JobListingMinimal from "../components/JobListingMinimal.vue";
 
-@Component({
+export default Vue.extend({
+  name: "JobsListPage",
   components: {
     LoggedInTemplate,
     JobListingMinimal,
   },
-})
-
-export default class JobsListPage extends Vue {
-  public data() {
+  data: () => {
     return {
       jobs: [
         {
@@ -64,21 +62,19 @@ export default class JobsListPage extends Vue {
         },
       ],
     };
-  }
-
-  public computed() {
-    return {
-      apiToken: () => this.$store.state.apiToken,
-    };
-  }
-
-  public mounted() {
+  },
+  computed: {
+    apiToken() {
+      return this.$store.state.apiToken;
+    },
+  },
+  mounted() {
     // determine whether there is an API key present and redirect if not present
     if (this.$store.state.apiToken === undefined) {
       this.$router.push("/login");
     }
-  }
-}
+  },
+});
 </script>
 
 <style scoped lang="scss">

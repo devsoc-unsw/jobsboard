@@ -15,8 +15,8 @@ Vue.config.productionTip = false;
 
 import router from "./router";
 
-new Vue({
+const app = new Vue({
+  router,
   store,
   render: (h) => h(App),
-  router,
 }).$mount("#app");

@@ -19,13 +19,12 @@
 import { Component, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "../components/LeftHalfPageTemplate.vue";
 
-@Component({
+export default {
+  name: "LoginPage",
   components: {
     LeftHalfPageTemplate,
   },
-})
-
-export default class LoginPage extends Vue {}
+};
 </script>
 
 <style scoped lang="scss">
