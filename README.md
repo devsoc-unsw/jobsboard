@@ -2,7 +2,7 @@
 
 1. start mysql server, create a database
 
-2. go to backend, create a .env file
+2. go to backend folder, create a .env file
 
 ``` shell
 SERVER_PORT=8081
@@ -27,3 +27,5 @@ yarn serve
 yarn install
 yarn serve
 ```
+
+API docs: http://localhost:8081/docs/
