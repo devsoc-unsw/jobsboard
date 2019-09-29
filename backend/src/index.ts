@@ -227,7 +227,7 @@ app.get("/company/:companyID", Auth.authenticateStudentMiddleware, async (req, r
  *      400:
  *        description: failed to find company
  */
-app.get("/company/:companyID", Auth.authenticateStudentMiddleware, async (req, res) => {
+app.get("/company/:companyID/jobs", Auth.authenticateStudentMiddleware, async (req, res) => {
   try {
     const conn: Connection = await getConnection();
     const jobsForCompany = await getRepository(Company).find({id: parseInt(req.params.companyID, 10)});
