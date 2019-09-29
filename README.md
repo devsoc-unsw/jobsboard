@@ -1,7 +1,10 @@
+# Set up
+
 1. start mysql server, create a database
 
 2. go to backend, create a .env file
-```
+
+``` shell
 SERVER_PORT=8081
 NODE_ENV=development
 MYSQL_DATABASE=
@@ -11,10 +14,16 @@ MYSQL_USER=
 ```
 
 3. run
-`yarn install`
-`yarn build`
-`yarn serve`
+
+``` shell
+yarn install
+yarn build
+yarn serve
+```
 
 4. go to frontend folder, run
-`yarn install`
-`yarn serve`
+
+``` shell
+yarn install
+yarn serve
+```
