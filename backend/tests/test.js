@@ -2,7 +2,7 @@ const supertest = require("supertest");
 const chai = require("chai");
 var expect = chai.expect;
 
-const API_URL = "http://localhost:8080";
+const API_URL = "http://localhost:8081";
 const server = supertest.agent(API_URL);
 
 describe("authentication", () => {
