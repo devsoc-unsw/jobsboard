@@ -8,8 +8,11 @@ const PageNotFoundPage = () => import("./pages/PageNotFound.vue");
 const LoginPage = () => import("./pages/LoginPage.vue");
 const StudentLoginPage = () => import("./pages/StudentLoginPage.vue");
 const CompanyLoginPage = () => import("./pages/CompanyLoginPage.vue");
+const CompanySignupPage = () => import("./pages/CompanySignupPage.vue");
 const JobsListPage = () => import("./pages/JobsListPage.vue");
 const SingleJobPage = () => import("./pages/SingleJobPage.vue");
+const CompanyAccountHome = () => import("./pages/CompanyAccountHome.vue");
+const CompanyDetailsPage = () => import("./pages/CompanyDetailsPage.vue");
 
 export default new Router({
   mode: "history",
@@ -20,6 +23,15 @@ export default new Router({
   }, {
     path: "/login/company",
     component: CompanyLoginPage,
+  }, {
+    path: "/signup/company",
+    component: CompanySignupPage,
+  }, {
+    path: "/company/home",
+    component: CompanyAccountHome,
+  }, {
+    path: "/company/details",
+    component: CompanyDetailsPage,
   }, {
     path: "/login",
     component: LoginPage,
