@@ -30,6 +30,7 @@ export default class JobStandout extends Vue {
   @Prop() private role!: string;
   @Prop() private company!: string;
   @Prop() private description!: string;
+  @Prop() private jobID!: number;
   @Prop() private companyID!: number;
   @Prop() private location!: string;
 
