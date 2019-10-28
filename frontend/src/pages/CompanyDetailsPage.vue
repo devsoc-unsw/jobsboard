@@ -66,7 +66,19 @@ export default Vue.extend({
       ],
     };
   },
-  mounted() {
+  methods: {
+    async getDetails(url: string) {
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.$store.state.apiToken,
+        },
+      })
+      .then((response: any) => response.json());
+    },
+  },
+  async mounted() {
     // determine whether there is an API key present and redirect if not present
     // if (this.$store.state.apiToken === undefined) {
     //   this.$router.push("/login");
@@ -74,14 +86,7 @@ export default Vue.extend({
     // }
 
     // load the company details using the api token
-    fetch(`http://localhost:8081/company/${this.$route.query.companyID}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.$store.state.apiToken,
-      },
-    })
-    .then((response: any) => response.json())
+    await this.getDetails(`http://localhost:8081/company/${this.$route.query.companyID}`)
     .then((response: any) => {
       // UNCOMMENT after company details api is fully implemented
       // this.company = response.company.name;
@@ -93,24 +98,16 @@ export default Vue.extend({
       this.errorMsg = "Unable to load company details at this time. Please try again later.";
     });
 
-
     // load the company's jobs
-    // UNCOMMENT after company jobs api is fully implemented
-    // fetch(`http://localhost:8081/company/${this.$route.query.companyID}/jobs`, {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Authorization": this.$store.state.apiToken,
-    //   },
-    // })
-    // .then((response: any) => response.json())
-    // .then((response: any) => {
-    //   this.jobs = response;
-    // })
-    // .catch((response) => {
-    //   this.error = true;
-    //   this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
-    // });
+    await this.getDetails(`http://localhost:8081/company/${this.$route.query.companyID}/jobs`)
+    .then((response: any) => {
+      // UNCOMMENT after company jobs api is fully implemented
+      // this.jobs = response;
+    })
+    .catch((response) => {
+      this.error = true;
+      this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
+    });
   },
 });
 </script>

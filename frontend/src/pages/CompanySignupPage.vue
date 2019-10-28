@@ -16,7 +16,7 @@
       <br/>
       <input name="location" v-model="location" type="text" placeholder="location"/>
       <br/>
-      <input class="button" type="submit" value="submit" @click="performSignup()">
+      <input class="button" type="submit" value="submit" @click="validateInput() && performSignup()">
       <br/>
       <br/>
       Already have an account? <router-link to="/login/company">Company Login</router-link>
@@ -51,6 +51,18 @@ export default Vue.extend({
     },
   },
   methods: {
+    validateInput() {
+      if (this.username === "") {
+        this.error = true;
+        this.errorMsg = "Username cannot be empty. Please try again.";
+        return false;
+      } else if (this.password === "") {
+        this.error = true;
+        this.errorMsg = "Password cannot be empty. Please try again.";
+        return false;
+      }
+      return true;
+    },
     performSignup() {
       fetch("http://localhost:8081/company", {
         method: "PUT",
@@ -65,17 +77,17 @@ export default Vue.extend({
           location: this.location,
         }),
       })
-        .then((response: any) => response.json())
-        .then((response: any) => {
-          this.error = false;
-          const companyId = response.id;
-          this.$store.dispatch("setApiToken", response.token);
-          this.$router.push({ path: "/company/home", query: { company: String(companyId) } });
-        })
-        .catch((response) => {
-          this.error = true;
-          this.errorMsg = "Invalid username. Please try again.";
-        });
+      .then((response: any) => response.json())
+      .then((response: any) => {
+        this.error = false;
+        const companyId = response.id;
+        this.$store.dispatch("setApiToken", response.token);
+        this.$router.push({ path: "/company/home", query: { company: String(companyId) } });
+      })
+      .catch((response) => {
+        this.error = true;
+        this.errorMsg = "Invalid username. Please try again.";
+      });
     },
   },
 });
