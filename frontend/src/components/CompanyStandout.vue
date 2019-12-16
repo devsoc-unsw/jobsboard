@@ -1,18 +1,18 @@
 <template>
   <div>
     <br />
-    <div class="jobStandout">
+    <div class="companyStandout">
       <div class="back" @click="back">
         <font-awesome-icon icon="chevron-left" />
       </div>
-      <div class="companyLogo" @click="goToCompanyPage">
+      <div class="companyLogo">
         <font-awesome-icon icon="building" />
       </div>
-      <div class="roleInfo">
-        {{ role }}
-      </div>
-      <div class="companyInfo" @click="goToCompanyPage">
+      <div class="companyInfo">
         {{ company }} | {{ location }}
+      </div>
+      <div class="description">
+        {{ description }}
       </div>
     </div>
   </div>
@@ -26,27 +26,20 @@ import { Component, Prop, Vue } from "vue-property-decorator";
   },
 })
 
-export default class JobStandout extends Vue {
-  @Prop() private role!: string;
+export default class CompanyStandout extends Vue {
   @Prop() private company!: string;
   @Prop() private description!: string;
-  @Prop() private jobID!: number;
-  @Prop() private companyID!: number;
   @Prop() private location!: string;
 
   public back() {
     // go back a page
     this.$router.go(-1);
   }
-  public goToCompanyPage() {
-    // go to company details page
-    this.$router.push({ path: "/company/details", query: { companyID: String(this.companyID) } });
-  }
 }
 </script>
 
 <style scoped lang="scss">
-.jobStandout {
+.companyStandout {
   width: 75%;
   background: $white;
   margin: auto;
@@ -69,10 +62,10 @@ export default class JobStandout extends Vue {
   text-align: left;
 }
 
-.roleInfo {
+.description {
   margin: 1rem;
   font-weight: 100;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .companyInfo {

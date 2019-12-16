@@ -10,6 +10,7 @@
     <JobStandout
       :role="role"
       :company="company"
+      :companyID="companyID"
       :location="location"
     />
     <div class="jobInformation">
@@ -39,6 +40,7 @@ export default Vue.extend({
   data() {
     return {
       jobID: this.$route.query.job,
+      companyID: "",
       role: "Software Engineer",
       company: "Company A",
       description: "Some generic description",
@@ -68,6 +70,7 @@ export default Vue.extend({
         this.company = response.company.name;
         this.description = response.description;
         this.location = response.company.location;
+        this.companyID = response.company.id;
       })
       .catch((response) => {
         this.error = true;
