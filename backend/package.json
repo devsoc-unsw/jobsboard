@@ -32,6 +32,6 @@
     "prestart": "yarn run build",
     "serve": "nodemon -e ts -w ./src -x yarn run watch",
     "watch": "ts-node src/index.ts",
-    "test": "ls ./tests/*.js | entr ./node_modules/.bin/mocha --reporter mochawesome ./tests/test.js"
+    "test": "ls ./tests/*.js ./src/**/*.ts | entr ./node_modules/.bin/mocha --reporter mochawesome ./tests/test.js"
   }
 }

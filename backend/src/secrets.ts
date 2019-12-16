@@ -23,6 +23,10 @@ export default class Secrets {
     return decrypted.toString();
   }
 
+  public static hash(msg: string): string {
+    return crypto.createHash("sha512").update(msg).digest("hex");
+  }
+
   private static algorithm = "aes-256-cbc";
   // 256 bits
   private static key: Buffer = crypto.randomBytes(32);
