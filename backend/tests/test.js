@@ -110,7 +110,7 @@ describe("authentication", () => {
 
       it("fails to add a job when not logged in",
         function (done) {
-          server.post("/company/1/jobs")
+          server.put("/company/1/jobs")
                 .send({
                   role: "some generic SWE role",
                   description: "just doing some cool SWE things"
@@ -124,7 +124,7 @@ describe("authentication", () => {
         
       it("succeeds when requesting to add a job",
         function (done) {
-          server.post("/company/1/jobs")
+          server.put("/jobs")
                 .set('Authorization', this.token)
                 .send({
                   role: "some generic SWE role",
@@ -139,7 +139,7 @@ describe("authentication", () => {
 
       it("fails when requesting to add a job missing the role field",
         function (done) {
-          server.post("/company/1/jobs")
+          server.put("/jobs")
                 .set('Authorization', this.token)
                 .send({
                   description: "just doing some cool SWE things"
@@ -153,7 +153,7 @@ describe("authentication", () => {
 
       it("fails when requesting to add a job missing the description field",
         function (done) {
-          server.post("/company/1/jobs")
+          server.put("/jobs")
                 .set('Authorization', this.token)
                 .send({
                   role: "some generic SWE role",
@@ -167,7 +167,7 @@ describe("authentication", () => {
 
       it("fails when requesting to add a job with unrelated fields",
         function (done) {
-          server.post("/company/1/jobs")
+          server.put("/jobs")
                 .set('Authorization', this.token)
                 .send({
                   test: "some generic SWE role",
@@ -182,7 +182,7 @@ describe("authentication", () => {
 
       it("fails when requesting to add a job missing a payload",
         function (done) {
-          server.post("/company/1/jobs")
+          server.put("/jobs")
                 .set('Authorization', this.token)
                 .send({})
                 .expect(400)

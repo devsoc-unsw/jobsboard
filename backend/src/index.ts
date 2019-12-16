@@ -24,6 +24,7 @@ import Logger from "./logging";
 
 // endpoint implementations
 import CompanyFunctions from "./company";
+import StudentFunctions from "./student";
 
 // custom entities
 import { Company } from "./entity/company";
@@ -128,17 +129,7 @@ async function bootstrap() {
  *              items:
  *                $ref: '#/components/schemas/Job'
  */
-app.get("/jobs", Middleware.authenticateStudentMiddleware, async (_, res) => {
-  try {
-    const conn: Connection = await getConnection();
-    const jobs = await conn.getRepository(Job).find({
-      relations: ["company"],
-    });
-    res.send(jobs);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs); 
 
 /**
  *  @swagger
@@ -157,21 +148,7 @@ app.get("/jobs", Middleware.authenticateStudentMiddleware, async (_, res) => {
  *      400:
  *        description: failed to find job
  */
-app.get("/job/:jobID", Middleware.authenticateStudentMiddleware, async (req, res) => {
-  try {
-    Helpers.requireParameters(req.params.jobID);
-    const conn: Connection = await getConnection();
-    const jobInfo = await conn.getRepository(Job).findOneOrFail({
-      relations: ["company"],
-      where: {
-        id: parseInt(req.params.jobID, 10),
-      },
-    });
-    res.send(jobInfo);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.get("/job/:jobID", Middleware.authenticateStudentMiddleware, StudentFunctions.GetJob);
 
 /**
  *  @swagger
@@ -230,20 +207,7 @@ app.get("/company/:companyID/jobs", Middleware.authenticateStudentMiddleware, Co
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/student", (req, res) => {
-  try {
-    const msg = req.body;
-    Helpers.requireParameters(msg.zID && msg.password);
-    if (Auth.authenticateStudent(msg.zID, msg.password)) {
-      // successful login
-      res.send({ token: JWT.create({ username: msg.zID }) });
-    } else {
-      throw new Error("Invalid credentials");
-    }
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.post("/authenticate/student", StudentFunctions.AuthenticateStudent);
 
 /**
  *  @swagger
@@ -301,7 +265,7 @@ app.post("/authenticate/company", CompanyFunctions.AuthenticateCompany);
 
 /**
  *  @swagger
- *  /job:
+ *  /jobs:
  *    put:
  *      description: Create a job as the logged in company
  *      parameters:
@@ -319,28 +283,7 @@ app.post("/authenticate/company", CompanyFunctions.AuthenticateCompany);
  *      400:
  *        description: Missing parameters or unauthorized
  */
-app.put("/jobs", Middleware.authenticateCompanyMiddleware, async (req: any, res) => {
-  try {
-    if (req.companyID === undefined) {
-      res.sendStatus(401);
-    }
-    // ensure required parameters are present
-    const msg = JSON.parse(req.body);
-    Helpers.requireParameters(msg.role && msg.description);
-    const conn: Connection = getConnection();
-    const newJob = new Job();
-    newJob.role = msg.role;
-    newJob.description = msg.description;
-    const companyQuery = await getRepository(Company).findOneOrFail({
-      id: req.companyID,
-    }).catch((error) => { throw new Error(error); });
-    newJob.company = companyQuery;
-    await conn.manager.save(newJob);
-    res.sendStatus(200);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.put("/jobs", Middleware.authenticateCompanyMiddleware, CompanyFunctions.CreateJob);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 

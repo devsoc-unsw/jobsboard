@@ -6,6 +6,7 @@ import {
 } from "typeorm";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
+import { Job } from "./entity/job";
 import Helpers from "./helpers";
 import JWT from "./jwt";
 import Secrets from "./secrets";
@@ -77,6 +78,29 @@ export default class CompanyFunctions {
       } catch (error) {
         res.sendStatus(401);
       }
+    } catch (error) {
+      res.sendStatus(400);
+    }
+  }
+
+  public static async CreateJob(req: any, res: Response) {
+    try {
+      if (req.companyID === undefined) {
+        res.sendStatus(401);
+      }
+      // ensure required parameters are present
+      const msg = JSON.parse(req.body);
+      Helpers.requireParameters(msg.role && msg.description);
+      const conn: Connection = getConnection();
+      const newJob = new Job();
+      newJob.role = msg.role;
+      newJob.description = msg.description;
+      const companyQuery = await getRepository(Company).findOneOrFail({
+        id: req.companyID,
+      }).catch((error) => { throw new Error(error); });
+      newJob.company = companyQuery;
+      await conn.manager.save(newJob);
+      res.sendStatus(200);
     } catch (error) {
       res.sendStatus(400);
     }
