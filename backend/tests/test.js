@@ -57,46 +57,141 @@ describe("authentication", () => {
   });
 
   describe("company", () => {
-    it("fails when there is no json message", 
-      function (done) {
-        server.post("/authenticate/company")
-              .send({})
-              .expect(400)
-              .end( function (err, res) {
-                expect(res.status).to.equal(400);
-                done();
-              });
+    describe("authentication", () => {
+      it("fails when there is no json message", 
+        function (done) {
+          server.post("/authenticate/company")
+                .send({})
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+      it("fails when there are unrelated fields and no related fields",
+        function (done) {
+          server.post("/authenticate/company")
+                .send({ test: "field" })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                })
+        });
+      it("fails when there are unrelated fields and one related field",
+        function (done) {
+          server.post("/authenticate/company")
+                .send({ test: "field", password: "test" })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+      it("failed when there are incorrect credentials provided",
+        function (done) {
+          server.post("/authenticate/company")
+                .send({ username: "test", password: "wrongpassword" })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+    });
+
+    describe("adding jobs", () => {
+      before( async function() {
+        this.token = await server
+                      .post("/authenticate/student")
+                      .send({ zID: "username", password: "password" })
+                      .then(response => response.body.token);
       });
-    it("fails when there are unrelated fields and no related fields",
-      function (done) {
-        server.post("/authenticate/company")
-              .send({ test: "field" })
-              .expect(400)
-              .end( function (err, res) {
-                expect(res.status).to.equal(400);
-                done();
-              })
-      });
-    it("fails when there are unrelated fields and one related field",
-      function (done) {
-        server.post("/authenticate/company")
-              .send({ test: "field", password: "test" })
-              .expect(400)
-              .end( function (err, res) {
-                expect(res.status).to.equal(400);
-                done();
-              });
-      });
-    it("failed when there are incorrect credentials provided",
-      function (done) {
-        server.post("/authenticate/company")
-              .send({ username: "test", password: "wrongpassword" })
-              .expect(400)
-              .end( function (err, res) {
-                expect(res.status).to.equal(400);
-                done();
-              });
-      });
+
+      it("fails to add a job when not logged in",
+        function (done) {
+          server.post("/company/1/jobs")
+                .send({
+                  role: "some generic SWE role",
+                  description: "just doing some cool SWE things"
+                })
+                .expect(403)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(403);
+                  done();
+                });
+        });
+        
+      it("succeeds when requesting to add a job",
+        function (done) {
+          server.post("/company/1/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  role: "some generic SWE role",
+                  description: "just doing some cool SWE things"
+                })
+                .expect(200)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(200);
+                  done();
+                });
+        });
+
+      it("fails when requesting to add a job missing the role field",
+        function (done) {
+          server.post("/company/1/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  description: "just doing some cool SWE things"
+                })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+
+      it("fails when requesting to add a job missing the description field",
+        function (done) {
+          server.post("/company/1/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  role: "some generic SWE role",
+                })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+
+      it("fails when requesting to add a job with unrelated fields",
+        function (done) {
+          server.post("/company/1/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  test: "some generic SWE role",
+                  undefined: "just doing some cool SWE things"
+                })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+
+      it("fails when requesting to add a job missing a payload",
+        function (done) {
+          server.post("/company/1/jobs")
+                .set('Authorization', this.token)
+                .send({})
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+    });
   });
 });
 
