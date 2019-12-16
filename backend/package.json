@@ -30,7 +30,8 @@
     "prebuilt": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "prestart": "yarn run build",
-    "serve": "node .",
+    "serve": "nodemon -e ts -w ./src -x yarn run watch",
+    "watch": "ts-node src/index.ts",
     "test": "ls ./tests/*.js | entr ./node_modules/.bin/mocha --reporter mochawesome ./tests/test.js"
   }
 }
