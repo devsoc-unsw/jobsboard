@@ -47,7 +47,7 @@ export default Vue.extend({
   },
   methods: {
     performLogin() {
-      fetch("http://localhost:8081/authenticate/student", {
+      fetch("http://localhost:8080/authenticate/student", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

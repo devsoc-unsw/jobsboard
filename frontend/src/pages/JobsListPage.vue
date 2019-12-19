@@ -62,7 +62,7 @@ export default Vue.extend({
     }
 
     // load the jobs using the api token
-    fetch("http://localhost:8081/jobs", {
+    fetch("http://localhost:8080/jobs", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
