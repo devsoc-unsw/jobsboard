@@ -103,14 +103,15 @@ describe("authentication", () => {
     describe("adding jobs", () => {
       before( async function() {
         this.token = await server
-                      .post("/authenticate/student")
-                      .send({ zID: "username", password: "password" })
+                      .post("/authenticate/company")
+                      .send({ username: "test", password: "test" })
+                      .expect(200)
                       .then(response => response.body.token);
       });
 
       it("fails to add a job when not logged in",
         function (done) {
-          server.put("/company/1/jobs")
+          server.put("/jobs")
                 .send({
                   role: "some generic SWE role",
                   description: "just doing some cool SWE things"

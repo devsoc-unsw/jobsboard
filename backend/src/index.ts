@@ -129,7 +129,7 @@ async function bootstrap() {
  *              items:
  *                $ref: '#/components/schemas/Job'
  */
-app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs); 
+app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs);
 
 /**
  *  @swagger

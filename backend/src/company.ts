@@ -8,6 +8,7 @@ import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import Helpers from "./helpers";
+import Logger from "./logging";
 import JWT from "./jwt";
 import Secrets from "./secrets";
 
@@ -65,7 +66,7 @@ export default class CompanyFunctions {
 
   public static async AuthenticateCompany(req: Request, res: Response) {
     try {
-      const msg = JSON.parse(req.body);
+      const msg = { username: req.body.username, password: req.body.password };
       Helpers.requireParameters(msg.username && msg.password);
       // check if account exists
       const companyQuery = await getRepository(CompanyAccount).findOneOrFail({
