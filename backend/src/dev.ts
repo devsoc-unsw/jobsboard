@@ -1,18 +1,15 @@
 import "reflect-metadata";
 import {
   Connection,
-  ConnectionOptions,
-  createConnection,
   getConnection,
-  getRepository,
 } from "typeorm";
 
 import Logger from "./logging";
 
-import Auth from "./auth";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
+import Secrets from "./secrets";
 
 export async function seedDB(activeEntities: any[]) {
   // clear all tables
@@ -25,7 +22,7 @@ export async function seedDB(activeEntities: any[]) {
   // create a company account
   const companyAccount = new CompanyAccount();
   companyAccount.username = "test";
-  companyAccount.hash = Auth.hash("test");
+  companyAccount.hash = Secrets.hash("test");
   const company = new Company();
   company.name = "Test company";
   company.location = "Sydney";

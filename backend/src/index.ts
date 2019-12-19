@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import { NextFunction, Request, Response } from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -19,14 +18,22 @@ import {
 // custom libraries
 import Auth from "./auth";
 import { seedDB } from "./dev";
+import Helpers from "./helpers";
 import JWT from "./jwt";
 import Logger from "./logging";
+
+// endpoint implementations
+import CompanyFunctions from "./company";
+import StudentFunctions from "./student";
 
 // custom entities
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import { Student } from "./entity/student";
+
+// custom middleware
+import Middleware from "./middleware";
 
 dotenv.config();
 Logger.Init();
@@ -35,7 +42,7 @@ const app = express();
 const port = process.env.SERVER_PORT;
 const API_URL = "http://localhost";
 app.use(bodyParser.json());
-app.use(genericLoggingMiddleware);
+app.use(Middleware.genericLoggingMiddleware);
 // app.options("*", cors());
 // app.use(bodyParser.urlencoded());
 if (process.env.NODE_ENV === "development") {
@@ -84,19 +91,6 @@ async function bootstrap() {
   await seedDB(activeEntities);
 }
 
-function requireParameters(result: any): void {
-  // if a single required parameter is undefined, the result field should evaluate to
-  // undefined
-  if (result === undefined) {
-    throw new Error("Missing parameters.");
-  }
-}
-
-function genericLoggingMiddleware(req: Request, res: Response, next: NextFunction): void {
-  Logger.Info(req.path);
-  next();
-}
-
 /**
  * components:
  *   schemas:
@@ -135,17 +129,7 @@ function genericLoggingMiddleware(req: Request, res: Response, next: NextFunctio
  *              items:
  *                $ref: '#/components/schemas/Job'
  */
-app.get("/jobs", Auth.authenticateStudentMiddleware, async (req, res) => {
-  try {
-    const conn: Connection = await getConnection();
-    const jobs = await conn.getRepository(Job).find({
-      relations: ["company"],
-    });
-    res.send(jobs);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs);
 
 /**
  *  @swagger
@@ -164,21 +148,7 @@ app.get("/jobs", Auth.authenticateStudentMiddleware, async (req, res) => {
  *      400:
  *        description: failed to find job
  */
-app.get("/job/:jobID", Auth.authenticateStudentMiddleware, async (req, res) => {
-  try {
-    requireParameters(req.params.jobID);
-    const conn: Connection = await getConnection();
-    const jobInfo = await conn.getRepository(Job).findOneOrFail({
-      relations: ["company"],
-      where: {
-        id: parseInt(req.params.jobID, 10),
-      },
-    });
-    res.send(jobInfo);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.get("/job/:jobID", Middleware.authenticateStudentMiddleware, StudentFunctions.GetJob);
 
 /**
  *  @swagger
@@ -197,18 +167,7 @@ app.get("/job/:jobID", Auth.authenticateStudentMiddleware, async (req, res) => {
  *      400:
  *        description: failed to find company
  */
-app.get("/company/:companyID", Auth.authenticateStudentMiddleware, async (req, res) => {
-  try {
-    const conn: Connection = await getConnection();
-    const companyInfo = await getRepository(Company).find({id: parseInt(req.params.companyID, 10)});
-    if (companyInfo.length !== 1) {
-      throw new Error("Cannot find the requested company.");
-    }
-    res.send(companyInfo);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.get("/company/:companyID", Middleware.authenticateStudentMiddleware, CompanyFunctions.GetCompanyInfo);
 
 /**
  *  @swagger
@@ -227,15 +186,7 @@ app.get("/company/:companyID", Auth.authenticateStudentMiddleware, async (req, r
  *      400:
  *        description: failed to find company
  */
-app.get("/company/:companyID/jobs", Auth.authenticateStudentMiddleware, async (req, res) => {
-  try {
-    const conn: Connection = await getConnection();
-    const jobsForCompany = await getRepository(Company).find({id: parseInt(req.params.companyID, 10)});
-    res.send(jobsForCompany[0].jobs);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.get("/company/:companyID/jobs", Middleware.authenticateStudentMiddleware, CompanyFunctions.GetJobsFromCompany);
 
 /**
  *  @swagger
@@ -256,20 +207,7 @@ app.get("/company/:companyID/jobs", Auth.authenticateStudentMiddleware, async (r
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/student", (req, res) => {
-  try {
-    const msg = req.body;
-    requireParameters(msg.zID && msg.password);
-    if (Auth.authenticateStudent(msg.zID, msg.password)) {
-      // successful login
-      res.send({ token: JWT.create({ username: msg.zID }) });
-    } else {
-      throw new Error("Invalid credentials");
-    }
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.post("/authenticate/student", StudentFunctions.AuthenticateStudent);
 
 /**
  *  @swagger
@@ -302,35 +240,7 @@ app.post("/authenticate/student", (req, res) => {
  *      409:
  *        description: Conflicting usernames
  */
-app.put("/company", async (req, res) => {
-  try {
-    // verify input paramters
-    const msg = JSON.parse(req.body);
-    requireParameters(msg.username && msg.password && msg.name && msg.location);
-    // check if the company account exists with the same name
-    const newUsername = msg.username;
-    const conn: Connection = await getConnection();
-    const companyAccountSearchResult = await getRepository(CompanyAccount).find({
-      username: newUsername,
-    });
-    if (companyAccountSearchResult.length !== 0) {
-      // company exists, send conflict error
-      res.sendStatus(409);
-    }
-    // if there is no conflict, create the company account and company record
-    const newCompany = new Company();
-    newCompany.name = msg.name;
-    newCompany.location = msg.location;
-    const newCompanyAccount = new CompanyAccount();
-    newCompanyAccount.username = msg.username;
-    newCompanyAccount.hash = Auth.hash(msg.password);
-    newCompanyAccount.company = newCompany;
-    await conn.manager.save(newCompany);
-    await conn.manager.save(newCompanyAccount);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.put("/company", CompanyFunctions.CreateCompany);
 
 /**
  *  @swagger
@@ -351,29 +261,11 @@ app.put("/company", async (req, res) => {
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/company", async (req, res) => {
-  try {
-    const msg = JSON.parse(req.body);
-    requireParameters(msg.username && msg.password);
-    // check if account exists
-    const companyQuery = await getRepository(CompanyAccount).findOneOrFail({
-      username: msg.username,
-    }).catch((error) => { throw new Error(error); });
-    try {
-      if (companyQuery.hash !== Auth.hash(msg.password)) { throw new Error("Invalid credentials"); }
-      // credentials match, so grant them a token
-      res.send({ token: JWT.create({ id: companyQuery.id }) });
-    } catch (error) {
-      res.sendStatus(401);
-    }
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.post("/authenticate/company", CompanyFunctions.AuthenticateCompany);
 
 /**
  *  @swagger
- *  /job:
+ *  /jobs:
  *    put:
  *      description: Create a job as the logged in company
  *      parameters:
@@ -391,28 +283,7 @@ app.post("/authenticate/company", async (req, res) => {
  *      400:
  *        description: Missing parameters or unauthorized
  */
-app.put("/jobs", Auth.authenticateCompanyMiddleware, async (req: any, res) => {
-  try {
-    if (req.companyID === undefined) {
-      res.sendStatus(401);
-    }
-    // ensure required parameters are present
-    const msg = JSON.parse(req.body);
-    requireParameters(msg.role && msg.description);
-    const conn: Connection = getConnection();
-    const newJob = new Job();
-    newJob.role = msg.role;
-    newJob.description = msg.description;
-    const companyQuery = await getRepository(Company).findOneOrFail({
-      id: req.companyID,
-    }).catch((error) => { throw new Error(error); });
-    newJob.company = companyQuery;
-    await conn.manager.save(newJob);
-    res.sendStatus(200);
-  } catch (error) {
-    res.sendStatus(400);
-  }
-});
+app.put("/jobs", Middleware.authenticateCompanyMiddleware, CompanyFunctions.CreateJob);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
