@@ -92,7 +92,7 @@ export default class CompanyFunctions {
         res.sendStatus(401);
       }
       // ensure required parameters are present
-      const msg = JSON.parse(req.body);
+      const msg = { role: req.body.role, description: req.body.description };
       Helpers.requireParameters(msg.role && msg.description);
       const conn: Connection = getConnection();
       const newJob = new Job();
