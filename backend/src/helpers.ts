@@ -5,5 +5,11 @@ export default class Helpers {
     if (result === undefined) {
       throw new Error("Missing parameters.");
     }
+    if (result.trim() === "") {
+      throw new Error("Parameter is an empty string.");
+    }
+    if (/^\s+$/.test(result)) {
+      throw new Error("Parameter is just whitespace.");
+    }
   }
 }

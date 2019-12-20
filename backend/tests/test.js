@@ -138,6 +138,37 @@ describe("authentication", () => {
                 });
         });
 
+      it("fails to add job with just whitespace in string",
+        // TODO(adam)
+        function (done) {
+          server.put("/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  role: " ",
+                  description: "just doing some cool SWE things"
+                })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+
+      it("fails to add job with empty strings in a field",
+        function (done) {
+          server.put("/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  role: "some generic SWE role",
+                  description: ""
+                })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+
       it("fails when requesting to add a job missing the role field",
         function (done) {
           server.put("/jobs")

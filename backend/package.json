@@ -26,13 +26,16 @@
     "typescript": "3.5.3",
     "winston": "^3.2.1"
   },
+  "nodemonConfig": {
+    "ext": "js, ts, json"
+  },
   "scripts": {
     "prebuilt": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "prestart": "yarn run build",
-    "serve": "nodemon -e ts -w ./src -x yarn run watch",
+    "serve": "nodemon -w ./src -x yarn run watch",
     "watch": "ts-node src/index.ts",
     "watch:test": "sleep 7 && ./node_modules/.bin/mocha --reporter mochawesome ./tests/test.js",
-    "test": "nodemon -e ts -e js -w ./src -w ./test -x yarn run watch:test"
+    "test": "nodemon -w ./src -w ./test -x yarn run watch:test"
   }
 }

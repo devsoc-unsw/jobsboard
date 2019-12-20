@@ -38,7 +38,10 @@ export default class CompanyFunctions {
     try {
       // verify input paramters
       const msg = JSON.parse(req.body);
-      Helpers.requireParameters(msg.username && msg.password && msg.name && msg.location);
+      Helpers.requireParameters(msg.username);
+      Helpers.requireParameters(msg.password);
+      Helpers.requireParameters(msg.name);
+      Helpers.requireParameters(msg.location);
       // check if the company account exists with the same name
       const newUsername = msg.username;
       const conn: Connection = await getConnection();
@@ -67,7 +70,8 @@ export default class CompanyFunctions {
   public static async AuthenticateCompany(req: Request, res: Response) {
     try {
       const msg = { username: req.body.username, password: req.body.password };
-      Helpers.requireParameters(msg.username && msg.password);
+      Helpers.requireParameters(msg.username);
+      Helpers.requireParameters(msg.password);
       // check if account exists
       const companyQuery = await getRepository(CompanyAccount).findOneOrFail({
         username: msg.username,
@@ -92,8 +96,12 @@ export default class CompanyFunctions {
         res.sendStatus(401);
       }
       // ensure required parameters are present
-      const msg = { role: req.body.role, description: req.body.description };
-      Helpers.requireParameters(msg.role && msg.description);
+      const msg = {
+        role: req.body.role.trim(),
+        description: req.body.description.trim()
+      };
+      Helpers.requireParameters(msg.role);
+      Helpers.requireParameters(msg.description);
       const conn: Connection = getConnection();
       const newJob = new Job();
       newJob.role = msg.role;
