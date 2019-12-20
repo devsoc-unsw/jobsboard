@@ -25,6 +25,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import config from "@/config/config";
 
 export default Vue.extend({
   name: "StudentLoginPage",
@@ -47,7 +48,7 @@ export default Vue.extend({
   },
   methods: {
     performLogin() {
-      fetch("http://localhost:8080/authenticate/student", {
+      fetch(`${config.apiRoot}/authenticate/student`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
