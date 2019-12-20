@@ -73,7 +73,9 @@ export default class CompanyFunctions {
         username: msg.username,
       }).catch((error) => { throw new Error(error); });
       try {
-        if (companyQuery.hash !== Secrets.hash(msg.password)) { throw new Error("Invalid credentials"); }
+        if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
+          throw new Error("Invalid credentials");
+        }
         // credentials match, so grant them a token
         res.send({ token: JWT.create({ id: companyQuery.id }) });
       } catch (error) {

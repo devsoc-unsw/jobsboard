@@ -74,7 +74,7 @@ const options: ConnectionOptions = {
   database: process.env.MYSQL_DATABASE,
   entities: activeEntities,
   host: process.env.DATABASE_HOST,
-  logging: true,
+  //   logging: true,
   migrations: [
   ],
   password: process.env.MYSQL_PASSWD,

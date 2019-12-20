@@ -32,6 +32,7 @@
     "prestart": "yarn run build",
     "serve": "nodemon -e ts -w ./src -x yarn run watch",
     "watch": "ts-node src/index.ts",
-    "test": "ls ./tests/*.js ./src/**/*.ts | entr ./node_modules/.bin/mocha --reporter mochawesome ./tests/test.js"
+    "watch:test": "sleep 7 && ./node_modules/.bin/mocha --reporter mochawesome ./tests/test.js",
+    "test": "nodemon -e ts -e js -w ./src -w ./test -x yarn run watch:test"
   }
 }

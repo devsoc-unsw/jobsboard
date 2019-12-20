@@ -27,6 +27,10 @@ export default class Secrets {
     return crypto.createHash("sha512").update(msg).digest("hex");
   }
 
+  public static compareHash(left: string, right: string): boolean {
+    return left === right;
+  }
+
   private static algorithm = "aes-256-cbc";
   // 256 bits
   private static key: Buffer = crypto.randomBytes(32);

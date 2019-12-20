@@ -3,7 +3,7 @@ const chai = require("chai");
 
 var expect = chai.expect;
 
-const API_URL = "http://localhost:8081";
+const API_URL = "http://localhost:8080";
 const server = supertest.agent(API_URL);
 
 describe("authentication", () => {
@@ -92,9 +92,9 @@ describe("authentication", () => {
         function (done) {
           server.post("/authenticate/company")
                 .send({ username: "test", password: "wrongpassword" })
-                .expect(400)
+                .expect(401)
                 .end( function (_, res) {
-                  expect(res.status).to.equal(400);
+                  expect(res.status).to.equal(401);
                   done();
                 });
         });
