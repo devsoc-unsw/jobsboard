@@ -11,9 +11,21 @@
         </ErrorBox>
       </div>
       <br/>
-      <input name="username" v-model="username" type="text" placeholder="username" @keyup.enter="performCompanyLogin()"/>
+      <input 
+        name="username"
+        v-model="username"
+        type="text"
+        placeholder="username" 
+        @keyup.enter="performCompanyLogin()"
+      />
       <br/>
-      <input name="password" v-model="password" type="password" placeholder="password" @keyup.enter="performCompanyLogin()"/>
+      <input 
+        name="password"
+        v-model="password"
+        type="password"
+        placeholder="password"
+        @keyup.enter="performCompanyLogin()"
+      />
       <br/>
       <br/>
       Not a company? <router-link to="/login/student">Student Login</router-link>

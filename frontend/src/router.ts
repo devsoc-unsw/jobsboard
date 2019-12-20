@@ -4,15 +4,16 @@ import Router from "vue-router";
 Vue.use(Router);
 
 // pages
-const PageNotFoundPage = () => import("./pages/PageNotFound.vue");
-const LoginPage = () => import("./pages/LoginPage.vue");
-const StudentLoginPage = () => import("./pages/StudentLoginPage.vue");
-const CompanyLoginPage = () => import("./pages/CompanyLoginPage.vue");
-const CompanySignupPage = () => import("./pages/CompanySignupPage.vue");
-const JobsListPage = () => import("./pages/JobsListPage.vue");
-const SingleJobPage = () => import("./pages/SingleJobPage.vue");
-const CompanyAccountHome = () => import("./pages/CompanyAccountHome.vue");
-const CompanyDetailsPage = () => import("./pages/CompanyDetailsPage.vue");
+const PageNotFoundPage = () => import("@/pages/PageNotFound.vue");
+const LoginPage = () => import("@/pages/LoginPage.vue");
+const StudentLoginPage = () => import("@/pages/StudentLoginPage.vue");
+const CompanyLoginPage = () => import("@/pages/CompanyLoginPage.vue");
+const CompanySignupPage = () => import("@/pages/CompanySignupPage.vue");
+const JobsListPage = () => import("@/pages/JobsListPage.vue");
+const SingleJobPage = () => import("@/pages/SingleJobPage.vue");
+const CompanyAccountHome = () => import("@/pages/CompanyAccountHome.vue");
+const CompanyDetailsPage = () => import("@/pages/CompanyDetailsPage.vue");
+const CompanyAddJob = () => import("@/pages/CompanyAddJob.vue");
 
 export default new Router({
   mode: "history",
@@ -29,6 +30,9 @@ export default new Router({
   }, {
     path: "/company/home",
     component: CompanyAccountHome,
+  }, {
+    path: "/company/jobs/add",
+    component: CompanyAddJob,
   }, {
     path: "/company/details",
     component: CompanyDetailsPage,

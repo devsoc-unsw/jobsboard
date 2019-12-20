@@ -8,7 +8,7 @@
             Account Settings
           </div>
         </router-link>
-        <router-link to="/company/post">
+        <router-link to="/company/jobs/add">
           <div class="button postButton">
             Post Jobs
           </div>
