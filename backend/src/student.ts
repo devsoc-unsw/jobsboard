@@ -40,7 +40,8 @@ export default class StudentFunctions {
   public static async AuthenticateStudent(req: Request, res: Response) {
     try {
       const msg = req.body;
-      Helpers.requireParameters(msg.zID && msg.password);
+      Helpers.requireParameters(msg.zID);
+      Helpers.requireParameters(msg.password);
       if (Auth.authenticateStudent(msg.zID, msg.password)) {
         // successful login
         res.send({ token: JWT.create({ username: msg.zID }) });
