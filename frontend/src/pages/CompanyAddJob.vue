@@ -8,7 +8,7 @@
           {{ successMsg }}
         </SuccessBox>
       </div>
-      <div v-if="error">
+      <div v-else-if="error">
         <br/>
         <ErrorBox>
           {{ errorMsg }}
@@ -55,6 +55,8 @@ export default Vue.extend({
   name: "CompanyAddJob",
   components: {
     LeftHalfPageTemplate,
+    SuccessBox,
+    ErrorBox,
   },
   data() {
     return {
@@ -74,8 +76,8 @@ export default Vue.extend({
     }
   },
   methods: {
-    submitJobPost() {
-      fetch(`${config.apiRoot}/jobs`, {
+    async submitJobPost() {
+      const response = await fetch(`${config.apiRoot}/jobs`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -86,18 +88,18 @@ export default Vue.extend({
           role: this.role,
           description: this.description,
         }),
-      })
-        .then((response: any) => response.json())
-        .then((response: any) => {
-          this.error = false;
-          this.success = true;
-          this.successMsg = "Job posted! This job will be made available to students shortly.";
+      });
+
+      if (response.ok) {
+        this.success = true;
+        this.successMsg = "Job posted! This job will be made available to students shortly.";
+        setTimeout(() => {
           this.$router.push("/company/home");
-        })
-        .catch((response) => {
-          this.error = true;
-          this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
-        });
+        }, 5000);
+      } else {
+        this.error = true;
+        this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
+      }
     },
   },
 });

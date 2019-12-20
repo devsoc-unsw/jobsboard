@@ -58,8 +58,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    performCompanyLogin() {
-      fetch(`${config.apiRoot}/authenticate/company`, {
+    async performCompanyLogin() {
+      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,17 +69,17 @@ export default Vue.extend({
           username: this.username,
           password: this.password,
         }),
-      })
-        .then((response: any) => response.json())
-        .then((response: any) => {
-          this.error = false;
-          this.$store.dispatch("setApiToken", response.token);
-          this.$router.push("/company/home");
-        })
-        .catch((response) => {
-          this.error = true;
-          this.errorMsg = "Invalid credentials. Please try again.";
-        });
+      });
+
+      if (response.ok) {
+        const msg = await response.json();
+        this.error = false;
+        this.$store.dispatch("setApiToken", msg.token);
+        this.$router.push("/company/home");
+      } else {
+        this.error = true;
+        this.errorMsg = "Invalid credentials. Please try again.";
+      }
     },
   },
 });

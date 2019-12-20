@@ -47,8 +47,8 @@ export default Vue.extend({
     },
   },
   methods: {
-    performLogin() {
-      fetch(`${config.apiRoot}/authenticate/student`, {
+    async performLogin() {
+      const response = await fetch(`${config.apiRoot}/authenticate/student`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,17 +58,18 @@ export default Vue.extend({
           zID: this.zID,
           password: this.password,
         }),
-      })
-        .then((response: any) => response.json())
-        .then((response: any) => {
-          this.error = false;
-          this.$store.dispatch("setApiToken", response.token);
-          this.$router.push("/jobs");
-        })
-        .catch((response) => {
-          this.error = true;
-          this.errorMsg = "Invalid credentials. Please try again.";
-        });
+      });
+
+
+      if (response.ok) {
+        const msg = await response.json();
+        this.error = false;
+        this.$store.dispatch("setApiToken", msg.token);
+        this.$router.push("/jobs");
+      } else {
+        this.error = true;
+        this.errorMsg = "Invalid credentials. Please try again.";
+      }
     },
   },
 });
