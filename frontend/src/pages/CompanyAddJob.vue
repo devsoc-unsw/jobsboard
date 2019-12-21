@@ -23,11 +23,12 @@
         />
       <h2>Job Description</h2>
       <h4>Text only (for now!)</h4>
-        <input 
+        <textarea
           name="description"
           v-model="description"
           type="text"
           placeholder="Job Description"
+          rows="6"
         />
       <br />
       <input
@@ -106,4 +107,8 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.bigTextEntry {
+  width: 100%;
+  min-height: 100%;
+}
 </style>

@@ -3,14 +3,14 @@
     <div class="homeBox">
       <h1>Welcome!</h1>
       <div class="buttonBox">
-        <router-link to="/company/edit">
-          <div class="button editButton">
-            Account Settings
-          </div>
-        </router-link>
         <router-link to="/company/jobs/add">
           <div class="button postButton">
             Post Jobs
+          </div>
+        </router-link>
+        <router-link to="/company/edit">
+          <div class="button editButton">
+            Account Settings
           </div>
         </router-link>
       </div>
@@ -40,14 +40,6 @@ export default class CompanyAccountHome extends Vue {
 </script>
 
 <style scoped lang="scss">
-.homeBox {
-  width: 70%;
-  padding: 2%;
-  background: $white;
-  text-align: center;
-  text-decoration: none;
-}
-
 .buttonBox {
   padding: 2%;
   margin-left: 15%;
@@ -65,13 +57,13 @@ export default class CompanyAccountHome extends Vue {
 }
 
 .editButton {
-  background: $blue;
-  color: $white;
+  background: $white;
+  color: $blue;
 }
 
 .postButton {
   border: 1px solid $blue;
-  background: $white;
-  color: $blue;
+  background: $blue;
+  color: $white;
 }
 </style>

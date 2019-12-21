@@ -30,7 +30,7 @@ div {
   flex-direction: row;
 }
 
-input {
+input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
   border-radius: 0.5rem;
@@ -38,5 +38,13 @@ input {
   font-size: 1rem;
   padding: 1rem;
   width: inherit;
+}
+
+.homeBox {
+  width: 90%;
+  padding: 2%;
+  background: $white;
+  text-align: center;
+  text-decoration: none;
 }
 </style>
