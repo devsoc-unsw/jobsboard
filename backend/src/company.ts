@@ -19,7 +19,7 @@ export default class CompanyFunctions {
       if (companyInfo.length !== 1) {
         throw new Error("Cannot find the requested company.");
       }
-      res.send(companyInfo);
+      res.send(companyInfo[0]);
     } catch (error) {
       res.sendStatus(400);
     }
@@ -27,7 +27,12 @@ export default class CompanyFunctions {
 
   public static async GetJobsFromCompany(req: Request, res: Response) {
     try {
-      const jobsForCompany = await getRepository(Company).find({id: parseInt(req.params.companyID, 10)});
+      const jobsForCompany = await getRepository(Company).find({
+        relations: ["jobs"],
+        where: {
+          id: parseInt(req.params.companyID, 10),
+        }
+      });
       res.send(jobsForCompany[0].jobs);
     } catch (error) {
       res.sendStatus(400);
