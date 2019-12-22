@@ -99,6 +99,61 @@ describe("authentication", () => {
                 });
         });
     });
+  });
+
+  describe("admin", () => {
+    describe("authentication", () => {
+      it("fails when there is no json message", 
+        function (done) {
+          server.post("/authenticate/admin")
+                .send({})
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+      it("fails when there are unrelated fields and no related fields",
+        function (done) {
+          server.post("/authenticate/admin")
+                .send({ test: "field" })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                })
+        });
+      it("fails when there are unrelated fields and one related field",
+        function (done) {
+          server.post("/authenticate/admin")
+                .send({ test: "field", password: "test" })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+      it("failed when there are incorrect credentials provided",
+        function (done) {
+          server.post("/authenticate/admin")
+                .send({ username: "master", password: "retsam" })
+                .expect(401)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(401);
+                  done();
+                });
+        });
+      it("succeeds when correct credentials provided",
+        function (done) {
+          server.post("/authenticate/admin")
+                .send({ username: "master", password: "masterpassword" })
+                .expect(200)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(200);
+                  done();
+                });
+        });
+    });
 
     describe("adding jobs", () => {
       before( async function() {
