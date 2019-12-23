@@ -63,31 +63,4 @@ export default class LoginPage extends Vue {}
   text-align: center;
   text-decoration: none;
 }
-
-.buttonBox {
-  padding: 2%;
-  margin-left: 15%;
-}
-
-.button {
-  min-width: 70%;
-  max-width: 70%;
-  border-radius: 0.5rem;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin: 1%;
-}
-
-.studentButton {
-  background: $blue;
-  color: $white;
-}
-
-.companyButton {
-  border: 1px solid $blue;
-  background: $white;
-  color: $blue;
-}
 </style>

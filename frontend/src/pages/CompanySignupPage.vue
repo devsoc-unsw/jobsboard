@@ -3,20 +3,45 @@
     <div>
       <h1>Create a company account</h1>
       <div v-if="error">
-        <br/>
         <ErrorBox>
           {{ errorMsg }}
         </ErrorBox>
       </div>
-      <input name="username" v-model="username" type="text" placeholder="username"/>
       <br/>
-      <input name="password" v-model="password" type="password" placeholder="password"/>
+      <input
+        name="username"
+        v-model="username"
+        type="text"
+        placeholder="username"
+      />
       <br/>
-      <input name="name" v-model="name" type="text" placeholder="company name"/>
+      <input
+        name="password"
+        v-model="password"
+        type="password"
+        placeholder="password"
+      />
       <br/>
-      <input name="location" v-model="location" type="text" placeholder="location"/>
+      <input
+        name="name"
+        v-model="name"
+        type="text"
+        placeholder="company name"
+      />
       <br/>
-      <input class="button" type="submit" value="submit" @click="validateInput() && performSignup()">
+      <input
+        name="location"
+        v-model="location"
+        type="text"
+        placeholder="location"
+      />
+      <br/>
+      <input
+        class="button studentButton"
+        type="submit"
+        value="Create"
+        @click="validateInput() && performSignup()"
+      />
       <br/>
       <br/>
       Already have an account? <router-link to="/login/company">Company Login</router-link>
@@ -28,6 +53,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import config from "@/config/config";
 
 export default Vue.extend({
   name: "CompanySignupPage",
@@ -60,11 +86,19 @@ export default Vue.extend({
         this.error = true;
         this.errorMsg = "Password cannot be empty. Please try again.";
         return false;
+      } else if (this.name === "") {
+        this.error = true;
+        this.errorMsg = "Company name cannot be empty. Please try again.";
+        return false;
+      } else if (this.location === "") {
+        this.error = true;
+        this.errorMsg = "Company location cannot be empty. Please try again.";
+        return false;
       }
       return true;
     },
-    performSignup() {
-      fetch("http://localhost:8081/company", {
+    async performSignup() {
+      const response = await fetch(`${config.apiRoot}/company`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -76,44 +110,23 @@ export default Vue.extend({
           name: this.name,
           location: this.location,
         }),
-      })
-      .then((response: any) => response.json())
-      .then((response: any) => {
+      });
+
+      if (response.ok) {
+        const msg = await response.json();
         this.error = false;
-        const companyId = response.id;
-        this.$store.dispatch("setApiToken", response.token);
+        const companyId = msg.id;
+        // TODO(adam): Adapt!
+        this.$store.dispatch("setApiToken", msg.token);
         this.$router.push({ path: "/company/home", query: { company: String(companyId) } });
-      })
-      .catch((response) => {
+      } else {
         this.error = true;
         this.errorMsg = "Invalid username. Please try again.";
-      });
+      }
     },
   },
 });
 </script>
 
 <style scoped lang="scss">
-.error {
-  border: 1px solid $red;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  background: rgb(247, 131, 131);
-}
-
-.button {
-  min-width: 50%;
-  max-width: 50%;
-  border-radius: 0.5rem;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin: 1%;
-  background: $blue;
-  color: $white;
-  font-weight: 300;
-  border: 1px solid $blue;
-}
-
 </style>
