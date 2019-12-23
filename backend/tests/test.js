@@ -466,4 +466,94 @@ describe("company", () => {
       // });
     });
   });
+
+  describe("creating a company account", () => {
+    it("fails if there is no payload",
+      function (done) {
+        server
+        .put("/company")
+        .expect(400)
+        .end( function (err, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    it("fails if there is an empty payload",
+      function (done) {
+        server
+        .put("/company")
+        .send({})
+        .expect(400)
+        .end( function (err, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+    it("fails if there are incorrect parameters",
+      function (done) {
+        server
+        .put("/company")
+        .send({ 
+          test: "field",
+          password: "test",
+          name: "Another test company",
+          location: "Sydney",
+        })
+        .expect(400)
+        .end( function (err, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      });
+
+    it("fails if there is a naming conflict in name",
+      function (done) {
+        server
+        .put("/company")
+        .send({ 
+          username: "test",
+          password: "testing auth",
+          name: "Another test company",
+          location: "Sydney",
+        })
+        .expect(409)
+        .end( function (err, res) {
+          expect(res.status).to.equal(409);
+          done();
+        });
+      });
+
+    it("fails if there is a naming conflict in username",
+      function (done) {
+        server
+        .put("/company")
+        .send({ 
+          username: "testcompany",
+          password: "testing auth",
+          name: "Test company",
+          location: "Sydney",
+        })
+        .expect(409)
+        .end( function (err, res) {
+          expect(res.status).to.equal(409);
+          done();
+        });
+      });
+    it("succeeds when there are no name conflicts",
+      function (done) {
+        server
+        .put("/company")
+        .send({ 
+          username: "testcompany",
+          password: "testing auth",
+          name: "Yet another testing company",
+          location: "Amsterdam",
+        })
+        .expect(200)
+        .end( function (err, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+      });
+  });
 });
