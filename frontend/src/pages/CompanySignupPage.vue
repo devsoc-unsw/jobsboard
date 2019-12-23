@@ -2,6 +2,11 @@
   <LeftHalfPageTemplate>
     <div>
       <h1>Create a company account</h1>
+      <div v-if="success">
+        <SuccessBox>
+          {{ successMsg }}
+        </SuccessBox>
+      </div>
       <div v-if="error">
         <ErrorBox>
           {{ errorMsg }}
@@ -53,6 +58,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import SuccessBox from "@/components/SuccessBox.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
@@ -60,6 +66,7 @@ export default Vue.extend({
   components: {
     LeftHalfPageTemplate,
     ErrorBox,
+    SuccessBox,
   },
   data() {
     return {
@@ -69,12 +76,9 @@ export default Vue.extend({
       location: "",
       error: false,
       errorMsg: "",
+      success: false,
+      successMsg: "",
     };
-  },
-  computed: {
-    apiToken(): string {
-      return this.$store.state.apiToken;
-    },
   },
   methods: {
     validateInput() {
@@ -113,12 +117,12 @@ export default Vue.extend({
       });
 
       if (response.ok) {
-        const msg = await response.json();
         this.error = false;
-        const companyId = msg.id;
-        // TODO(adam): Adapt!
-        this.$store.dispatch("setApiToken", msg.token);
-        this.$router.push({ path: "/company/home", query: { company: String(companyId) } });
+        this.success = true;
+        this.successMsg = "Company account created successfully! Redirecting to the login page...";
+        setTimeout(() => {
+          this.$router.push("/login/company");
+        }, 5000);
       } else {
         this.error = true;
         this.errorMsg = "Invalid username. Please try again.";

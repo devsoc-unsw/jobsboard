@@ -13,10 +13,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.error {
-  border: 1px solid $green;
+.success {
+  border: 1px solid rgb(30, 105, 50);
   padding: 2rem;
   border-radius: 0.5rem;
-  background: rgb(247, 131, 131);
+  background: $green;
+  color: $white;
 }
 </style>
