@@ -4,11 +4,11 @@ import {
   getConnection,
   getRepository,
 } from "typeorm";
+import { AdminAccount } from "./entity/admin_account";
 import Helpers from "./helpers";
 import JWT from "./jwt";
 import Logger from "./logging";
 import Secrets from "./secrets";
-import { AdminAccount } from "./entity/admin_account";
 
 export default class AdminFunctions {
   public static async AuthenticateAdmin(req: Request, res: Response) {

@@ -77,33 +77,6 @@ export default class CompanyFunctions {
     }
   }
 
-  public static async AuthenticateCompany(req: Request, res: Response) {
-    try {
-      const msg = { username: req.body.username, password: req.body.password };
-      Helpers.requireParameters(msg.username);
-      Helpers.requireParameters(msg.password);
-      // check if account exists
-      const companyQuery = await getRepository(CompanyAccount).findOneOrFail({
-        username: msg.username,
-      }).catch((error) => { throw new Error(error); });
-      try {
-        if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
-          throw new Error("Invalid credentials");
-        }
-        const token: IToken = {
-          id: companyQuery.id,
-          type: AccountType.Company,
-        };
-        // credentials match, so grant them a token
-        res.send({ token: JWT.create(token) });
-      } catch (error) {
-        res.sendStatus(401);
-      }
-    } catch (error) {
-      res.sendStatus(400);
-    }
-  }
-
   public static async CreateJob(req: any, res: Response) {
     try {
       if (req.companyID === undefined) {
@@ -127,7 +100,6 @@ export default class CompanyFunctions {
       await conn.manager.save(newJob);
       res.sendStatus(200);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }

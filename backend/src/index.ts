@@ -210,7 +210,7 @@ app.get("/company/:companyID/jobs", Middleware.authenticateStudentMiddleware, Co
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/student", StudentFunctions.AuthenticateStudent);
+app.post("/authenticate/student", Auth.AuthenticateStudent);
 
 /**
  *  @swagger
@@ -264,7 +264,7 @@ app.put("/company", CompanyFunctions.CreateCompany);
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/company", CompanyFunctions.AuthenticateCompany);
+app.post("/authenticate/company", Auth.AuthenticateCompany);
 
 /**
  *  @swagger
@@ -307,8 +307,7 @@ app.put("/jobs", Middleware.authenticateCompanyMiddleware, CompanyFunctions.Crea
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/admin", AdminFunctions.AuthenticateAdmin);
-
+app.post("/authenticate/admin", Auth.AuthenticateAdmin);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
