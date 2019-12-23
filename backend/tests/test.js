@@ -136,7 +136,7 @@ describe("authentication", () => {
       it("failed when there are incorrect credentials provided",
         function (done) {
           server.post("/authenticate/admin")
-                .send({ username: "master", password: "retsam" })
+                .send({ username: "admin", password: "retsam" })
                 .expect(401)
                 .end( function (_, res) {
                   expect(res.status).to.equal(401);
@@ -146,7 +146,7 @@ describe("authentication", () => {
       it("succeeds when correct credentials provided",
         function (done) {
           server.post("/authenticate/admin")
-                .send({ username: "master", password: "masterpassword" })
+                .send({ username: "admin", password: "admin" })
                 .expect(200)
                 .end( function (_, res) {
                   expect(res.status).to.equal(200);

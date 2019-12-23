@@ -23,6 +23,7 @@ import JWT from "./jwt";
 import Logger from "./logging";
 
 // endpoint implementations
+import AdminFunctions from "./admin";
 import CompanyFunctions from "./company";
 import StudentFunctions from "./student";
 
@@ -31,6 +32,7 @@ import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import { Student } from "./entity/student";
+import { AdminAccount } from "./entity/admin_account";
 
 // custom middleware
 import Middleware from "./middleware";
@@ -54,6 +56,7 @@ const activeEntities = [
   CompanyAccount,
   Job,
   Student,
+  AdminAccount,
 ];
 
 // swagger api generator based on jsdoc
@@ -284,6 +287,28 @@ app.post("/authenticate/company", CompanyFunctions.AuthenticateCompany);
  *        description: Missing parameters or unauthorized
  */
 app.put("/jobs", Middleware.authenticateCompanyMiddleware, CompanyFunctions.CreateJob);
+
+/**
+ *  @swagger
+ *  /authenticate/admin:
+ *    post:
+ *      description: Authenticate an admin's credentials
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                token:
+ *                  type: string
+ *                  description: API token
+ *      400:
+ *        description: Missing parameters or invalid credentials
+ */
+app.post("/authenticate/admin", AdminFunctions.AuthenticateAdmin);
+
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 

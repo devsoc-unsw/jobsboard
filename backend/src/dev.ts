@@ -6,6 +6,7 @@ import {
 
 import Logger from "./logging";
 
+import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
@@ -18,6 +19,12 @@ export async function seedDB(activeEntities: any[]) {
     await getConnection().synchronize(true);
   }
   const conn: Connection = await getConnection();
+
+  // create dummy admina ccount
+  const adminAccount = new AdminAccount();
+  adminAccount.username = "admin";
+  adminAccount.hash = Secrets.hash("admin");
+  await conn.manager.save(adminAccount);
 
   // create a company account
   const companyAccount = new CompanyAccount();

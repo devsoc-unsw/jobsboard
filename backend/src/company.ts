@@ -8,8 +8,8 @@ import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import Helpers from "./helpers";
-import Logger from "./logging";
 import JWT from "./jwt";
+import Logger from "./logging";
 import Secrets from "./secrets";
 
 export default class CompanyFunctions {
