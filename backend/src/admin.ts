@@ -12,7 +12,6 @@ import { AdminAccount } from "./entity/admin_account";
 
 export default class AdminFunctions {
   public static async AuthenticateAdmin(req: Request, res: Response) {
-    // TODO(adam): finish - this is a copy of company auth
     try {
       const msg = { username: req.body.username, password: req.body.password };
       Helpers.requireParameters(msg.username);

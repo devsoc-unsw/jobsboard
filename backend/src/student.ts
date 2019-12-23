@@ -44,7 +44,7 @@ export default class StudentFunctions {
       Helpers.requireParameters(msg.password);
       if (Auth.authenticateStudent(msg.zID, msg.password)) {
         // successful login
-        res.send({ token: JWT.create({ username: msg.zID }) });
+        res.send({ token: JWT.create({ id: msg.zID }) });
       } else {
         throw new Error("Invalid credentials");
       }
