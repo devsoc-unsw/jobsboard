@@ -30,6 +30,13 @@
           placeholder="Job Description"
           rows="6"
         />
+      <h2>Application Link</h2>
+        <input 
+          name="applicationLink"
+          v-model="applicationLink"
+          type="text"
+          placeholder="Application Link"
+        />
       <br />
       <input
         type="submit"
@@ -63,6 +70,7 @@ export default Vue.extend({
     return {
       role: "",
       description: "",
+      applicationLink: "",
       error: false,
       errorMsg: "",
       success: false,
@@ -88,6 +96,7 @@ export default Vue.extend({
         body: JSON.stringify({
           role: this.role,
           description: this.description,
+          applicationLink: this.applicationLink,
         }),
       });
 
