@@ -194,7 +194,6 @@ describe("authentication", () => {
         });
 
       it("fails to add job with just whitespace in string",
-        // TODO(adam)
         function (done) {
           server.put("/jobs")
                 .set('Authorization', this.token)

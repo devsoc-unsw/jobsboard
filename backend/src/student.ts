@@ -7,6 +7,10 @@ import Auth from "./auth";
 import { Job } from "./entity/job";
 import Helpers from "./helpers";
 import JWT from "./jwt";
+import {
+  AccountType,
+  IToken,
+} from "./auth";
 
 export default class StudentFunctions {
   public static async GetAllActiveJobs(_: Request, res: Response) {
@@ -44,7 +48,11 @@ export default class StudentFunctions {
       Helpers.requireParameters(msg.password);
       if (Auth.authenticateStudent(msg.zID, msg.password)) {
         // successful login
-        res.send({ token: JWT.create({ id: msg.zID }) });
+        const token: IToken = {
+          id: msg.zID,
+          type: AccountType.Student,
+        };
+        res.send({ token: JWT.create(token) });
       } else {
         throw new Error("Invalid credentials");
       }

@@ -28,11 +28,11 @@ import CompanyFunctions from "./company";
 import StudentFunctions from "./student";
 
 // custom entities
+import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import { Student } from "./entity/student";
-import { AdminAccount } from "./entity/admin_account";
 
 // custom middleware
 import Middleware from "./middleware";

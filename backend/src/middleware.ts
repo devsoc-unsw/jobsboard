@@ -3,18 +3,10 @@ import Logger from "./logging";
 
 import { NextFunction, Request, Response } from "express";
 
-interface IToken {
-  id: number;
-  type: AccountType;
-}
-
-enum AccountType {
-  Admin,
-  Student,
-  Company,
-}
-
-export { IToken, AccountType };
+import { 
+  AccountType,
+  IToken,
+} from "./auth";
 
 export default class Middleware {
   public static genericLoggingMiddleware(req: Request, _: Response, next: NextFunction): void {

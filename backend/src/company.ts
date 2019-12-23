@@ -12,6 +12,11 @@ import JWT from "./jwt";
 import Logger from "./logging";
 import Secrets from "./secrets";
 
+import {
+  AccountType,
+  IToken,
+} from "./auth";
+
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: Request, res: Response) {
     try {
@@ -85,8 +90,12 @@ export default class CompanyFunctions {
         if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
           throw new Error("Invalid credentials");
         }
+        const token: IToken = {
+          id: companyQuery.id,
+          type: AccountType.Company,
+        };
         // credentials match, so grant them a token
-        res.send({ token: JWT.create({ id: companyQuery.id }) });
+        res.send({ token: JWT.create(token) });
       } catch (error) {
         res.sendStatus(401);
       }
@@ -102,8 +111,8 @@ export default class CompanyFunctions {
       }
       // ensure required parameters are present
       const msg = {
+        description: req.body.description.trim(),
         role: req.body.role.trim(),
-        description: req.body.description.trim()
       };
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
@@ -118,6 +127,7 @@ export default class CompanyFunctions {
       await conn.manager.save(newJob);
       res.sendStatus(200);
     } catch (error) {
+      Logger.Error(error);
       res.sendStatus(400);
     }
   }
