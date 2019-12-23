@@ -18,6 +18,15 @@
         Job Description
       </h2>
       {{ description }}
+      <br/>
+      <br/>
+    </div>
+    <div>
+      <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
+        <button class="button studentButton" @click>
+          Apply now
+        </button>
+      </a>
     </div>
   </div>
   </LoggedInTemplate>
@@ -25,13 +34,13 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LoggedInTemplate from "../components/LoggedInTemplate.vue";
-import JobStandout from "../components/JobStandout.vue";
-import ErrorBox from "../components/ErrorBox.vue";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import JobStandout from "@/components/JobStandout.vue";
+import ErrorBox from "@/components/ErrorBox.vue";
+import config from "@/config/config";
 
 export default Vue.extend({
   name: "JobsListPage",
-  // TODO(adam): Implement the fetch call to get the specific job info
   components: {
     LoggedInTemplate,
     JobStandout,
@@ -41,15 +50,16 @@ export default Vue.extend({
     return {
       jobID: this.$route.query.job,
       companyID: "",
-      role: "Software Engineer",
-      company: "Company A",
-      description: "Some generic description",
-      location: "Sydney, Australia",
+      role: "",
+      company: "",
+      description: "",
+      location: "",
+      applicationLink: "",
       error: false,
       errorMsg: "",
     };
   },
-  mounted() {
+  async mounted() {
     // determine whether there is an API key present and redirect if not present
     if (this.$store.state.apiToken === undefined) {
       this.$router.push("/login");
@@ -57,25 +67,26 @@ export default Vue.extend({
     }
 
     // load the jobs using the api token
-    fetch(`http://localhost:8080/job/${this.$route.query.job}`, {
+    const response = await fetch(`${config.apiRoot}/job/${this.$route.query.job}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Authorization": this.$store.state.apiToken,
       },
-    })
-      .then((response: any) => response.json())
-      .then((response: any) => {
-        this.role = response.role;
-        this.company = response.company.name;
-        this.description = response.description;
-        this.location = response.company.location;
-        this.companyID = response.company.id;
-      })
-      .catch((response) => {
-        this.error = true;
-        this.errorMsg = "Unable to load jobs at this time. Please try again later.";
-      });
+    });
+
+    if (response.ok) {
+      const msg = await response.json();
+      this.role = msg.role;
+      this.company = msg.company.name;
+      this.description = msg.description;
+      this.location = msg.company.location;
+      this.companyID = msg.company.id;
+      this.applicationLink = msg.applicationLink;
+    } else {
+      this.error = true;
+      this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+    }
   },
 });
 </script>

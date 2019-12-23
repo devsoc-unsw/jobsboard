@@ -41,7 +41,7 @@ export default Vue.extend({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .navbar {
   background: $blue;
   color: $white;
@@ -90,5 +90,20 @@ export default Vue.extend({
 .logoutButton {
   border: 1px solid $white;
   border-radius: 0.75rem;
+}
+.button {
+  min-width: 70%;
+  max-width: 70%;
+  border-radius: 0.5rem;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin: 1%;
+}
+
+.studentButton {
+  background: $blue;
+  color: $white;
 }
 </style>
