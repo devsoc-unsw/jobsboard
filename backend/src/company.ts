@@ -47,20 +47,30 @@ export default class CompanyFunctions {
   public static async CreateCompany(req: Request, res: Response) {
     try {
       // verify input paramters
-      const msg = JSON.parse(req.body);
+      const msg = {
+        location: req.body.location,
+        name: req.body.name,
+        password: req.body.password,
+        username: req.body.username,
+      };
       Helpers.requireParameters(msg.username);
       Helpers.requireParameters(msg.password);
       Helpers.requireParameters(msg.name);
       Helpers.requireParameters(msg.location);
       // check if the company account exists with the same name
-      const newUsername = msg.username;
       const conn: Connection = await getConnection();
-      const companyAccountSearchResult = await getRepository(CompanyAccount).find({
-        username: newUsername,
+      // using the original typeorm OR convention fails to construct a suitable MySQL
+      // query, so we have to do this in two separate queries
+      const companyAccountUsernameSearchResult = await getRepository(CompanyAccount).find({
+        username: msg.username,
       });
-      if (companyAccountSearchResult.length !== 0) {
+      const companyNameSearchResult = await getRepository(Company).find({
+        name: msg.name,
+      });
+      if (companyAccountUsernameSearchResult.length !== 0 || companyNameSearchResult.length !== 0) {
         // company exists, send conflict error
         res.sendStatus(409);
+        return;
       }
       // if there is no conflict, create the company account and company record
       const newCompany = new Company();
@@ -70,9 +80,10 @@ export default class CompanyFunctions {
       newCompanyAccount.username = msg.username;
       newCompanyAccount.hash = Secrets.hash(msg.password);
       newCompanyAccount.company = newCompany;
-      await conn.manager.save(newCompany);
       await conn.manager.save(newCompanyAccount);
+      res.sendStatus(200);
     } catch (error) {
+      Logger.Error(error);
       res.sendStatus(400);
     }
   }
