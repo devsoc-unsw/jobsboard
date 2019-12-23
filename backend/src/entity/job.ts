@@ -12,6 +12,11 @@ export class Job {
   @Column()
   public description: string;
 
+  @Column({
+    default: ""
+  })
+  public applicationLink: string;
+
   @ManyToOne((type) => Company, (company) => company.jobs)
   public company: Company;
 }

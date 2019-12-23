@@ -95,15 +95,19 @@ export default class CompanyFunctions {
       }
       // ensure required parameters are present
       const msg = {
+        applicationLink: req.body.applicationLink.trim(),
         description: req.body.description.trim(),
         role: req.body.role.trim(),
       };
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
+      Helpers.requireParameters(msg.applicationLink);
+      Helpers.validApplicationLink(msg.applicationLink);
       const conn: Connection = getConnection();
       const newJob = new Job();
       newJob.role = msg.role;
       newJob.description = msg.description;
+      newJob.applicationLink = msg.applicationLink;
       const companyQuery = await getRepository(Company).findOneOrFail({
         id: req.companyID,
       }).catch((error) => { throw new Error(error); });
@@ -111,6 +115,7 @@ export default class CompanyFunctions {
       await conn.manager.save(newJob);
       res.sendStatus(200);
     } catch (error) {
+      Logger.Error(error);
       res.sendStatus(400);
     }
   }

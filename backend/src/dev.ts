@@ -37,18 +37,22 @@ export async function seedDB(activeEntities: any[]) {
   const job1 = new Job();
   job1.role = "Software Engineer and Reliability";
   job1.description = "Doing software engineer things and SRE things";
+  job1.applicationLink = "https://sampleapplication.link";
   job1.company = company;
   const job2 = new Job();
   job2.role = "Software Engineer";
   job2.description = "Doing software engineer things";
+  job1.applicationLink = "mailto:example@example.com";
   job2.company = company;
   const job3 = new Job();
   job3.role = "Mechanical Engineer";
   job3.description = "Doing mechanical engineer things";
+  job1.applicationLink = "https://sampleapplication.net";
   job3.company = company;
   const job4 = new Job();
   job4.role = "Computer Scientist";
   job4.description = "Computer science and software engineering are both degrees";
+  job1.applicationLink = "https://sampleapplicationlink.net";
   job4.company = company;
   companyAccount.company.jobs = [
     job1,

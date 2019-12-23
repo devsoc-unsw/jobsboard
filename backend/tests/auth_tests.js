@@ -179,17 +179,66 @@ describe("authentication", () => {
                 });
         });
         
-      it("succeeds when requesting to add a job",
+      it("succeeds when requesting to add a job with a web link",
         function (done) {
           server.put("/jobs")
                 .set('Authorization', this.token)
                 .send({
                   role: "some generic SWE role",
-                  description: "just doing some cool SWE things"
+                  description: "just doing some cool SWE things",
+                  applicationLink: "https://some.application.link",
                 })
                 .expect(200)
                 .end( function (_, res) {
                   expect(res.status).to.equal(200);
+                  done();
+                });
+        });
+
+      it("succeeds when requesting to add a job with a mailto",
+        function (done) {
+          server.put("/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  role: "some generic SWE role",
+                  description: "just doing some cool SWE things",
+                  applicationLink: "https://some.application.link",
+                })
+                .expect(200)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(200);
+                  done();
+                });
+        });
+
+      it("fails when requesting to add a job with an unsupported protocol (phone)",
+        function (done) {
+          server.put("/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  role: "some generic SWE role",
+                  description: "just doing some cool SWE things",
+                  applicationLink: "call:0298765432",
+                })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
+                  done();
+                });
+        });
+
+      it("fails when requesting to add a job with an unsupported protocol (ftp)",
+        function (done) {
+          server.put("/jobs")
+                .set('Authorization', this.token)
+                .send({
+                  role: "some generic SWE role",
+                  description: "just doing some cool SWE things",
+                  applicationLink: "ftp://some.randomweb.server",
+                })
+                .expect(400)
+                .end( function (_, res) {
+                  expect(res.status).to.equal(400);
                   done();
                 });
         });
