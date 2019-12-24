@@ -3,10 +3,8 @@ import {
   Connection,
   getConnection,
 } from "typeorm";
-import Auth, { AccountType, IToken } from "./auth";
 import { Job } from "./entity/job";
 import Helpers from "./helpers";
-import JWT from "./jwt";
 
 export default class StudentFunctions {
   public static async GetAllActiveJobs(_: Request, res: Response) {
@@ -14,27 +12,41 @@ export default class StudentFunctions {
       const conn: Connection = await getConnection();
       const jobs = await conn.getRepository(Job).find({
         relations: ["company"],
-      });
-      res.send(jobs);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-  }
-
-  public static async GetJob(req: Request, res: Response) {
-    try {
-      Helpers.requireParameters(req.params.jobID);
-      const conn: Connection = await getConnection();
-      const jobInfo = await conn.getRepository(Job).findOneOrFail({
-        relations: ["company"],
         where: {
-          id: parseInt(req.params.jobID, 10),
+          approved: true,
+          hidden: false,
         },
       });
-      res.send(jobInfo);
+
+      const fixedJobs = jobs.map((job) => { 
+        const newJob: any = {};
+        newJob.applicationLink = job.applicationLink;
+        newJob.company = job.company;
+        newJob.description = job.description;
+        newJob.role = job.role;
+        return newJob;
+      });
+      res.send(fixedJobs);
     } catch (error) {
       res.sendStatus(400);
     }
+}
+
+public static async GetJob(req: Request, res: Response) {
+  try {
+    Helpers.requireParameters(req.params.jobID);
+    const conn: Connection = await getConnection();
+    const jobInfo = await conn.getRepository(Job).findOneOrFail({
+      relations: ["company"],
+      where: {
+        approved: true,
+        id: parseInt(req.params.jobID, 10),
+      },
+    });
+    res.send(jobInfo);
+  } catch (error) {
+    res.sendStatus(400);
   }
+}
 
 }

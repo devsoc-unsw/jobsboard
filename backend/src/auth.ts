@@ -93,7 +93,11 @@ export default class Auth {
           throw new Error("Invalid credentials");
         }
         // credentials match, so grant them a token
-        res.send({ token: JWT.create({ id: adminQuery.id }) });
+        const token: IToken = {
+          id: adminQuery.id,
+          type: AccountType.Admin,
+        };
+        res.send({ token: JWT.create(token) });
       } catch (error) {
         res.sendStatus(401);
       }

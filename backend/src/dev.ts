@@ -38,6 +38,7 @@ export async function seedDB(activeEntities: any[]) {
   job1.role = "Software Engineer and Reliability";
   job1.description = "Doing software engineer things and SRE things";
   job1.applicationLink = "https://sampleapplication.link";
+  job1.approved = true;
   job1.company = company;
   const job2 = new Job();
   job2.role = "Software Engineer";

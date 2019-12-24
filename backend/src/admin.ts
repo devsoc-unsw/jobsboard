@@ -4,32 +4,49 @@ import {
   getConnection,
   getRepository,
 } from "typeorm";
-import { AdminAccount } from "./entity/admin_account";
+import { Job } from "./entity/job";
 import Helpers from "./helpers";
-import JWT from "./jwt";
 import Logger from "./logging";
-import Secrets from "./secrets";
 
 export default class AdminFunctions {
-  public static async AuthenticateAdmin(req: Request, res: Response) {
+  public static async ApproveJobRequest(req: Request, res: Response) {
     try {
-      const msg = { username: req.body.username, password: req.body.password };
-      Helpers.requireParameters(msg.username);
-      Helpers.requireParameters(msg.password);
-      // check if account exists
-      const adminQuery = await getRepository(AdminAccount).findOneOrFail({
-        username: msg.username,
-      }).catch((error) => { throw new Error(error); });
-      try {
-        if (!Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
-          throw new Error("Invalid credentials");
-        }
-        // credentials match, so grant them a token
-        res.send({ token: JWT.create({ id: adminQuery.id }) });
-      } catch (error) {
-        res.sendStatus(401);
-      }
+      const jobID: string = req.params.jobID;
+      Helpers.requireParameters(jobID);
+      const jobQueryResult = await getRepository(Job).findOneOrFail({
+        where: {
+          approved: false,
+          hidden: false,
+          id: parseInt(jobID, 10),
+        },
+      });
+      const conn: Connection = await getConnection();
+      jobQueryResult.approved = true;
+      await conn.manager.save(jobQueryResult);
+      res.sendStatus(200);
     } catch (error) {
+      Logger.Error(error);
+      res.sendStatus(400);
+    }
+  }
+
+  public static async RejectJobRequest(req: Request, res: Response) {
+    try {
+      const jobID: string = req.params.jobID;
+      Helpers.requireParameters(jobID);
+      const jobQueryResult = await getRepository(Job).findOneOrFail({
+        where: {
+          approved: false,
+          hidden: false,
+          id: parseInt(jobID, 10),
+        },
+      });
+      const conn: Connection = await getConnection();
+      jobQueryResult.hidden = true;
+      await conn.manager.save(jobQueryResult);
+      res.sendStatus(200);
+    } catch (error) {
+      Logger.Error(error);
       res.sendStatus(400);
     }
   }

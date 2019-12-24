@@ -13,10 +13,20 @@ export class Job {
   public description: string;
 
   @Column({
-    default: ""
+    default: "",
   })
   public applicationLink: string;
 
-  @ManyToOne((type) => Company, (company) => company.jobs)
+  @Column({
+    default: false,
+  })
+  public approved: boolean;
+
+  @Column({
+    default: false,
+  })
+  public hidden: boolean;
+
+  @ManyToOne((_) => Company, (company) => company.jobs)
   public company: Company;
 }
