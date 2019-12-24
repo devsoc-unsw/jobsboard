@@ -83,7 +83,6 @@ export default class CompanyFunctions {
       await conn.manager.save(newCompanyAccount);
       res.sendStatus(200);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }
@@ -115,7 +114,6 @@ export default class CompanyFunctions {
       await conn.manager.save(newJob);
       res.sendStatus(200);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }
