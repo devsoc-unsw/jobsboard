@@ -54,8 +54,11 @@ export default class AdminFunctions {
   public static async GetPendingJobs(_: Request, res: Response) {
     try {
       const pendingJobQuery = await getRepository(Job).find({
-        approved: false,
-        hidden: false,
+        relations: ["company"],
+        where: {
+          approved: false,
+          hidden: false,
+        },
       });
       res.send(pendingJobQuery);
     } catch (error) {

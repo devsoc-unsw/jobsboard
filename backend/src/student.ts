@@ -24,6 +24,7 @@ export default class StudentFunctions {
         newJob.company = job.company;
         newJob.description = job.description;
         newJob.role = job.role;
+        newJob.id = job.id;
         return newJob;
       });
       res.send(fixedJobs);

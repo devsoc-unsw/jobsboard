@@ -23,7 +23,7 @@ import LeftHalfPageTemplate from "../components/LeftHalfPageTemplate.vue";
   },
 })
 
-export default class CompanyAccountHome extends Vue {
+export default class AdminAccountHome extends Vue {
   private mounted() {
     // determine whether there is an API key present and redirect if not present
     if (this.$store.state.apiToken === undefined) {
