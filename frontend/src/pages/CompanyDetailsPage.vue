@@ -81,7 +81,7 @@ export default Vue.extend({
     if (companyResponse.ok) {
       const msg = await companyResponse.json();
       this.company = msg.name;
-      this.description = "TODO: Missing description!"; // msg.description;
+      this.description = msg.description;
       this.location = msg.location;
     } else {
       this.error = true;
