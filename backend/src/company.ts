@@ -28,12 +28,12 @@ export default class CompanyFunctions {
       const jobsForCompany = await getRepository(Company).find({
         relations: ["jobs"],
         where: {
-          approved: true,
-          hidden: false,
           id: parseInt(req.params.companyID, 10),
         },
       });
-      res.send(jobsForCompany[0].jobs);
+      // filter out any jobs that are not approved or are hidden
+      const fixedCompanyJobs = jobsForCompany[0].jobs.filter( (job) => job.approved && !job.hidden);
+      res.send(fixedCompanyJobs);
     } catch (error) {
       res.sendStatus(400);
     }
