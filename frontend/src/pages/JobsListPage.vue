@@ -73,7 +73,6 @@ export default Vue.extend({
 
     if (response.ok) {
       const msg = await response.json();
-      console.log(msg);
       this.jobs = msg;
     } else {
       this.error = true;
