@@ -14,6 +14,7 @@ const SingleJobPage = () => import("@/pages/SingleJobPage.vue");
 const CompanyAccountHome = () => import("@/pages/CompanyAccountHome.vue");
 const CompanyDetailsPage = () => import("@/pages/CompanyDetailsPage.vue");
 const CompanyAddJob = () => import("@/pages/CompanyAddJob.vue");
+const AdminLoginPage = () => import("@/pages/AdminLoginPage.vue");
 
 export default new Router({
   mode: "history",
@@ -24,6 +25,9 @@ export default new Router({
   }, {
     path: "/login/company",
     component: CompanyLoginPage,
+  }, {
+    path: "/login/admin",
+    component: AdminLoginPage,
   }, {
     path: "/signup/company",
     component: CompanySignupPage,
