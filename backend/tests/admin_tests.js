@@ -36,9 +36,9 @@ describe("admin", () => {
       function (done) {
         server
         .patch(`/job/${this.jobID}/approve`)
-        .expect(403)
+        .expect(401)
         .end( function(_, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -48,9 +48,9 @@ describe("admin", () => {
         server
         .patch(`/job/${this.jobID}/approve`)
         .set('Authorization', this.companyToken)
-        .expect(403)
+        .expect(401)
         .end( function(_, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -60,9 +60,9 @@ describe("admin", () => {
         server
         .patch(`/job/${this.jobID}/approve`)
         .set('Authorization', this.studentToken)
-        .expect(403)
+        .expect(401)
         .end( function(_, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -71,9 +71,9 @@ describe("admin", () => {
       function (done) {
         server
         .patch(`/job/${this.jobID}/reject`)
-        .expect(403)
+        .expect(401)
         .end( function(_, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -83,9 +83,9 @@ describe("admin", () => {
         server
         .patch(`/job/${this.jobID}/reject`)
         .set('Authorization', this.companyToken)
-        .expect(403)
+        .expect(401)
         .end( function(_, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -95,9 +95,9 @@ describe("admin", () => {
         server
         .patch(`/job/${this.jobID}/reject`)
         .set('Authorization', this.studentToken)
-        .expect(403)
+        .expect(401)
         .end( function(_, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -105,6 +105,11 @@ describe("admin", () => {
 
   describe("managing job requests", () => {
     before( async function() {
+      // login as a sutdent
+      this.studentToken = await server
+                    .post("/authenticate/student")
+                    .send({ zID: "literally", password: "anything" })
+                    .then(response => response.body.token);
       // login as a company
       this.companyToken = await server
                     .post("/authenticate/company")
@@ -251,6 +256,51 @@ describe("admin", () => {
           done();
         });
       });
+    describe("listing pending jobs", () => {
+      it("fail to get pending jobs while unauthenticated",
+        function (done) {
+          server
+          .get(`/jobs/pending`)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+        });
+      it("fail to get pending jobs while authenticated as a student",
+        function (done) {
+          server
+          .get(`/jobs/pending`)
+          .set('Authorization', this.studentToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+        });
+      it("fail to get pending jobs while authenticated as a company",
+        function (done) {
+          server
+          .get(`/jobs/pending`)
+          .set('Authorization', this.companyToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+        });
+      it("succeeds getting pending jobs while authenticated as an admin",
+        function (done) {
+          server
+          .get(`/jobs/pending`)
+          .set('Authorization', this.adminToken)
+          .expect(200)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            done();
+          });
+        });
+    });
   });
 
 });

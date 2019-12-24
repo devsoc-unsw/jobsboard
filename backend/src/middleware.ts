@@ -26,7 +26,7 @@ export default class Middleware {
       next();
     } catch (error) {
       // if there are any errors, send a forbidden
-      res.sendStatus(403);
+      res.sendStatus(401);
     }
   }
 
@@ -42,7 +42,7 @@ export default class Middleware {
       next();
     } catch (error) {
       // if there are any errors, send a forbidden
-      res.sendStatus(403);
+      res.sendStatus(401);
     }
   }
 
@@ -58,7 +58,7 @@ export default class Middleware {
       next();
     } catch (error) {
       // send forbidden on any errors
-      res.sendStatus(403);
+      res.sendStatus(401);
     }
   }
 

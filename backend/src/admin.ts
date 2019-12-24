@@ -50,4 +50,17 @@ export default class AdminFunctions {
       res.sendStatus(400);
     }
   }
+
+  public static async GetPendingJobs(_: Request, res: Response) {
+    try {
+      const pendingJobQuery = await getRepository(Job).find({
+        approved: false,
+        hidden: false,
+      });
+      res.send(pendingJobQuery);
+    } catch (error) {
+      Logger.Error(error);
+      res.sendStatus(400);
+    }
+  }
 }

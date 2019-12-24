@@ -13,9 +13,9 @@ describe("company", () => {
       function (done) {
         server
         .get("/company/1")
-        .expect(403)
+        .expect(401)
         .end( function(err, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -23,9 +23,9 @@ describe("company", () => {
       function (done) {
         server
         .get("/company/undefined")
-        .expect(403)
+        .expect(401)
         .end( function(err, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -33,9 +33,9 @@ describe("company", () => {
       function (done) {
         server
         .get("/company/1")
-        .expect(403)
+        .expect(401)
         .end( function(err, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -43,9 +43,9 @@ describe("company", () => {
         function (done) {
           server
           .get("/company/undefined/jobs")
-          .expect(403)
+          .expect(401)
           .end( function(err, res) {
-            expect(res.status).to.equal(403);
+            expect(res.status).to.equal(401);
             done();
           });
         });
@@ -53,9 +53,9 @@ describe("company", () => {
         function (done) {
           server
           .get("/company/1/jobs")
-          .expect(403)
+          .expect(401)
           .end( function(err, res) {
-            expect(res.status).to.equal(403);
+            expect(res.status).to.equal(401);
             done();
           });
         });
@@ -83,9 +83,9 @@ describe("company", () => {
         server
         .get("/company/1")
         .set('Authorization', "dummy token")
-        .expect(403)
+        .expect(401)
         .end( function (err, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
@@ -94,9 +94,9 @@ describe("company", () => {
         server
         .get("/company/1/jobs")
         .set('Authorization', "dummy token")
-        .expect(403)
+        .expect(401)
         .end( function (err, res) {
-          expect(res.status).to.equal(403);
+          expect(res.status).to.equal(401);
           done();
         });
       });
