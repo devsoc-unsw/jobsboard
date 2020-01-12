@@ -13,9 +13,9 @@ describe("job", () => {
       function (done) {
         server
           .get("/jobs")
-          .expect(403)
+          .expect(401)
           .end( function(_, res) {
-            expect(res.status).to.equal(403);
+            expect(res.status).to.equal(401);
             done();
           });
       });
@@ -23,9 +23,9 @@ describe("job", () => {
       function (done) {
         server
           .get("/job/1")
-          .expect(403)
+          .expect(401)
           .end( function(_, res) {
-            expect(res.status).to.equal(403);
+            expect(res.status).to.equal(401);
             done();
           });
       });
@@ -33,9 +33,9 @@ describe("job", () => {
       function (done) {
         server
           .get("/job/undefined")
-          .expect(403)
+          .expect(401)
           .end( function(_, res) {
-            expect(res.status).to.equal(403);
+            expect(res.status).to.equal(401);
             done();
           });
       });
@@ -76,9 +76,9 @@ describe("job", () => {
         server
           .get("/jobs")
           .set('Authorization', "dummy token")
-          .expect(403)
+          .expect(401)
           .end( function (_, res) {
-            expect(res.status).to.equal(403);
+            expect(res.status).to.equal(401);
             done();
           });
       });

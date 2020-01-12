@@ -1,0 +1,85 @@
+<template>
+  <LeftHalfPageTemplate>
+    <div>
+      <h1>Admin Login</h1>
+      <div v-if="error">
+        <br/>
+        <ErrorBox>
+          {{ errorMsg }}
+        </ErrorBox>
+      </div>
+      <br/>
+      <input 
+        name="username"
+        v-model="username"
+        type="text"
+        placeholder="username" 
+        @keyup.enter="performAdminLogin()"
+      />
+      <br/>
+      <input 
+        name="password"
+        v-model="password"
+        type="password"
+        placeholder="password"
+        @keyup.enter="performAdminLogin()"
+      />
+    </div>
+  </LeftHalfPageTemplate>
+</template>
+
+<script lang="ts">
+// libs
+import { Component, Vue } from "vue-property-decorator";
+
+// components
+import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import ErrorBox from "@/components/ErrorBox.vue";
+
+// config
+import config from "@/config/config";
+
+export default Vue.extend({
+  name: "LoginPage",
+  components: {
+    LeftHalfPageTemplate,
+    ErrorBox,
+  },
+  data() {
+    return {
+      username: "",
+      password: "",
+      error: false,
+      errorMsg: "",
+    };
+  },
+  methods: {
+    async performAdminLogin() {
+      const response = await fetch(`${config.apiRoot}/authenticate/admin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // mode: "no-cors",
+        body: JSON.stringify({
+          username: this.username,
+          password: this.password,
+        }),
+      });
+
+      if (response.ok) {
+        const msg = await response.json();
+        this.error = false;
+        this.$store.dispatch("setApiToken", msg.token);
+        this.$router.push("/admin/home");
+      } else {
+        this.error = true;
+        this.errorMsg = "Invalid credentials. Please try again.";
+      }
+    },
+  },
+});
+</script>
+
+<style scoped lang="scss">
+</style>

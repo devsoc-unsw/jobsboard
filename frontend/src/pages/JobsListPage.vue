@@ -30,9 +30,10 @@
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import LoggedInTemplate from "../components/LoggedInTemplate.vue";
-import JobListingMinimal from "../components/JobListingMinimal.vue";
-import ErrorBox from "../components/ErrorBox.vue";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import JobListingMinimal from "@/components/JobListingMinimal.vue";
+import ErrorBox from "@/components/ErrorBox.vue";
+import config from "@/config/config";
 
 export default Vue.extend({
   name: "JobsListPage",
@@ -54,7 +55,7 @@ export default Vue.extend({
       return this.$store.state.apiToken;
     },
   },
-  mounted() {
+  async mounted() {
     // determine whether there is an API key present and redirect if not present
     if (this.$store.state.apiToken === undefined) {
       this.$router.push("/login");
@@ -62,21 +63,21 @@ export default Vue.extend({
     }
 
     // load the jobs using the api token
-    fetch("http://localhost:8080/jobs", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.$store.state.apiToken,
-      },
-    })
-      .then((response: any) => response.json())
-      .then((response: any) => {
-        this.jobs = response;
-      })
-      .catch((response) => {
-        this.error = true;
-        this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+    const response = await fetch(`${config.apiRoot}/jobs`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.$store.state.apiToken,
+        },
       });
+
+    if (response.ok) {
+      const msg = await response.json();
+      this.jobs = msg;
+    } else {
+      this.error = true;
+      this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+    }
   },
 });
 </script>

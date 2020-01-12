@@ -14,6 +14,7 @@
           {{ company }}
         </div>
       </div>
+      <slot />
     </div>
   </div>
 </template>
@@ -21,21 +22,28 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-@Component({
-  components: {
+export default Vue.extend({
+  name: "JobsList",
+  components: {},
+  props: {
+    role: String,
+    company: String,
+    description: String,
+    jobID: Number,
+    actAsLink: {
+      type: Boolean,
+      default: true,
+    },
   },
-})
+  methods: {
+    seeJob() {
+      if (this.actAsLink) {
+        this.$router.push({ path: "/job", query: { job: String(this.jobID) } });
+      }
+    },
+  },
+});
 
-export default class JobsList extends Vue {
-  @Prop() private role!: string;
-  @Prop() private company!: string;
-  @Prop() private description!: string;
-  @Prop() private jobID!: number;
-
-  public seeJob() {
-    this.$router.push({ path: "/job", query: { job: String(this.jobID) } });
-  }
-}
 </script>
 
 <style scoped lang="scss">

@@ -8,14 +8,7 @@ import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import Helpers from "./helpers";
-import JWT from "./jwt";
-import Logger from "./logging";
 import Secrets from "./secrets";
-
-import {
-  AccountType,
-  IToken,
-} from "./auth";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: Request, res: Response) {
@@ -36,9 +29,11 @@ export default class CompanyFunctions {
         relations: ["jobs"],
         where: {
           id: parseInt(req.params.companyID, 10),
-        }
+        },
       });
-      res.send(jobsForCompany[0].jobs);
+      // filter out any jobs that are not approved or are hidden
+      const fixedCompanyJobs = jobsForCompany[0].jobs.filter( (job) => job.approved && !job.hidden);
+      res.send(fixedCompanyJobs);
     } catch (error) {
       res.sendStatus(400);
     }
@@ -83,7 +78,6 @@ export default class CompanyFunctions {
       await conn.manager.save(newCompanyAccount);
       res.sendStatus(200);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }
@@ -113,9 +107,8 @@ export default class CompanyFunctions {
       }).catch((error) => { throw new Error(error); });
       newJob.company = companyQuery;
       await conn.manager.save(newJob);
-      res.sendStatus(200);
+      res.send({ id: newJob.id });
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }

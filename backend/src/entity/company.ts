@@ -12,7 +12,13 @@ export class Company {
   @Column({ length: 255 })
   public location: string;
 
-  @OneToMany((type) => Job, (job) => job.company, {
+  @Column({
+    default: "No company description",
+    length: 4096,
+  })
+  public description: string;
+
+  @OneToMany((_) => Job, (job) => job.company, {
     cascade: true,
     onDelete: "CASCADE",
   })

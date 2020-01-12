@@ -309,6 +309,51 @@ app.put("/jobs", Middleware.authenticateCompanyMiddleware, CompanyFunctions.Crea
  */
 app.post("/authenticate/admin", Auth.AuthenticateAdmin);
 
+/**
+ *  @swagger
+ *  /job/:jobID/approve:
+ *    patch:
+ *      description: Approve a job request as the admin
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: Missing parameters or invalid credentials
+ */
+app.patch("/job/:jobID/approve", Middleware.authenticateAdminMiddleware, AdminFunctions.ApproveJobRequest);
+
+/**
+ *  @swagger
+ *  /job/:jobID/approve:
+ *    patch:
+ *      description: Approve a job request as the admin
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: Missing parameters or invalid credentials
+ */
+app.patch("/job/:jobID/reject", Middleware.authenticateAdminMiddleware, AdminFunctions.RejectJobRequest);
+
+/**
+ *  @swagger
+ *  /jobs/pending:
+ *    post:
+ *      description: List all pending (un-approved or un-rejected) job posts
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ *      400:
+ *        description: Missing parameters or invalid credentials
+ */
+app.get("/jobs/pending", Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingJobs);
+
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(port, async () => {

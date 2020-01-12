@@ -172,9 +172,9 @@ describe("authentication", () => {
                   role: "some generic SWE role",
                   description: "just doing some cool SWE things"
                 })
-                .expect(403)
+                .expect(401)
                 .end( function (_, res) {
-                  expect(res.status).to.equal(403);
+                  expect(res.status).to.equal(401);
                   done();
                 });
         });
