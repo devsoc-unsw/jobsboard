@@ -80,7 +80,7 @@ const options: ConnectionOptions = {
   //   logging: true,
   migrations: [
   ],
-  password: process.env.MYSQL_PASSWD,
+  password: process.env.MYSQL_PASSWORD,
   port: 3306,
   subscribers: [
   ],

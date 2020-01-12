@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  db:
+    image: "mysql/mysql-server:latest"
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: example
+      MYSQL_USER: example
+      MYSQL_PASSWORD: example
+
+  api:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8080:8080"
+    expose:
+      - 8080
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/MYSQL_ROOT_PASSWORD
+  mysql_database:
+    file: ./secrets/MYSQL_DATABASE
+  mysql_user:
+    file: ./secrets/MYSQL_USER
+  mysql_password:
+    file: ./secrets/MYSQL_PASSWORD
+  server_port:
+    file: ./secrets/SERVER_PORT
+  database_host:
+    file: ./secrets/DATABASE_HOST
+  node_env:
+    file: ./secrets/NODE_ENV
