@@ -65,7 +65,7 @@ secretsDir = "secrets"
 if not os.path.isdir(f'./{secretsDir}'):
     os.mkdir(f'./{secretsDir}')
 
-print("Adding these secrets to docker secrets...")
+print("Writing these secrets to the filesystem...", end="")
 for secretName, secretValue in secrets.items():
     with open(f"./{secretsDir}/{secretName}", "w") as secretsFile:
         secretsFile.write(secretValue);
