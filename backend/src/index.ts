@@ -8,18 +8,13 @@ import swaggerUi from "swagger-ui-express";
 
 import "reflect-metadata";
 import {
-  Connection,
   ConnectionOptions,
   createConnection,
-  getConnection,
-  getRepository,
 } from "typeorm";
 
 // custom libraries
 import Auth from "./auth";
 import { seedDB } from "./dev";
-import Helpers from "./helpers";
-import JWT from "./jwt";
 import Logger from "./logging";
 
 // endpoint implementations
@@ -37,12 +32,11 @@ import { Student } from "./entity/student";
 // custom middleware
 import Middleware from "./middleware";
 
-dotenv.config();
+dotenv.config({ path: '../.env' });
 Logger.Init();
 
 const app = express();
 const port = process.env.SERVER_PORT;
-const API_URL = "http://localhost";
 app.use(bodyParser.json());
 app.use(Middleware.genericLoggingMiddleware);
 // app.options("*", cors());
@@ -74,19 +68,14 @@ const swaggerjsdocOptions: any = {
 const specs = swaggerJsdoc(swaggerjsdocOptions);
 
 const options: ConnectionOptions = {
-  database: process.env.MYSQL_DATABASE,
+  database: './db/prod.sqlite',
   entities: activeEntities,
-  host: process.env.DATABASE_HOST,
-  //   logging: true,
   migrations: [
   ],
-  password: process.env.MYSQL_PASSWORD,
-  port: 3306,
   subscribers: [
   ],
   synchronize: true,
-  type: "mysql",
-  username: process.env.MYSQL_USER,
+  type: "sqlite",
 };
 
 async function bootstrap() {
@@ -358,5 +347,5 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(port, async () => {
   await bootstrap();
-  Logger.Info(`Server started at ${API_URL}:${port}`);
+  Logger.Info(`Server started at ${port}`);
 });

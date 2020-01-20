@@ -2,7 +2,7 @@
 node_modules
 
 # ignore dotenv
-.env
+*.env
 
 # ignore compiled javascript code
 dist

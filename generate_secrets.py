@@ -10,6 +10,7 @@ class Config:
     backendPort = "8080"
     # name of the container
     databaseHost = "db"
+    host = "0.0.0.0"
 
 def generateRandomHash():
     leftBound, rightBound = (0, 999)
@@ -25,42 +26,36 @@ def generateKeyPairString(key, joiner, value):
 def runShellCommand(cmd: str):
     return subprocess.run([cmd], shell=True, stdout=subprocess.PIPE).stdout.decode().rstrip()
 
+mysql_username = generateRandomHash()
+mysql_username_middle_index = int(len(mysql_username) // 4)
+mysql_username = mysql_username[:mysql_username_middle_index]
+# mysql_username = "random_user_name@%"
+
 secrets = {
-    'MYSQL_ROOT_PASSWORD': generateRandomHash(),
-    'MYSQL_DATABASE': generateRandomHash(),
-    'MYSQL_USER': generateRandomHash(),
-    'MYSQL_PASSWORD': generateRandomHash(),
     'SERVER_PORT': Config.backendPort,
-    'DATABASE_HOST': Config.databaseHost,
     'NODE_ENV': Config.nodeEnv,
+    # 'MYSQL_HOST': Config.host,
 }
 
 '''
 with open('secrets', 'w') as secretsFile:
     fields = [
-        'MYSQL_ROOT_PASSWORD',
-        'MYSQL_DATABASE',
-        'MYSQL_USER',
-        'MYSQL_PASSWORD',
     ]
     for field in fields:
         secretsFile.write(generateKeyPairString(field, ': ', secrets[field]))
         secretsFile.write('\n')
 '''
 
-with open('backend/.env', 'w') as backendEnvFile:
+with open('.env', 'w') as backendEnvFile:
     fields = [
         'NODE_ENV',
         'SERVER_PORT',
-        'MYSQL_DATABASE',
-        'DATABASE_HOST',
-        'MYSQL_USER',
-        'MYSQL_PASSWORD',
     ]
     for field in fields:
         backendEnvFile.write(generateKeyPairString(field, '=', secrets[field]))
         backendEnvFile.write('\n')
 
+'''
 secretsDir = "secrets"
 if not os.path.isdir(f'./{secretsDir}'):
     os.mkdir(f'./{secretsDir}')
@@ -70,3 +65,4 @@ for secretName, secretValue in secrets.items():
     with open(f"./{secretsDir}/{secretName}", "w") as secretsFile:
         secretsFile.write(secretValue);
 print("Done.")
+'''
