@@ -21,6 +21,7 @@ import Logger from "./logging";
 import AdminFunctions from "./admin";
 import CompanyFunctions from "./company";
 import StudentFunctions from "./student";
+import MailFunctions from "./mail";
 
 // custom entities
 import { AdminAccount } from "./entity/admin_account";
@@ -40,7 +41,6 @@ const port = process.env.SERVER_PORT;
 app.use(bodyParser.json());
 app.use(Middleware.genericLoggingMiddleware);
 // app.options("*", cors());
-// app.use(bodyParser.urlencoded());
 if (process.env.NODE_ENV === "development") {
   app.use(cors());
 }
@@ -342,6 +342,25 @@ app.patch("/job/:jobID/reject", Middleware.authenticateAdminMiddleware, AdminFun
  *        description: Missing parameters or invalid credentials
  */
 app.get("/jobs/pending", Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingJobs);
+
+/**
+ *  @swagger
+ *  /email:
+ *    post:
+ *      description: TESTING send a plain text email to some specific receivers
+ *      parameters:
+ *        - name: content
+ *          description: plain text content of the main 
+ *          type: string
+ *          required: true
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: Something goings wrong while sending the email 
+ */
+
+app.post("/email", MailFunctions.SendTestEmail);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
