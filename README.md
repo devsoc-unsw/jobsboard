@@ -1,30 +1,25 @@
-# Set up
+# Build
 
-1. Start MySQL server, create a database
-2. Go to backend folder, create a .env file
+Now uses `docker-compose` and `docker`, meaning you need to run:
 
-    ``` shell
-    SERVER_PORT=8080
-    NODE_ENV=development
-    MYSQL_DATABASE=YOUR_DB_NAME
-    DATABASE_HOST=localhost
-    MYSQL_PASSWD=YOUR_PASSWORD
-    MYSQL_USER=YOUR_USERNAME
-    ```
+```
+docker-compose build
+```
 
-3. Run backend server
+to build the backend and frontend images.
 
-    ``` shell
-    yarn install
-    yarn build
-    yarn serve
-    ```
+# Run (and build the frontend)
 
-4. Run client
+Use `docker-compose` to run the backend and build the frontend, which gets placed into `/frontend/dist`:
 
-    ``` shell
-    yarn install
-    yarn serve
-    ```
+```
+docker-compose up
+```
+
+# Stop
+
+```
+docker-compose down
+```
 
 [API docs](http://localhost:8080/docs/)
