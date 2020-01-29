@@ -9,9 +9,9 @@ import {
 } from "./auth";
 
 export default class Middleware {
-  public static genericLoggingMiddleware(req: Request, _: Response, next: NextFunction): void {
-    Logger.Info(req.path);
+  public static genericLoggingMiddleware(req: Request, resp: Response, next: NextFunction): void {
     next();
+    Logger.Info(`${resp.statusCode} - ${req.path}`);
   }
 
   public static authenticateStudentMiddleware(req: any, res: Response, next: NextFunction) {

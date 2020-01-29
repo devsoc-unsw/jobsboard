@@ -25,7 +25,6 @@ export default class AdminFunctions {
       await conn.manager.save(jobQueryResult);
       res.sendStatus(200);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }
@@ -46,7 +45,6 @@ export default class AdminFunctions {
       await conn.manager.save(jobQueryResult);
       res.sendStatus(200);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }
@@ -62,7 +60,6 @@ export default class AdminFunctions {
       });
       res.send(pendingJobQuery);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }
