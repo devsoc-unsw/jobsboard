@@ -10,4 +10,9 @@ services:
       - "8080:8080"
     expose:
       - 8080
-
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    volumes:
+      - ./frontend:/app
