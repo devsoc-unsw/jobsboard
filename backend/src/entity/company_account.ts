@@ -1,5 +1,5 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Company} from "./company";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Company } from "./company";
 
 @Entity()
 export class CompanyAccount {
@@ -17,4 +17,10 @@ export class CompanyAccount {
     onDelete: "CASCADE",
   })
   public company: Company;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

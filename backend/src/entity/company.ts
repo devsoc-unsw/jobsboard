@@ -1,5 +1,5 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Job} from "./job";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Job } from "./job";
 
 @Entity()
 export class Company {
@@ -23,4 +23,10 @@ export class Company {
     onDelete: "CASCADE",
   })
   public jobs: Job[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

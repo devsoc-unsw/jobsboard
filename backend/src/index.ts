@@ -29,6 +29,7 @@ import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import { Student } from "./entity/student";
+import { MailRequest } from "./entity/mail_request";
 
 // custom middleware
 import Middleware from "./middleware";
@@ -51,6 +52,7 @@ const activeEntities = [
   Job,
   Student,
   AdminAccount,
+  MailRequest,
 ];
 
 // swagger api generator based on jsdoc
@@ -343,28 +345,15 @@ app.patch("/job/:jobID/reject", Middleware.authenticateAdminMiddleware, AdminFun
  */
 app.get("/jobs/pending", Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingJobs);
 
-/**
- *  @swagger
- *  /email:
- *    post:
- *      description: TESTING send a plain text email to some specific receivers
- *      parameters:
- *        - name: content
- *          description: plain text content of the main 
- *          type: string
- *          required: true
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Something goings wrong while sending the email 
- */
-
-app.post("/email", MailFunctions.SendTestEmail);
-
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
+if (process.env.NODE_ENV === "development") {
+  app.post("/email", MailFunctions.SendTestEmail);
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
+}
 
 app.listen(port, async () => {
-  await bootstrap();
+  if (process.env.NODE_ENV === "development") {
+    await bootstrap();
+  }
+  MailFunctions.InitMailQueueScheduler(500);
   Logger.Info(`Server started at ${port}`);
 });

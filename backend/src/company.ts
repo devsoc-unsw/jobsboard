@@ -53,7 +53,7 @@ export default class CompanyFunctions {
       Helpers.requireParameters(msg.name);
       Helpers.requireParameters(msg.location);
       // check if the company account exists with the same name
-      const conn: Connection = await getConnection();
+      const conn: Connection = getConnection();
       // using the original typeorm OR convention fails to construct a suitable MySQL
       // query, so we have to do this in two separate queries
       const companyAccountUsernameSearchResult = await getRepository(CompanyAccount).find({
