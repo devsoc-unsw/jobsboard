@@ -12,7 +12,7 @@ export class CompanyAccount {
   @Column()
   public hash: string;
 
-  @OneToOne((type) => Company, {
+  @OneToOne((_) => Company, company => company.companyAccount, {
     cascade: true,
     onDelete: "CASCADE",
   })

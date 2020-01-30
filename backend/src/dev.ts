@@ -18,7 +18,7 @@ export async function seedDB(activeEntities: any[]) {
     Logger.Info("Clearing all tables.");
     await getConnection().synchronize(true);
   }
-  const conn: Connection = await getConnection();
+  const conn: Connection = getConnection();
 
   // create dummy admina ccount
   const adminAccount = new AdminAccount();

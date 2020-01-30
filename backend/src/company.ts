@@ -9,15 +9,18 @@ import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import Helpers from "./helpers";
 import Secrets from "./secrets";
+import MailFunctions from "./mail";
+import Logger from "./logging";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: Request, res: Response) {
     try {
-      const companyInfo = await getRepository(Company).find({id: parseInt(req.params.companyID, 10)});
-      if (companyInfo.length !== 1) {
-        throw new Error("Cannot find the requested company.");
-      }
-      res.send(companyInfo[0]);
+      const companyInfo = await getRepository(Company).findOneOrFail({
+        where: {
+          id: parseInt(req.params.companyID, 10)
+        },
+      });
+      res.send(companyInfo);
     } catch (error) {
       res.sendStatus(400);
     }
@@ -25,14 +28,14 @@ export default class CompanyFunctions {
 
   public static async GetJobsFromCompany(req: Request, res: Response) {
     try {
-      const jobsForCompany = await getRepository(Company).find({
-        relations: ["jobs"],
+      const companyAccountQuery = await getRepository(CompanyAccount).findOneOrFail({
+        relations: ["company", "company.jobs"],
         where: {
           id: parseInt(req.params.companyID, 10),
         },
       });
       // filter out any jobs that are not approved or are hidden
-      const fixedCompanyJobs = jobsForCompany[0].jobs.filter( (job) => job.approved && !job.hidden);
+      const fixedCompanyJobs = companyAccountQuery.company.jobs.filter( (job) => job.approved && !job.hidden);
       res.send(fixedCompanyJobs);
     } catch (error) {
       res.sendStatus(400);
@@ -75,7 +78,21 @@ export default class CompanyFunctions {
       newCompanyAccount.username = msg.username;
       newCompanyAccount.hash = Secrets.hash(msg.password);
       newCompanyAccount.company = newCompany;
+      newCompany.companyAccount = newCompanyAccount;
       await conn.manager.save(newCompanyAccount);
+      MailFunctions.AddMailToQueue(
+        newCompanyAccount.username,
+        "Thank you for adding your company to the CSESoc Jobs Board",
+        `
+Thank you for registering your company with the CSESoc Jobs Board. We really appreciate your time and are looking forward to working with you to share amazing opportunities with our students.
+<br>
+Please contact our executive committee at <a href="mailto:info@csesoc.org.au">info@csesoc.org.au</a> to verify your company account.
+<br>
+Best regards,
+Adam Tizzone
+CSESoc Jobs Board Administrator
+        `,
+      );
       res.sendStatus(200);
     } catch (error) {
       res.sendStatus(400);
@@ -84,8 +101,9 @@ export default class CompanyFunctions {
 
   public static async CreateJob(req: any, res: Response) {
     try {
-      if (req.companyID === undefined) {
+      if (req.companyAccountID === undefined) {
         res.sendStatus(401);
+        return;
       }
       // ensure required parameters are present
       const msg = {
@@ -102,13 +120,33 @@ export default class CompanyFunctions {
       newJob.role = msg.role;
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
-      const companyQuery = await getRepository(Company).findOneOrFail({
-        id: req.companyID,
-      }).catch((error) => { throw new Error(error); });
-      newJob.company = companyQuery;
+      const companyAccountQuery = await getRepository(CompanyAccount).find({
+        id: req.companyAccountID,
+      });
+      if (companyAccountQuery.length !== 1) {
+        throw new Error(`Didn't find exactly one occurrence of an account with ID: ${req.companyAccountID}`);
+      }
+      const companyAccount = companyAccountQuery[0]
+      newJob.company = companyAccount.company;
       await conn.manager.save(newJob);
+      Logger.Info(JSON.stringify(newJob));
+      Logger.Info(JSON.stringify(companyAccountQuery));
+      MailFunctions.AddMailToQueue(
+        companyAccount.username,
+        "CSESoc Jobs Board - Job Post request submitted",
+        `
+Thank you for adding a job post to the CSESoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.
+<br>
+A result will be sent to you shortly.
+<br>
+Best regards,
+Adam Tizzone
+CSESoc Jobs Board Administrator
+        `,
+      );
       res.send({ id: newJob.id });
     } catch (error) {
+      Logger.Error(error);
       res.sendStatus(400);
     }
   }

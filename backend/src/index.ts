@@ -72,6 +72,7 @@ const specs = swaggerJsdoc(swaggerjsdocOptions);
 const options: ConnectionOptions = {
   database: './db/prod.sqlite',
   entities: activeEntities,
+  // logging: true,
   migrations: [
   ],
   subscribers: [
@@ -354,6 +355,6 @@ app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {
     await bootstrap();
   }
-  MailFunctions.InitMailQueueScheduler(500);
+  MailFunctions.InitMailQueueScheduler(5000);
   Logger.Info(`Server started at ${port}`);
 });

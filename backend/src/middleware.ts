@@ -37,7 +37,7 @@ export default class Middleware {
       // ensure the token is of the correct type
       Middleware.verifyAccountType(jwt.type, AccountType.Company);
       // add the companyID field to the request object
-      req.companyID = jwt.id;
+      req.companyAccountID = jwt.id;
       // continue
       next();
     } catch (error) {

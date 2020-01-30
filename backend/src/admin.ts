@@ -5,7 +5,9 @@ import {
   getRepository,
 } from "typeorm";
 import { Job } from "./entity/job";
+import { CompanyAccount } from "./entity/company_account";
 import Helpers from "./helpers";
+import MailFunctions from "./mail";
 import Logger from "./logging";
 
 export default class AdminFunctions {
@@ -14,17 +16,36 @@ export default class AdminFunctions {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
       const jobQueryResult = await getRepository(Job).findOneOrFail({
+        relations: ["company"],
         where: {
           approved: false,
           hidden: false,
           id: parseInt(jobID, 10),
         },
       });
-      const conn: Connection = await getConnection();
+      Logger.Error(JSON.stringify(jobQueryResult));
+      const companyAccountQuery = await getRepository(CompanyAccount).findOneOrFail({
+        relations: ["company"],
+        where: {
+          company: jobQueryResult.company,
+        },
+      });
+      const conn: Connection = getConnection();
       jobQueryResult.approved = true;
       await conn.manager.save(jobQueryResult);
+      MailFunctions.AddMailToQueue(
+        companyAccountQuery.username,
+        "CSESoc Jobs Board - Job Post request approved",
+        `
+Congratulations! You job post request titled "${jobQueryResult.role}" has been approved. UNSW CSESoc students are now able to view the posting.
+<br>
+Best regards,
+CSESoc Jobs Board Administrator
+        `,
+      );
       res.sendStatus(200);
     } catch (error) {
+      Logger.Error(error);
       res.sendStatus(400);
     }
   }
@@ -39,10 +60,27 @@ export default class AdminFunctions {
           hidden: false,
           id: parseInt(jobID, 10),
         },
+        relations: ["company"],
       });
-      const conn: Connection = await getConnection();
+      const companyAccountQuery = await getRepository(CompanyAccount).findOneOrFail({
+        where: {
+          company: jobQueryResult.company,
+        },
+        relations: ["company"],
+      }).catch((error) => { throw new Error(error); });
+      const conn: Connection = getConnection();
       jobQueryResult.hidden = true;
       await conn.manager.save(jobQueryResult);
+      MailFunctions.AddMailToQueue(
+        companyAccountQuery.username,
+        "CSESoc Jobs Board - Job Post request rejected",
+        `
+  Congratulations! You job post request titled "${jobQueryResult.role}" has been rejected as it does not follow our <a href="">job post guidelines</a>. You are more than welcome to re-submit a revised version of the job application that better follows the aforementioned guidelines.
+<br>
+Best regards,
+CSESoc Jobs Board Administrator
+        `,
+      );
       res.sendStatus(200);
     } catch (error) {
       res.sendStatus(400);

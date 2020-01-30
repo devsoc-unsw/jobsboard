@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, OneToOne, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Job } from "./job";
+import { CompanyAccount } from "./company_account";
 
 @Entity()
 export class Company {
@@ -18,11 +19,14 @@ export class Company {
   })
   public description: string;
 
-  @OneToMany((_) => Job, (job) => job.company, {
+  @OneToMany(_ => Job, job => job.company, {
     cascade: true,
     onDelete: "CASCADE",
   })
   public jobs: Job[];
+
+  @OneToOne(_ => CompanyAccount, companyAccount => companyAccount.company)
+  public companyAccount: CompanyAccount;
 
   @CreateDateColumn()
   createdAt: Date;

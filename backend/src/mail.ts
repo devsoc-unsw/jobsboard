@@ -19,7 +19,6 @@ export default class MailFunctions {
   public static async SendTestEmail(_: Request, res: Response) {
     try {
       const mailAddingSuccessful = await MailFunctions.AddMailToQueue(
-        process.env.MAIL_USERNAME,
         "",
         "Scheduled emailing",
         `Message contents.`
@@ -28,7 +27,7 @@ export default class MailFunctions {
         Logger.Info("Successfully scheduled email request.");
       } else {
         Logger.Error("Failed to schedule email.");
-      } 
+      }
       /*
        */
       res.sendStatus(200);
@@ -79,13 +78,18 @@ export default class MailFunctions {
             createdAt: "ASC",
           }
         });
-        mailTransporter.sendMail({
-          from: process.env.MAIL_USERNAME,
-          to: mailRequest.recipient,
-          subject: mailRequest.subject,
-          text: mailRequest.content,
-          html: mailRequest.content,
-        }, () => Logger.Info(`Successfully sent email id: ${mailRequest.id}.`));
+        if (process.env.NODE_ENV === "production") {
+          mailTransporter.sendMail({
+            from: mailRequest.sender,
+            to: mailRequest.recipient,
+            subject: mailRequest.subject,
+            text: mailRequest.content,
+            html: mailRequest.content,
+          }, () => Logger.Info(`Successfully sent email id: ${mailRequest.id}.`));
+        } else {
+          Logger.Info(`NODE_ENV is not production (currently ${process.env.NODE_ENV}), therefore no email will be sent. Here is the email that would have been sent:
+          ${JSON.stringify(mailRequest)}`);
+        }
         mailRequest.sent = true;
         await getRepository(MailRequest).save(mailRequest);
       } catch (error) {
@@ -96,16 +100,16 @@ export default class MailFunctions {
     }, mailSendingIntervalRate);
   }
 
-  public static async AddMailToQueue(sender: string, recipient: string, subject: string, content: string): Promise<boolean> {
+  public static async AddMailToQueue(recipient: string, subject: string, content: string): Promise<boolean> {
     try {
       // check parameters
-      Helpers.requireParameters(sender);
+      Helpers.requireParameters(process.env.MAIL_USERNAME);
       Helpers.requireParameters(recipient);
       Helpers.requireParameters(subject);
       Helpers.requireParameters(content);
       const conn: Connection = getConnection();
       const newMailRequest: MailRequest = new MailRequest();
-      newMailRequest.sender = sender;
+      newMailRequest.sender = process.env.MAIL_USERNAME;
       newMailRequest.recipient = recipient;
       newMailRequest.subject = subject;
       newMailRequest.content = content;
