@@ -57,9 +57,12 @@ export default class Auth {
       Helpers.requireParameters(msg.username);
       Helpers.requireParameters(msg.password);
       // check if account exists
-      const companyQuery = await getRepository(CompanyAccount).findOneOrFail({
-        username: msg.username,
-      }).catch((error) => { throw new Error(error); });
+      const companyQuery = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(CompanyAccount)
+        .createQueryBuilder()
+        .where("CompanyAccount.username = :username", { username: msg.username })
+        .getOne();
+      }, `Couldn't find company with username: ${msg.username}`);
       try {
         if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
           throw new Error("Invalid credentials");
@@ -85,9 +88,12 @@ export default class Auth {
       Helpers.requireParameters(msg.username);
       Helpers.requireParameters(msg.password);
       // check if account exists
-      const adminQuery = await getRepository(AdminAccount).findOneOrFail({
-        username: msg.username,
-      }).catch((error) => { throw new Error(error); });
+      const adminQuery = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(AdminAccount)
+        .createQueryBuilder()
+        .where("AdminAccount.username = :username", { username: msg.username })
+        .getOne();
+      }, `Couldn't find admin account with username: ${msg.username}`);
       try {
         if (!Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
           throw new Error("Invalid credentials");

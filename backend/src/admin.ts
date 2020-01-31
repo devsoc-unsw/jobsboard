@@ -17,50 +17,44 @@ export default class AdminFunctions {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
 
-      const jobQueryResult = await getRepository(Job)
-      .createQueryBuilder()
-      .where("job.approved = :approved", { approved: false })
-      .andWhere("job.hidden = :hidden", { hidden: false })
-      .andWhere("job.id = :id", { id: parseInt(jobID, 10) })
-      .getOne();
+      const jobToApprove = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Job)
+        .createQueryBuilder()
+        .where("Job.approved = :approved", { approved: false })
+        .andWhere("Job.hidden = :hidden", { hidden: false })
+        .andWhere("Job.id = :id", { id: parseInt(jobID, 10) })
+        .getOne();
+      }, `Couldn't find job with ID: ${jobID}`);
 
-      if (jobQueryResult === undefined) {
-        throw new Error(`Couldn't find job with ID: ${jobID}`);
-      }
+      jobToApprove.company = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getConnection()
+        .createQueryBuilder()
+        .relation(Job, "company")
+        .of(jobToApprove)
+        .loadOne();
+      }, `Error with finding company record for job ID: ${jobID}`);
 
-      jobQueryResult.company = await getConnection()
-      .createQueryBuilder()
-      .relation(Job, "company")
-      .of(jobQueryResult)
-      .loadOne();
-
-      if (jobQueryResult.company === undefined) {
-        throw new Error(`Error with finding company record for job ID: ${jobID}`);
-      }
-
-      jobQueryResult.company.companyAccount = await getConnection()
-      .createQueryBuilder()
-      .relation(Company, "companyAccount")
-      .of(jobQueryResult.company)
-      .loadOne();
-
-      if (jobQueryResult.company.companyAccount === undefined) {
-        throw new Error(`Error with finding company account record for job ID: ${jobID}`);
-      }
+      jobToApprove.company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
+        return jobToApprove.company.companyAccount = await getConnection()
+        .createQueryBuilder()
+        .relation(Company, "companyAccount")
+        .of(jobToApprove.company)
+        .loadOne();
+      }, `Error with finding company account record for job ID: ${jobID}`);
 
       const conn: Connection = getConnection();
 
       await conn.createQueryBuilder()
       .update(Job)
       .set({ approved: true })
-      .where("id = :id", { id: jobQueryResult.id })
+      .where("id = :id", { id: jobToApprove.id })
       .execute();
 
       MailFunctions.AddMailToQueue(
-        jobQueryResult.company.companyAccount.username,
+        jobToApprove.company.companyAccount.username,
         "CSESoc Jobs Board - Job Post request approved",
         `
-        Congratulations! You job post request titled "${jobQueryResult.role}" has been approved. UNSW CSESoc students are now able to view the posting.
+        Congratulations! You job post request titled "${jobToApprove.role}" has been approved. UNSW CSESoc students are now able to view the posting.
           <br>
         Best regards,
         CSESoc Jobs Board Administrator
@@ -79,49 +73,42 @@ export default class AdminFunctions {
       Helpers.requireParameters(jobID);
 
       const conn: Connection = getConnection();
+      const jobToReject = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Job)
+        .createQueryBuilder()
+        .where("job.approved = :approved", { approved: false })
+        .andWhere("job.hidden = :hidden", { hidden: false })
+        .andWhere("job.id = :id", { id: parseInt(jobID, 10) })
+        .getOne();
+      }, `Couldn't find job with ID: ${jobID}`);
 
-      const jobQueryResult = await getRepository(Job)
-      .createQueryBuilder()
-      .where("job.approved = :approved", { approved: false })
-      .andWhere("job.hidden = :hidden", { hidden: false })
-      .andWhere("job.id = :id", { id: parseInt(jobID, 10) })
-      .getOne();
+      jobToReject.company = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getConnection()
+        .createQueryBuilder()
+        .relation(Job, "company")
+        .of(jobToReject)
+        .loadOne();
+      }, `Error with finding company record for job ID: ${jobID}`);
 
-      if (jobQueryResult === undefined) {
-        throw new Error(`Couldn't find job with ID: ${jobID}`);
-      }
-
-      jobQueryResult.company = await getConnection()
-      .createQueryBuilder()
-      .relation(Job, "company")
-      .of(jobQueryResult)
-      .loadOne();
-
-      if (jobQueryResult.company === undefined) {
-        throw new Error(`Error with finding company record for job ID: ${jobID}`);
-      }
-
-      jobQueryResult.company.companyAccount = await getConnection()
-      .createQueryBuilder()
-      .relation(Company, "companyAccount")
-      .of(jobQueryResult.company)
-      .loadOne();
-
-      if (jobQueryResult.company.companyAccount === undefined) {
-        throw new Error(`Error with finding company account record for job ID: ${jobID}`);
-      }
+      jobToReject.company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getConnection()
+        .createQueryBuilder()
+        .relation(Company, "companyAccount")
+        .of(jobToReject.company)
+        .loadOne();
+      }, `Error with finding company account record for job ID: ${jobID}`);
 
       await conn.createQueryBuilder()
       .update(Job)
       .set({ hidden: true })
-      .where("id = :id", { id: jobQueryResult.id })
+      .where("id = :id", { id: jobToReject.id })
       .execute();
 
       MailFunctions.AddMailToQueue(
-        jobQueryResult.company.companyAccount.username,
+        jobToReject.company.companyAccount.username,
         "CSESoc Jobs Board - Job Post request rejected",
         `
-You job post request titled "${jobQueryResult.role}" has been rejected as it does not follow our <a href="">job post guidelines</a>. You are more than welcome to re-submit a revised version of the job application that better follows the aforementioned guidelines.
+You job post request titled "${jobToReject.role}" has been rejected as it does not follow our <a href="">job post guidelines</a>. You are more than welcome to re-submit a revised version of the job application that better follows the aforementioned guidelines.
           <br>
         Best regards,
         CSESoc Jobs Board Administrator
@@ -135,24 +122,26 @@ You job post request titled "${jobQueryResult.role}" has been rejected as it doe
 
   public static async GetPendingJobs(_: Request, res: Response) {
     try {
-      const pendingJobQuery = await getRepository(Job)
-        .createQueryBuilder()
-        .where("job.approved = :approved", { approved: false })
-        .andWhere("job.hidden = :hidden", { hidden: false })
-        .getMany();
+      const pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Job)
+          .createQueryBuilder()
+          .where("job.approved = :approved", { approved: false })
+          .andWhere("job.hidden = :hidden", { hidden: false })
+          .getMany();
+      }, `Couldn't find any pending job requests`);
 
       const conn: Connection = getConnection();
-      await pendingJobQuery.map( async (pendingJob) => {
+      await pendingJobs.map( async (pendingJob: Job) => {
         pendingJob.company = await conn
         .createQueryBuilder()
         .relation(Job, "company")
-        .of(pendingJobQuery)
+        .of(pendingJob)
         .loadOne();
       });
 
-      Logger.Info(JSON.stringify(pendingJobQuery));
+      Logger.Info(JSON.stringify(pendingJobs));
 
-      res.send(pendingJobQuery);
+      res.send(pendingJobs);
     } catch (error) {
       res.sendStatus(400);
     }
