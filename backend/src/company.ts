@@ -15,11 +15,12 @@ import Logger from "./logging";
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: Request, res: Response) {
     try {
-      const companyInfo = await getRepository(Company).findOneOrFail({
-        where: {
-          id: parseInt(req.params.companyID, 10)
-        },
-      });
+      const companyInfo = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Company)
+        .createQueryBuilder()
+        .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
+        .getOne();
+      }, `Company ${req.params.companyID} not found.`);
       res.send(companyInfo);
     } catch (error) {
       res.sendStatus(400);
@@ -28,14 +29,22 @@ export default class CompanyFunctions {
 
   public static async GetJobsFromCompany(req: Request, res: Response) {
     try {
-      const companyAccountQuery = await getRepository(CompanyAccount).findOneOrFail({
-        relations: ["company", "company.jobs"],
-        where: {
-          id: parseInt(req.params.companyID, 10),
-        },
-      });
+      const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Company)
+        .createQueryBuilder()
+        .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
+        .getOne();
+      }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
+
+      companyJobs.jobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getConnection()
+        .createQueryBuilder()
+        .relation(Company, "jobs")
+        .of(companyJobs)
+        .loadMany();
+      }, `Couldn't load jobs for company with ID: ${req.params.companyID}`);
       // filter out any jobs that are not approved or are hidden
-      const fixedCompanyJobs = companyAccountQuery.company.jobs.filter( (job) => job.approved && !job.hidden);
+      const fixedCompanyJobs = companyJobs.jobs.filter( (job: Job) => job.approved && !job.hidden);
       res.send(fixedCompanyJobs);
     } catch (error) {
       res.sendStatus(400);
@@ -132,17 +141,21 @@ export default class CompanyFunctions {
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
 
-      const companyAccountQuery = await getRepository(CompanyAccount)
-      .createQueryBuilder("company_account")
-      .where("company_account.id = :id", { id: req.companyAccountID })
-      .getOne();
+      const companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(CompanyAccount)
+        .createQueryBuilder("company_account")
+        .where("company_account.id = :id", { id: req.companyAccountID })
+        .getOne();
+      }, `Couldn't find company account with ID ${req.companyAccountID}`);
 
-      companyAccountQuery.company = await conn.createQueryBuilder()
-      .relation(CompanyAccount, "company")
-      .of(companyAccountQuery)
-      .loadOne();
+      companyAccount.company = await Helpers.doSuccessfullyOrFail(async () => {
+        return await conn.createQueryBuilder()
+        .relation(CompanyAccount, "company")
+        .of(companyAccount)
+        .loadOne();
+      }, `Couldn't load company for company account with ID ${req.companyAccountID}`);
 
-      newJob.company = companyAccountQuery.company;
+      newJob.company = companyAccount.company;
 
       await conn.createQueryBuilder()
       .insert()
@@ -153,7 +166,7 @@ export default class CompanyFunctions {
       .execute();
 
       MailFunctions.AddMailToQueue(
-        companyAccountQuery.username,
+        companyAccount.username,
         "CSESoc Jobs Board - Job Post request submitted",
         `
         Thank you for adding a job post to the CSESoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.

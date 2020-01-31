@@ -1,3 +1,5 @@
+import Logger from "./logging";
+
 export default class Helpers {
   public static requireParameters(result: any): void {
     // if a single required parameter is undefined, the result field should evaluate to
@@ -26,5 +28,14 @@ export default class Helpers {
     }
 
     throw new Error(`Invalid mailto or HTTP[S] application link: ${value}`);
+  }
+
+  public static async doSuccessfullyOrFail(func: Function, failMessage: string) {
+    const result = await func();
+    if (result === undefined) {
+      Logger.Error(failMessage);
+      throw new Error(failMessage);
+    }
+    return result;
   }
 }
