@@ -2,6 +2,8 @@ import "reflect-metadata";
 import {
   Connection,
   getConnection,
+  getManager,
+  EntityManager,
 } from "typeorm";
 
 import Logger from "./logging";
@@ -19,12 +21,13 @@ export async function seedDB(activeEntities: any[]) {
     await getConnection().synchronize(true);
   }
   const conn: Connection = getConnection();
+  const manager: EntityManager = getManager();
 
   // create dummy admina ccount
   const adminAccount = new AdminAccount();
   adminAccount.username = "admin";
   adminAccount.hash = Secrets.hash("admin");
-  await conn.manager.save(adminAccount);
+  await manager.save(adminAccount);
 
   // create a company account
   const companyAccount = new CompanyAccount();
@@ -61,6 +64,6 @@ export async function seedDB(activeEntities: any[]) {
     job3,
     job4,
   ];
-  await conn.manager.save(companyAccount);
+  await manager.save(companyAccount);
   Logger.Info("Finished seeding.");
 }

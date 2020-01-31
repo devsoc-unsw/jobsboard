@@ -1,4 +1,12 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  JoinColumn,
+} from "typeorm";
 import { Company } from "./company";
 
 @Entity()
@@ -16,6 +24,7 @@ export class CompanyAccount {
     cascade: true,
     onDelete: "CASCADE",
   })
+  @JoinColumn()
   public company: Company;
 
   @CreateDateColumn()

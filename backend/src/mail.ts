@@ -62,12 +62,14 @@ export default class MailFunctions {
       requireTLS: true,
     };
     const mailTransporter = nodemailer.createTransport(transportOptions);
-    mailTransporter.verify((error, _) => {
-      if (error) {
-        Logger.Error(`Mail verification unsuccessful. Reason: ${error}`);
-        throw new Error("Failed to initialise mail service.");
-      }
-    });
+    if (process.env.NODE_ENV === "production") {
+      mailTransporter.verify((error, _) => {
+        if (error) {
+          Logger.Error(`Mail verification unsuccessful. Reason: ${error}`);
+          throw new Error("Failed to initialise mail service.");
+        }
+      });
+    }
     setInterval(async () => {
       try {
         const mailRequest = await getRepository(MailRequest).findOneOrFail({

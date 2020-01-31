@@ -59,13 +59,15 @@ export default class CompanyFunctions {
       const conn: Connection = getConnection();
       // using the original typeorm OR convention fails to construct a suitable MySQL
       // query, so we have to do this in two separate queries
-      const companyAccountUsernameSearchResult = await getRepository(CompanyAccount).find({
-        username: msg.username,
-      });
-      const companyNameSearchResult = await getRepository(Company).find({
-        name: msg.name,
-      });
-      if (companyAccountUsernameSearchResult.length !== 0 || companyNameSearchResult.length !== 0) {
+      const companyAccountUsernameSearchResult = await getRepository(CompanyAccount)
+      .createQueryBuilder("company_account")
+      .where("company_account.username = :username", { username: msg.username })
+      .getOne();
+      const companyNameSearchResult = await getRepository(Company)
+      .createQueryBuilder("company")
+      .where("company.name= :name", { name: msg.name })
+      .getOne();
+      if (companyAccountUsernameSearchResult !== undefined || companyNameSearchResult !== undefined) {
         // company exists, send conflict error
         res.sendStatus(409);
         return;
@@ -79,18 +81,27 @@ export default class CompanyFunctions {
       newCompanyAccount.hash = Secrets.hash(msg.password);
       newCompanyAccount.company = newCompany;
       newCompany.companyAccount = newCompanyAccount;
-      await conn.manager.save(newCompanyAccount);
+
+      await conn.createQueryBuilder()
+      .insert()
+      .into(CompanyAccount)
+      .values([
+        newCompanyAccount,
+      ])
+      .execute();
+
+      // await conn.manager.save(newCompanyAccount);
       MailFunctions.AddMailToQueue(
         newCompanyAccount.username,
         "Thank you for adding your company to the CSESoc Jobs Board",
         `
-Thank you for registering your company with the CSESoc Jobs Board. We really appreciate your time and are looking forward to working with you to share amazing opportunities with our students.
-<br>
-Please contact our executive committee at <a href="mailto:info@csesoc.org.au">info@csesoc.org.au</a> to verify your company account.
-<br>
-Best regards,
-Adam Tizzone
-CSESoc Jobs Board Administrator
+        Thank you for registering your company with the CSESoc Jobs Board. We really appreciate your time and are looking forward to working with you to share amazing opportunities with our students.
+            <br>
+          Please contact our executive committee at <a href="mailto:info@csesoc.org.au">info@csesoc.org.au</a> to verify your company account.
+          <br>
+        Best regards,
+        Adam Tizzone
+        CSESoc Jobs Board Administrator
         `,
       );
       res.sendStatus(200);
@@ -120,28 +131,38 @@ CSESoc Jobs Board Administrator
       newJob.role = msg.role;
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
-      const companyAccountQuery = await getRepository(CompanyAccount).find({
-        id: req.companyAccountID,
-      });
-      if (companyAccountQuery.length !== 1) {
-        throw new Error(`Didn't find exactly one occurrence of an account with ID: ${req.companyAccountID}`);
-      }
-      const companyAccount = companyAccountQuery[0]
-      newJob.company = companyAccount.company;
-      await conn.manager.save(newJob);
-      Logger.Info(JSON.stringify(newJob));
-      Logger.Info(JSON.stringify(companyAccountQuery));
+
+      const companyAccountQuery = await getRepository(CompanyAccount)
+      .createQueryBuilder("company_account")
+      .where("company_account.id = :id", { id: req.companyAccountID })
+      .getOne();
+
+      companyAccountQuery.company = await conn.createQueryBuilder()
+      .relation(CompanyAccount, "company")
+      .of(companyAccountQuery)
+      .loadOne();
+
+      newJob.company = companyAccountQuery.company;
+
+      await conn.createQueryBuilder()
+      .insert()
+      .into(Job)
+      .values([
+        newJob,
+      ])
+      .execute();
+
       MailFunctions.AddMailToQueue(
-        companyAccount.username,
+        companyAccountQuery.username,
         "CSESoc Jobs Board - Job Post request submitted",
         `
-Thank you for adding a job post to the CSESoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.
-<br>
-A result will be sent to you shortly.
-<br>
-Best regards,
-Adam Tizzone
-CSESoc Jobs Board Administrator
+        Thank you for adding a job post to the CSESoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.
+            <br>
+          A result will be sent to you shortly.
+          <br>
+        Best regards,
+        Adam Tizzone
+        CSESoc Jobs Board Administrator
         `,
       );
       res.send({ id: newJob.id });
