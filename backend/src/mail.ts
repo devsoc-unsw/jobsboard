@@ -72,14 +72,13 @@ export default class MailFunctions {
     }
     setInterval(async () => {
       try {
-        const mailRequest = await getRepository(MailRequest).findOneOrFail({
-          where: {
-            sent: false,
-          },
-          order: {
-            createdAt: "ASC",
-          }
-        });
+        const mailRequest = await Helpers.doSuccessfullyOrFail(async () => {
+          return getRepository(MailRequest)
+          .createQueryBuilder()
+          .where("MailRequest.send = :send", { send: false })
+          .orderBy("MailRequest.createdAt", "ASC")
+          .getOne();
+        }, `Couldn't find a mail request to send`);
         if (process.env.NODE_ENV === "production") {
           mailTransporter.sendMail({
             from: mailRequest.sender,
@@ -92,11 +91,13 @@ export default class MailFunctions {
           Logger.Info(`NODE_ENV is not production (currently ${process.env.NODE_ENV}), therefore no email will be sent. Here is the email that would have been sent:
           ${JSON.stringify(mailRequest)}`);
         }
-        mailRequest.sent = true;
-        await getRepository(MailRequest).save(mailRequest);
+        await getConnection().createQueryBuilder()
+        .update(MailRequest)
+        .set({ sent: true })
+        .where("id = :id", { id: mailRequest.id })
+        .execute();
       } catch (error) {
         // Couldn't find mail to send.
-        // Logger.Error(`Error finding new mail to send: ${error}`);
         return;
       }
     }, mailSendingIntervalRate);
@@ -115,7 +116,14 @@ export default class MailFunctions {
       newMailRequest.recipient = recipient;
       newMailRequest.subject = subject;
       newMailRequest.content = content;
-      await conn.manager.save(newMailRequest);
+
+      await conn.createQueryBuilder()
+      .insert()
+      .into(MailRequest)
+      .values([
+        newMailRequest,
+      ])
+      .execute();
       return true;
     } catch (error) {
       return false;
