@@ -130,7 +130,8 @@ export default Vue.extend({
 
     if (jobResponse.ok) {
       const msg = await jobResponse.json();
-      this.jobs = msg.filter((job) => parseInt(job.id, 10) !== parseInt(this.jobID, 10));
+      // TODO(ad-t): Fix below, as it will always be true
+      this.jobs = msg.filter((job: any) => job.id !== this.jobID);
     } else {
       this.error = true;
       this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
