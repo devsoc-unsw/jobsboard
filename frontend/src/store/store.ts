@@ -10,7 +10,7 @@ export default new Vuex.Store({
     apiToken: undefined,
   },
   getters: {
-    getApiToken(state) {
+    getApiToken: (state) => {
       const stateToken = state.apiToken;
       if (stateToken === undefined) {
         const sessionStorageToken = sessionStorage.getItem(config.sessionStorageApiTokenKeyName);

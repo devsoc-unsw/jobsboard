@@ -5,13 +5,13 @@
       <div class="back" @click="back">
         <font-awesome-icon icon="chevron-left" />
       </div>
-      <div class="companyLogo" @click="goToCompanyPage">
+      <div class="companyLogo">
         <font-awesome-icon icon="building" />
       </div>
       <div class="roleInfo">
         {{ role }}
       </div>
-      <div class="companyInfo" @click="goToCompanyPage">
+      <div class="companyInfo">
         {{ company }} | {{ location }}
       </div>
     </div>
@@ -37,10 +37,6 @@ export default class JobStandout extends Vue {
   public back() {
     // go back a page
     this.$router.go(-1);
-  }
-  public goToCompanyPage() {
-    // go to company details page
-    this.$router.push({ path: "/company/details", query: { companyID: String(this.companyID) } });
   }
 }
 </script>

@@ -3,7 +3,7 @@
   <div v-if="error">
     <br/>
     <ErrorBox>
-      {{ errorMsg }}
+    {{ errorMsg }}
     </ErrorBox>
   </div>
   <div v-else>
@@ -12,7 +12,7 @@
       :company="company"
       :companyID="companyID"
       :location="location"
-    />
+      />
     <div class="jobInformation">
       <h2>
         Job Description
@@ -28,6 +28,27 @@
         </button>
       </a>
     </div>
+    <div class="companyInformation">
+      <br/>
+      <h2>
+        About {{ company }}
+      </h2>
+      {{ companyDescription }}
+      <br/>
+      <br/>
+      <h2>
+        More jobs at {{ company }}
+      </h2>
+      <JobListingMinimal
+        v-for="job in jobs"
+        :key="job.key"
+        :jobID="job.id"
+        :role="job.role"
+        :company="company"
+        :description="job.description"
+        :location="job.location"
+        />
+    </div>
   </div>
   </LoggedInTemplate>
 </template>
@@ -37,6 +58,7 @@ import { Component, Vue } from "vue-property-decorator";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import JobStandout from "@/components/JobStandout.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
@@ -45,6 +67,7 @@ export default Vue.extend({
     LoggedInTemplate,
     JobStandout,
     ErrorBox,
+    JobListingMinimal,
   },
   data() {
     return {
@@ -52,16 +75,30 @@ export default Vue.extend({
       companyID: "",
       role: "",
       company: "",
+      companyDescription: "",
       description: "",
+      jobs: [],
       location: "",
       applicationLink: "",
       error: false,
       errorMsg: "",
+      apiToken: this.$store.getters.getApiToken,
     };
+  },
+  methods: {
+    getDetails(url: string) {
+      return fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.apiToken,
+        },
+      });
+    },
   },
   async mounted() {
     // determine whether there is an API key present and redirect if not present
-    if (this.$store.state.apiToken === undefined) {
+    if (this.apiToken === undefined) {
       this.$router.push("/login");
       return;
     }
@@ -71,7 +108,7 @@ export default Vue.extend({
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": this.$store.state.apiToken,
+        "Authorization": this.apiToken,
       },
     });
 
@@ -80,6 +117,7 @@ export default Vue.extend({
       this.role = msg.role;
       this.company = msg.company.name;
       this.description = msg.description;
+      this.companyDescription = msg.company.description;
       this.location = msg.company.location;
       this.companyID = msg.company.id;
       this.applicationLink = msg.applicationLink;
@@ -87,12 +125,27 @@ export default Vue.extend({
       this.error = true;
       this.errorMsg = "Unable to load jobs at this time. Please try again later.";
     }
+
+    const jobResponse = await this.getDetails(`${config.apiRoot}/company/${this.companyID}/jobs`);
+
+    if (jobResponse.ok) {
+      const msg = await jobResponse.json();
+      this.jobs = msg.filter((job) => parseInt(job.id, 10) !== parseInt(this.jobID, 10));
+    } else {
+      this.error = true;
+      this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
+    }
   },
 });
 </script>
 
 <style scoped lang="scss">
 .jobInformation {
+  font-weight: 100;
+  text-align: left;
+}
+
+.companyInformation {
   font-weight: 100;
   text-align: left;
 }
