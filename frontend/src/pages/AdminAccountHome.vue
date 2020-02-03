@@ -1,37 +1,32 @@
 <template>
+  <LoggedInTemplate>
   <LeftHalfPageTemplate>
-    <div class="homeBox">
-      <h1>Welcome!</h1>
-      <div class="buttonBox">
-        <router-link to="/admin/jobs/pending">
-          <div class="button postButton">
-            Pending Jobs
-          </div>
-        </router-link>
-      </div>
+  <div class="homeBox">
+    <h1>Welcome!</h1>
+    <div class="buttonBox">
+      <router-link to="/admin/jobs/pending">
+        <div class="button postButton">
+          Pending Jobs
+        </div>
+      </router-link>
     </div>
+  </div>
   </LeftHalfPageTemplate>
+  </LoggedInTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "../components/LeftHalfPageTemplate.vue";
+import { Vue } from "vue-property-decorator";
+import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 
-@Component({
+export default Vue.extend({
+  name: "AdminAccountHome",
   components: {
     LeftHalfPageTemplate,
+    LoggedInTemplate,
   },
 })
-
-export default class AdminAccountHome extends Vue {
-  private mounted() {
-    // determine whether there is an API key present and redirect if not present
-    if (this.$store.state.apiToken === undefined) {
-      this.$router.push("/login");
-      return;
-    }
-  }
-}
 </script>
 
 <style scoped lang="scss">

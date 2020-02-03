@@ -1,5 +1,6 @@
 <template>
   <LoggedInTemplate>
+  <StudentViewTemplate>
   <div v-if="error">
     <br/>
     <ErrorBox>
@@ -50,24 +51,27 @@
         />
     </div>
   </div>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobStandout from "@/components/JobStandout.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
   name: "JobsListPage",
   components: {
-    LoggedInTemplate,
+    StudentViewTemplate,
     JobStandout,
     ErrorBox,
     JobListingMinimal,
+    LoggedInTemplate,
   },
   data() {
     return {

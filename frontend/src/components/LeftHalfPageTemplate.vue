@@ -9,9 +9,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-export default {
+export default Vue.extend({
   name: "LeftHalfPageTemplate",
-};
+});
 </script>
 
 <style lang="scss">

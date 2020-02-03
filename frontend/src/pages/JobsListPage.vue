@@ -1,5 +1,6 @@
 <template>
   <LoggedInTemplate>
+  <StudentViewTemplate>
     <div v-if="error">
       <br/>
       <ErrorBox>
@@ -25,49 +26,43 @@
         :location="job.company.location"
         />
     </div>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
   name: "JobsListPage",
   components: {
-    LoggedInTemplate,
+    StudentViewTemplate,
     JobListingMinimal,
     ErrorBox,
+    LoggedInTemplate,
   },
-  data: () => {
+  data() {
     return {
       error: false,
       errorMsg: "",
       jobs: [
       ],
+      apiToken: this.$store.getters.getApiToken,
     };
-  },
-  computed: {
-    apiToken() {
-      return this.$store.state.apiToken;
-    },
   },
   async mounted() {
     // determine whether there is an API key present and redirect if not present
-    if (this.$store.state.apiToken === undefined) {
-      this.$router.push("/login");
-      return;
-    }
-
     // load the jobs using the api token
     const response = await fetch(`${config.apiRoot}/jobs`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": this.$store.state.apiToken,
+          "Authorization": this.apiToken,
         },
       });
 

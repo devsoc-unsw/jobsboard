@@ -12,7 +12,6 @@ const CompanySignupPage = () => import("@/pages/CompanySignupPage.vue");
 const JobsListPage = () => import("@/pages/JobsListPage.vue");
 const SingleJobPage = () => import("@/pages/SingleJobPage.vue");
 const CompanyAccountHome = () => import("@/pages/CompanyAccountHome.vue");
-const CompanyDetailsPage = () => import("@/pages/CompanyDetailsPage.vue");
 const CompanyAddJob = () => import("@/pages/CompanyAddJob.vue");
 const AdminLoginPage = () => import("@/pages/AdminLoginPage.vue");
 const AdminAccountHome = () => import("@/pages/AdminAccountHome.vue");
@@ -45,9 +44,6 @@ export default new Router({
   }, {
     path: "/company/jobs/add",
     component: CompanyAddJob,
-  }, {
-    path: "/company/details",
-    component: CompanyDetailsPage,
   }, {
     path: "/login",
     component: LoginPage,

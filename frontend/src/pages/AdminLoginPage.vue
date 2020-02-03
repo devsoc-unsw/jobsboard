@@ -40,7 +40,7 @@ import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
-  name: "LoginPage",
+  name: "AdminLoginPage",
   components: {
     LeftHalfPageTemplate,
     ErrorBox,

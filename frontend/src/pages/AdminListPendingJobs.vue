@@ -1,4 +1,5 @@
 <template>
+  <LoggedInTemplate>
   <LeftHalfPageTemplate>
   <div class="homeBox">
     <h1>Pending Job Requests</h1>
@@ -18,6 +19,7 @@
       />
   </div>
   </LeftHalfPageTemplate>
+  </LoggedInTemplate>
 </template>
 
 <script lang="ts">
@@ -25,12 +27,14 @@ import { Component, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import SingleJobManage from "@/components/SingleJobManage.vue";
 import config from "@/config/config";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 
 export default Vue.extend({
   name: "AdminListPendingJobs",
   components: {
     LeftHalfPageTemplate,
     SingleJobManage,
+    LoggedInTemplate
   },
   data() {
     return {
@@ -41,12 +45,6 @@ export default Vue.extend({
     };
   },
   async mounted() {
-    // determine whether there is an API key present and redirect if not present
-    if (this.$store.state.apiToken === undefined) {
-      this.$router.push("/login");
-      return;
-    }
-
     const response = await fetch(`${config.apiRoot}/jobs/pending`, {
       method: "GET",
       headers: {

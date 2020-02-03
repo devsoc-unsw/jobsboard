@@ -1,60 +1,63 @@
 <template>
+  <LoggedInTemplate>
   <LeftHalfPageTemplate>
-    <div class="homeBox">
-      <h1>Add a job</h1>
-      <div v-if="success">
-        <br/>
-        <SuccessBox>
-          {{ successMsg }}
-        </SuccessBox>
-      </div>
-      <div v-else-if="error">
-        <br/>
-        <ErrorBox>
-          {{ errorMsg }}
-        </ErrorBox>
-      </div>
-      <h2>Name of the role</h2>
-        <input 
-          name="role"
-          v-model="role"
-          type="text"
-          placeholder="Role"
-        />
-      <h2>Job Description</h2>
-      <h4>Text only (for now!)</h4>
-        <textarea
-          name="description"
-          v-model="description"
-          type="text"
-          placeholder="Job Description"
-          rows="6"
-        />
+  <div class="homeBox">
+    <h1>Add a job</h1>
+    <div v-if="success">
+      <br/>
+      <SuccessBox>
+      {{ successMsg }}
+      </SuccessBox>
+    </div>
+    <div v-else-if="error">
+      <br/>
+      <ErrorBox>
+      {{ errorMsg }}
+      </ErrorBox>
+    </div>
+    <h2>Name of the role</h2>
+    <input 
+      name="role"
+      v-model="role"
+      type="text"
+      placeholder="Role"
+      />
+    <h2>Job Description</h2>
+    <h4>Text only (for now!)</h4>
+    <textarea
+      name="description"
+      v-model="description"
+      type="text"
+      placeholder="Job Description"
+      rows="6"
+      />
       <h2>Application Link</h2>
-        <input 
-          name="applicationLink"
-          v-model="applicationLink"
-          type="text"
-          placeholder="Application Link"
+      <input 
+        name="applicationLink"
+        v-model="applicationLink"
+        type="text"
+        placeholder="Application Link"
         />
       <br />
       <input
         type="submit"
         value="Post!"
         @click="submitJobPost()"
-      />
-    </div>
+        />
+  </div>
   </LeftHalfPageTemplate>
+  </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 // libraries
-import { Component, Vue } from "vue-property-decorator";
+  import { Component, Vue } from "vue-property-decorator";
 
 // components
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 
 // config
 import config from "@/config/config";
@@ -65,6 +68,7 @@ export default Vue.extend({
     LeftHalfPageTemplate,
     SuccessBox,
     ErrorBox,
+    LoggedInTemplate,
   },
   data() {
     return {
@@ -75,14 +79,8 @@ export default Vue.extend({
       errorMsg: "",
       success: false,
       successMsg: "",
+      apiToken: this.$store.getters.getApiToken,
     };
-  },
-  mounted() {
-    // determine whether there is an API key present and redirect if not present
-    if (this.$store.state.apiToken === undefined) {
-      this.$router.push("/login/company");
-      return;
-    }
   },
   methods: {
     async submitJobPost() {
@@ -90,7 +88,7 @@ export default Vue.extend({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": this.$store.state.apiToken,
+          "Authorization": this.apiToken,
         },
         // mode: "no-cors",
         body: JSON.stringify({

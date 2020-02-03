@@ -12,9 +12,9 @@ export default new Vuex.Store({
   getters: {
     getApiToken: (state) => {
       const stateToken = state.apiToken;
-      if (stateToken === undefined) {
+      if (stateToken === undefined || stateToken === null) {
         const sessionStorageToken = sessionStorage.getItem(config.sessionStorageApiTokenKeyName);
-        if (sessionStorageToken === undefined) {
+        if (sessionStorageToken === null || sessionStorageToken === undefined) {
           return undefined;
         }
         return sessionStorageToken;
@@ -35,6 +35,7 @@ export default new Vuex.Store({
   actions: {
     setApiToken(context, newToken) {
       context.commit("setApiToken", newToken);
+      sessionStorage.setItem(config.sessionStorageApiTokenKeyName, newToken);
     },
     clearApiToken(context) {
       context.commit("setApiToken", undefined);

@@ -41,11 +41,6 @@ export default Vue.extend({
       errorMsg: "",
     };
   },
-  computed: {
-    apiToken(): string {
-      return this.$store.state.apiToken;
-    },
-  },
   methods: {
     async performLogin() {
       const response = await fetch(`${config.apiRoot}/authenticate/student`, {

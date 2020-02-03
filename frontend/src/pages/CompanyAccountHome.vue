@@ -1,4 +1,5 @@
 <template>
+  <LoggedInTemplate>
   <LeftHalfPageTemplate>
     <div class="homeBox">
       <h1>Welcome!</h1>
@@ -16,27 +17,21 @@
       </div>
     </div>
   </LeftHalfPageTemplate>
+  </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "../components/LeftHalfPageTemplate.vue";
+import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 
-@Component({
+export default Vue.extend({
+  name: "CompanyAccountHome",
   components: {
     LeftHalfPageTemplate,
+    LoggedInTemplate,
   },
-})
-
-export default class CompanyAccountHome extends Vue {
-  private mounted() {
-    // determine whether there is an API key present and redirect if not present
-    if (this.$store.state.apiToken === undefined) {
-      this.$router.push("/login/company");
-      return;
-    }
-  }
-}
+});
 </script>
 
 <style scoped lang="scss">
