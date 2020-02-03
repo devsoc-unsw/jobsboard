@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import helmet from "helmet";
 
 import "reflect-metadata";
 import {
@@ -41,6 +42,7 @@ const app = express();
 const port = process.env.SERVER_PORT;
 app.use(bodyParser.json());
 app.use(Middleware.genericLoggingMiddleware);
+app.use(helmet());
 // app.options("*", cors());
 if (process.env.NODE_ENV === "development") {
   app.use(cors());
