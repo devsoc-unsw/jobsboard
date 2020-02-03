@@ -6,7 +6,6 @@ import {
 } from "typeorm";
 import { Job } from "./entity/job";
 import { Company } from "./entity/company";
-import { CompanyAccount } from "./entity/company_account";
 import Helpers from "./helpers";
 import MailFunctions from "./mail";
 import Logger from "./logging";
@@ -19,36 +18,36 @@ export default class AdminFunctions {
 
       const jobToApprove = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
-        .createQueryBuilder()
-        .where("Job.approved = :approved", { approved: false })
-        .andWhere("Job.hidden = :hidden", { hidden: false })
-        .andWhere("Job.id = :id", { id: parseInt(jobID, 10) })
-        .getOne();
+          .createQueryBuilder()
+          .where("Job.approved = :approved", { approved: false })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .andWhere("Job.id = :id", { id: parseInt(jobID, 10) })
+          .getOne();
       }, `Couldn't find job with ID: ${jobID}`);
 
       jobToApprove.company = await Helpers.doSuccessfullyOrFail(async () => {
         return await getConnection()
-        .createQueryBuilder()
-        .relation(Job, "company")
-        .of(jobToApprove)
-        .loadOne();
+          .createQueryBuilder()
+          .relation(Job, "company")
+          .of(jobToApprove)
+          .loadOne();
       }, `Error with finding company record for job ID: ${jobID}`);
 
       jobToApprove.company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
         return jobToApprove.company.companyAccount = await getConnection()
-        .createQueryBuilder()
-        .relation(Company, "companyAccount")
-        .of(jobToApprove.company)
-        .loadOne();
+          .createQueryBuilder()
+          .relation(Company, "companyAccount")
+          .of(jobToApprove.company)
+          .loadOne();
       }, `Error with finding company account record for job ID: ${jobID}`);
 
       const conn: Connection = getConnection();
 
       await conn.createQueryBuilder()
-      .update(Job)
-      .set({ approved: true })
-      .where("id = :id", { id: jobToApprove.id })
-      .execute();
+        .update(Job)
+        .set({ approved: true })
+        .where("id = :id", { id: jobToApprove.id })
+        .execute();
 
       MailFunctions.AddMailToQueue(
         jobToApprove.company.companyAccount.username,
@@ -75,34 +74,34 @@ export default class AdminFunctions {
       const conn: Connection = getConnection();
       const jobToReject = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
-        .createQueryBuilder()
-        .where("job.approved = :approved", { approved: false })
-        .andWhere("job.hidden = :hidden", { hidden: false })
-        .andWhere("job.id = :id", { id: parseInt(jobID, 10) })
-        .getOne();
+          .createQueryBuilder()
+          .where("job.approved = :approved", { approved: false })
+          .andWhere("job.hidden = :hidden", { hidden: false })
+          .andWhere("job.id = :id", { id: parseInt(jobID, 10) })
+          .getOne();
       }, `Couldn't find job with ID: ${jobID}`);
 
       jobToReject.company = await Helpers.doSuccessfullyOrFail(async () => {
         return await getConnection()
-        .createQueryBuilder()
-        .relation(Job, "company")
-        .of(jobToReject)
-        .loadOne();
+          .createQueryBuilder()
+          .relation(Job, "company")
+          .of(jobToReject)
+          .loadOne();
       }, `Error with finding company record for job ID: ${jobID}`);
 
       jobToReject.company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
         return await getConnection()
-        .createQueryBuilder()
-        .relation(Company, "companyAccount")
-        .of(jobToReject.company)
-        .loadOne();
+          .createQueryBuilder()
+          .relation(Company, "companyAccount")
+          .of(jobToReject.company)
+          .loadOne();
       }, `Error with finding company account record for job ID: ${jobID}`);
 
       await conn.createQueryBuilder()
-      .update(Job)
-      .set({ hidden: true })
-      .where("id = :id", { id: jobToReject.id })
-      .execute();
+        .update(Job)
+        .set({ hidden: true })
+        .where("id = :id", { id: jobToReject.id })
+        .execute();
 
       MailFunctions.AddMailToQueue(
         jobToReject.company.companyAccount.username,
@@ -133,10 +132,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       const conn: Connection = getConnection();
       await pendingJobs.map( async (pendingJob: Job) => {
         pendingJob.company = await conn
-        .createQueryBuilder()
-        .relation(Job, "company")
-        .of(pendingJob)
-        .loadOne();
+          .createQueryBuilder()
+          .relation(Job, "company")
+          .of(pendingJob)
+          .loadOne();
       });
 
       Logger.Info(JSON.stringify(pendingJobs));

@@ -11,7 +11,7 @@ import {
 export default class Middleware {
   public static genericLoggingMiddleware(req: Request, resp: Response, next: NextFunction): void {
     next();
-    Logger.Info(`${resp.statusCode} - ${req.path}`);
+    Logger.Info(`${req.method} ${resp.statusCode} - ${req.path}`);
   }
 
   public static authenticateStudentMiddleware(req: any, res: Response, next: NextFunction) {

@@ -17,9 +17,9 @@ export default class CompanyFunctions {
     try {
       const companyInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Company)
-        .createQueryBuilder()
-        .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
-        .getOne();
+          .createQueryBuilder()
+          .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
+          .getOne();
       }, `Company ${req.params.companyID} not found.`);
       res.send(companyInfo);
     } catch (error) {
@@ -31,17 +31,17 @@ export default class CompanyFunctions {
     try {
       const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Company)
-        .createQueryBuilder()
-        .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
-        .getOne();
+          .createQueryBuilder()
+          .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
+          .getOne();
       }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
 
       companyJobs.jobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getConnection()
-        .createQueryBuilder()
-        .relation(Company, "jobs")
-        .of(companyJobs)
-        .loadMany();
+          .createQueryBuilder()
+          .relation(Company, "jobs")
+          .of(companyJobs)
+          .loadMany();
       }, `Couldn't load jobs for company with ID: ${req.params.companyID}`);
       // filter out any jobs that are not approved or are hidden
       const fixedCompanyJobs = companyJobs.jobs.filter( (job: Job) => job.approved && !job.hidden);
@@ -69,13 +69,13 @@ export default class CompanyFunctions {
       // using the original typeorm OR convention fails to construct a suitable MySQL
       // query, so we have to do this in two separate queries
       const companyAccountUsernameSearchResult = await getRepository(CompanyAccount)
-      .createQueryBuilder("company_account")
-      .where("company_account.username = :username", { username: msg.username })
-      .getOne();
+        .createQueryBuilder("company_account")
+        .where("company_account.username = :username", { username: msg.username })
+        .getOne();
       const companyNameSearchResult = await getRepository(Company)
-      .createQueryBuilder("company")
-      .where("company.name= :name", { name: msg.name })
-      .getOne();
+        .createQueryBuilder("company")
+        .where("company.name = :name", { name: msg.name })
+        .getOne();
       if (companyAccountUsernameSearchResult !== undefined || companyNameSearchResult !== undefined) {
         // company exists, send conflict error
         res.sendStatus(409);
@@ -91,13 +91,7 @@ export default class CompanyFunctions {
       newCompanyAccount.company = newCompany;
       newCompany.companyAccount = newCompanyAccount;
 
-      await conn.createQueryBuilder()
-      .insert()
-      .into(CompanyAccount)
-      .values([
-        newCompanyAccount,
-      ])
-      .execute();
+      await conn.manager.save(newCompanyAccount);
 
       // await conn.manager.save(newCompanyAccount);
       MailFunctions.AddMailToQueue(
@@ -115,6 +109,7 @@ export default class CompanyFunctions {
       );
       res.sendStatus(200);
     } catch (error) {
+      Logger.Error(error);
       res.sendStatus(400);
     }
   }
@@ -143,27 +138,21 @@ export default class CompanyFunctions {
 
       const companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(CompanyAccount)
-        .createQueryBuilder("company_account")
-        .where("company_account.id = :id", { id: req.companyAccountID })
-        .getOne();
+          .createQueryBuilder("company_account")
+          .where("company_account.id = :id", { id: req.companyAccountID })
+          .getOne();
       }, `Couldn't find company account with ID ${req.companyAccountID}`);
 
       companyAccount.company = await Helpers.doSuccessfullyOrFail(async () => {
         return await conn.createQueryBuilder()
-        .relation(CompanyAccount, "company")
-        .of(companyAccount)
-        .loadOne();
+          .relation(CompanyAccount, "company")
+          .of(companyAccount)
+          .loadOne();
       }, `Couldn't load company for company account with ID ${req.companyAccountID}`);
 
       newJob.company = companyAccount.company;
 
-      await conn.createQueryBuilder()
-      .insert()
-      .into(Job)
-      .values([
-        newJob,
-      ])
-      .execute();
+      await conn.manager.save(newJob);
 
       MailFunctions.AddMailToQueue(
         companyAccount.username,
