@@ -57,6 +57,7 @@ export default Vue.extend({
       error: false,
       errorMsg: "",
       actAsLink: false,
+      apiToken: this.$store.getters.getApiToken,
     };
   },
   props: {
@@ -71,9 +72,10 @@ export default Vue.extend({
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": this.$store.state.apiToken,
+          "Authorization": this.apiToken,
         },
       });
+      console.log(this.apiToken);
 
       if (response.ok) {
         this.success = true;
@@ -88,9 +90,10 @@ export default Vue.extend({
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": this.$store.state.apiToken,
+          "Authorization": this.apiToken,
         },
       });
+      console.log(this.apiToken);
 
       if (response.ok) {
         this.success = true;

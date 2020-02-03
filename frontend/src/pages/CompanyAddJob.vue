@@ -100,7 +100,7 @@ export default Vue.extend({
 
       if (response.ok) {
         this.success = true;
-        this.successMsg = "Job posted! This job will be made available to students shortly.";
+        this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
         setTimeout(() => {
           this.$router.push("/company/home");
         }, 5000);

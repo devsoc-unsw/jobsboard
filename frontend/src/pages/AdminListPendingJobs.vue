@@ -42,6 +42,7 @@ export default Vue.extend({
       errorMsg: "",
       jobs: [],
       success: false,
+      apiToken: this.$store.getters.getApiToken,
     };
   },
   async mounted() {
@@ -49,7 +50,7 @@ export default Vue.extend({
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": this.$store.state.apiToken,
+        "Authorization": this.apiToken,
       },
     });
 

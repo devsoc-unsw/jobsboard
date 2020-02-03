@@ -61,7 +61,6 @@ export default class AdminFunctions {
       );
       res.sendStatus(200);
     } catch (error) {
-      Logger.Error(error);
       res.sendStatus(400);
     }
   }
@@ -121,7 +120,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
   public static async GetPendingJobs(_: Request, res: Response) {
     try {
-      const pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
+      let pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
           .where("job.approved = :approved", { approved: false })
@@ -130,15 +129,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       }, `Couldn't find any pending job requests`);
 
       const conn: Connection = getConnection();
-      await pendingJobs.map( async (pendingJob: Job) => {
-        pendingJob.company = await conn
-          .createQueryBuilder()
+      for (let jobIndex = 0; jobIndex < pendingJobs.length; jobIndex++) {
+        pendingJobs[jobIndex].company = await conn.createQueryBuilder()
           .relation(Job, "company")
-          .of(pendingJob)
+          .of(pendingJobs[jobIndex])
           .loadOne();
-      });
-
-      Logger.Info(JSON.stringify(pendingJobs));
+      }
 
       res.send(pendingJobs);
     } catch (error) {
