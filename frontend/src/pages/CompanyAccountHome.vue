@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <LeftHalfPageTemplate>
+  <LeftHalfPageTemplate loggedIn>
     <div class="homeBox">
       <h1>Welcome!</h1>
       <div class="buttonBox">

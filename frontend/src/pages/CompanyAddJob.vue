@@ -1,7 +1,8 @@
 <template>
   <LoggedInTemplate>
-  <LeftHalfPageTemplate>
+  <LeftHalfPageTemplate loggedIn>
   <div class="homeBox">
+    <BackButton />
     <h1>Add a job</h1>
     <div v-if="success">
       <br/>
@@ -58,6 +59,7 @@ import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import BackButton from "@/components/buttons/back.vue";
 
 // config
 import config from "@/config/config";
@@ -69,6 +71,7 @@ export default Vue.extend({
     SuccessBox,
     ErrorBox,
     LoggedInTemplate,
+    BackButton,
   },
   data() {
     return {

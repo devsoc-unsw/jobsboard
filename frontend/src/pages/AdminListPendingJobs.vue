@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <LeftHalfPageTemplate>
+  <LeftHalfPageTemplate loggedIn>
   <div class="homeBox">
     <h1>Pending Job Requests</h1>
     <div v-if="jobs.length === 1">

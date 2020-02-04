@@ -2,9 +2,7 @@
   <div>
     <br />
     <div class="jobStandout">
-      <div class="back" @click="back">
-        <font-awesome-icon icon="chevron-left" />
-      </div>
+      <BackButton />
       <div class="companyLogo">
         <font-awesome-icon icon="building" />
       </div>
@@ -20,9 +18,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
+import BackButton from "@/components/buttons/back.vue";
 
 @Component({
   components: {
+    BackButton,
   },
 })
 
@@ -33,11 +33,6 @@ export default class JobStandout extends Vue {
   @Prop() private jobID!: number;
   @Prop() private companyID!: number;
   @Prop() private location!: string;
-
-  public back() {
-    // go back a page
-    this.$router.go(-1);
-  }
 }
 </script>
 

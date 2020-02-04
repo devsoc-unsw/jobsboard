@@ -1,7 +1,15 @@
 <template>
   <div class="viewport">
     <div class="leftHalfWindowSection">
-      <slot />
+      <div class="homeBox">
+        <div v-if="loggedIn">
+          <button @click="logOut()">
+            Log Out
+          </button>
+          <br/>
+        </div>
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -11,6 +19,18 @@ import { Component, Vue } from "vue-property-decorator";
 
 export default Vue.extend({
   name: "LeftHalfPageTemplate",
+  props: {
+    loggedIn: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch("clearApiToken");
+      this.$router.push("/login/company");
+    },
+  },
 });
 </script>
 
