@@ -24,6 +24,10 @@
         placeholder="password"
         @keyup.enter="performAdminLogin()"
       />
+      <br />
+      <Button @buttonCallback="performAdminLogin">
+        Login
+      </Button>
     </div>
   </LeftHalfPageTemplate>
 </template>
@@ -35,6 +39,7 @@ import { Component, Vue } from "vue-property-decorator";
 // components
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import Button from "@/components/buttons/button.vue";
 
 // config
 import config from "@/config/config";
@@ -44,6 +49,7 @@ export default Vue.extend({
   components: {
     LeftHalfPageTemplate,
     ErrorBox,
+    Button,
   },
   data() {
     return {

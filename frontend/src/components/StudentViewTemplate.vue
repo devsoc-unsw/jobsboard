@@ -3,14 +3,12 @@
     <div class="stretchyPage">
       <div class="navbar">
         <div class="leftBox">
-          <router-link to="/jobs">
-            <div class="navButtons">
-              Jobs
-            </div>
-          </router-link>
-          <div class="navButtons logoutButton" @click="logOut()">
+          <Button @buttonCallback="goToJobs">
+            Jobs
+          </Button>
+          <Button @buttonCallback="logOut">
             Log Out
-          </div>
+          </Button>
         </div>
         <h1>Discover student jobs and internships</h1>
         <br />
@@ -28,15 +26,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
+import Button from "@/components/buttons/button.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
+  components: {
+    Button,
+  },
   methods: {
     logOut() {
       this.$store.dispatch("clearApiToken");
       this.$router.push("/login/student");
     },
+    goToJobs() {
+      this.$router.push("/jobs");
+    }
   },
   data() {
     return {

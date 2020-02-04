@@ -4,11 +4,9 @@
   <div class="homeBox">
     <h1>Welcome!</h1>
     <div class="buttonBox">
-      <router-link to="/admin/jobs/pending">
-        <div class="button postButton">
-          Pending Jobs
-        </div>
-      </router-link>
+      <Button @buttonCallback="goToAdminJobsPending">
+        Pending Jobs
+      </Button>
     </div>
   </div>
   </LeftHalfPageTemplate>
@@ -19,12 +17,19 @@
 import { Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import Button from "@/components/buttons/button.vue";
 
 export default Vue.extend({
   name: "AdminAccountHome",
   components: {
     LeftHalfPageTemplate,
     LoggedInTemplate,
+    Button,
+  },
+  methods: {
+    goToAdminJobsPending() {
+      this.$router.push("/admin/jobs/pending");
+    },
   },
 })
 </script>

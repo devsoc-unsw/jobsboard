@@ -4,16 +4,12 @@
     <div class="homeBox">
       <h1>Welcome!</h1>
       <div class="buttonBox">
-        <router-link to="/company/jobs/add">
-          <div class="button postButton">
-            Post Jobs
-          </div>
-        </router-link>
-        <router-link to="/company/edit">
-          <div class="button editButton">
-            Account Settings
-          </div>
-        </router-link>
+        <Button @buttonCallback="goToCompanyJobAdd">
+          Post Jobs
+        </Button>
+        <Button @buttonCallback="goToCompanyEdit">
+          Account Settings
+        </Button>
       </div>
     </div>
   </LeftHalfPageTemplate>
@@ -24,12 +20,22 @@
 import { Component, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import Button from "@/components/buttons/button.vue";
 
 export default Vue.extend({
   name: "CompanyAccountHome",
   components: {
     LeftHalfPageTemplate,
     LoggedInTemplate,
+    Button,
+  },
+  methods: {
+    goToCompanyJobAdd() {
+      this.$router.push("/company/jobs/add");
+    },
+    goToCompanyEdit() {
+      this.$router.push("/company/edit");
+    },
   },
 });
 </script>

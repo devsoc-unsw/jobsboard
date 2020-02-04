@@ -2,6 +2,7 @@
   <LoggedInTemplate>
   <LeftHalfPageTemplate loggedIn>
   <div class="homeBox">
+    <BackButton />
     <h1>Pending Job Requests</h1>
     <div v-if="jobs.length === 1">
       {{ jobs.length }} Pending Job Found
@@ -28,13 +29,15 @@ import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import SingleJobManage from "@/components/SingleJobManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import BackButton from "@/components/buttons/back.vue";
 
 export default Vue.extend({
   name: "AdminListPendingJobs",
   components: {
     LeftHalfPageTemplate,
     SingleJobManage,
-    LoggedInTemplate
+    LoggedInTemplate,
+    BackButton,
   },
   data() {
     return {

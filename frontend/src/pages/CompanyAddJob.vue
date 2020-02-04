@@ -40,11 +40,9 @@
         placeholder="Application Link"
         />
       <br />
-      <input
-        type="submit"
-        value="Post!"
-        @click="submitJobPost()"
-        />
+      <Button @buttonCallback="submitJobPost">
+        Post!
+      </Button>
   </div>
   </LeftHalfPageTemplate>
   </LoggedInTemplate>
@@ -52,7 +50,7 @@
 
 <script lang="ts">
 // libraries
-  import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 // components
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
@@ -60,6 +58,7 @@ import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import BackButton from "@/components/buttons/back.vue";
+import Button from "@/components/buttons/button.vue";
 
 // config
 import config from "@/config/config";
@@ -72,6 +71,7 @@ export default Vue.extend({
     ErrorBox,
     LoggedInTemplate,
     BackButton,
+    Button,
   },
   data() {
     return {

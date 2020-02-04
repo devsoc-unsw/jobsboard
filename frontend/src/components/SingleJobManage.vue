@@ -19,19 +19,13 @@
       :company="company"
       :description="description"
       :actAsLink="actAsLink"
-    >
-    <input
-      type="submit"
-      value="Approve"
-      @click="approveJob()"
-      class="smallerButton approveButton"
-    />
-    <input
-      type="submit"
-      value="Reject"
-      @click="rejectJob()"
-      class="smallerButton rejectButton"
-    />
+      >
+      <Button @buttonCallback="approveJob">
+        Approve
+      </Button>
+      <Button @buttonCallback="rejectJob">
+        Reject
+      </Button>
     </JobListingMinimal>
   </div>
 </template>
@@ -42,6 +36,7 @@ import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
+import Button from "@/components/buttons/button.vue";
 
 export default Vue.extend({
   name: "SingleJobManage",
@@ -49,6 +44,7 @@ export default Vue.extend({
     JobListingMinimal,
     SuccessBox,
     ErrorBox,
+    Button,
   },
   data() {
     return {
@@ -93,7 +89,6 @@ export default Vue.extend({
           "Authorization": this.apiToken,
         },
       });
-      console.log(this.apiToken);
 
       if (response.ok) {
         this.success = true;

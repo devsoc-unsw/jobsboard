@@ -15,6 +15,9 @@
       <br/>
       <input name="password" v-model="password" type="password" placeholder="zPass" @keyup.enter="performLogin()"/>
       <br/>
+      <Button @buttonCallback="performLogin">
+        Login
+      </Button>
       <br/>
       Not a student? <router-link to="/login/company">Company Login</router-link>
     </div>
@@ -26,12 +29,14 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
+import Button from "@/components/buttons/button.vue";
 
 export default Vue.extend({
   name: "StudentLoginPage",
   components: {
     LeftHalfPageTemplate,
     ErrorBox,
+    Button,
   },
   data() {
     return {
