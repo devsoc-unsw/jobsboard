@@ -7,6 +7,9 @@
       <Button @buttonCallback="goToAdminJobsPending">
         Pending Jobs
       </Button>
+      <Button @buttonCallback="goToAdminCompanyPendingVerification">
+        Pending Company Verification
+      </Button>
     </div>
   </div>
   </LeftHalfPageTemplate>
@@ -29,6 +32,9 @@ export default Vue.extend({
   methods: {
     goToAdminJobsPending() {
       this.$router.push("/admin/jobs/pending");
+    },
+    goToAdminCompanyPendingVerification() {
+      this.$router.push("/admin/companies/pending");
     },
   },
 })

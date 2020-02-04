@@ -109,7 +109,11 @@ export default Vue.extend({
         }, 5000);
       } else {
         this.error = true;
-        this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
+        if (response.status === 403) {
+          this.errorMsg = "Failed to post job request as your account has not yet been verified.";
+        } else {
+          this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
+        }
       }
     },
   },

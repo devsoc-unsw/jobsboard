@@ -28,8 +28,6 @@ export default class MailFunctions {
       } else {
         Logger.Error("Failed to schedule email.");
       }
-      /*
-       */
       res.sendStatus(200);
     } catch (error) {
       res.sendStatus(400);
@@ -89,7 +87,7 @@ export default class MailFunctions {
           }, () => Logger.Info(`Successfully sent email id: ${mailRequest.id}.`));
         } else {
           Logger.Info(`NODE_ENV is not production (currently ${process.env.NODE_ENV}), therefore no email will be sent. Here is the email that would have been sent:
-          ${JSON.stringify(mailRequest)}`);
+                      ${JSON.stringify(mailRequest)}`);
         }
         await getConnection().createQueryBuilder()
         .update(MailRequest)
@@ -117,13 +115,22 @@ export default class MailFunctions {
       newMailRequest.subject = subject;
       newMailRequest.content = content;
 
-      await conn.createQueryBuilder()
-      .insert()
-      .into(MailRequest)
-      .values([
-        newMailRequest,
-      ])
-      .execute();
+      await conn.manager.save(newMailRequest); 
+
+      // send a copy of this email to the admin
+      const newMailRequestForAdmin: MailRequest = new MailRequest();
+      newMailRequest.sender = process.env.MAIL_USERNAME;
+      newMailRequest.recipient = process.env.MAIL_USERNAME;
+      newMailRequest.subject = subject;
+      newMailRequest.content = `The following was sent to "${recipient}" with subject "${subject}":
+
+        CONTENT BEGINS HERE
+      ------------------------
+        ${content}
+      `;
+
+      await conn.manager.save(newMailRequestForAdmin);
+
       return true;
     } catch (error) {
       return false;

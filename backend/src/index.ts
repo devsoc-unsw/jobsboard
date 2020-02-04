@@ -109,6 +109,8 @@ async function bootstrap() {
  *           type: string
  *         location:
  *           type: string
+ *         description:
+ *           type: string
  */
 
 /**
@@ -332,7 +334,7 @@ app.patch("/job/:jobID/reject", Middleware.authenticateAdminMiddleware, AdminFun
 /**
  *  @swagger
  *  /jobs/pending:
- *    post:
+ *    get:
  *      description: List all pending (un-approved or un-rejected) job posts
  *    responses:
  *      200:
@@ -347,6 +349,38 @@ app.patch("/job/:jobID/reject", Middleware.authenticateAdminMiddleware, AdminFun
  *        description: Missing parameters or invalid credentials
  */
 app.get("/jobs/pending", Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingJobs);
+
+/**
+ *  @swagger
+ *  /admin/pending/companies:
+ *    post:
+ *      description: List all pending (non-verified) company accounts
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Company'
+ *      400:
+ *        description: Missing parameters or invalid credentials
+ */
+app.get("/admin/pending/companies", Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingCompanyVerifications);
+
+/**
+ *  @swagger
+ *  /admin/company/:companyID/verify:
+ *    patch:
+ *      description: Verify a specific company account as an admin
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: Missing parameters or invalid credentials
+ */
+app.patch("/admin/company/:companyAccountID/verify", Middleware.authenticateAdminMiddleware, AdminFunctions.VerifyCompanyAccount);
 
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);

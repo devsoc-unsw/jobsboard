@@ -9,7 +9,8 @@ const server = supertest.agent(config.apiUrl);
 
 describe("company", () => {
   describe("accessing while unauthenticated", () => {
-    it("user can't access a specific company when not logged in",
+    it(
+      "user can't access a specific company when not logged in",
       function (done) {
         server
         .get("/company/1")
@@ -18,8 +19,11 @@ describe("company", () => {
           expect(res.status).to.equal(401);
           done();
         });
-      });
-    it("user can't access a specific company with invalid company id",
+      }
+    );
+
+    it(
+      "user can't access a specific company with invalid company id",
       function (done) {
         server
         .get("/company/undefined")
@@ -28,8 +32,11 @@ describe("company", () => {
           expect(res.status).to.equal(401);
           done();
         });
-      });
-    it("user can't access a specific company with valid company id",
+      }
+    );
+
+    it(
+      "user can't access a specific company with valid company id",
       function (done) {
         server
         .get("/company/1")
@@ -38,37 +45,46 @@ describe("company", () => {
           expect(res.status).to.equal(401);
           done();
         });
-      });
-    it("user can't access a specific company's jobs with invalid company ids",
-        function (done) {
-          server
-          .get("/company/undefined/jobs")
-          .expect(401)
-          .end( function(err, res) {
-            expect(res.status).to.equal(401);
-            done();
-          });
+      }
+    );
+
+    it(
+      "user can't access a specific company's jobs with invalid company ids",
+      function (done) {
+        server
+        .get("/company/undefined/jobs")
+        .expect(401)
+        .end( function(err, res) {
+          expect(res.status).to.equal(401);
+          done();
         });
-    it("user can't access a specific company's jobs with valid company ids",
-        function (done) {
-          server
-          .get("/company/1/jobs")
-          .expect(401)
-          .end( function(err, res) {
-            expect(res.status).to.equal(401);
-            done();
-          });
+      }
+    );
+
+    it(
+      "user can't access a specific company's jobs with valid company ids",
+      function (done) {
+        server
+        .get("/company/1/jobs")
+        .expect(401)
+        .end( function(err, res) {
+          expect(res.status).to.equal(401);
+          done();
         });
+      }
+    );
   });
 
   describe("accessing while authenticated as a student", () => {
     before( async function() {
       this.token = await server
-                    .post("/authenticate/student")
-                    .send({ zID: "test", password: "password" })
-                    .then(response => response.body.token);
+      .post("/authenticate/student")
+      .send({ zID: "test", password: "password" })
+      .then(response => response.body.token);
     });
-    it("permits viewing of company details with a valid token",
+
+    it(
+      "permits viewing of company details with a valid token",
       function (done) {
         server
         .get("/company/1")
@@ -77,8 +93,10 @@ describe("company", () => {
           expect(res.status).to.equal(200);
           done();
         });
-      });
-    it("students can't access info of a specific company with invalid token",
+      }
+    );
+    it(
+      "students can't access info of a specific company with invalid token",
       function (done) {
         server
         .get("/company/1")
@@ -88,8 +106,10 @@ describe("company", () => {
           expect(res.status).to.equal(401);
           done();
         });
-      });
-    it("students can't access a specific company's jobs with invalid token",
+      }
+    );
+    it(
+      "students can't access a specific company's jobs with invalid token",
       function (done) {
         server
         .get("/company/1/jobs")
@@ -99,21 +119,25 @@ describe("company", () => {
           expect(res.status).to.equal(401);
           done();
         });
-      });
+      }
+    );
 
-    describe("accessing while authenticated as a company", () => {
-      // need to get Auth or change seed data in dev.ts first
-      // before( async function() {
-      //   this.token = await server
-      //                 .post("/authenticate/company")
-      //                 .send({ username: "test", password: Auth.hash("test") })
-      //                 .then(response => response.body.token);
-      // });
-    });
+    describe(
+      "accessing while authenticated as a company", () => {
+        // need to get Auth or change seed data in dev.ts first
+        // before( async function() {
+        //   this.token = await server
+        //                 .post("/authenticate/company")
+        //                 .send({ username: "test", password: Auth.hash("test") })
+        //                 .then(response => response.body.token);
+        // });
+      }
+    );
   });
 
   describe("creating a company account", () => {
-    it("fails if there is no payload",
+    it(
+      "fails if there is no payload",
       function (done) {
         server
         .put("/company")
@@ -122,8 +146,10 @@ describe("company", () => {
           expect(res.status).to.equal(400);
           done();
         });
-      });
-    it("fails if there is an empty payload",
+      }
+    );
+    it(
+      "fails if there is an empty payload",
       function (done) {
         server
         .put("/company")
@@ -133,8 +159,10 @@ describe("company", () => {
           expect(res.status).to.equal(400);
           done();
         });
-      });
-    it("fails if there are incorrect parameters",
+      }
+    );
+    it(
+      "fails if there are incorrect parameters",
       function (done) {
         server
         .put("/company")
@@ -149,9 +177,11 @@ describe("company", () => {
           expect(res.status).to.equal(400);
           done();
         });
-      });
+      }
+    );
 
-    it("fails if there is a naming conflict in name",
+    it(
+      "fails if there is a naming conflict in name",
       function (done) {
         server
         .put("/company")
@@ -166,9 +196,11 @@ describe("company", () => {
           expect(res.status).to.equal(409);
           done();
         });
-      });
+      }
+    );
 
-    it("fails if there is a naming conflict in username",
+    it(
+      "fails if there is a naming conflict in username",
       function (done) {
         server
         .put("/company")
@@ -183,8 +215,10 @@ describe("company", () => {
           expect(res.status).to.equal(409);
           done();
         });
-      });
-    it("succeeds when there are no name conflicts",
+      }
+    );
+    it(
+      "succeeds when there are no name conflicts",
       function (done) {
         server
         .put("/company")
@@ -199,6 +233,86 @@ describe("company", () => {
           expect(res.status).to.equal(200);
           done();
         });
+      }
+    );
+  });
+
+  describe("creating a job", () => {
+    /*
+     * THIS IS A BROKEN TEST
+     * TODO(ad-t): Fix this test
+    before( async function() {
+      server
+      .put("/company")
+      .send({ 
+        username: "testcompany@company.com",
+        password: "testing auth",
+        name: "Yet another testing company yet again",
+        location: "London",
+      })
+      .expect(200)
+      .end( function (err, res) {
+        expect(res.status).to.equal(200);
+        done();
       });
+      this.companyToken = await server
+      .post("/authenticate/company")
+      .send({ username: "testcompany@company.com", password: "testing auth" })
+      .then(response => response.body.token);
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "admin" })
+      .then(response => response.body.token);
+    });
+
+    it(
+      "fails to create a job after creation due to not being a verified account",
+      function (done) {
+        server
+        .put("/jobs")
+        .set('Authorization', this.companyToken)
+        .expect(403)
+        .send({
+          role: "sample role title",
+          description: "sample role description",
+          applicationLink: "http://sample.application.link",
+        })
+        .end( function(err, res) {
+          expect(res.status).to.equal(403);
+          done();
+        });
+      }
+    );
+
+    it(
+      "succeeds to create a job after company creation as the company account has been verified",
+      async function (done) {
+        this.pendingCompanies = await server
+        .get("/admin/pending/companies")
+        .set('Authorization', this.adminToken)
+        .expect(200)
+        .then(response => response.body);
+
+        await server
+        .patch(`/admin/company/${this.pendingCompanies[0].id}/verify`)
+        .set('Authorization', this.adminToken)
+        .expect(200);
+
+        server
+        .put("/jobs")
+        .set('Authorization', this.companyToken)
+        .expect(403)
+        .send({
+          role: "sample role title",
+          description: "sample role description",
+          applicationLink: "http://sample.application.link",
+        })
+        .end( function(err, res) {
+          expect(res.status).to.equal(403);
+          done();
+        });
+      }
+    );
+    */
   });
 });

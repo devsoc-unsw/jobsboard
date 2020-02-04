@@ -6,6 +6,7 @@ import {
 } from "typeorm";
 import { Job } from "./entity/job";
 import { Company } from "./entity/company";
+import { CompanyAccount } from "./entity/company_account";
 import Helpers from "./helpers";
 import MailFunctions from "./mail";
 import Logger from "./logging";
@@ -122,7 +123,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     try {
       let pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
-          .createQueryBuilder()
+        .createQueryBuilder()
           .where("job.approved = :approved", { approved: false })
           .andWhere("job.hidden = :hidden", { hidden: false })
           .getMany();
@@ -137,6 +138,82 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       }
 
       res.send(pendingJobs);
+    } catch (error) {
+      res.sendStatus(400);
+    }
+  }
+
+  public static async GetPendingCompanyVerifications(_: Request, res: Response) {
+    try {
+      let pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
+        const pendingCompanyAccounts = await getRepository(CompanyAccount)
+        .createQueryBuilder()
+        .select("CompanyAccount.id")
+        .where("CompanyAccount.verified = :verified", { verified: false })
+        .getMany();
+        for (let companyAccountIndex = 0; companyAccountIndex < pendingCompanyAccounts.length; companyAccountIndex++) {
+          pendingCompanyAccounts[companyAccountIndex].company = await getConnection()
+          .createQueryBuilder()
+          .relation(CompanyAccount, "company")
+          .of(pendingCompanyAccounts)
+          .loadOne();
+        }
+        return pendingCompanyAccounts;
+      }, `Couldn't find any pending company verifications`);
+      res.send(pendingCompanyVerifications);
+    } catch (error) {
+      Logger.Error(error);
+      res.sendStatus(400);
+    }
+  }
+
+  public static async VerifyCompanyAccount(req: Request, res: Response) {
+    try {
+      let pendingCompany = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(CompanyAccount)
+        .createQueryBuilder()
+        .where("CompanyAccount.id = :id", { id: req.params.companyAccountID })
+        .andWhere("CompanyAccount.verified = :verified", { verified: false })
+        .getOne();
+      }, `Couldn't find any pending company verifications`);
+
+      await getConnection().createQueryBuilder()
+        .update(CompanyAccount)
+        .set({ verified: true })
+        .where("id = :id", { id: pendingCompany.id })
+        .execute();
+
+      // send an email confirming that the account has been verified
+      MailFunctions.AddMailToQueue(
+        pendingCompany.username,
+        "CSESoc Jobs Board - Success! Your account has been verified",
+        `
+
+        Congratulations! Your company account for ${pendingCompany.name} has been successful. You are now able to post job requests on the CSESoc Jobs Board. The process for doing so is as follows:
+            <ul>
+              <li>
+                Log in to the company account portal
+              </li>
+              <li>
+                Click on "Post Jobs"
+              </li>
+              <li>
+                Fill in the required information to post a job
+              </li>
+              <li>
+                Once the Adminstrator has approved your job post, it will then be made available to students - If it is rejected, it will be due to it not following the job posting guidelines
+              </li>
+              <li>
+                You may request to post multiple jobs at one time, but please refrain from posting the same job multiple times as duplicates will not be approved
+              </li>
+            </ul>
+          <br>
+        Best regards,
+        CSESoc Jobs Board Administrator
+        `,
+      );
+
+      res.sendStatus(200);
     } catch (error) {
       res.sendStatus(400);
     }

@@ -27,6 +27,11 @@ export class CompanyAccount {
   @JoinColumn()
   public company: Company;
 
+  @Column({
+    default: false,
+  })
+  public verified: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

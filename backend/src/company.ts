@@ -136,12 +136,19 @@ export default class CompanyFunctions {
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
 
-      const companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(CompanyAccount)
-          .createQueryBuilder("company_account")
-          .where("company_account.id = :id", { id: req.companyAccountID })
-          .getOne();
-      }, `Couldn't find company account with ID ${req.companyAccountID}`);
+      let companyAccount: CompanyAccount = undefined;
+      try {
+        companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
+          return await getRepository(CompanyAccount)
+            .createQueryBuilder("company_account")
+            .where("company_account.id = :id", { id: req.companyAccountID })
+            .andWhere("company_account.verified = :verified", { verified: true })
+            .getOne();
+        }, `Couldn't find company account with ID ${req.companyAccountID}`);
+      } catch (error) {
+        // reject because a verified account could not be found and thus can't post a job
+        res.sendStatus(403)
+      }
 
       companyAccount.company = await Helpers.doSuccessfullyOrFail(async () => {
         return await conn.createQueryBuilder()
