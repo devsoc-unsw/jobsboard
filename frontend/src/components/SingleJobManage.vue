@@ -20,12 +20,16 @@
       :description="description"
       :actAsLink="actAsLink"
       >
-      <Button @buttonCallback="approveJob">
-        Approve
-      </Button>
-      <Button @buttonCallback="rejectJob">
-        Reject
-      </Button>
+      <GreenStandardButton>
+        <Button @callback="approveJob">
+          Approve
+        </Button>
+      </GreenStandardButton>
+      <RedStandardButton>
+        <Button @callback="rejectJob">
+          Reject
+        </Button>
+      </RedStandardButton>
     </JobListingMinimal>
   </div>
 </template>
@@ -37,6 +41,8 @@ import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
+import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
+import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
 
 export default Vue.extend({
   name: "SingleJobManage",
@@ -45,6 +51,8 @@ export default Vue.extend({
     SuccessBox,
     ErrorBox,
     Button,
+    GreenStandardButton,
+    RedStandardButton
   },
   data() {
     return {

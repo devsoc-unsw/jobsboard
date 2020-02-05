@@ -27,9 +27,11 @@
         @keyup.enter="performCompanyLogin()"
       />
       <br/>
-      <Button @buttonCallback="performCompanyLogin">
-        Login
-      </Button>
+      <StandardButton>
+        <Button @callback="performCompanyLogin">
+          Login
+        </Button>
+      </StandardButton>
       <br/>
       Not a company? <router-link to="/login/student">Student Login</router-link>
       <br/>
@@ -47,6 +49,7 @@ import { Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 
 // config
 import config from "@/config/config";
@@ -57,6 +60,7 @@ export default Vue.extend({
     LeftHalfPageTemplate,
     ErrorBox,
     Button,
+    StandardButton,
   },
   data() {
     return {

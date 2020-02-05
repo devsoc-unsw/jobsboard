@@ -4,12 +4,17 @@
     <div class="homeBox">
       <h1>Welcome!</h1>
       <div class="buttonBox">
-        <Button @buttonCallback="goToCompanyJobAdd">
-          Post Jobs
-        </Button>
-        <Button @buttonCallback="goToCompanyEdit">
-          Account Settings
-        </Button>
+        <StandardButton>
+          <Button @callback="goToCompanyJobAdd">
+            Post Jobs
+          </Button>
+        </StandardButton>
+        <br />
+        <StandardButton>
+          <Button @callback="goToCompanyEdit">
+            Account Settings
+          </Button>
+        </StandardButton>
       </div>
     </div>
   </LeftHalfPageTemplate>
@@ -21,6 +26,7 @@ import { Component, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "CompanyAccountHome",
@@ -28,6 +34,7 @@ export default Vue.extend({
     LeftHalfPageTemplate,
     LoggedInTemplate,
     Button,
+    StandardButton,
   },
   methods: {
     goToCompanyJobAdd() {

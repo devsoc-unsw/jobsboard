@@ -3,12 +3,16 @@
     <div class="stretchyPage">
       <div class="navbar">
         <div class="leftBox">
-          <Button @buttonCallback="goToJobs">
-            Jobs
-          </Button>
-          <Button @buttonCallback="logOut">
-            Log Out
-          </Button>
+          <InvertedStandardButton>
+            <Button @callback="goToJobs">
+              Jobs
+            </Button>
+          </InvertedStandardButton>
+          <InvertedStandardButton>
+            <Button @callback="logOut">
+              Log Out
+            </Button>
+          </InvertedStandardButton>
         </div>
         <h1>Discover student jobs and internships</h1>
         <br />
@@ -28,11 +32,13 @@
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
+import InvertedStandardButton from "@/components/buttons/InvertedStandardButton.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
   components: {
     Button,
+    InvertedStandardButton,
   },
   methods: {
     logOut() {
@@ -93,8 +99,9 @@ export default Vue.extend({
 .leftBox {
   display: flex;
   justify-content: flex-end;
-  align: right;
   color: $white;
+  width: 75%;
+  margin-left: 25%;
 }
 
 .navButtons {

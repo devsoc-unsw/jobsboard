@@ -3,12 +3,17 @@
     <div class="loginBox">
       <h1>Jobs for UNSW CSE Students</h1>
       <div class="buttonBox">
-        <Button @buttonCallback="toStudentLogin">
-          Student
-        </Button>
-        <Button @buttonCallback="toCompanyLogin">
-          Company
-        </Button>
+        <StandardButton>
+          <Button @callback="toStudentLogin">
+            Student
+          </Button>
+        </StandardButton>
+        <br />
+        <StandardButton>
+          <Button @callback="toCompanyLogin">
+            Company
+          </Button>
+        </StandardButton>
       </div>
     </div>
   </LeftHalfPageTemplate>
@@ -18,12 +23,14 @@
 import { Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "LoginPage",
   components: {
     LeftHalfPageTemplate,
     Button,
+    StandardButton,
   },
   methods: {
     toStudentLogin() {

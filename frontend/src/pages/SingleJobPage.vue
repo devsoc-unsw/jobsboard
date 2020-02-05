@@ -24,9 +24,11 @@
     </div>
     <div>
       <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
-        <button class="button studentButton" @click>
-          Apply now
-        </button>
+        <StandardButton>
+          <Button @click="applyNowButton">
+            Apply now
+          </Button>
+        </StandardButton>
       </a>
     </div>
     <div class="companyInformation">
@@ -63,6 +65,8 @@ import ErrorBox from "@/components/ErrorBox.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
+import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "JobsListPage",
@@ -72,6 +76,8 @@ export default Vue.extend({
     ErrorBox,
     JobListingMinimal,
     LoggedInTemplate,
+    Button,
+    StandardButton,
   },
   data() {
     return {
@@ -90,6 +96,9 @@ export default Vue.extend({
     };
   },
   methods: {
+    applyNowButton() {
+      window.open(this.applicationLink);
+    },
     getDetails(url: string) {
       return fetch(url, {
         method: "GET",

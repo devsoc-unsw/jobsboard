@@ -1,5 +1,5 @@
 <template>
-  <button @click="buttonCallback">
+  <button @click="callback">
     <slot />
   </button>
 </template>
@@ -10,9 +10,9 @@ import { Vue } from "vue-property-decorator";
 export default Vue.extend({
   name: "Button",
   methods: {
-    buttonCallback() {
-      this.$emit('buttonCallback');
-    }
+    callback() {
+      this.$emit('callback');
+    },
   }
 });
 </script>

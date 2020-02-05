@@ -19,9 +19,11 @@
     {{ description }}
     <br />
     <br />
-    <Button @buttonCallback="verifyCompany">
-      Verify
-    </Button>
+    <GreenStandardButton>
+      <Button @callback="verifyCompany">
+        Verify
+      </Button>
+    </GreenStandardButton>
   </div>
 </template>
 
@@ -32,6 +34,7 @@ import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
+import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 
 export default Vue.extend({
   name: "SingleJobManage",
@@ -39,6 +42,7 @@ export default Vue.extend({
     SuccessBox,
     ErrorBox,
     Button,
+    GreenStandardButton,
   },
   data() {
     return {

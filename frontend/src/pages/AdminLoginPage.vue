@@ -25,9 +25,12 @@
         @keyup.enter="performAdminLogin()"
       />
       <br />
-      <Button @buttonCallback="performAdminLogin">
-        Login
-      </Button>
+      <br />
+      <StandardButton>
+        <Button @callback="performAdminLogin">
+          Login
+        </Button>
+      </StandardButton>
     </div>
   </LeftHalfPageTemplate>
 </template>
@@ -40,6 +43,7 @@ import { Component, Vue } from "vue-property-decorator";
 import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 
 // config
 import config from "@/config/config";
@@ -50,6 +54,7 @@ export default Vue.extend({
     LeftHalfPageTemplate,
     ErrorBox,
     Button,
+    StandardButton,
   },
   data() {
     return {

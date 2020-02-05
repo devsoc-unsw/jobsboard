@@ -2,10 +2,12 @@
   <div class="viewport">
     <div class="leftHalfWindowSection">
       <div class="homeBox">
-        <div v-if="loggedIn">
-          <button @click="logOut()">
-            Log Out
-          </button>
+        <div class="logoutDiv" v-if="loggedIn">
+          <StandardButton>
+            <Button @callback="logOut">
+              Log Out
+            </Button>
+          </StandardButton>
           <br/>
         </div>
         <slot />
@@ -16,9 +18,15 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "LeftHalfPageTemplate",
+  components: {
+    Button,
+    StandardButton,
+  },
   props: {
     loggedIn: {
       type: Boolean,
@@ -66,11 +74,14 @@ input, textarea {
   background: $white;
   text-align: center;
   text-decoration: none;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .buttonBox {
   padding: 2%;
-  margin-left: 15%;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .button {
@@ -93,5 +104,10 @@ input, textarea {
   border: 1px solid $blue;
   background: $white;
   color: $blue;
+}
+
+.logoutDiv {
+  width: 25%;
+  padding-left: 75%;
 }
 </style>
