@@ -148,6 +148,7 @@ export default class CompanyFunctions {
       } catch (error) {
         // reject because a verified account could not be found and thus can't post a job
         res.sendStatus(403)
+        return;
       }
 
       companyAccount.company = await Helpers.doSuccessfullyOrFail(async () => {

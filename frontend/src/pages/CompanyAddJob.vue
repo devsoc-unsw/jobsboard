@@ -40,9 +40,11 @@
         placeholder="Application Link"
         />
       <br />
-      <Button @buttonCallback="submitJobPost">
-        Post!
-      </Button>
+      <StandardButton>
+        <Button @callback="submitJobPost">
+          Post!
+        </Button>
+      </StandardButton>
   </div>
   </LeftHalfPageTemplate>
   </LoggedInTemplate>
@@ -59,6 +61,7 @@ import SuccessBox from "@/components/SuccessBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import BackButton from "@/components/buttons/back.vue";
 import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 
 // config
 import config from "@/config/config";
@@ -72,6 +75,7 @@ export default Vue.extend({
     LoggedInTemplate,
     BackButton,
     Button,
+    StandardButton,
   },
   data() {
     return {

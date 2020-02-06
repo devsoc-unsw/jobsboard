@@ -155,7 +155,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           pendingCompanyAccounts[companyAccountIndex].company = await getConnection()
           .createQueryBuilder()
           .relation(CompanyAccount, "company")
-          .of(pendingCompanyAccounts)
+          .of(pendingCompanyAccounts[companyAccountIndex])
           .loadOne();
         }
         return pendingCompanyAccounts;
