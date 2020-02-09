@@ -17,9 +17,9 @@ button {
   background: $blue;
   border: 1px solid $white;
   color: $white;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   text-align: center;
-  width: 75%;
+  width: fit-content();
   padding: 1rem;
 }
 

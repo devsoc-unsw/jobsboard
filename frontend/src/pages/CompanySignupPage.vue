@@ -18,6 +18,7 @@
         v-model="username"
         type="text"
         placeholder="username"
+        @keyup.enter="performSignup()"
       />
       <br/>
       <input
@@ -25,6 +26,7 @@
         v-model="password"
         type="password"
         placeholder="password"
+        @keyup.enter="performSignup()"
       />
       <br/>
       <input
@@ -32,6 +34,7 @@
         v-model="name"
         type="text"
         placeholder="company name"
+        @keyup.enter="performSignup()"
       />
       <br/>
       <input
@@ -39,14 +42,14 @@
         v-model="location"
         type="text"
         placeholder="location"
+        @keyup.enter="performSignup()"
       />
       <br/>
-      <input
-        class="button studentButton"
-        type="submit"
-        value="Create"
-        @click="validateInput() && performSignup()"
-      />
+      <StandardButton>
+        <Button @callback="performSignup">
+          Create
+        </Button>
+      </StandardButton>
       <br/>
       <br/>
       Already have an account? <router-link to="/login/company">Company Login</router-link>
@@ -60,6 +63,8 @@ import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import config from "@/config/config";
+import StandardButton from "@/components/buttons/StandardButton.vue";
+import Button from "@/components/buttons/button.vue";
 
 export default Vue.extend({
   name: "CompanySignupPage",
@@ -67,6 +72,8 @@ export default Vue.extend({
     LeftHalfPageTemplate,
     ErrorBox,
     SuccessBox,
+    Button,
+    StandardButton,
   },
   data() {
     return {
@@ -102,6 +109,9 @@ export default Vue.extend({
       return true;
     },
     async performSignup() {
+      if (!this.validateInput()) {
+        return;
+      }
       const response = await fetch(`${config.apiRoot}/company`, {
         method: "PUT",
         headers: {

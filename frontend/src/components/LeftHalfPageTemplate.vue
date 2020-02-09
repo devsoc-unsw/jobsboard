@@ -5,7 +5,7 @@
         <div class="logoutDiv" v-if="loggedIn">
           <StandardButton>
             <Button @callback="logOut">
-              Log Out
+              <font-awesome-icon icon="sign-out-alt" />
             </Button>
           </StandardButton>
           <br/>
@@ -44,14 +44,15 @@ export default Vue.extend({
 
 <style lang="scss">
 .leftHalfWindowSection {
-  width: 50%;
-  height: 100%;
+  width: 75%;
+  min-height: 100%;
   background: $white;
   margin-left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 0px 10px 1px black;
+  overflow: auto;
 }
 
 div {
@@ -61,11 +62,22 @@ div {
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
-  border-radius: 0.5rem;
+  /* border-radius: 0.2rem; */
   margin: 0.5rem;
   font-size: 1rem;
   padding: 1rem;
   width: inherit;
+
+  border-width: 0px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: $blue;
+  background: $white;
+  color: $blue;
+  padding: 1rem;
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
 }
 
 .homeBox {
@@ -82,28 +94,6 @@ input, textarea {
   padding: 2%;
   margin-left: auto !important;
   margin-right: auto !important;
-}
-
-.button {
-  min-width: 70%;
-  max-width: 70%;
-  border-radius: 0.5rem;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin: 1%;
-}
-
-.studentButton {
-  background: $blue;
-  color: $white;
-}
-
-.companyButton {
-  border: 1px solid $blue;
-  background: $white;
-  color: $blue;
 }
 
 .logoutDiv {

@@ -8,18 +8,15 @@
 import { Vue } from "vue-property-decorator";
 
 export default Vue.extend({
-  name: "StandardButton",
+  name: "DarkBlueStandardButton",
 });
 </script>
 
 <style scoped lang="scss">
 button {
-  border-width: 0px;
-  border-left-style: solid;
-  border-left-width: 5px;
-  border-left-color: $blue;
-  background: $white;
-  color: $blue;
+  background: $blue;
+  border: 1px solid $blue;
+  color: $white;
   border-radius: 0.2rem;
   text-align: center;
   width: fit-content();
@@ -30,7 +27,8 @@ button {
 }
 
 button:hover {
-  background: $blue;
+  background: $darkblue;
   color: $white;
+  border-color: $darkblue;
 }
 </style>

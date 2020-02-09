@@ -16,8 +16,19 @@ export default Vue.extend({
 .success {
   border: 1px solid rgb(30, 105, 50);
   padding: 2rem;
-  border-radius: 0.5rem;
-  background: $green;
-  color: $white;
+  /* border-radius: 0.5rem; */
+  background: rgba($green, 0.5);
+  color: $black;
+
+  border-width: 0px;
+  border-top-style: solid;
+  border-top-width: 5px;
+  border-top-color: $green;
+  border-radius: 0.2rem;
+  text-align: center;
+  width: fit-content();
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
 }
 </style>

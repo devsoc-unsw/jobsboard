@@ -24,11 +24,11 @@
     </div>
     <div>
       <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
-        <StandardButton>
+        <DarkBlueStandardButton>
           <Button @click="applyNowButton">
             Apply now
           </Button>
-        </StandardButton>
+        </DarkBlueStandardButton>
       </a>
     </div>
     <div class="companyInformation">
@@ -66,7 +66,7 @@ import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
+import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 
 export default Vue.extend({
   name: "JobsListPage",
@@ -77,7 +77,7 @@ export default Vue.extend({
     JobListingMinimal,
     LoggedInTemplate,
     Button,
-    StandardButton,
+    DarkBlueStandardButton,
   },
   data() {
     return {

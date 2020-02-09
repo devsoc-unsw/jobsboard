@@ -14,13 +14,19 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 button {
+  border-width: 0px;
+  border-left-style: solid;
+  border-left-width: 5px;
+  border-left-color: $red;
   background: $white;
-  border: 1px solid $red;
   color: $red;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
   text-align: center;
-  width: 75%;
+  width: fit-content();
   padding: 1rem;
+  margin: 1rem;
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {

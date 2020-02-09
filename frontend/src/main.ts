@@ -2,12 +2,22 @@ import Vue from "vue";
 import App from "./App.vue";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBuilding, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBuilding,
+  faChevronLeft,
+  faSignOutAlt,
+  faSuitcase,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import store from "./store/store";
 
-library.add(faBuilding, faChevronLeft);
+library.add(
+  faBuilding,
+  faChevronLeft,
+  faSignOutAlt,
+  faSuitcase
+);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -3,16 +3,16 @@
     <div class="stretchyPage">
       <div class="navbar">
         <div class="leftBox">
-          <InvertedStandardButton>
+          <DarkBlueStandardButton>
             <Button @callback="goToJobs">
-              Jobs
+              <font-awesome-icon icon="suitcase" />
             </Button>
-          </InvertedStandardButton>
-          <InvertedStandardButton>
+          </DarkBlueStandardButton>
+          <DarkBlueStandardButton>
             <Button @callback="logOut">
-              Log Out
+              <font-awesome-icon icon="sign-out-alt" />
             </Button>
-          </InvertedStandardButton>
+          </DarkBlueStandardButton>
         </div>
         <h1>Discover student jobs and internships</h1>
         <br />
@@ -32,13 +32,13 @@
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
-import InvertedStandardButton from "@/components/buttons/InvertedStandardButton.vue";
+import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
   components: {
     Button,
-    InvertedStandardButton,
+    DarkBlueStandardButton,
   },
   methods: {
     logOut() {
@@ -73,7 +73,7 @@ export default Vue.extend({
 
 .searchBar {
   padding: 1.25%;
-  border-radius: 0.75rem;
+  border-radius: 0.2rem;
   text-align: center;
   width: 95%;
 }
