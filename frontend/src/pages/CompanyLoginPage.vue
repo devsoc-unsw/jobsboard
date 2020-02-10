@@ -27,7 +27,6 @@
         @keyup.enter="performCompanyLogin()"
       />
       <br/>
-      <br/>
       <StandardButton>
         <Button @callback="performCompanyLogin">
           Login

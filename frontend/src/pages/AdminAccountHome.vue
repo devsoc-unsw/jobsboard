@@ -9,7 +9,6 @@
           Pending Jobs
         </Button>
       </StandardButton>
-      <br />
       <StandardButton>
         <Button @callback="goToAdminCompanyPendingVerification">
           Pending Company Verification

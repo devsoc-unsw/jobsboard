@@ -9,7 +9,6 @@
             Post Jobs
           </Button>
         </StandardButton>
-        <br />
         <StandardButton>
           <Button @callback="goToCompanyEdit">
             Account Settings

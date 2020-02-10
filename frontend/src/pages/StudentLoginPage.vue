@@ -15,7 +15,6 @@
       <br/>
       <input name="password" v-model="password" type="password" placeholder="zPass" @keyup.enter="performLogin()"/>
       <br/>
-      <br/>
       <StandardButton>
         <Button @callback="performLogin">
           Login

@@ -39,6 +39,7 @@ html, body {
   h2 {
     font-weight: 100;
   }
+  overflow-y: overlay;
 }
 
 .viewport {

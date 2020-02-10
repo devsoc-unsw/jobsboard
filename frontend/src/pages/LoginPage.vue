@@ -8,7 +8,6 @@
             Student
           </Button>
         </StandardButton>
-        <br />
         <StandardButton>
           <Button @callback="toCompanyLogin">
             Company

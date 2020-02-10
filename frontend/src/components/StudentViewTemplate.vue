@@ -81,7 +81,7 @@ export default Vue.extend({
 .content {
   background: $grey;
   padding: 2rem;
-  min-height: 70%;
+  min-height: 10%;
   flex: 1 1 auto;
 }
 
@@ -93,7 +93,7 @@ export default Vue.extend({
 .stretchyPage {
   display: flex;
   flex-flow: column;
-  height: 100%;
+  min-height: 100%;
 }
 
 .leftBox {

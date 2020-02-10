@@ -25,7 +25,6 @@
         @keyup.enter="performAdminLogin()"
       />
       <br />
-      <br />
       <StandardButton>
         <Button @callback="performAdminLogin">
           Login
