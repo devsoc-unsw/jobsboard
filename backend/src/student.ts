@@ -3,11 +3,11 @@ import {
   getRepository
 } from "typeorm";
 import { Job } from "./entity/job";
-import Helpers from "./helpers";
+import Helpers, { IResponseWithStatus } from "./helpers";
 
 export default class StudentFunctions {
   public static async GetAllActiveJobs(_: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       const jobs = await getRepository(Job)
         .createQueryBuilder()
         .select(["Company.name", "Company.location", "Company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
@@ -25,15 +25,14 @@ export default class StudentFunctions {
         newJob.id = job.id;
         return newJob;
       });
-      res.send(fixedJobs);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: fixedJobs } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async GetJob(req: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       Helpers.requireParameters(req.params.jobID);
       const jobInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
@@ -45,10 +44,9 @@ export default class StudentFunctions {
           .getOne();
       }, `Couldn't find job with ID: ${req.params.jobID}`);
 
-      res.send(jobInfo);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: jobInfo } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 }

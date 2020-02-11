@@ -7,14 +7,14 @@ import {
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
-import Helpers from "./helpers";
+import Helpers, { IResponseWithStatus } from "./helpers";
 import Secrets from "./secrets";
 import MailFunctions from "./mail";
 import Logger from "./logging";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       const companyInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Company)
           .createQueryBuilder()
@@ -23,15 +23,14 @@ export default class CompanyFunctions {
           .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
           .getOne();
       }, `Company ${req.params.companyID} not found.`);
-      res.send(companyInfo);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: companyInfo } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async GetJobsFromCompany(req: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
@@ -43,15 +42,14 @@ export default class CompanyFunctions {
           .getMany();
       }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
 
-      res.send(companyJobs);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: companyJobs } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async CreateCompany(req: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       // verify input paramters
       const msg = {
         location: req.body.location,
@@ -77,9 +75,7 @@ export default class CompanyFunctions {
         .getOne();
       if (companyAccountUsernameSearchResult !== undefined || companyNameSearchResult !== undefined) {
         // company exists, send conflict error
-        res.sendStatus(409);
-        next();
-        return;
+        return { status: 409, msg: undefined } as IResponseWithStatus;
       }
       // if there is no conflict, create the company account and company record
       const newCompany = new Company();
@@ -107,20 +103,16 @@ export default class CompanyFunctions {
         CSESoc Jobs Board Administrator
         `,
       );
-      res.sendStatus(200);
-    } catch (error) {
-      Logger.Error(error);
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: undefined } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async CreateJob(req: any, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       if (req.companyAccountID === undefined) {
-        res.sendStatus(401);
-        next();
-        return;
+        return { status: 401, msg: undefined } as IResponseWithStatus;
       }
       // ensure required parameters are present
       const msg = {
@@ -150,9 +142,7 @@ export default class CompanyFunctions {
         }, `Couldn't find company account with ID ${req.companyAccountID}`);
       } catch (error) {
         // reject because a verified account could not be found and thus can't post a job
-        res.sendStatus(403)
-        next();
-        return;
+        return { status: 403, msg: undefined } as IResponseWithStatus;
       }
 
       companyAccount.company.jobs = await Helpers.doSuccessfullyOrFail(async () => {
@@ -191,11 +181,14 @@ export default class CompanyFunctions {
         CSESoc Jobs Board Administrator
         `,
       );
-      res.send({ id: newJobID });
-    } catch (error) {
-      Logger.Error(error);
-      res.sendStatus(400);
-    }
-    next();
+      return {
+        status: 200,
+        msg: {
+          id: newJobID
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 }

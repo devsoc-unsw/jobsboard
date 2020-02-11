@@ -7,13 +7,13 @@ import {
 import { Job } from "./entity/job";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
-import Helpers from "./helpers";
+import Helpers, { IResponseWithStatus } from "./helpers";
 import MailFunctions from "./mail";
 import Logger from "./logging";
 
 export default class AdminFunctions {
   public static async ApproveJobRequest(req: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
 
@@ -60,15 +60,14 @@ export default class AdminFunctions {
         CSESoc Jobs Board Administrator
         `,
       );
-      res.sendStatus(200);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: undefined } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async RejectJobRequest(req: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
 
@@ -114,18 +113,17 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         CSESoc Jobs Board Administrator
         `,
       );
-      res.sendStatus(200);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: undefined } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async GetPendingJobs(_: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       let pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
-        .createQueryBuilder()
+          .createQueryBuilder()
           .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .where("job.approved = :approved", { approved: false })
           .andWhere("job.hidden = :hidden", { hidden: false })
@@ -139,47 +137,43 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .of(pendingJobs[jobIndex])
           .loadOne();
       }
-
-      res.send(pendingJobs);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: pendingJobs } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async GetPendingCompanyVerifications(_: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       let pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
         const pendingCompanyAccounts = await getRepository(CompanyAccount)
-        .createQueryBuilder()
-        .select("CompanyAccount.id")
-        .where("CompanyAccount.verified = :verified", { verified: false })
-        .getMany();
+          .createQueryBuilder()
+          .select("CompanyAccount.id")
+          .where("CompanyAccount.verified = :verified", { verified: false })
+          .getMany();
         for (let companyAccountIndex = 0; companyAccountIndex < pendingCompanyAccounts.length; companyAccountIndex++) {
           pendingCompanyAccounts[companyAccountIndex].company = await getConnection()
-          .createQueryBuilder()
-          .relation(CompanyAccount, "company")
-          .of(pendingCompanyAccounts[companyAccountIndex])
-          .loadOne();
+            .createQueryBuilder()
+            .relation(CompanyAccount, "company")
+            .of(pendingCompanyAccounts[companyAccountIndex])
+            .loadOne();
         }
         return pendingCompanyAccounts;
       }, `Couldn't find any pending company verifications`);
-      res.send(pendingCompanyVerifications);
-    } catch (error) {
-      Logger.Error(error);
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: pendingCompanyVerifications } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   public static async VerifyCompanyAccount(req: Request, res: Response, next: NextFunction) {
-    try {
+    Helpers.catchAndLogError(res, async () => {
       let pendingCompany = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(CompanyAccount)
-        .createQueryBuilder()
-        .where("CompanyAccount.id = :id", { id: req.params.companyAccountID })
-        .andWhere("CompanyAccount.verified = :verified", { verified: false })
-        .getOne();
+          .createQueryBuilder()
+          .where("CompanyAccount.id = :id", { id: req.params.companyAccountID })
+          .andWhere("CompanyAccount.verified = :verified", { verified: false })
+          .getOne();
       }, `Couldn't find any pending company verifications`);
 
       await getConnection().createQueryBuilder()
@@ -217,11 +211,9 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         CSESoc Jobs Board Administrator
         `,
       );
-
-      res.sendStatus(200);
-    } catch (error) {
-      res.sendStatus(400);
-    }
-    next();
+      return { status: 200, msg: undefined } as IResponseWithStatus;
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 }

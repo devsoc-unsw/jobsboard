@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
   Connection,
   getConnection,
@@ -8,7 +8,7 @@ import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
-import Helpers from "./helpers";
+import Helpers, { IResponseWithStatus } from "./helpers";
 import JWT from "./jwt";
 import Logger from "./logging";
 import Secrets from "./secrets";
@@ -30,8 +30,8 @@ export { IToken, AccountType };
 
 export default class Auth {
   // Student-based authentication functions
-  public static async AuthenticateStudent(req: Request, res: Response) {
-    try {
+  public static async AuthenticateStudent(req: Request, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
       const msg = req.body;
       Helpers.requireParameters(msg.zID);
       Helpers.requireParameters(msg.password);
@@ -41,18 +41,23 @@ export default class Auth {
           id: msg.zID,
           type: AccountType.Student,
         };
-        res.send({ token: JWT.create(token) });
+        return {
+          status: 200,
+          msg: { 
+            token: JWT.create(token) 
+          } 
+        } as IResponseWithStatus;
       } else {
         throw new Error("Invalid credentials");
       }
-    } catch (error) {
-      res.sendStatus(400);
-    }
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   // Company-based authentication functions
-  public static async AuthenticateCompany(req: Request, res: Response) {
-    try {
+  public static async AuthenticateCompany(req: Request, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
       const msg = { username: req.body.username, password: req.body.password };
       Helpers.requireParameters(msg.username);
       Helpers.requireParameters(msg.password);
@@ -72,18 +77,23 @@ export default class Auth {
           type: AccountType.Company,
         };
         // credentials match, so grant them a token
-        res.send({ token: JWT.create(token) });
+        return {
+          status: 200,
+          msg: {
+            token: JWT.create(token)
+          }
+        } as IResponseWithStatus;
       } catch (error) {
-        res.sendStatus(401);
+        return { status: 401, msg: undefined } as IResponseWithStatus;
       }
-    } catch (error) {
-      res.sendStatus(400);
-    }
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   // admin-based authentication functions
-  public static async AuthenticateAdmin(req: Request, res: Response) {
-    try {
+  public static async AuthenticateAdmin(req: Request, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
       const msg = { username: req.body.username, password: req.body.password };
       Helpers.requireParameters(msg.username);
       Helpers.requireParameters(msg.password);
@@ -103,13 +113,18 @@ export default class Auth {
           id: adminQuery.id,
           type: AccountType.Admin,
         };
-        res.send({ token: JWT.create(token) });
+        return {
+          status: 200,
+          msg: {
+            token: JWT.create(token)
+          }
+        } as IResponseWithStatus;
       } catch (error) {
-        res.sendStatus(401);
+        return { status: 401, msg: undefined } as IResponseWithStatus;
       }
-    } catch (error) {
-      res.sendStatus(400);
-    }
+    }, () => {
+      return { status: 400, msg: undefined } as IResponseWithStatus;
+    }, next);
   }
 
   // private functions to assist previous authentication functions

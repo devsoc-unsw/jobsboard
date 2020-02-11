@@ -1,4 +1,10 @@
 import Logger from "./logging";
+import { Response, NextFunction } from "express";
+
+interface IResponseWithStatus {
+  msg: any;
+  status: number;
+}
 
 export default class Helpers {
   public static requireParameters(result: any): void {
@@ -33,9 +39,29 @@ export default class Helpers {
   public static async doSuccessfullyOrFail(func: Function, failMessage: string) {
     const result = await func();
     if (result === undefined) {
-      Logger.Error(failMessage);
+      // Logger.Error(failMessage);
       throw new Error(failMessage);
     }
     return result;
   }
+
+  public static async catchAndLogError(res: Response, func: Function, funcOnError: Function, next: NextFunction) {
+    let response: IResponseWithStatus;
+    try {
+      response = await func();
+    } catch (error) {
+      Logger.Error(error);
+      response = await funcOnError();
+    }
+    if (response.msg === undefined) {
+      res.sendStatus(response.status);
+    } else {
+      res.status(response.status).send(response.msg);
+    }
+    next();
+  }
 }
+
+export {
+  IResponseWithStatus,
+};
