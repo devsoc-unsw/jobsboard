@@ -41,7 +41,6 @@ Logger.Init();
 const app = express();
 const port = process.env.SERVER_PORT;
 app.use(bodyParser.json());
-app.use(Middleware.genericLoggingMiddleware);
 app.use(helmet());
 // app.options("*", cors());
 if (process.env.NODE_ENV === "development") {
@@ -386,6 +385,8 @@ if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 }
+
+app.use(Middleware.genericLoggingMiddleware);
 
 app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {

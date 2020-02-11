@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
   Connection,
   getConnection,
@@ -13,11 +13,13 @@ import MailFunctions from "./mail";
 import Logger from "./logging";
 
 export default class CompanyFunctions {
-  public static async GetCompanyInfo(req: Request, res: Response) {
+  public static async GetCompanyInfo(req: Request, res: Response, next: NextFunction) {
     try {
       const companyInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Company)
           .createQueryBuilder()
+          .select(["Company.name", "Company.location", "Company.description"])
+          .leftJoinAndSelect("Company.jobs", "Job")
           .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
           .getOne();
       }, `Company ${req.params.companyID} not found.`);
@@ -25,33 +27,30 @@ export default class CompanyFunctions {
     } catch (error) {
       res.sendStatus(400);
     }
+    next();
   }
 
-  public static async GetJobsFromCompany(req: Request, res: Response) {
+  public static async GetJobsFromCompany(req: Request, res: Response, next: NextFunction) {
     try {
       const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Company)
+        return await getRepository(Job)
           .createQueryBuilder()
+          .leftJoinAndSelect("Job.company", "company")
           .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
-          .getOne();
+          .andWhere("Job.approved = :approved", { approved: true })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .getMany();
       }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
 
-      companyJobs.jobs = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getConnection()
-          .createQueryBuilder()
-          .relation(Company, "jobs")
-          .of(companyJobs)
-          .loadMany();
-      }, `Couldn't load jobs for company with ID: ${req.params.companyID}`);
-      // filter out any jobs that are not approved or are hidden
-      const fixedCompanyJobs = companyJobs.jobs.filter( (job: Job) => job.approved && !job.hidden);
-      res.send(fixedCompanyJobs);
+      res.send(companyJobs);
     } catch (error) {
       res.sendStatus(400);
     }
+    next();
   }
 
-  public static async CreateCompany(req: Request, res: Response) {
+  public static async CreateCompany(req: Request, res: Response, next: NextFunction) {
     try {
       // verify input paramters
       const msg = {
@@ -79,6 +78,7 @@ export default class CompanyFunctions {
       if (companyAccountUsernameSearchResult !== undefined || companyNameSearchResult !== undefined) {
         // company exists, send conflict error
         res.sendStatus(409);
+        next();
         return;
       }
       // if there is no conflict, create the company account and company record
@@ -112,12 +112,14 @@ export default class CompanyFunctions {
       Logger.Error(error);
       res.sendStatus(400);
     }
+    next();
   }
 
-  public static async CreateJob(req: any, res: Response) {
+  public static async CreateJob(req: any, res: Response, next: NextFunction) {
     try {
       if (req.companyAccountID === undefined) {
         res.sendStatus(401);
+        next();
         return;
       }
       // ensure required parameters are present
@@ -140,27 +142,41 @@ export default class CompanyFunctions {
       try {
         companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
           return await getRepository(CompanyAccount)
-            .createQueryBuilder("company_account")
-            .where("company_account.id = :id", { id: req.companyAccountID })
-            .andWhere("company_account.verified = :verified", { verified: true })
+            .createQueryBuilder()
+            .leftJoinAndSelect("CompanyAccount.company", "company")
+            .where("CompanyAccount.id = :id", { id: req.companyAccountID })
+            .andWhere("CompanyAccount.verified = :verified", { verified: true })
             .getOne();
         }, `Couldn't find company account with ID ${req.companyAccountID}`);
       } catch (error) {
         // reject because a verified account could not be found and thus can't post a job
         res.sendStatus(403)
+        next();
         return;
       }
 
-      companyAccount.company = await Helpers.doSuccessfullyOrFail(async () => {
-        return await conn.createQueryBuilder()
-          .relation(CompanyAccount, "company")
-          .of(companyAccount)
-          .loadOne();
-      }, `Couldn't load company for company account with ID ${req.companyAccountID}`);
+      companyAccount.company.jobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getConnection()
+          .createQueryBuilder()
+          .relation(Company, "jobs")
+          .of(companyAccount.company)
+          .loadMany();
+      }, `Cannot find jobs for company account with ID: ${req.companyAccountID}`);
 
-      newJob.company = companyAccount.company;
+      companyAccount.company.jobs.push(newJob);
 
-      await conn.manager.save(newJob);
+      await conn.manager.save(companyAccount);
+
+      const newJobID: number = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
+      Logger.Info(`Created job with id: ${newJobID}`);
+
+      // check to see if that job is queryable
+      const newJobQueryVerification = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Job)
+          .createQueryBuilder()
+          .where("Job.id = :id", { id: newJobID })
+          .getOne();
+      }, `Couldn't fetch the newly created job with ID: ${newJobID}`);
 
       MailFunctions.AddMailToQueue(
         companyAccount.username,
@@ -175,10 +191,11 @@ export default class CompanyFunctions {
         CSESoc Jobs Board Administrator
         `,
       );
-      res.send({ id: newJob.id });
+      res.send({ id: newJobID });
     } catch (error) {
       Logger.Error(error);
       res.sendStatus(400);
     }
+    next();
   }
 }

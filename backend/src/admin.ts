@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {
   Connection,
   getConnection,
@@ -12,7 +12,7 @@ import MailFunctions from "./mail";
 import Logger from "./logging";
 
 export default class AdminFunctions {
-  public static async ApproveJobRequest(req: Request, res: Response) {
+  public static async ApproveJobRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
@@ -64,9 +64,10 @@ export default class AdminFunctions {
     } catch (error) {
       res.sendStatus(400);
     }
+    next();
   }
 
-  public static async RejectJobRequest(req: Request, res: Response) {
+  public static async RejectJobRequest(req: Request, res: Response, next: NextFunction) {
     try {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
@@ -117,13 +118,15 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     } catch (error) {
       res.sendStatus(400);
     }
+    next();
   }
 
-  public static async GetPendingJobs(_: Request, res: Response) {
+  public static async GetPendingJobs(_: Request, res: Response, next: NextFunction) {
     try {
       let pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
         .createQueryBuilder()
+          .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .where("job.approved = :approved", { approved: false })
           .andWhere("job.hidden = :hidden", { hidden: false })
           .getMany();
@@ -141,9 +144,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     } catch (error) {
       res.sendStatus(400);
     }
+    next();
   }
 
-  public static async GetPendingCompanyVerifications(_: Request, res: Response) {
+  public static async GetPendingCompanyVerifications(_: Request, res: Response, next: NextFunction) {
     try {
       let pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
         const pendingCompanyAccounts = await getRepository(CompanyAccount)
@@ -165,9 +169,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       Logger.Error(error);
       res.sendStatus(400);
     }
+    next();
   }
 
-  public static async VerifyCompanyAccount(req: Request, res: Response) {
+  public static async VerifyCompanyAccount(req: Request, res: Response, next: NextFunction) {
     try {
       let pendingCompany = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(CompanyAccount)
@@ -217,5 +222,6 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     } catch (error) {
       res.sendStatus(400);
     }
+    next();
   }
 }

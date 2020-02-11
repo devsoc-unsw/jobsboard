@@ -10,8 +10,10 @@ import {
 
 export default class Middleware {
   public static genericLoggingMiddleware(req: Request, resp: Response, next: NextFunction): void {
-    next();
     Logger.Info(`${req.method} ${resp.statusCode} - ${req.path}`);
+    if (next) {
+      next();
+    }
   }
 
   public static authenticateStudentMiddleware(req: any, res: Response, next: NextFunction) {

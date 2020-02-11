@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, OneToMany, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, OneToOne, OneToMany, JoinColumn, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Job } from "./job";
 import { CompanyAccount } from "./company_account";
 
@@ -23,6 +23,7 @@ export class Company {
     cascade: true,
     onDelete: "CASCADE",
   })
+  @JoinColumn()
   public jobs: Job[];
 
   @OneToOne(_ => CompanyAccount, companyAccount => companyAccount.company)

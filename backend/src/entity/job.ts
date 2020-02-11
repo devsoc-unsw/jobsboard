@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Company } from "./company";
 
 @Entity()
@@ -28,7 +28,6 @@ export class Job {
   public hidden: boolean;
 
   @ManyToOne((_) => Company, (company) => company.jobs)
-  @JoinColumn()
   public company: Company;
 
   @CreateDateColumn()

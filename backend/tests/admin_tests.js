@@ -135,7 +135,7 @@ describe("admin", () => {
       .send(newCompanyCredentials)
       .expect(200);
 
-      this.companyToken = await server
+      this.unverifiedCompanyToken = await server
       .post("/authenticate/company")
       .send({
         username: newCompanyCredentials.username,
@@ -149,9 +149,9 @@ describe("admin", () => {
       .send({ username: "admin", password: "admin" })
       .then(response => response.body.token);
       // and create a sample job to approve
-      this.approvingJobID = await server
+      this.unverifiedApprovingJobID = await server
       .put("/jobs")
-      .set('Authorization', this.companyToken)
+      .set('Authorization', this.unverifiedCompanyToken)
       .send({
         role: "some sample role title",
         description: "sample role description",
@@ -161,9 +161,9 @@ describe("admin", () => {
       .then(response => response.body.id);
 
       // and create a sample job to reject
-      this.rejectingJobID = await server
+      this.unverifiedRejectingJobID = await server
       .put("/jobs")
-      .set('Authorization', this.companyToken)
+      .set('Authorization', this.unverifiedCompanyToken)
       .send({
         role: "some sample role title that's rejectable",
         description: "sample role description",
@@ -261,7 +261,7 @@ describe("admin", () => {
       "job can be approved with valid jobID",
       function (done) {
         server
-        .patch(`/job/${this.approvingJobID}/approve`)
+        .patch(`/job/${this.unverifiedApprovingJobID}/approve`)
         .set('Authorization', this.adminToken)
         .expect(400)
         .end( function(_, res) {
@@ -275,7 +275,7 @@ describe("admin", () => {
       "job cannot be re-approved with valid jobID",
       function (done) {
         server
-        .patch(`/job/${this.approvingJobID}/approve`)
+        .patch(`/job/${this.unverifiedApprovingJobID}/approve`)
         .set('Authorization', this.adminToken)
         .expect(400)
         .end( function(_, res) {
@@ -289,7 +289,7 @@ describe("admin", () => {
       "job can be rejected with valid jobID",
       function (done) {
         server
-        .patch(`/job/${this.rejectingJobID}/reject`)
+        .patch(`/job/${this.unverifiedRejectingJobID}/reject`)
         .set('Authorization', this.adminToken)
         .expect(400)
         .end( function(_, res) {
@@ -303,7 +303,7 @@ describe("admin", () => {
       "job cannot be re-rejectd with valid jobID",
       function (done) {
         server
-        .patch(`/job/${this.rejectingJobID}/reject`)
+        .patch(`/job/${this.unverifiedRejectingJobID}/reject`)
         .set('Authorization', this.adminToken)
         .expect(400)
         .end( function(_, res) {
@@ -346,7 +346,7 @@ describe("admin", () => {
         function (done) {
           server
           .get(`/jobs/pending`)
-          .set('Authorization', this.companyToken)
+          .set('Authorization', this.unverifiedCompanyToken)
           .expect(401)
           .end( function(_, res) {
             expect(res.status).to.equal(401);
@@ -391,7 +391,7 @@ describe("admin", () => {
       .send(newCompanyCredentials)
       .expect(200);
 
-      this.companyToken = await server
+      this.verifiedCompanyToken = await server
       .post("/authenticate/company")
       .send({
         username: newCompanyCredentials.username,
@@ -420,11 +420,11 @@ describe("admin", () => {
         .expect(200);
 
       // and create a sample job to approve
-      this.approvingJobID = await server
+      this.verifiedApprovingJobID = await server
       .put("/jobs")
-      .set('Authorization', this.companyToken)
+      .set('Authorization', this.verifiedCompanyToken)
       .send({
-        role: "some sample role title",
+        role: "some sample role title random random",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
       })
@@ -432,11 +432,11 @@ describe("admin", () => {
       .then(response => response.body.id);
 
       // and create a sample job to reject
-      this.rejectingJobID = await server
+      this.verifiedRejectingJobID = await server
       .put("/jobs")
-      .set('Authorization', this.companyToken)
+      .set('Authorization', this.verifiedCompanyToken)
       .send({
-        role: "some sample role title that's rejectable",
+        role: "some sample role title that's rejectable one two three",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
       })
@@ -529,38 +529,10 @@ describe("admin", () => {
     );
 
     it(
-      "job can be approved with valid jobID",
-      function (done) {
-        server
-        .patch(`/job/${this.approvingJobID}/approve`)
-        .set('Authorization', this.adminToken)
-        .expect(200)
-        .end( function(_, res) {
-          expect(res.status).to.equal(200);
-          done();
-        });
-      }
-    );
-
-    it(
-      "job cannot be re-approved with valid jobID",
-      function (done) {
-        server
-        .patch(`/job/${this.approvingJobID}/approve`)
-        .set('Authorization', this.adminToken)
-        .expect(400)
-        .end( function(_, res) {
-          expect(res.status).to.equal(400);
-          done();
-        });
-      }
-    );
-
-    it(
       "job can be rejected with valid jobID",
       function (done) {
         server
-        .patch(`/job/${this.rejectingJobID}/reject`)
+        .patch(`/job/${this.verifiedRejectingJobID}/reject`)
         .set('Authorization', this.adminToken)
         .expect(200)
         .end( function(_, res) {
@@ -574,7 +546,7 @@ describe("admin", () => {
       "job cannot be re-rejectd with valid jobID",
       function (done) {
         server
-        .patch(`/job/${this.rejectingJobID}/reject`)
+        .patch(`/job/${this.verifiedRejectingJobID}/reject`)
         .set('Authorization', this.adminToken)
         .expect(400)
         .end( function(_, res) {
@@ -583,5 +555,34 @@ describe("admin", () => {
         });
       }
     );
+
+    it(
+      "job can be approved with valid jobID",
+      function (done) {
+        server
+        .patch(`/job/${this.verifiedApprovingJobID}/approve`)
+        .set('Authorization', this.adminToken)
+        .expect(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+      }
+    );
+
+    it(
+      "job cannot be re-approved with valid jobID",
+      function (done) {
+        server
+        .patch(`/job/${this.verifiedApprovingJobID}/approve`)
+        .set('Authorization', this.adminToken)
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
   });
 });
