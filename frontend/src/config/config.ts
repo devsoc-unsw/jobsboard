@@ -1,4 +1,4 @@
 export default {
-  apiRoot: "http://127.0.0.1:8080",
+  apiRoot: "https://jb.adamtiz.zone:80",
   sessionStorageApiTokenKeyName: "jobs-board-api-token",
 };
