@@ -14,6 +14,7 @@
             </Button>
           </DarkBlueStandardButton>
         </div>
+        <img class="main-logo-student" :src="logo" />
         <h1>Discover student jobs and internships</h1>
         <br />
         <div>
@@ -33,6 +34,7 @@
 import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
+import logo from "@/assets/logos/csesocgreyblue.png";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
@@ -52,6 +54,7 @@ export default Vue.extend({
   data() {
     return {
       apiToken: this.$store.getters.getApiToken,
+      logo: logo,
     };
   },
   async mounted() {
@@ -127,5 +130,9 @@ export default Vue.extend({
 .studentButton {
   background: $blue;
   color: $white;
+}
+
+.main-logo-student {
+  width: 30%;
 }
 </style>
