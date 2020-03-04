@@ -38,7 +38,7 @@ export default Vue.extend({
   methods: {
     seeJob() {
       if (this.actAsLink) {
-        this.$router.push({ path: "/job", query: { job: String(this.jobID) } });
+        this.$router.push({ name: "job", params: { jobID: String(this.jobID) } });
       }
     },
   },

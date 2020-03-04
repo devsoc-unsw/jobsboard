@@ -25,9 +25,9 @@
     <div>
       <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
         <DarkBlueStandardButton>
-          <Button @click="applyNowButton">
-            Apply now
-          </Button>
+        <Button @click="applyNowButton">
+          Apply now
+        </Button>
         </DarkBlueStandardButton>
       </a>
     </div>
@@ -108,47 +108,55 @@ export default Vue.extend({
         },
       });
     },
+    async fetchJob() {
+      // determine whether there is an API key present and redirect if not present
+      if (this.apiToken === undefined) {
+        this.$router.push("/login");
+        return;
+      }
+
+      // load the jobs using the api token
+      const response = await fetch(`${config.apiRoot}/job/${this.$route.params.jobID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.apiToken,
+        },
+      });
+
+      if (response.ok) {
+        const msg = await response.json();
+        this.role = msg.role;
+        this.company = msg.company.name;
+        this.description = msg.description;
+        this.companyDescription = msg.company.description;
+        this.location = msg.company.location;
+        this.companyID = msg.company.id;
+        this.applicationLink = msg.applicationLink;
+      } else {
+        this.error = true;
+        this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+      }
+
+      const jobResponse = await this.getDetails(`${config.apiRoot}/company/${this.companyID}/jobs`);
+
+      if (jobResponse.ok) {
+        const msg = await jobResponse.json();
+        // TODO(ad-t): Fix below, as it will always be true
+        this.jobs = msg.filter((job: any) => job.id !== this.jobID);
+      } else {
+        this.error = true;
+        this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
+      }
+    }
+  },
+  watch: {
+    '$route.params.jobID': function(id) {
+      this.fetchJob()
+    },
   },
   async mounted() {
-    // determine whether there is an API key present and redirect if not present
-    if (this.apiToken === undefined) {
-      this.$router.push("/login");
-      return;
-    }
-
-    // load the jobs using the api token
-    const response = await fetch(`${config.apiRoot}/job/${this.$route.query.job}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
-      },
-    });
-
-    if (response.ok) {
-      const msg = await response.json();
-      this.role = msg.role;
-      this.company = msg.company.name;
-      this.description = msg.description;
-      this.companyDescription = msg.company.description;
-      this.location = msg.company.location;
-      this.companyID = msg.company.id;
-      this.applicationLink = msg.applicationLink;
-    } else {
-      this.error = true;
-      this.errorMsg = "Unable to load jobs at this time. Please try again later.";
-    }
-
-    const jobResponse = await this.getDetails(`${config.apiRoot}/company/${this.companyID}/jobs`);
-
-    if (jobResponse.ok) {
-      const msg = await jobResponse.json();
-      // TODO(ad-t): Fix below, as it will always be true
-      this.jobs = msg.filter((job: any) => job.id !== this.jobID);
-    } else {
-      this.error = true;
-      this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
-    }
+    this.fetchJob();
   },
 });
 </script>

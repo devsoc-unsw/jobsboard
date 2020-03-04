@@ -55,8 +55,10 @@ export default new Router({
     path: "/jobs",
     component: JobsListPage,
   }, {
-    path: "/job",
+    path: "/job/:jobID",
     component: SingleJobPage,
+    props: true,
+    name: "job",
   }, {
     path: "*",
     component: PageNotFoundPage,
