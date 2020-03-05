@@ -34,7 +34,7 @@
 import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
-import logo from "@/assets/logos/csesocgreyblue.png";
+import logo from "@/assets/logos/csesocwhite.png";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
