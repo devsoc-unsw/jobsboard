@@ -17,6 +17,8 @@ import Secrets from "./secrets";
 interface IToken {
   id: number;
   type: AccountType;
+  lastRequestTimestamp: number;
+  ipAddress: string;
 }
 
 // differentiating between account types
@@ -40,6 +42,8 @@ export default class Auth {
         const token: IToken = {
           id: msg.zID,
           type: AccountType.Student,
+          lastRequestTimestamp: Date.now(),
+          ipAddress: req.ip,
         };
         return {
           status: 200,
@@ -75,6 +79,8 @@ export default class Auth {
         const token: IToken = {
           id: companyQuery.id,
           type: AccountType.Company,
+          lastRequestTimestamp: Date.now(),
+          ipAddress: req.ip,
         };
         // credentials match, so grant them a token
         return {
@@ -112,6 +118,8 @@ export default class Auth {
         const token: IToken = {
           id: adminQuery.id,
           type: AccountType.Admin,
+          lastRequestTimestamp: Date.now(),
+          ipAddress: req.ip,
         };
         return {
           status: 200,
