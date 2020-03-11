@@ -13,24 +13,26 @@
       </ErrorBox>
     </div>
     <br />
-    <JobListingMinimal
-      :jobID="jobID"
-      :role="role"
-      :company="company"
-      :description="description"
-      :actAsLink="actAsLink"
-      >
-      <GreenStandardButton>
+    <div v-if="!success">
+      <JobListingMinimal
+        :jobID="jobID"
+        :role="role"
+        :company="company"
+        :description="description"
+        :actAsLink="actAsLink"
+        >
+        <GreenStandardButton>
         <Button @callback="approveJob">
           Approve
         </Button>
-      </GreenStandardButton>
-      <RedStandardButton>
+        </GreenStandardButton>
+        <RedStandardButton>
         <Button @callback="rejectJob">
           Reject
         </Button>
-      </RedStandardButton>
-    </JobListingMinimal>
+        </RedStandardButton>
+      </JobListingMinimal>
+    </div>
   </div>
 </template>
 
@@ -84,6 +86,8 @@ export default Vue.extend({
       if (response.ok) {
         this.success = true;
         this.successMsg = "Job successfully approved!";
+        this.error = false;
+        this.close();
       } else {
         this.error = true;
         this.errorMsg = "Error in processing approval. Please try again later.";
@@ -101,11 +105,19 @@ export default Vue.extend({
       if (response.ok) {
         this.success = true;
         this.successMsg = "Job successfully rejected!";
+        this.error = false;
+        this.close();
       } else {
         this.error = true;
         this.errorMsg = "Error in processing rejection. Please try again later.";
       }
     },
+    close() {
+      setTimeout(() => {
+        this.$destroy();
+        this.$el.parentNode!.removeChild(this.$el);
+      }, 5000);
+    }
   },
 });
 </script>
