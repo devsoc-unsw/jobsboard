@@ -12,18 +12,20 @@
       {{ errorMsg }}
       </ErrorBox>
     </div>
-    <br />
-    {{ name }} | {{ location }}
-    <br />
-    <br />
-    {{ description }}
-    <br />
-    <br />
-    <GreenStandardButton>
-      <Button @callback="verifyCompany">
-        Verify
-      </Button>
-    </GreenStandardButton>
+    <div v-if="!success">
+      <br />
+      {{ name }} | {{ location }}
+      <br />
+      <br />
+      {{ description }}
+      <br />
+      <br />
+      <GreenStandardButton>
+        <Button @callback="verifyCompany">
+          Verify
+        </Button>
+      </GreenStandardButton>
+    </div>
   </div>
 </template>
 
@@ -72,11 +74,18 @@ export default Vue.extend({
       if (response.ok) {
         this.success = true;
         this.successMsg = "Company successfully verified!";
+        this.close();
       } else {
         this.error = true;
         this.errorMsg = "Error in processing verification. Please try again later.";
       }
     },
+    close() {
+      setTimeout(() => {
+        this.$destroy();
+        this.$el.parentNode!.removeChild(this.$el);
+      }, 5000);
+    }
   },
 });
 </script>
