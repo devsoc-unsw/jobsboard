@@ -1,6 +1,8 @@
 version: '3.3'
 services:
   api:
+    environment:
+      - NODE_ENV=${NODE_ENV}
     build:
       context: .
       dockerfile: ./backend/Dockerfile
@@ -11,6 +13,8 @@ services:
     expose:
       - 8080
   frontend:
+    environment:
+      - NODE_ENV=${NODE_ENV}
     build:
       context: .
       dockerfile: ./frontend/Dockerfile
