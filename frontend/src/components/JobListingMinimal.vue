@@ -71,9 +71,15 @@ export default Vue.extend({
 }
 
 .jobDescriptionBox {
-  margin-left: 3%;
+  margin-left: 25%;
   width: 95%;
   text-align: left;
+}
+
+@media screen and (min-width: 900px) {
+  .jobDescriptionBox {
+    margin-left: 5%;
+  }
 }
 
 .roleHeading {

@@ -69,9 +69,25 @@ export default Vue.extend({
 .navbar {
   background: $blue;
   color: $white;
-  width: 50%;
+  width: 80%;
   margin: auto;
-  padding: 1.5rem;
+  padding: 0.5rem;
+}
+@media screen and (min-width: 900px) {
+  .navbar {
+    width: 50%;
+    padding: 1.5rem;
+  }
+  .searchBar {
+    margin-bottom: 0;
+  }
+  .content {
+    padding: 2rem;
+  }
+  .contentWidth {
+    width: 70%;
+    margin: auto;
+  }
 }
 
 .searchBar {
@@ -79,17 +95,19 @@ export default Vue.extend({
   border-radius: 0.2rem;
   text-align: center;
   width: 95%;
+  margin: 0;
+  margin-bottom: 1.5rem;
 }
 
 .content {
   background: $grey;
-  padding: 2rem;
+  /* padding: 0.5rem; */
   min-height: 10%;
   flex: 1 1 auto;
 }
 
 .contentWidth {
-  width: 70%;
+  width: 95%;
   margin: auto;
 }
 

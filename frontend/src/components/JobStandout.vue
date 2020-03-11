@@ -46,12 +46,15 @@ export default class JobStandout extends Vue {
 }
 
 .companyLogo {
-  min-width: 5%;
-  max-width: 5%;
-  font-size: 3em;
+  font-size: 4em;
   color: $grey;
   text-decoration: none;
   margin: auto;
+}
+@media screen and (min-width: 900px) {
+  .companyLogo {
+    font-size: 3em;
+  }
 }
 
 .back {

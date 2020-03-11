@@ -162,13 +162,29 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+@media screen and (min-width: 900px) {
+  .jobInformation {
+    font-weight: 100;
+    text-align: left;
+    padding: 0rem;
+  }
+
+  .companyInformation {
+    font-weight: 100;
+    text-align: left;
+    padding: 0rem;
+  }
+}
+
 .jobInformation {
   font-weight: 100;
   text-align: left;
+  padding: 1rem;
 }
 
 .companyInformation {
   font-weight: 100;
   text-align: left;
+  padding: 1rem;
 }
 </style>

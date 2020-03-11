@@ -56,7 +56,7 @@ export default Vue.extend({
 
 <style lang="scss">
 .leftHalfWindowSection {
-  width: 75%;
+  width: 100%;
   min-height: 100%;
   background: $white;
   margin-left: 0;
@@ -65,6 +65,12 @@ export default Vue.extend({
   justify-content: center;
   box-shadow: 0px 0px 10px 1px black;
   overflow: auto;
+}
+
+@media screen and (min-width: 900px) {
+  .leftHalfWindowSection {
+    width: 75%;
+  }
 }
 
 div {

@@ -129,4 +129,9 @@ export default Vue.extend({
   width: 100%;
   min-height: 100%;
 }
+@media screen and (max-width: 900px) {
+  input, textarea {
+    padding: 0rem;
+  }
+}
 </style>
