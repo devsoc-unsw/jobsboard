@@ -2,11 +2,19 @@ import JWT from "./jwt";
 import Logger from "./logging";
 
 import { NextFunction, Request, Response } from "express";
+import {
+  getConnection,
+  getRepository
+} from "typeorm";
+
+import Helpers from "./helpers";
 
 import { 
   AccountType,
   IToken,
 } from "./auth";
+
+import { Student } from "./entity/student";
 
 export default class Middleware {
   public static genericLoggingMiddleware(req: Request, resp: Response, next: NextFunction): void {
@@ -33,16 +41,37 @@ export default class Middleware {
     return jwt;
   }
 
-  public static authenticateStudentMiddleware(req: any, res: Response, next: NextFunction) {
+  public static async authenticateStudentMiddleware(req: any, res: Response, next: NextFunction) {
     try {
       // get JWT for student
-      const jwt: IToken = JWT.get(req.get("Authorization"));
+      const rawJWT = req.get("Authorization");
+      const jwt: IToken = JWT.get(rawJWT);
       // ensure the token is of the correct type
       Middleware.verifyAccountType(jwt.type, AccountType.Student);
+      // verify that this token is the latest valid token for this account
+      const studentQuery = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Student)
+        .createQueryBuilder()
+        .where("Student.zID = :zID", { zID: jwt.id })
+        .getOne();
+      }, `Couldn't find or create a student record with zID: ${jwt.id}`);
+      // check whether the tokens are equivalent
+      const tokenAsString = rawJWT as string;
+      if (tokenAsString !== studentQuery.latestValidToken) {
+        // tokens don't match, therefore the token is invalid and authentication
+        // is rejected
+        throw new Error("Provided student token doesn't match current tracked token");
+      }
       // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
       // update token properties if they appear to be consistent
       req.newJbToken = JWT.create(Middleware.updateTokenProperties(req, jwt));
+      // update token tracking in database
+      await getConnection().createQueryBuilder()
+        .update(Student)
+        .set({ latestValidToken: req.newJbToken as string})
+        .where("id = :id", { id: studentQuery.id })
+        .execute();
       // add the student zID to the request object
       req.studentZID = jwt.id;
       // continue
