@@ -13,7 +13,7 @@ import MailFunctions from "./mail";
 import Logger from "./logging";
 
 export default class CompanyFunctions {
-  public static async GetCompanyInfo(req: Request, res: Response, next: NextFunction) {
+  public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       const companyInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Company)
@@ -23,13 +23,24 @@ export default class CompanyFunctions {
           .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
           .getOne();
       }, `Company ${req.params.companyID} not found.`);
-      return { status: 200, msg: companyInfo } as IResponseWithStatus;
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          companyInfo: companyInfo
+        }
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 
-  public static async GetJobsFromCompany(req: Request, res: Response, next: NextFunction) {
+  public static async GetJobsFromCompany(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
@@ -42,13 +53,24 @@ export default class CompanyFunctions {
           .getMany();
       }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
 
-      return { status: 200, msg: companyJobs } as IResponseWithStatus;
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          companyJobs: companyJobs
+        }
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 
-  public static async CreateCompany(req: Request, res: Response, next: NextFunction) {
+  public static async CreateCompany(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       // verify input paramters
       const msg = {
@@ -75,7 +97,12 @@ export default class CompanyFunctions {
         .getOne();
       if (companyAccountUsernameSearchResult !== undefined || companyNameSearchResult !== undefined) {
         // company exists, send conflict error
-        return { status: 409, msg: undefined } as IResponseWithStatus;
+        return {
+          status: 409,
+          msg: {  
+            token: req.newJbToken
+          }
+        } as IResponseWithStatus;
       }
       // if there is no conflict, create the company account and company record
       const newCompany = new Company();
@@ -103,16 +130,31 @@ export default class CompanyFunctions {
         CSESoc Jobs Board Administrator
         `,
       );
-      return { status: 200, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 
   public static async CreateJob(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       if (req.companyAccountID === undefined) {
-        return { status: 401, msg: undefined } as IResponseWithStatus;
+        return {
+          status: 401,
+          msg: {
+            token: req.newJbToken
+          }
+        } as IResponseWithStatus;
       }
       // ensure required parameters are present
       const msg = {
@@ -142,7 +184,12 @@ export default class CompanyFunctions {
         }, `Couldn't find company account with ID ${req.companyAccountID}`);
       } catch (error) {
         // reject because a verified account could not be found and thus can't post a job
-        return { status: 403, msg: undefined } as IResponseWithStatus;
+        return {
+          status: 403,
+          msg: {
+            token: req.newJbToken
+          }
+        } as IResponseWithStatus;
       }
 
       companyAccount.company.jobs = await Helpers.doSuccessfullyOrFail(async () => {
@@ -184,11 +231,17 @@ export default class CompanyFunctions {
       return {
         status: 200,
         msg: {
+          token: req.newJbToken,
           id: newJobID
         }
       } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 }
