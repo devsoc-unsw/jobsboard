@@ -57,10 +57,11 @@ export default Vue.extend({
       },
     });
 
+    const msg = await response.json();
+    this.$store.dispatch("setApiToken", msg.token);
     if (response.ok) {
-      const msg = await response.json();
       this.success = true;
-      this.jobs = msg;
+      this.jobs = msg.pendingJobs;
     } else {
       this.error = true;
       this.errorMsg = "Failed to get pending jobs.";

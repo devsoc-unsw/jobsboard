@@ -124,15 +124,16 @@ export default Vue.extend({
         },
       });
 
+      const msg = await response.json();
+      this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
-        this.role = msg.role;
-        this.company = msg.company.name;
-        this.description = msg.description;
-        this.companyDescription = msg.company.description;
-        this.location = msg.company.location;
-        this.companyID = msg.company.id;
-        this.applicationLink = msg.applicationLink;
+        this.role = msg.job.role;
+        this.company = msg.job.company.name;
+        this.description = msg.job.description;
+        this.companyDescription = msg.job.company.description;
+        this.location = msg.job.company.location;
+        this.companyID = msg.job.company.id;
+        this.applicationLink = msg.job.applicationLink;
       } else {
         this.error = true;
         this.errorMsg = "Unable to load jobs at this time. Please try again later.";
@@ -140,10 +141,11 @@ export default Vue.extend({
 
       const jobResponse = await this.getDetails(`${config.apiRoot}/company/${this.companyID}/jobs`);
 
+      const companyJobMsg = await jobResponse.json();
+      this.$store.dispatch("setApiToken", companyJobMsg.token);
       if (jobResponse.ok) {
-        const msg = await jobResponse.json();
         // TODO(ad-t): Fix below, as it will always be true
-        this.jobs = msg.filter((job: any) => job.id !== this.jobID);
+        this.jobs = companyJobMsg.companyJobs.filter((job: any) => job.id !== this.jobID);
       } else {
         this.error = true;
         this.errorMsg = "Unable to load company jobs at this time. Please try again later.";

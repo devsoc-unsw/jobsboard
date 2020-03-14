@@ -58,10 +58,11 @@ export default Vue.extend({
       },
     });
 
+    const msg = await response.json();
+    this.$store.dispatch("setApiToken", msg.token);
     if (response.ok) {
-      const msg = await response.json();
       this.success = true;
-      this.companies = msg;
+      this.companies = msg.pendingCompanyVerifications;
     } else {
       this.error = true;
       this.errorMsg = "Failed to get pending companies.";

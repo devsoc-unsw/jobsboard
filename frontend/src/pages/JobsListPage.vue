@@ -66,9 +66,10 @@ export default Vue.extend({
         },
       });
 
+    const msg = await response.json();
+    this.$store.dispatch("setApiToken", msg.token);
     if (response.ok) {
-      const msg = await response.json();
-      this.jobs = msg;
+      this.jobs = msg.jobs;
     } else {
       this.error = true;
       this.errorMsg = "Unable to load jobs at this time. Please try again later.";

@@ -99,9 +99,7 @@ export default class CompanyFunctions {
         // company exists, send conflict error
         return {
           status: 409,
-          msg: {  
-            token: req.newJbToken
-          }
+          msg: undefined,
         } as IResponseWithStatus;
       }
       // if there is no conflict, create the company account and company record
@@ -132,16 +130,12 @@ export default class CompanyFunctions {
       );
       return {
         status: 200,
-        msg: {
-          token: req.newJbToken
-        }
+        msg: undefined
       } as IResponseWithStatus;
     }, () => {
       return {
         status: 400,
-        msg: {
-          token: req.newJbToken
-        }
+        msg: undefined
       } as IResponseWithStatus;
     }, next);
   }
