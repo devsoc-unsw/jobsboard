@@ -81,8 +81,9 @@ export default Vue.extend({
           "Authorization": this.apiToken,
         },
       });
-      console.log(this.apiToken);
 
+      const msg = await response.json();
+      this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
         this.success = true;
         this.successMsg = "Job successfully approved!";
@@ -102,6 +103,8 @@ export default Vue.extend({
         },
       });
 
+      const msg = await response.json();
+      this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
         this.success = true;
         this.successMsg = "Job successfully rejected!";
