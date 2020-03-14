@@ -12,7 +12,7 @@ import MailFunctions from "./mail";
 import Logger from "./logging";
 
 export default class AdminFunctions {
-  public static async ApproveJobRequest(req: Request, res: Response, next: NextFunction) {
+  public static async ApproveJobRequest(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
@@ -60,13 +60,23 @@ export default class AdminFunctions {
         CSESoc Jobs Board Administrator
         `,
       );
-      return { status: 200, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken
+        } 
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        } 
+      } as IResponseWithStatus;
     }, next);
   }
 
-  public static async RejectJobRequest(req: Request, res: Response, next: NextFunction) {
+  public static async RejectJobRequest(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       const jobID: string = req.params.jobID;
       Helpers.requireParameters(jobID);
@@ -113,13 +123,23 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         CSESoc Jobs Board Administrator
         `,
       );
-      return { status: 200, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken
+        } 
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        } 
+      } as IResponseWithStatus;
     }, next);
   }
 
-  public static async GetPendingJobs(_: Request, res: Response, next: NextFunction) {
+  public static async GetPendingJobs(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       let pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
@@ -137,13 +157,19 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .of(pendingJobs[jobIndex])
           .loadOne();
       }
-      return { status: 200, msg: pendingJobs } as IResponseWithStatus;
+      return {
+        status: 200, 
+        msg: {
+          token: req.newJbToken,
+          pendingJobs: pendingJobs 
+        }
+      } as IResponseWithStatus;
     }, () => {
       return { status: 400, msg: undefined } as IResponseWithStatus;
     }, next);
   }
 
-  public static async GetPendingCompanyVerifications(_: Request, res: Response, next: NextFunction) {
+  public static async GetPendingCompanyVerifications(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       let pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
         const pendingCompanyAccounts = await getRepository(CompanyAccount)
@@ -160,13 +186,24 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         }
         return pendingCompanyAccounts;
       }, `Couldn't find any pending company verifications`);
-      return { status: 200, msg: pendingCompanyVerifications } as IResponseWithStatus;
+      return {
+        status: 200, 
+        msg: {
+          token: req.newJbToken,
+          pendingCompanyVerifications: pendingCompanyVerifications 
+        }
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 
-  public static async VerifyCompanyAccount(req: Request, res: Response, next: NextFunction) {
+  public static async VerifyCompanyAccount(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       let pendingCompany = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(CompanyAccount)
@@ -211,9 +248,19 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         CSESoc Jobs Board Administrator
         `,
       );
-      return { status: 200, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 200, 
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 }
