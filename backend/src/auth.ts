@@ -57,7 +57,7 @@ export default class Auth {
             .insert()
             .into(Student)
             .values(student)
-            .onConflict(`("id") DO UPDATE SET "latestValidToken" = :latestValidToken`)
+            .onConflict(`("zID") DO UPDATE SET "latestValidToken" = :latestValidToken`)
             .setParameter("latestValidToken", token)
             .execute();
 

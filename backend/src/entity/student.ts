@@ -5,7 +5,7 @@ export class Student {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
+  @Column({ unique: true })
   public zID: string;
 
   @Column({ default: "none issued yet" })
