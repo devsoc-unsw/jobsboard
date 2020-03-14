@@ -11,6 +11,9 @@ export class AdminAccount {
   @Column()
   public hash: string;
 
+  @Column({ default: "none issued yet" })
+  public latestValidToken: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -8,10 +8,8 @@ export class Student {
   @Column()
   public zID: string;
 
-  @Column({
-    default: false,
-  })
-  public isAdmin: boolean;
+  @Column({ default: "none issued yet" })
+  public latestValidToken: string;
 
   @CreateDateColumn()
   createdAt: Date;

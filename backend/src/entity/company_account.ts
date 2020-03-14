@@ -32,6 +32,9 @@ export class CompanyAccount {
   })
   public verified: boolean;
 
+  @Column({ default: "none issued yet" })
+  public latestValidToken: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -8,6 +8,7 @@ import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
+import { Student } from "./entity/student";
 import Helpers, { IResponseWithStatus } from "./helpers";
 import JWT from "./jwt";
 import Logger from "./logging";
@@ -39,16 +40,31 @@ export default class Auth {
       Helpers.requireParameters(msg.password);
       if (Auth.authenticateStudent(msg.zID, msg.password)) {
         // successful login
-        const token: IToken = {
+        const rawToken: IToken = {
           id: msg.zID,
           type: AccountType.Student,
           lastRequestTimestamp: Date.now(),
           ipAddress: req.ip,
         };
+
+        const token: JWT = JWT.create(rawToken);
+
+        const student: Student = new Student()
+        student.zID = msg.zID;
+        student.latestValidToken = token as string,
+
+        await getConnection().createQueryBuilder()
+            .insert()
+            .into(Student)
+            .values(student)
+            .onConflict(`("id") DO UPDATE SET "latestValidToken" = :latestValidToken`)
+            .setParameter("latestValidToken", token)
+            .execute();
+
         return {
           status: 200,
           msg: { 
-            token: JWT.create(token) 
+            token: token,
           } 
         } as IResponseWithStatus;
       } else {
@@ -76,17 +92,23 @@ export default class Auth {
         if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
           throw new Error("Invalid credentials");
         }
-        const token: IToken = {
+        const rawToken: IToken = {
           id: companyQuery.id,
           type: AccountType.Company,
           lastRequestTimestamp: Date.now(),
           ipAddress: req.ip,
         };
+        const token: JWT = JWT.create(rawToken);
+        await getConnection().createQueryBuilder()
+          .update(CompanyAccount)
+          .set({ latestValidToken: token as string})
+          .where("id = :id", { id: companyQuery.id })
+          .execute();
         // credentials match, so grant them a token
         return {
           status: 200,
           msg: {
-            token: JWT.create(token)
+            token: token,
           }
         } as IResponseWithStatus;
       } catch (error) {
@@ -115,16 +137,22 @@ export default class Auth {
           throw new Error("Invalid credentials");
         }
         // credentials match, so grant them a token
-        const token: IToken = {
+        const rawToken: IToken = {
           id: adminQuery.id,
           type: AccountType.Admin,
           lastRequestTimestamp: Date.now(),
           ipAddress: req.ip,
         };
+        const token: JWT = JWT.create(rawToken);
+        await getConnection().createQueryBuilder()
+          .update(AdminAccount)
+          .set({ latestValidToken: token as string})
+          .where("id = :id", { id: adminQuery.id })
+          .execute();
         return {
           status: 200,
           msg: {
-            token: JWT.create(token)
+            token: token,
           }
         } as IResponseWithStatus;
       } catch (error) {
