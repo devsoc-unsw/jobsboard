@@ -6,7 +6,7 @@ import { Job } from "./entity/job";
 import Helpers, { IResponseWithStatus } from "./helpers";
 
 export default class StudentFunctions {
-  public static async GetAllActiveJobs(_: Request, res: Response, next: NextFunction) {
+  public static async GetAllActiveJobs(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       const jobs = await getRepository(Job)
         .createQueryBuilder()
@@ -25,13 +25,24 @@ export default class StudentFunctions {
         newJob.id = job.id;
         return newJob;
       });
-      return { status: 200, msg: fixedJobs } as IResponseWithStatus;
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          jobs: fixedJobs
+        }
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 
-  public static async GetJob(req: Request, res: Response, next: NextFunction) {
+  public static async GetJob(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       Helpers.requireParameters(req.params.jobID);
       const jobInfo = await Helpers.doSuccessfullyOrFail(async () => {
@@ -44,9 +55,20 @@ export default class StudentFunctions {
           .getOne();
       }, `Couldn't find job with ID: ${req.params.jobID}`);
 
-      return { status: 200, msg: jobInfo } as IResponseWithStatus;
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          job: jobInfo
+        }
+      } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 }
