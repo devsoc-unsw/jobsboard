@@ -16,7 +16,7 @@ export default class Middleware {
     }
   }
 
-  public static verifyTokenProperties(req: Request, jwt: IToken) {
+  private static verifyTokenProperties(req: Request, jwt: IToken) {
     if (Date.now() - jwt.lastRequestTimestamp > 5 * 60 * 1000) {
       // token has expired, is now considered invalid
       throw new Error("Token has expired.");
@@ -27,8 +27,8 @@ export default class Middleware {
     }
   }
 
-  public static updateTokenProperties(req: Request, jwt: IToken): IToken {
-    // TODO(adam)
+  private static updateTokenProperties(req: Request, jwt: IToken): IToken {
+    // TODO(ad-t)
     jwt.lastRequestTimestamp = Date.now();
     return jwt;
   }
@@ -42,7 +42,7 @@ export default class Middleware {
       // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
       // update token properties if they appear to be consistent
-      Middleware.updateTokenProperties(req, jwt);
+      req.newJbToken = JWT.create(Middleware.updateTokenProperties(req, jwt));
       // add the student zID to the request object
       req.studentZID = jwt.id;
       // continue
@@ -62,7 +62,7 @@ export default class Middleware {
       // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
       // update token properties if they appear to be consistent
-      Middleware.updateTokenProperties(req, jwt);
+      req.newJbToken = JWT.create(Middleware.updateTokenProperties(req, jwt));
       // add the companyID field to the request object
       req.companyAccountID = jwt.id;
       // continue
@@ -82,7 +82,7 @@ export default class Middleware {
       // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
       // update token properties if they appear to be consistent
-      Middleware.updateTokenProperties(req, jwt);
+      req.newJbToken = JWT.create(Middleware.updateTokenProperties(req, jwt));
       // add the admin id to the request
       req.adminID = jwt.id;
       // continue
