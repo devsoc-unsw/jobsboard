@@ -20,7 +20,7 @@ button {
   border-left-color: $red;
   background: $white;
   color: $red;
-  border-radius: 0.2rem;
+  /* border-radius: 0.2rem; */
   text-align: center;
   width: fit-content();
   padding: 1rem;

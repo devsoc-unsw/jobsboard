@@ -92,7 +92,7 @@ export default Vue.extend({
 
 .searchBar {
   padding: 1.25%;
-  border-radius: 0.2rem;
+  /* border-radius: 0.2rem; */
   text-align: center;
   width: 95%;
   margin: 0;
@@ -128,26 +128,6 @@ export default Vue.extend({
 .navButtons {
   color: $white;
   padding: 0.5rem;
-}
-
-.logoutButton {
-  border: 1px solid $white;
-  border-radius: 0.75rem;
-}
-.button {
-  min-width: 70%;
-  max-width: 70%;
-  border-radius: 0.5rem;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin: 1%;
-}
-
-.studentButton {
-  background: $blue;
-  color: $white;
 }
 
 .main-logo-student {

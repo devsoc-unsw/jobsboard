@@ -54,7 +54,7 @@ export default Vue.extend({
   display: flex;
   align-items: center;
   justify-content: left;
-  border-radius: 0.2rem;
+  /* border-radius: 0.2rem; */
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
   &:hover {

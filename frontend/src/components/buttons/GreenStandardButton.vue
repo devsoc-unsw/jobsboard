@@ -19,7 +19,7 @@ button {
   border-left-width: 5px;
   border-left-color: $green;
   background: $white;
-  border-radius: 0.2rem;
+  /* border-radius: 0.2rem; */
   color: $black;
   text-align: center;
   width: fit-content();
