@@ -26,6 +26,7 @@
         :location="job.company.location"
         />
     </div>
+    <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>
   </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
@@ -36,6 +37,7 @@ import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
+import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
@@ -45,34 +47,46 @@ export default Vue.extend({
     JobListingMinimal,
     ErrorBox,
     LoggedInTemplate,
+    InfiniteScrollTrigger,
   },
   data() {
     return {
       error: false,
       errorMsg: "",
-      jobs: [
-      ],
-      apiToken: this.$store.getters.getApiToken,
+      jobs: [] as any[],
+      loadMoreJobsLock: false,
     };
   },
-  async mounted() {
-    // determine whether there is an API key present and redirect if not present
-    // load the jobs using the api token
-    const response = await fetch(`${config.apiRoot}/jobs`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-      });
+  methods: {
+    async loadMoreJobs() {
+      const sleep = (milliseconds: number) => { 
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+      }
+      while (this.loadMoreJobsLock) {
+        await sleep(1000);
+      }
+      this.loadMoreJobsLock = true;
+      console.log(this.$store.getters.getApiToken);
+      // determine whether there is an API key present and redirect if not present
+      // load the jobs using the api token
+      const response = await fetch(`${config.apiRoot}/jobs/${this.jobs.length}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": this.$store.getters.getApiToken,
+          },
+        });
 
-    const msg = await response.json();
-    this.$store.dispatch("setApiToken", msg.token);
-    if (response.ok) {
-      this.jobs = msg.jobs;
-    } else {
-      this.error = true;
-      this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+      const msg = await response.json();
+      this.$store.dispatch("setApiToken", msg.token);
+      if (response.ok) {
+        this.jobs = [... this.jobs, ... msg.jobs];
+      } else {
+        this.error = true;
+        this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+        this.jobs = [];
+      }
+      this.loadMoreJobsLock = false;
     }
   },
 });

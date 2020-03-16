@@ -92,25 +92,15 @@ export default Vue.extend({
       applicationLink: "",
       error: false,
       errorMsg: "",
-      apiToken: this.$store.getters.getApiToken,
     };
   },
   methods: {
     applyNowButton() {
       window.open(this.applicationLink);
     },
-    getDetails(url: string) {
-      return fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-      });
-    },
     async fetchJob() {
       // determine whether there is an API key present and redirect if not present
-      if (this.apiToken === undefined) {
+      if (this.$store.getters.getApiToken === undefined) {
         this.$router.push("/login");
         return;
       }
@@ -120,7 +110,7 @@ export default Vue.extend({
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          "Authorization": this.$store.getters.getApiToken,
         },
       });
 
@@ -139,7 +129,13 @@ export default Vue.extend({
         this.errorMsg = "Unable to load jobs at this time. Please try again later.";
       }
 
-      const jobResponse = await this.getDetails(`${config.apiRoot}/company/${this.companyID}/jobs`);
+      const jobResponse = await fetch(`${config.apiRoot}/company/${this.companyID}/jobs`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.$store.getters.getApiToken,
+        },
+      });
 
       const companyJobMsg = await jobResponse.json();
       this.$store.dispatch("setApiToken", companyJobMsg.token);

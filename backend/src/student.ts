@@ -5,6 +5,8 @@ import {
 import { Job } from "./entity/job";
 import Helpers, { IResponseWithStatus } from "./helpers";
 
+const paginatedJobLimit: number = 10;
+
 export default class StudentFunctions {
   public static async GetAllActiveJobs(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
@@ -17,6 +19,47 @@ export default class StudentFunctions {
         .getMany();
 
       const fixedJobs = jobs.map((job) => { 
+        const newJob: any = {};
+        newJob.applicationLink = job.applicationLink;
+        newJob.company = job.company;
+        newJob.description = job.description;
+        newJob.role = job.role;
+        newJob.id = job.id;
+        return newJob;
+      });
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          jobs: fixedJobs
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
+
+  public static async GetPaginatedJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      const offset: number = req.params.offset;
+      Helpers.requireParameters(offset);
+
+      const jobs = await getRepository(Job)
+        .createQueryBuilder()
+        .select(["Company.name", "Company.location", "Company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+        .leftJoinAndSelect("Job.company", "company")
+        .where("Job.approved = :approved", { approved: true })
+        .andWhere("Job.hidden = :hidden", { hidden: false })
+        .skip(offset)
+        .limit(paginatedJobLimit)
+        .getMany();
+
+      const fixedJobs = jobs.map((job: Job) => { 
         const newJob: any = {};
         newJob.applicationLink = job.applicationLink;
         newJob.company = job.company;

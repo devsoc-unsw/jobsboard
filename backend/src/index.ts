@@ -127,7 +127,25 @@ async function bootstrap() {
  *              items:
  *                $ref: '#/components/schemas/Job'
  */
-app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs);
+// NOTE: Temporarily deprecated in favour of pagination
+// app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs);
+
+/**
+ *  @swagger
+ *  /jobs/{offset}:
+ *    get:
+ *      description: List all active job post (paginated)
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ */
+app.get("/jobs/:offset", Middleware.authenticateStudentMiddleware, StudentFunctions.GetPaginatedJobs);
 
 /**
  *  @swagger
