@@ -1,22 +1,22 @@
 version: '3.3'
 services:
   api:
-    environment:
-      - NODE_ENV=${NODE_ENV}
+    env_file:
+      - .env
     build:
-      context: .
-      dockerfile: ./backend/Dockerfile
-    volumes:
-      - ./backend:/app
+      context: ./backend
     ports:
       - "8080:8080"
     expose:
       - 8080
   frontend:
-    environment:
-      - NODE_ENV=${NODE_ENV}
+    env_file:
+      - .env
     build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
-    volumes:
-      - ./frontend:/app
+      context: ./frontend
+      args:
+        jobs_board_api_url: "http://sirius:8080"
+    ports:
+      - "8081:80"
+    expose:
+      - 8081

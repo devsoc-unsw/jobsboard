@@ -35,7 +35,8 @@ import { MailRequest } from "./entity/mail_request";
 // custom middleware
 import Middleware from "./middleware";
 
-dotenv.config({ path: '../.env' });
+// dotenv.config({ path: '../.env' });
+dotenv.config();
 Logger.Init();
 
 const app = express();

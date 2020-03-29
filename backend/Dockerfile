@@ -2,11 +2,8 @@ FROM node:latest
 
 RUN yarn global add nodemon ts-node sqlite3
 
-ADD .env .
-
-VOLUME ["/app"]
-
 WORKDIR /app
+ADD . /app
 
 EXPOSE 8080
 

@@ -46,14 +46,22 @@ with open('secrets', 'w') as secretsFile:
         secretsFile.write('\n')
 '''
 
-with open('.env', 'w') as backendEnvFile:
-    fields = [
-        'NODE_ENV',
-        'SERVER_PORT',
-    ]
-    for field in fields:
-        backendEnvFile.write(generateKeyPairString(field, '=', secrets[field]))
-        backendEnvFile.write('\n')
+env_paths = [
+    './backend/.env',
+    './frontend/.env',
+    './.env',
+    './frontend/src/config/.env',
+]
+
+for path in env_paths:
+    with open(path, 'w') as backendEnvFile:
+        fields = [
+            'NODE_ENV',
+            'SERVER_PORT',
+        ]
+        for field in fields:
+            backendEnvFile.write(generateKeyPairString(field, '=', secrets[field]))
+            backendEnvFile.write('\n')
 
 '''
 secretsDir = "secrets"
