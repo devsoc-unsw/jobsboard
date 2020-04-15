@@ -7,7 +7,9 @@ import os
 
 class Config:
     nodeEnv = "production"
+    # nodeEnv = "development"
     apiUrl = "https://jobsboard.csesoc.unsw.edu.au/api"
+    # apiUrl = "http://127.0.0.1:8080"
     backendPort = "8080"
     # name of the container
     databaseHost = "db"

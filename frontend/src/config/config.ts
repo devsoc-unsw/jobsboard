@@ -1,4 +1,5 @@
 export default {
-  apiRoot: process.env.VUE_APP_JOBS_BOARD_API_URL,
+  apiRoot: "https://jobsboard.csesoc.unsw.edu.au/api",
+  // apiRoot: "http://127.0.0.1:8080",
   sessionStorageApiTokenKeyName: "jobs-board-api-token",
 };
