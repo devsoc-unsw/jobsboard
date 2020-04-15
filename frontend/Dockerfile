@@ -7,7 +7,6 @@ WORKDIR /app
 ADD . /app
 
 ARG jobs_board_api_url
-ENV JOBS_BOARD_API_URL=$jobs_board_api_url
 
 RUN yarn install && yarn build
 

@@ -7,6 +7,7 @@ import os
 
 class Config:
     nodeEnv = "production"
+    apiUrl = "https://jobsboard.csesoc.unsw.edu.au/api"
     backendPort = "8080"
     # name of the container
     databaseHost = "db"
@@ -34,6 +35,7 @@ mysql_username = mysql_username[:mysql_username_middle_index]
 secrets = {
     'SERVER_PORT': Config.backendPort,
     'NODE_ENV': Config.nodeEnv,
+    'JOBS_BOARD_API_URL': Config.apiUrl,
     # 'MYSQL_HOST': Config.host,
 }
 
@@ -58,6 +60,7 @@ for path in env_paths:
         fields = [
             'NODE_ENV',
             'SERVER_PORT',
+            'JOBS_BOARD_API_URL',
         ]
         for field in fields:
             backendEnvFile.write(generateKeyPairString(field, '=', secrets[field]))
