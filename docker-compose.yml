@@ -20,7 +20,7 @@ services:
     build:
       context: ./frontend
       args:
-        jobs_board_api_url: "http://sirius:8080"
+        jobs_board_api_url: "https://jobsboard.csesoc.unsw.edu.au"
     ports:
       - "8081:80"
     expose:
