@@ -411,6 +411,6 @@ app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {
     await bootstrap();
   }
-  MailFunctions.InitMailQueueScheduler(500);
+  MailFunctions.InitMailQueueScheduler(2000);
   Logger.Info(`Server started at ${port}`);
 });

@@ -6,7 +6,7 @@ import subprocess
 import os
 
 class Config:
-    nodeEnv = "development"
+    nodeEnv = "production"
     backendPort = "8080"
     # name of the container
     databaseHost = "db"

@@ -11,6 +11,7 @@ import {
 // libraries
 import Logger from "./logging";
 import Helpers from "./helpers";
+import Config from "./config";
 
 // entities
 import { MailRequest } from "./entity/mail_request";
@@ -39,23 +40,21 @@ export default class MailFunctions {
       throw new Error("Limit of emails per day cannot be less than or equal to zero.");
     }
 
-    // get mail .env
     // requires:
     //      MAIL_SMTP_SERVER
     //      MAIL_SMTP_SERVER_PORT
     //      MAIL_USERNAME
     //      MAIL_PASSWORD
-    dotenv.config({ path: './src/mail.env' });
 
     const mailSendingIntervalRate = (1000 * 60 * 60 * 24) / limitOfEmailsPerDay;
     Logger.Info(`Mail sending rate set to once every ${mailSendingIntervalRate} ms.`);
     const transportOptions = {
-      host: process.env.MAIL_SMTP_SERVER,
-      port: parseInt(process.env.MAIL_SMTP_SERVER_PORT, 10),
+      host: Config.getSecret('MAIL_SMTP_SERVER'),
+      port: parseInt(Config.getSecret('MAIL_SMTP_SERVER_PORT'), 10),
       secure: false,
       auth: {
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
+        user: Config.getSecret('MAIL_USERNAME'),
+        pass: Config.getSecret('MAIL_PASSWORD'),
       },
       requireTLS: true,
     };
