@@ -9,6 +9,11 @@ services:
       - "8080:8080"
     expose:
       - 8080
+    environment:
+      MAIL_SMTP_SERVER: /run/secrets/MAIL_SMTP_SERVER
+      MAIL_SMTP_SERVER_PORT: /run/secrets/MAIL_SMTP_SERVER_PORT
+      MAIL_USERNAME: /run/secrets/MAIL_USERNAME
+      MAIL_PASSWORD: /run/secrets/MAIL_PASSWORD
   frontend:
     env_file:
       - .env
@@ -20,3 +25,13 @@ services:
       - "8081:80"
     expose:
       - 8081
+
+secrets:
+  MAIL_SMTP_SERVER:
+    external: true
+  MAIL_SMTP_SERVER_PORT:
+    external: true
+  MAIL_USERNAME:
+    external: true
+  MAIL_PASSWORD:
+    external: true
