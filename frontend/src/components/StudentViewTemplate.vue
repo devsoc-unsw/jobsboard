@@ -25,6 +25,7 @@
         <div class="contentWidth">
           <slot />
         </div>
+        <Footer />
       </div>
     </div>
   </div>
@@ -35,12 +36,14 @@ import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import logo from "@/assets/logos/csesocwhite.png";
+import Footer from "@/components/Footer.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
   components: {
     Button,
     DarkBlueStandardButton,
+    Footer,
   },
   methods: {
     logOut() {

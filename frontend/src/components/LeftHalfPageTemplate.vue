@@ -5,9 +5,9 @@
         <div v-if="loggedIn">
           <div class="logoutDiv">
             <StandardButton>
-              <Button @callback="logOut">
-                <font-awesome-icon icon="sign-out-alt" />
-              </Button>
+            <Button @callback="logOut">
+              <font-awesome-icon icon="sign-out-alt" />
+            </Button>
             </StandardButton>
             <br/>
           </div>
@@ -17,6 +17,9 @@
           <img class="main-logo" :src="logo" />
         </div>
         <slot />
+        <div class="footer">
+          <Footer />
+        </div>
       </div>
     </div>
   </div>
@@ -27,12 +30,14 @@ import { Component, Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import logo from "@/assets/logos/csesocgreyblue.png";
+import Footer from "@/components/Footer.vue";
 
 export default Vue.extend({
   name: "LeftHalfPageTemplate",
   components: {
     Button,
     StandardButton,
+    Footer,
   },
   data() {
     return {
@@ -106,6 +111,7 @@ input, textarea {
   text-decoration: none;
   margin-left: auto !important;
   margin-right: auto !important;
+  flex-grow: 1;
 }
 
 .buttonBox {
@@ -121,5 +127,10 @@ input, textarea {
 
 .main-logo {
   width: 20%;
+}
+
+.footer {
+  margin-top: auto;
+  float: below;
 }
 </style>

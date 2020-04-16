@@ -44,6 +44,26 @@ const port = process.env.SERVER_PORT;
 app.use(bodyParser.json());
 app.use(helmet());
 
+var corsOptions;
+if (process.env.NODE_ENV !== "development") {
+  // assuming production, set up a particular config and allow only requests from
+  // the current URL to be consumed
+  const whitelist = [
+    'https://jobsboard.csesoc.unsw.edu.au'
+  ];
+  const corsOptions = {
+    origin: (origin: any, callback: Function) => {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  }
+}
+
+app.options("*", cors());
+
 const activeEntities = [
   Company,
   CompanyAccount,
@@ -142,7 +162,7 @@ async function bootstrap() {
  *              items:
  *                $ref: '#/components/schemas/Job'
  */
-app.get("/jobs/:offset", Middleware.authenticateStudentMiddleware, StudentFunctions.GetPaginatedJobs);
+app.get("/jobs/:offset", cors(corsOptions), Middleware.authenticateStudentMiddleware, StudentFunctions.GetPaginatedJobs);
 
 /**
  *  @swagger
@@ -161,7 +181,7 @@ app.get("/jobs/:offset", Middleware.authenticateStudentMiddleware, StudentFuncti
  *      400:
  *        description: failed to find job
  */
-app.get("/job/:jobID", Middleware.authenticateStudentMiddleware, StudentFunctions.GetJob);
+app.get("/job/:jobID", cors(corsOptions),  Middleware.authenticateStudentMiddleware, StudentFunctions.GetJob);
 
 /**
  *  @swagger
@@ -180,7 +200,7 @@ app.get("/job/:jobID", Middleware.authenticateStudentMiddleware, StudentFunction
  *      400:
  *        description: failed to find company
  */
-app.get("/company/:companyID", Middleware.authenticateStudentMiddleware, CompanyFunctions.GetCompanyInfo);
+app.get("/company/:companyID", cors(corsOptions),  Middleware.authenticateStudentMiddleware, CompanyFunctions.GetCompanyInfo);
 
 /**
  *  @swagger
@@ -199,7 +219,7 @@ app.get("/company/:companyID", Middleware.authenticateStudentMiddleware, Company
  *      400:
  *        description: failed to find company
  */
-app.get("/company/:companyID/jobs", Middleware.authenticateStudentMiddleware, CompanyFunctions.GetJobsFromCompany);
+app.get("/company/:companyID/jobs", cors(corsOptions),  Middleware.authenticateStudentMiddleware, CompanyFunctions.GetJobsFromCompany);
 
 /**
  *  @swagger
@@ -220,7 +240,7 @@ app.get("/company/:companyID/jobs", Middleware.authenticateStudentMiddleware, Co
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/student", Auth.AuthenticateStudent);
+app.post("/authenticate/student", cors(corsOptions),  Auth.AuthenticateStudent);
 
 /**
  *  @swagger
@@ -253,7 +273,7 @@ app.post("/authenticate/student", Auth.AuthenticateStudent);
  *      409:
  *        description: Conflicting usernames
  */
-app.put("/company", CompanyFunctions.CreateCompany);
+app.put("/company", cors(corsOptions),  CompanyFunctions.CreateCompany);
 
 /**
  *  @swagger
@@ -274,7 +294,7 @@ app.put("/company", CompanyFunctions.CreateCompany);
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/company", Auth.AuthenticateCompany);
+app.post("/authenticate/company", cors(corsOptions),  Auth.AuthenticateCompany);
 
 /**
  *  @swagger
@@ -296,7 +316,7 @@ app.post("/authenticate/company", Auth.AuthenticateCompany);
  *      400:
  *        description: Missing parameters or unauthorized
  */
-app.put("/jobs", Middleware.authenticateCompanyMiddleware, CompanyFunctions.CreateJob);
+app.put("/jobs", cors(corsOptions),  Middleware.authenticateCompanyMiddleware, CompanyFunctions.CreateJob);
 
 /**
  *  @swagger
@@ -317,7 +337,7 @@ app.put("/jobs", Middleware.authenticateCompanyMiddleware, CompanyFunctions.Crea
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/admin", Auth.AuthenticateAdmin);
+app.post("/authenticate/admin", cors(corsOptions),  Auth.AuthenticateAdmin);
 
 /**
  *  @swagger
@@ -330,7 +350,7 @@ app.post("/authenticate/admin", Auth.AuthenticateAdmin);
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.patch("/job/:jobID/approve", Middleware.authenticateAdminMiddleware, AdminFunctions.ApproveJobRequest);
+app.patch("/job/:jobID/approve", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.ApproveJobRequest);
 
 /**
  *  @swagger
@@ -343,7 +363,7 @@ app.patch("/job/:jobID/approve", Middleware.authenticateAdminMiddleware, AdminFu
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.patch("/job/:jobID/reject", Middleware.authenticateAdminMiddleware, AdminFunctions.RejectJobRequest);
+app.patch("/job/:jobID/reject", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.RejectJobRequest);
 
 /**
  *  @swagger
@@ -362,7 +382,7 @@ app.patch("/job/:jobID/reject", Middleware.authenticateAdminMiddleware, AdminFun
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.get("/jobs/pending", Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingJobs);
+app.get("/jobs/pending", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingJobs);
 
 /**
  *  @swagger
@@ -381,7 +401,7 @@ app.get("/jobs/pending", Middleware.authenticateAdminMiddleware, AdminFunctions.
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.get("/admin/pending/companies", Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingCompanyVerifications);
+app.get("/admin/pending/companies", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingCompanyVerifications);
 
 /**
  *  @swagger
@@ -394,7 +414,7 @@ app.get("/admin/pending/companies", Middleware.authenticateAdminMiddleware, Admi
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.patch("/admin/company/:companyAccountID/verify", Middleware.authenticateAdminMiddleware, AdminFunctions.VerifyCompanyAccount);
+app.patch("/admin/company/:companyAccountID/verify", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.VerifyCompanyAccount);
 
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);
@@ -402,27 +422,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(Middleware.genericLoggingMiddleware);
-
-if (process.env.NODE_ENV === "development") {
-  app.use(cors());
-} else {
-  // assuming production, set up a particular config and allow only requests from
-  // the current URL to be consumed
-  const whitelist = [
-    'https://jobsboard.csesoc.unsw.edu.au'
-  ];
-  const corsOptions = {
-    origin: (origin: any, callback: Function) => {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-  }
-  app.use(cors(corsOptions));
-}
-app.options("*", cors());
 
 app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {
