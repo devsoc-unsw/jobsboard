@@ -1,5 +1,7 @@
 module.exports = {
-  mode: 'production',
+  configureWebpack: {
+    mode: 'production'
+  },
   css: {
     loaderOptions: {
       sass: {

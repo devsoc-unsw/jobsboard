@@ -43,26 +43,6 @@ const app = express();
 const port = process.env.SERVER_PORT;
 app.use(bodyParser.json());
 app.use(helmet());
-// app.options("*", cors());
-if (process.env.NODE_ENV === "development") {
-  app.use(cors());
-} else {
-  // assuming production, set up a particular config and allow only requests from
-  // the current URL to be consumed
-  const whitelist = [
-    'https://jobsboard.csesoc.unsw.edu.au'
-  ];
-  const corsOptions = {
-    origin: (origin: any, callback: Function) => {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-  }
-  app.use(cors(corsOptions));
-}
 
 const activeEntities = [
   Company,
@@ -422,6 +402,27 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(Middleware.genericLoggingMiddleware);
+
+if (process.env.NODE_ENV === "development") {
+  app.use(cors());
+} else {
+  // assuming production, set up a particular config and allow only requests from
+  // the current URL to be consumed
+  const whitelist = [
+    'https://jobsboard.csesoc.unsw.edu.au'
+  ];
+  const corsOptions = {
+    origin: (origin: any, callback: Function) => {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  }
+  app.use(cors(corsOptions));
+}
+app.options("*", cors());
 
 app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {
