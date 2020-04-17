@@ -79,6 +79,8 @@ export default class Middleware {
     } catch (error) {
       // if there are any errors, send a forbidden
       res.sendStatus(401);
+      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Logger.Error(`Authentication Middleware Error (student): ${error}`);
     }
   }
 
@@ -99,6 +101,8 @@ export default class Middleware {
     } catch (error) {
       // if there are any errors, send a forbidden
       res.sendStatus(401);
+      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Logger.Error(`Authentication Middleware Error (company): ${error}`);
     }
   }
 
@@ -119,6 +123,8 @@ export default class Middleware {
     } catch (error) {
       // send forbidden on any errors
       res.sendStatus(401);
+      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Logger.Error(`Authentication Middleware Error (admin): ${error}`);
     }
   }
 

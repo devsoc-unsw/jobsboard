@@ -49,7 +49,7 @@ export default Vue.extend({
     };
   },
   async mounted() {
-    const response = await fetch(`${config.apiRoot}/jobs/pending`, {
+    const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

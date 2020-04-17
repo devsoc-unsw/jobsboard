@@ -53,12 +53,18 @@ export default class Helpers {
       Logger.Error(error);
       response = await funcOnError();
     }
-    if (response.msg === undefined) {
-      res.sendStatus(response.status);
+    if (!res.headersSent) {
+      if (response.msg === undefined) {
+        await res.sendStatus(response.status);
+      } else {
+        await res.status(response.status).send(response.msg);
+      }
     } else {
-      res.status(response.status).send(response.msg);
+      Logger.Error(`Not performing any further action as headers are already sent.`);
     }
-    next();
+    if (next) {
+      await next();
+    }
   }
 }
 

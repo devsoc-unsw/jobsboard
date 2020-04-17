@@ -62,7 +62,7 @@ if (process.env.NODE_ENV !== "development") {
   }
 }
 
-app.options("*", cors());
+app.options("*", cors(corsOptions));
 
 const activeEntities = [
   Company,
@@ -149,6 +149,31 @@ async function bootstrap() {
 
 /**
  *  @swagger
+ *  /jobs/pending:
+ *    get:
+ *      description: List all pending (un-approved or un-rejected) job posts
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ *      400:
+ *        description: Missing parameters or invalid credentials
+ */
+app.get(
+  "/admin/jobs/pending",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.GetPendingJobs,
+  Middleware.genericLoggingMiddleware
+);
+
+/**
+ *  @swagger
  *  /jobs/{offset}:
  *    get:
  *      description: List all active job post (paginated)
@@ -162,7 +187,13 @@ async function bootstrap() {
  *              items:
  *                $ref: '#/components/schemas/Job'
  */
-app.get("/jobs/:offset", cors(corsOptions), Middleware.authenticateStudentMiddleware, StudentFunctions.GetPaginatedJobs);
+app.get(
+  "/jobs/:offset",
+  cors(corsOptions),
+  Middleware.authenticateStudentMiddleware,
+  StudentFunctions.GetPaginatedJobs,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -181,7 +212,13 @@ app.get("/jobs/:offset", cors(corsOptions), Middleware.authenticateStudentMiddle
  *      400:
  *        description: failed to find job
  */
-app.get("/job/:jobID", cors(corsOptions),  Middleware.authenticateStudentMiddleware, StudentFunctions.GetJob);
+app.get(
+  "/job/:jobID",
+  cors(corsOptions),
+  Middleware.authenticateStudentMiddleware,
+  StudentFunctions.GetJob,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -200,7 +237,13 @@ app.get("/job/:jobID", cors(corsOptions),  Middleware.authenticateStudentMiddlew
  *      400:
  *        description: failed to find company
  */
-app.get("/company/:companyID", cors(corsOptions),  Middleware.authenticateStudentMiddleware, CompanyFunctions.GetCompanyInfo);
+app.get(
+  "/company/:companyID",
+  cors(corsOptions),
+  Middleware.authenticateStudentMiddleware,
+  CompanyFunctions.GetCompanyInfo,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -219,7 +262,13 @@ app.get("/company/:companyID", cors(corsOptions),  Middleware.authenticateStuden
  *      400:
  *        description: failed to find company
  */
-app.get("/company/:companyID/jobs", cors(corsOptions),  Middleware.authenticateStudentMiddleware, CompanyFunctions.GetJobsFromCompany);
+app.get(
+  "/company/:companyID/jobs",
+  cors(corsOptions),
+  Middleware.authenticateStudentMiddleware,
+  CompanyFunctions.GetJobsFromCompany,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -240,7 +289,12 @@ app.get("/company/:companyID/jobs", cors(corsOptions),  Middleware.authenticateS
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/student", cors(corsOptions),  Auth.AuthenticateStudent);
+app.post(
+  "/authenticate/student",
+  cors(corsOptions),
+  Auth.AuthenticateStudent,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -273,7 +327,12 @@ app.post("/authenticate/student", cors(corsOptions),  Auth.AuthenticateStudent);
  *      409:
  *        description: Conflicting usernames
  */
-app.put("/company", cors(corsOptions),  CompanyFunctions.CreateCompany);
+app.put(
+  "/company",
+  cors(corsOptions),
+  CompanyFunctions.CreateCompany,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -294,7 +353,12 @@ app.put("/company", cors(corsOptions),  CompanyFunctions.CreateCompany);
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/company", cors(corsOptions),  Auth.AuthenticateCompany);
+app.post(
+  "/authenticate/company",
+  cors(corsOptions),
+  Auth.AuthenticateCompany,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -316,7 +380,13 @@ app.post("/authenticate/company", cors(corsOptions),  Auth.AuthenticateCompany);
  *      400:
  *        description: Missing parameters or unauthorized
  */
-app.put("/jobs", cors(corsOptions),  Middleware.authenticateCompanyMiddleware, CompanyFunctions.CreateJob);
+app.put(
+  "/jobs",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.CreateJob,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -337,7 +407,12 @@ app.put("/jobs", cors(corsOptions),  Middleware.authenticateCompanyMiddleware, C
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.post("/authenticate/admin", cors(corsOptions),  Auth.AuthenticateAdmin);
+app.post(
+  "/authenticate/admin",
+  cors(corsOptions),
+  Auth.AuthenticateAdmin,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -350,7 +425,13 @@ app.post("/authenticate/admin", cors(corsOptions),  Auth.AuthenticateAdmin);
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.patch("/job/:jobID/approve", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.ApproveJobRequest);
+app.patch(
+  "/job/:jobID/approve",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.ApproveJobRequest,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -363,26 +444,13 @@ app.patch("/job/:jobID/approve", cors(corsOptions),  Middleware.authenticateAdmi
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.patch("/job/:jobID/reject", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.RejectJobRequest);
-
-/**
- *  @swagger
- *  /jobs/pending:
- *    get:
- *      description: List all pending (un-approved or un-rejected) job posts
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Job'
- *      400:
- *        description: Missing parameters or invalid credentials
- */
-app.get("/jobs/pending", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingJobs);
+app.patch(
+  "/job/:jobID/reject",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.RejectJobRequest,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -401,7 +469,13 @@ app.get("/jobs/pending", cors(corsOptions),  Middleware.authenticateAdminMiddlew
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.get("/admin/pending/companies", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.GetPendingCompanyVerifications);
+app.get(
+  "/admin/pending/companies",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.GetPendingCompanyVerifications,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  *  @swagger
@@ -414,14 +488,20 @@ app.get("/admin/pending/companies", cors(corsOptions),  Middleware.authenticateA
  *      400:
  *        description: Missing parameters or invalid credentials
  */
-app.patch("/admin/company/:companyAccountID/verify", cors(corsOptions),  Middleware.authenticateAdminMiddleware, AdminFunctions.VerifyCompanyAccount);
+app.patch(
+  "/admin/company/:companyAccountID/verify",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.VerifyCompanyAccount,
+  Middleware.genericLoggingMiddleware
+);
 
+/*
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 }
-
-app.use(Middleware.genericLoggingMiddleware);
+ */
 
 app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {

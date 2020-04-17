@@ -150,9 +150,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .getMany();
       }, `Couldn't find any pending job requests`);
 
-      const conn: Connection = getConnection();
       for (let jobIndex = 0; jobIndex < pendingJobs.length; jobIndex++) {
-        pendingJobs[jobIndex].company = await conn.createQueryBuilder()
+        pendingJobs[jobIndex].company = await getConnection().createQueryBuilder()
           .relation(Job, "company")
           .of(pendingJobs[jobIndex])
           .loadOne();
@@ -165,7 +164,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         }
       } as IResponseWithStatus;
     }, () => {
-      return { status: 400, msg: undefined } as IResponseWithStatus;
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
     }, next);
   }
 
