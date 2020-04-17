@@ -17,9 +17,11 @@
         <img class="main-logo-student" :src="logo" />
         <h1>Discover student jobs and internships</h1>
         <br />
+        <!--
         <div>
           <input class="searchBar" type="text" placeholder="Search all jobs..."/>
         </div>
+        -->
       </div>
       <div class="content">
         <div class="contentWidth">

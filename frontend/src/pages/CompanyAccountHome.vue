@@ -9,11 +9,13 @@
             Post Jobs
           </Button>
         </StandardButton>
+        <!--
         <StandardButton>
           <Button @callback="goToCompanyEdit">
             Account Settings
           </Button>
         </StandardButton>
+        -->
       </div>
     </div>
   </LeftHalfPageTemplate>

@@ -17,6 +17,10 @@
             <font-awesome-icon :icon="['fab', 'linkedin']" />
           </span>
         </a>
+        on behalf of
+        <a href="https://www.csesoc.unsw.edu.au/teams/software-projects/">
+          CSESoc Projects
+        </a>
       </i>
     </p>
   </div>
