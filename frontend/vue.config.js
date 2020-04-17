@@ -8,5 +8,6 @@ module.exports = {
         prependData: `@import "@/style/_variables.scss";`
       }
     }
-  }
+  },
+  productionSourceMap: false
 };

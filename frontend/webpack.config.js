@@ -1,3 +1,5 @@
+const TerserPlugin = require('terser-webpack-plugin');
+
 module.exports = {
   // ... other options
   plugins: [
@@ -9,5 +11,9 @@ module.exports = {
     }),
     // minify with dead-code elimination
     new webpack.optimize.UglifyJsPlugin()
-  ]
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+  },
 }

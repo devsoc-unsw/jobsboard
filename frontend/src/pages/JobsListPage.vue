@@ -66,7 +66,6 @@ export default Vue.extend({
         await sleep(1000);
       }
       this.loadMoreJobsLock = true;
-      console.log(this.$store.getters.getApiToken);
       // determine whether there is an API key present and redirect if not present
       // load the jobs using the api token
       const response = await fetch(`${config.apiRoot}/jobs/${this.jobs.length}`, {
