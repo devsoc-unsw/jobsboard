@@ -77,10 +77,10 @@ export default Vue.extend({
         }),
       });
 
+      const msg = await response.json();
+      this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
         this.error = false;
-        this.$store.dispatch("setApiToken", msg.token);
         this.$router.push("/admin/home");
       } else {
         this.error = true;
