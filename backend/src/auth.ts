@@ -4,7 +4,8 @@ import {
   getConnection,
   getRepository,
 } from "typeorm";
-import ldap from "ldapjs";
+import { Client } from "ldapts";
+import assert from "assert";
 import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
@@ -39,7 +40,8 @@ export default class Auth {
       const msg = req.body;
       Helpers.requireParameters(msg.zID);
       Helpers.requireParameters(msg.password);
-      if (Auth.authenticateStudent(msg.zID, msg.password)) {
+      const result = await Auth.authenticateStudent(msg.zID, msg.password)
+      if (result === true) {
         // successful login
         const rawToken: IToken = {
           id: msg.zID,
@@ -165,17 +167,18 @@ export default class Auth {
   }
 
   // private functions to assist previous authentication functions
-  private static authenticateStudent(zID: string, password: string): boolean {
+  private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
     // TODO: Implement
     if (process.env.NODE_ENV !== "development") {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
-        let client = ldap.createClient({
-          url: 'ad.unsw.edu.au',
+        const client = new Client({
+          url: 'ldaps://ad.unsw.edu.au',
+          // tlsOptions: {
+          //   minVersion: 'TLSv1.2',
+          // },
         });
-        client.bind(`cn=${zID}@ad.unsw.edu.au`, password, (err: any) => {
-          Logger.Error(`Received error when authenticating ${zID}: ${err}`);
-          throw new Error(`Received error when authenticating ${zID}: ${err}`);
-        });
+        const result = await client.bind(`${zID}@ad.unsw.edu.au`, password);
+        Logger.Info(`RESULT FOR ${zID} IS: ${result}`);
         return true;
       } else {
         // if unexpected characters are found, immediately reject

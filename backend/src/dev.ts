@@ -26,7 +26,7 @@ export async function seedDB(activeEntities: any[]) {
   // create dummy admina ccount
   const adminAccount = new AdminAccount();
   adminAccount.username = "admin";
-  adminAccount.hash = Secrets.hash("admin");
+  adminAccount.hash = Secrets.hash("incorrect pony plug paperclip");
   await manager.save(adminAccount);
 
   // create a company account
