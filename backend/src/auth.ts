@@ -4,6 +4,7 @@ import {
   getConnection,
   getRepository,
 } from "typeorm";
+import ldap from "ldapjs";
 import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
@@ -166,6 +167,22 @@ export default class Auth {
   // private functions to assist previous authentication functions
   private static authenticateStudent(zID: string, password: string): boolean {
     // TODO: Implement
-    return true;
+    if (process.env.NODE_ENV !== "development") {
+      if (/^[a-zA-Z0-9]+$/.test(zID)) {
+        let client = ldap.createClient({
+          url: 'ad.unsw.edu.au',
+        });
+        client.bind(`cn=${zID}@ad.unsw.edu.au`, password, (err: any) => {
+          Logger.Error(`Received error when authenticating ${zID}: ${err}`);
+          throw new Error(`Received error when authenticating ${zID}: ${err}`);
+        });
+        return true;
+      } else {
+        // if unexpected characters are found, immediately reject
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 }
