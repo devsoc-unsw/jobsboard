@@ -5,12 +5,14 @@
         <div class="leftBox">
           <DarkBlueStandardButton>
             <Button @callback="goToJobs">
-              <font-awesome-icon icon="suitcase" />
+              <font-awesome-icon class="paddedIcon" icon="suitcase" /> 
+                Jobs
             </Button>
           </DarkBlueStandardButton>
           <DarkBlueStandardButton>
             <Button @callback="logOut">
-              <font-awesome-icon icon="sign-out-alt" />
+              <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+                Log Out
             </Button>
           </DarkBlueStandardButton>
         </div>
@@ -137,5 +139,9 @@ export default Vue.extend({
 
 .main-logo-student {
   width: 30%;
+}
+
+.paddedIcon {
+  padding-right: 0.75rem;
 }
 </style>
