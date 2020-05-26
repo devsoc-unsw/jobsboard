@@ -23,4 +23,7 @@ export default Vue.extend({
   font-size: 2rem;
   text-align: left;
 }
+div {
+  cursor: pointer;
+}
 </style>

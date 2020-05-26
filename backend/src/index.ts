@@ -510,6 +510,8 @@ app.listen(port, async () => {
     // TODO(ad-t): This is very temporary for use in production, must remove very soon.
     await bootstrap();
   }
-  MailFunctions.InitMailQueueScheduler(2000);
+  if (process.env.NODE_ENV === "production") {
+    MailFunctions.InitMailQueueScheduler(2000);
+  }
   Logger.Info(`Server started at ${port}`);
 });

@@ -59,6 +59,7 @@ export default Vue.extend({
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
   &:hover {
     background: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
   }
 }
 
@@ -89,4 +90,5 @@ export default Vue.extend({
 .companyHeading {
   font-weight: 100;
 }
+
 </style>

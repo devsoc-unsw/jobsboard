@@ -23,13 +23,13 @@
       <br/>
     </div>
     <div>
+      <DarkBlueStandardButton>
       <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
-        <DarkBlueStandardButton>
         <Button @click="applyNowButton">
           Apply now
         </Button>
-        </DarkBlueStandardButton>
       </a>
+      </DarkBlueStandardButton>
     </div>
     <div class="companyInformation">
       <br/>
@@ -184,5 +184,13 @@ export default Vue.extend({
   font-weight: 100;
   text-align: left;
   padding: 1rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  cursor: default;
 }
 </style>
