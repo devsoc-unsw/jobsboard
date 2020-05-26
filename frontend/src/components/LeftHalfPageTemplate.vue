@@ -6,7 +6,8 @@
           <div class="logoutDiv">
             <StandardButton>
             <Button @callback="logOut">
-              <font-awesome-icon icon="sign-out-alt" />
+              <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+                Log Out
             </Button>
             </StandardButton>
             <br/>
@@ -132,5 +133,9 @@ input, textarea {
 .footer {
   margin-top: auto;
   float: below;
+}
+
+.paddedIcon {
+  padding-right: 0.75rem;
 }
 </style>
