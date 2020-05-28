@@ -108,8 +108,10 @@ export default Vue.extend({
         return;
       }
 
+      const jobID = this.$route.params.jobID;
+
       // load the jobs using the api token
-      const response = await fetch(`${config.apiRoot}/job/${this.$route.params.jobID}`, {
+      const response = await fetch(`${config.apiRoot}/job/${jobID}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +146,11 @@ export default Vue.extend({
       this.$store.dispatch("setApiToken", companyJobMsg.token);
       if (jobResponse.ok) {
         // TODO(ad-t): Fix below, as it will always be true
-        this.jobs = companyJobMsg.companyJobs.filter((job: any) => job.id !== this.jobID);
+        this.jobs = companyJobMsg.companyJobs.filter((job: any) => {
+          const jobResultID = parseInt(job.id, 10);
+          const currentJobID = parseInt(jobID, 10);
+          return jobResultID !== currentJobID;
+        });
       } else {
         this.error = true;
         this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
