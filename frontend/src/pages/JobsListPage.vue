@@ -116,17 +116,14 @@ export default Vue.extend({
     width: 70%;
     margin: auto;
   }
-  .jobContainer {
-    display: grid;
-    align-items: stretch;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-auto-rows: 1fr;
-    grid-gap: 3%;
-    /* grid-column-gap: 2.5%; */
-    /* grid-row-gap: 5%; */
-  }
-  .jobItems {
-  }
+}
+
+.jobContainer {
+  display: grid;
+  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: 1fr;
+  grid-gap: 3%;
 }
 
 .resultsFound {

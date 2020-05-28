@@ -175,24 +175,21 @@ export default Vue.extend({
     text-align: left;
     padding: 0rem;
   }
-
-  .jobContainer {
-    display: grid;
-    align-items: stretch;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-auto-rows: 1fr;
-    grid-gap: 3%;
-    text-align: center;
-  }
-  
-  .jobItems {
-  }
 }
 
 .jobInformation {
   font-weight: 100;
   text-align: left;
   padding: 1rem;
+}
+
+.jobContainer {
+  display: grid;
+  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: 1fr;
+  grid-gap: 3%;
+  text-align: center;
 }
 
 .companyInformation {

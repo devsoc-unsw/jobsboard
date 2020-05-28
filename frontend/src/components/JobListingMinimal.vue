@@ -70,22 +70,15 @@ export default Vue.extend({
   font-size: 3em;
   color: $grey;
   text-decoration: none;
+    margin-top: 10%;
 }
 
 .jobDescriptionBox {
   text-align: center;
-}
-
-@media screen and (min-width: 900px) {
-  .jobDescriptionBox {
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-bottom: 10%;
-  }
-  .companyLogo {
-    margin-top: 10%;
-  }
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 10%;
 }
 
 .roleHeading {
