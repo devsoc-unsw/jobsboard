@@ -16,15 +16,18 @@
           {{ jobs.length }} Jobs Found
         </div>
       </div>
-      <JobListingMinimal
-        v-for="job in jobs"
-        :key="job.key"
-        :jobID="job.id"
-        :role="job.role"
-        :company="job.company.name"
-        :description="job.description"
-        :location="job.company.location"
-        />
+      <div class="jobContainer">
+        <JobListingMinimal
+          class="jobItems"
+          v-for="job in jobs"
+          :key="job.key"
+          :jobID="job.id"
+          :role="job.role"
+          :company="job.company.name"
+          :description="job.description"
+          :location="job.company.location"
+          />
+      </div>
     </div>
     <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>
   </StudentViewTemplate>
@@ -98,7 +101,37 @@ export default Vue.extend({
   padding: 2rem;
 }
 
+@media screen and (min-width: 900px) {
+  .navbar {
+    width: 50%;
+    padding: 1.5rem;
+  }
+  .searchBar {
+    margin-bottom: 0;
+  }
+  .content {
+    padding: 2rem;
+  }
+  .contentWidth {
+    width: 70%;
+    margin: auto;
+  }
+  .jobContainer {
+    display: grid;
+    align-items: stretch;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 3%;
+    /* grid-column-gap: 2.5%; */
+    /* grid-row-gap: 5%; */
+  }
+  .jobItems {
+  }
+}
+
 .resultsFound {
   font-weight: 100;
+  margin-bottom: 2rem;
 }
+
 </style>

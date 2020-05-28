@@ -1,10 +1,10 @@
 <template>
   <div>
-    <br />
     <div class="jobsBox" @click="seeJob">
       <div class="companyLogo">
         <font-awesome-icon icon="building" />
       </div>
+      <br>
       <div class="jobDescriptionBox">
         <div class="roleHeading">
           {{ role }}
@@ -50,8 +50,9 @@ export default Vue.extend({
 .jobsBox {
   // width: 75%;
   background: $white;
-  padding: 2rem;
+  /* padding: 10%; */
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: left;
   /* border-radius: 0.2rem; */
@@ -61,25 +62,29 @@ export default Vue.extend({
     background: rgba(0, 0, 0, 0.05);
     cursor: pointer;
   }
+  height: 100%;
 }
 
 .companyLogo {
-  min-width: 5%;
-  max-width: 5%;
+  width: 100%;
   font-size: 3em;
   color: $grey;
   text-decoration: none;
 }
 
 .jobDescriptionBox {
-  margin-left: 25%;
-  width: 95%;
-  text-align: left;
+  text-align: center;
 }
 
 @media screen and (min-width: 900px) {
   .jobDescriptionBox {
-    margin-left: 5%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+  }
+  .companyLogo {
+    margin-top: 10%;
   }
 }
 

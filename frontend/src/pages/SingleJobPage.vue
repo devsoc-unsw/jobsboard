@@ -42,15 +42,18 @@
       <h2>
         More jobs at {{ company }}
       </h2>
-      <JobListingMinimal
-        v-for="job in jobs"
-        :key="job.key"
-        :jobID="job.id"
-        :role="job.role"
-        :company="company"
-        :description="job.description"
-        :location="job.location"
-        />
+      <div class="jobContainer">
+        <JobListingMinimal
+          class="jobItems"
+          v-for="job in jobs"
+          :key="job.key"
+          :jobID="job.id"
+          :role="job.role"
+          :company="company"
+          :description="job.description"
+          :location="job.location"
+          />
+      </div>
     </div>
   </div>
   </StudentViewTemplate>
@@ -171,6 +174,18 @@ export default Vue.extend({
     font-weight: 100;
     text-align: left;
     padding: 0rem;
+  }
+
+  .jobContainer {
+    display: grid;
+    align-items: stretch;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 3%;
+    text-align: center;
+  }
+  
+  .jobItems {
   }
 }
 
