@@ -238,4 +238,59 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next);
   }
+
+  public static async GetAllJobsFromCompany(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect("Job.company", "company")
+          .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
+          .andWhere("Job.approved = :approved", { approved: true })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .select([
+            "Job.id",
+            "Job.role",
+            "Job.description",
+            "Job.applicationLink",
+            "Job.approved",
+            "Job.hidden"
+          ])
+          .getMany();
+      }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
+
+      const fixedCompanyJobs = companyJobs.map((job: any) => {
+        let jobStatus = "Unknown";
+        if (job.approved && !job.hidden) {
+          jobStatus = "Approved";
+        } else if (!job.approved && job.hidden) {
+          jobStatus = "Rejected";
+        } else if (!job.approved && !job.hidden) {
+          jobStatus = "Pending";
+        }
+        return {
+          id: job.id,
+          role: job.role,
+          description: job.description,
+          applicationLink: job.applicationLink,
+          status: jobStatus,
+        };
+      })
+
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          companyJobs: fixedCompanyJobs,
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
 }

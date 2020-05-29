@@ -146,7 +146,7 @@ describe("admin", () => {
       // login as an admin
       this.adminToken = await server
       .post("/authenticate/admin")
-      .send({ username: "admin", password: "admin" })
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
       .then(response => response.body.token);
       // and create a sample job to approve
       this.unverifiedApprovingJobID = await server
@@ -402,7 +402,7 @@ describe("admin", () => {
       // login as an admin
       this.adminToken = await server
       .post("/authenticate/admin")
-      .send({ username: "admin", password: "admin" })
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
       .then(response => response.body.token);
 
       // approve said company
@@ -412,7 +412,7 @@ describe("admin", () => {
       .expect(200)
       .then(response => response.body);
 
-      const pendingCompany = pendingCompanies.find((company) => company.company.name === newCompanyCredentials.name);
+      const pendingCompany = pendingCompanies.pendingCompanyVerifications.find((company) => company.company.name === newCompanyCredentials.name);
 
       await server
         .patch(`/admin/company/${pendingCompany.id}/verify`)

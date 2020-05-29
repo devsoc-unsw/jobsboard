@@ -62,6 +62,8 @@ export default class Middleware {
         // is rejected
         throw new Error("Provided student token doesn't match current tracked token");
       }
+      /*
+      TODO(ad-t): This feature has been temporarily disabled so all tokens won't change.
       // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
       // update token properties if they appear to be consistent
@@ -72,6 +74,7 @@ export default class Middleware {
         .set({ latestValidToken: req.newJbToken as string})
         .where("id = :id", { id: studentQuery.id })
         .execute();
+        */
       // add the student zID to the request object
       req.studentZID = jwt.id;
       // continue
@@ -93,7 +96,10 @@ export default class Middleware {
       // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
       // update token properties if they appear to be consistent
+      /*
+      TODO(ad-t): This feature has been temporarily disabled so all tokens won't change.
       req.newJbToken = JWT.create(Middleware.updateTokenProperties(req, jwt));
+      */
       // add the companyID field to the request object
       req.companyAccountID = jwt.id;
       // continue

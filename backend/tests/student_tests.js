@@ -14,7 +14,7 @@ describe("job", () => {
         server
           .get("/jobs")
           .expect(401)
-          .end( function(_, res) {
+          .then((_, res) => {
             expect(res.status).to.equal(401);
             done();
           });

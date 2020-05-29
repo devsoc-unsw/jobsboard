@@ -496,6 +496,31 @@ app.patch(
   Middleware.genericLoggingMiddleware
 );
 
+/**
+ *  @swagger
+ *  /companyjobs:
+ *    get:
+ *      description: Get all submitted from a specific company
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ *      400:
+ *        description: failed to find company
+ */
+app.get(
+  "/companyjobs",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.GetAllJobsFromCompany,
+  Middleware.genericLoggingMiddleware
+);
+
 /*
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);
