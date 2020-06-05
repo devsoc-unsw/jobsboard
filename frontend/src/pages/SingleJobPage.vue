@@ -120,7 +120,9 @@ export default Vue.extend({
       });
 
       const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
+      if (msg.token) {
+        this.$store.dispatch("setApiToken", msg.token);
+      }
       if (response.ok) {
         this.role = msg.job.role;
         this.company = msg.job.company.name;
@@ -143,7 +145,9 @@ export default Vue.extend({
       });
 
       const companyJobMsg = await jobResponse.json();
-      this.$store.dispatch("setApiToken", companyJobMsg.token);
+      if (companyJobMsg.token) {
+        this.$store.dispatch("setApiToken", companyJobMsg.token);
+      }
       if (jobResponse.ok) {
         // TODO(ad-t): Fix below, as it will always be true
         this.jobs = companyJobMsg.companyJobs.filter((job: any) => {

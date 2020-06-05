@@ -9,13 +9,11 @@
             Post Jobs
           </Button>
         </StandardButton>
-        <!--
         <StandardButton>
-          <Button @callback="goToCompanyEdit">
-            Account Settings
+          <Button @callback="goToCompanyManageJobs">
+            Manage Jobs
           </Button>
         </StandardButton>
-        -->
       </div>
     </div>
   </LeftHalfPageTemplate>
@@ -41,8 +39,8 @@ export default Vue.extend({
     goToCompanyJobAdd() {
       this.$router.push("/company/jobs/add");
     },
-    goToCompanyEdit() {
-      this.$router.push("/company/edit");
+    goToCompanyManageJobs() {
+      this.$router.push("/company/jobs/manage");
     },
   },
 });

@@ -17,6 +17,7 @@ const AdminLoginPage = () => import("@/pages/AdminLoginPage.vue");
 const AdminAccountHome = () => import("@/pages/AdminAccountHome.vue");
 const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
 const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
+const CompanyManageJobs = () => import("@/pages/CompanyManageJobs.vue");
 
 export default new Router({
   mode: "history",
@@ -59,6 +60,9 @@ export default new Router({
     component: SingleJobPage,
     props: true,
     name: "job",
+  }, {
+    path: "/company/jobs/manage",
+    component: CompanyManageJobs,
   }, {
     path: "*",
     component: PageNotFoundPage,

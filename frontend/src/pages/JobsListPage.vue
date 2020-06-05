@@ -80,7 +80,9 @@ export default Vue.extend({
         });
 
       const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
+      if (msg.token) {
+        this.$store.dispatch("setApiToken", msg.token);
+      }
       if (response.ok) {
         this.jobs = [... this.jobs, ... msg.jobs];
       } else {
