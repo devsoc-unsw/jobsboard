@@ -245,9 +245,9 @@ export default class CompanyFunctions {
         return await getRepository(Job)
           .createQueryBuilder()
           .leftJoinAndSelect("Job.company", "company")
-          .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
-          .andWhere("Job.approved = :approved", { approved: true })
-          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
+          // .andWhere("Job.approved = :approved", { approved: true })
+          // .andWhere("Job.hidden = :hidden", { hidden: false })
           .select([
             "Job.id",
             "Job.role",
@@ -257,7 +257,7 @@ export default class CompanyFunctions {
             "Job.hidden"
           ])
           .getMany();
-      }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
+      }, `Couldn't find jobs for company with ID: ${req.companyAccountID}`);
 
       const fixedCompanyJobs = companyJobs.map((job: any) => {
         let jobStatus = "Unknown";
