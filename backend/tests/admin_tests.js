@@ -318,7 +318,7 @@ describe("admin", () => {
         "fail to get pending jobs while unauthenticated",
         function (done) {
           server
-          .get(`/jobs/pending`)
+          .get(`/admin/jobs/pending`)
           .expect(401)
           .end( function(_, res) {
             expect(res.status).to.equal(401);
@@ -331,7 +331,7 @@ describe("admin", () => {
         "fail to get pending jobs while authenticated as a student",
         function (done) {
           server
-          .get(`/jobs/pending`)
+          .get(`/admin/jobs/pending`)
           .set('Authorization', this.studentToken)
           .expect(401)
           .end( function(_, res) {
@@ -345,7 +345,7 @@ describe("admin", () => {
         "fail to get pending jobs while authenticated as a company",
         function (done) {
           server
-          .get(`/jobs/pending`)
+          .get(`/admin/jobs/pending`)
           .set('Authorization', this.unverifiedCompanyToken)
           .expect(401)
           .end( function(_, res) {
@@ -359,7 +359,7 @@ describe("admin", () => {
         "succeeds getting pending jobs while authenticated as an admin",
         function (done) {
           server
-          .get(`/jobs/pending`)
+          .get(`/admin/jobs/pending`)
           .set('Authorization', this.adminToken)
           .expect(200)
           .end( function(_, res) {

@@ -45,6 +45,8 @@ describe("authentication", () => {
     // this test will fail until we work out a way to test this without
     // using the UNSW authentication system to prevent zIDs from being
     // locked and for security reasons
+    /*
+    TODO(ad-t): Test is disabled because it's not something that can be tested reliably.
     it("failed when there are incorrect credentials provided",
       function (done) {
         server.post("/authenticate/student")
@@ -55,6 +57,7 @@ describe("authentication", () => {
             done();
           });
       });
+      */
   });
 
   describe("company", () => {

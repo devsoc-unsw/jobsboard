@@ -12,9 +12,9 @@ describe("job", () => {
     it("user can't access the list of jobs when not logged in",
       function (done) {
         server
-          .get("/jobs")
+          .get("/jobs/0")
           .expect(401)
-          .then((_, res) => {
+          .end((_, res) => {
             expect(res.status).to.equal(401);
             done();
           });
@@ -52,7 +52,7 @@ describe("job", () => {
     it("permits viewing of jobs with a valid token",
       function (done) {
         server
-          .get("/jobs")
+          .get("/jobs/0")
           .set('Authorization', this.token).expect(200)
           .end( function (_, res) {
             expect(res.status).to.equal(200);
@@ -74,7 +74,7 @@ describe("job", () => {
     it("user can't access list of jobs with invalid token",
       function (done) {
         server
-          .get("/jobs")
+          .get("/jobs/0")
           .set('Authorization', "dummy token")
           .expect(401)
           .end( function (_, res) {
