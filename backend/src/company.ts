@@ -246,8 +246,7 @@ export default class CompanyFunctions {
           .createQueryBuilder()
           .leftJoinAndSelect("Job.company", "company")
           .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
-          // .andWhere("Job.approved = :approved", { approved: true })
-          // .andWhere("Job.hidden = :hidden", { hidden: false })
+          .orderBy("job.createdAt", "DESC")
           .select([
             "Job.id",
             "Job.role",
