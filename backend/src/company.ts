@@ -246,7 +246,8 @@ export default class CompanyFunctions {
           .createQueryBuilder()
           .leftJoinAndSelect("Job.company", "company")
           .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
-          .orderBy("job.createdAt", "DESC")
+          .andWhere("Job.deleted = :deleted", { deleted: false })
+          .orderBy("Job.createdAt", "DESC")
           .select([
             "Job.id",
             "Job.role",
