@@ -11,14 +11,12 @@
         {{ jobs.length }} Jobs Found
       </div>
       <div class="jobContainer">
-      <JobListingMinimal
+      <CompanyJobManage
         v-for="job in jobs"
         :key="job.key"
         :jobID="job.id"
         :role="job.role"
-        :company="job.status"
         :description="job.description"
-        :actAsLink=false
         />
       </div>
     </div>
@@ -33,7 +31,7 @@ import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import BackButton from "@/components/buttons/back.vue";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
+import CompanyJobManage from "@/components/CompanyJobManage.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
@@ -44,7 +42,7 @@ export default Vue.extend({
     Button,
     StandardButton,
     BackButton,
-    JobListingMinimal,
+    CompanyJobManage,
   },
   data() {
     return {
@@ -67,15 +65,15 @@ export default Vue.extend({
     });
 
     const msg = await response.json();
-    console.log(msg);
     if (msg.token) {
       this.$store.dispatch("setApiToken", msg.token);
     }
     if (response.ok) {
       this.success = true;
       this.jobs = msg.companyJobs.map((job: any) => {
+        console.log(job.id);
         return {
-          jobID: job.id,
+          id: job.id,
           role: job.role,
           status: `Status: ${job.status}`,
           description: job.description,

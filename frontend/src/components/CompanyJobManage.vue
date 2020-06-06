@@ -1,0 +1,134 @@
+<template>
+  <div>
+    <div class="jobsBox" @click="seeJob">
+      <div class="jobDescriptionBox">
+        <div class="roleHeading">
+          {{ role }}
+        </div>
+        <br>
+        <div class="companyHeading">
+          <green-standard-button>
+            <Button @click="showJob">
+              Show
+            </Button>
+          </green-standard-button>
+
+          <red-standard-button>
+            <Button @click="deleteJob">
+              Delete
+            </Button>
+          </red-standard-button>
+        </div>
+      </div>
+      <slot />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
+import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
+import config from "@/config/config";
+
+export default Vue.extend({
+  name: "CompanyJobManage",
+  components: {
+    GreenStandardButton,
+    RedStandardButton,
+  },
+  props: {
+    role: String,
+    description: String,
+    jobID: String,
+    removeCallback: Function,
+  },
+  data() {
+    return {
+      success: false,
+      error: false,
+      successMsg: "",
+      errorMsg: "",
+      apiToken: this.$store.getters.getApiToken,
+    };
+  },
+  methods: {
+    async showJob() {
+      // TODO(ad-t): implement
+      alert("Not implemented");
+    },
+    async deleteJob() {
+      const response = await fetch(`${config.apiRoot}/company/job/${this.jobID}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": this.apiToken,
+        },
+      });
+
+      if (response.ok) {
+        this.success = true;
+        this.successMsg = "Job successfully rejected!";
+        this.error = false;
+        this.close();
+      } else {
+        this.error = true;
+        this.errorMsg = "Error in processing rejection. Please try again later.";
+      }
+    },
+    close() {
+      setTimeout(() => {
+        this.$destroy();
+        this.$el.parentNode!.removeChild(this.$el);
+      }, 5000);
+    }
+  },
+});
+
+</script>
+
+<style scoped lang="scss">
+.jobsBox {
+  // width: 75%;
+  background: $white;
+  /* padding: 10%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+  /* border-radius: 0.2rem; */
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  height: 100%;
+}
+
+.companyLogo {
+  width: 100%;
+  font-size: 3em;
+  color: $grey;
+  text-decoration: none;
+    margin-top: 10%;
+}
+
+.jobDescriptionBox {
+  text-align: center;
+  width: 80%;
+  margin: 10%;
+}
+
+.roleHeading {
+  font-weight: 500;
+}
+
+.companyHeading {
+  font-weight: 100;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>

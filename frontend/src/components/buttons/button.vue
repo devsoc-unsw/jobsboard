@@ -18,7 +18,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-button {
+button:hover {
   cursor: pointer;
 }
 </style>
