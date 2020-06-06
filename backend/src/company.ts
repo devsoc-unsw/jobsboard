@@ -292,4 +292,39 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next);
   }
+
+  public static async MarkJobPostRequestAsDeleted(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      const jobToDelete = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect("Job.company", "company")
+          .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
+          .andWhere("Job.id = :id", { id: req.params.jobID })
+          .andWhere("Job.deleted = :deleted", { deleted: false })
+          .getOne();
+      }, `Couldn't find job ${req.params.jobID} for company with ID: ${req.companyAccountID}`);
+
+      // found a valid job that can be deleted
+      await getConnection().createQueryBuilder()
+        .update(Job)
+        .set({ deleted: true })
+        .where("id = :id", { id: jobToDelete.id })
+        .execute();
+
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
 }

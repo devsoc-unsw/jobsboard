@@ -521,6 +521,25 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
+/**
+ *  @swagger
+ *  /company/job/:jobID:
+ *    delete:
+ *      description: Delete a job post request from a company
+ *    responses:
+ *      200:
+ *        description: success
+ *      403:
+ *        description: failed to delete job as it does not belong to company
+ */
+app.delete(
+  "/company/job/:jobID",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.MarkJobPostRequestAsDeleted,
+  Middleware.genericLoggingMiddleware
+);
+
 /*
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);

@@ -307,4 +307,93 @@ describe("company", () => {
       }
     );
   })
+
+  describe("deleting posted jobs", () => {
+    before(async function () {
+      this.companyToken = await server
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+      
+      this.adminToken = await server
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
+      
+      this.studentToken = await server
+        .post("/authenticate/student")
+        .send({ zID: "z1234567", password: "test" })
+        .then(response => response.body.token);
+      
+      this.posts = await server
+        .get("/companyjobs")
+        .set("Authorization", this.companyToken)
+        .then(response => response.body.companyJobs);
+    });
+
+    it(
+      "successfully deletes a job that the company has previous requested to post",
+      function (done) {
+        server
+          .delete(`/company/job/${this.posts[0].id}`)
+          .set("Authorization", this.companyToken)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            done();
+          })
+      }
+    );
+
+    it(
+      "fails to delete a job with an ID that does not belong to the company",
+      function (done) {
+        server
+          .delete(`/company/job/999`)
+          .set("Authorization", this.companyToken)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    );
+
+    it(
+      "fails to delete a job using a student token",
+      function (done) {
+        server
+          .delete(`/company/job/${this.posts[0].id}`)
+          .set("Authorization", this.studentToken)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+
+    it(
+      "fails to delete a job using an admin token",
+      function (done) {
+        server
+          .delete(`/company/job/${this.posts[0].id}`)
+          .set("Authorization", this.adminToken)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+
+    it(
+      "fails to delete a job without being authenticated",
+      function (done) {
+        server
+          .delete(`/company/job/${this.posts[0].id}`)
+          .set("Authorization", "")
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+  })
 });

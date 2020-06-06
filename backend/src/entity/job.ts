@@ -27,6 +27,11 @@ export class Job {
   })
   public hidden: boolean;
 
+  @Column({
+    default: false,
+  })
+  public deleted: boolean;
+
   @ManyToOne((_) => Company, (company) => company.jobs)
   public company: Company;
 
