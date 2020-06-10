@@ -58,7 +58,8 @@ export default Vue.extend({
       alert("Not implemented");
     },
     async deleteJob() {
-      const response = await fetch(`${config.apiRoot}/company/job/${this.jobID}`, {
+      const uri = `${config.apiRoot}/company/job/${this.jobID}`;
+      const response = await fetch(uri, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

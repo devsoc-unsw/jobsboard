@@ -49,6 +49,7 @@ export default class CompanyFunctions {
           .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
           .andWhere("Job.approved = :approved", { approved: true })
           .andWhere("Job.hidden = :hidden", { hidden: false })
+          .andWhere("Job.deleted = :deleted", { deleted: false })
           .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .getMany();
       }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
@@ -301,7 +302,7 @@ export default class CompanyFunctions {
           .createQueryBuilder()
           .leftJoinAndSelect("Job.company", "company")
           .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
-          .andWhere("Job.id = :id", { id: req.params.jobID })
+          .andWhere("Job.id = :jobID", { jobID: req.params.jobID })
           .andWhere("Job.deleted = :deleted", { deleted: false })
           .getOne();
       }, `Couldn't find job ${req.params.jobID} for company with ID: ${req.companyAccountID}`);
