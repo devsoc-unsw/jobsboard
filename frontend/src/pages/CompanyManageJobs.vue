@@ -71,7 +71,6 @@ export default Vue.extend({
     if (response.ok) {
       this.success = true;
       this.jobs = msg.companyJobs.map((job: any) => {
-        console.log(job.id);
         return {
           id: job.id,
           role: job.role,

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <div class="jobsBox" @click="seeJob">
+    <Modal 
+      v-if="modalVisible"
+      @closeCallback="closeJobModal()"
+    >
+      {{ modalContent }}
+    </Modal>
+    <div class="jobsBox">
       <div class="jobDescriptionBox">
         <div class="roleHeading">
           {{ role }}
@@ -8,7 +14,7 @@
         <br>
         <div class="companyHeading">
           <green-standard-button>
-            <Button @click="showJob">
+            <Button @click="showJobModal">
               Show
             </Button>
           </green-standard-button>
@@ -29,6 +35,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
+import Modal from "@/components/Modal.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
@@ -36,11 +43,12 @@ export default Vue.extend({
   components: {
     GreenStandardButton,
     RedStandardButton,
+    Modal,
   },
   props: {
     role: String,
     description: String,
-    jobID: String,
+    jobID: Number,
     removeCallback: Function,
   },
   data() {
@@ -50,12 +58,18 @@ export default Vue.extend({
       successMsg: "",
       errorMsg: "",
       apiToken: this.$store.getters.getApiToken,
+      modalVisible: false,
+      modalContent: "",
     };
   },
   methods: {
-    async showJob() {
-      // TODO(ad-t): implement
-      alert("Not implemented");
+    async showJobModal() {
+      this.modalVisible = true;
+      this.modalContent = "Test.";
+    },
+    async closeJobModal() {
+      this.modalVisible = false;
+      this.modalContent = "";
     },
     async deleteJob() {
       const uri = `${config.apiRoot}/company/job/${this.jobID}`;
