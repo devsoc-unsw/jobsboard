@@ -17,6 +17,7 @@
         :jobID="job.id"
         :role="job.role"
         :description="job.description"
+        :applicationLink="job.applicationLink"
         />
       </div>
     </div>
@@ -76,6 +77,7 @@ export default Vue.extend({
           role: job.role,
           status: `Status: ${job.status}`,
           description: job.description,
+          applicationLink: job.applicationLink,
         };
       })
     } else {

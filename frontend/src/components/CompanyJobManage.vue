@@ -4,7 +4,30 @@
       v-if="modalVisible"
       @closeCallback="closeJobModal()"
     >
-      {{ modalContent }}
+      <div class="modalGroup">
+        <div class="modalHeading">
+          Role: 
+        </div>
+        {{ this.role }}
+      </div>
+
+      <div class="modalGroup">
+        <div class="modalHeading">
+          Job Description: 
+        </div>
+        {{ this.description }}
+      </div>
+
+      <div class="modalGroup">
+        <div class="modalHeading">
+          Application Link: 
+        </div>
+        <a
+          :href="this.applicationLink"
+        >
+          {{ this.applicationLink }}
+        </a>
+      </div>
     </Modal>
     <div class="jobsBox">
       <div class="jobDescriptionBox">
@@ -50,6 +73,7 @@ export default Vue.extend({
     description: String,
     jobID: Number,
     removeCallback: Function,
+    applicationLink: String,
   },
   data() {
     return {
@@ -144,6 +168,15 @@ export default Vue.extend({
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.modalHeading {
+  font-size: 1.5rem;
+  font-weight: 1000;
+}
+
+.modalGroup {
+  padding: 0.5rem;
 }
 
 </style>
