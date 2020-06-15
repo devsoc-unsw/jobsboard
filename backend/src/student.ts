@@ -16,6 +16,7 @@ export default class StudentFunctions {
         .leftJoinAndSelect("Job.company", "company")
         .where("Job.approved = :approved", { approved: true })
         .andWhere("Job.hidden = :hidden", { hidden: false })
+        .andWhere("Job.deleted = :deleted", { deleted: false })
         .getMany();
 
       const fixedJobs = jobs.map((job) => { 
@@ -55,6 +56,7 @@ export default class StudentFunctions {
         .leftJoinAndSelect("Job.company", "company")
         .where("Job.approved = :approved", { approved: true })
         .andWhere("Job.hidden = :hidden", { hidden: false })
+        .andWhere("Job.deleted = :deleted", { deleted: false })
         .skip(offset)
         .limit(paginatedJobLimit)
         .getMany();
@@ -95,6 +97,7 @@ export default class StudentFunctions {
           .leftJoinAndSelect("Job.company", "company")
           .where("Job.approved = :approved", { approved: true })
           .andWhere("Job.id = :id", { id: parseInt(req.params.jobID, 10) })
+          .andWhere("Job.deleted = :deleted", { deleted: false })
           .getOne();
       }, `Couldn't find job with ID: ${req.params.jobID}`);
 
