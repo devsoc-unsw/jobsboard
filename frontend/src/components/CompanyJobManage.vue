@@ -72,7 +72,8 @@ export default Vue.extend({
     role: String,
     description: String,
     jobID: Number,
-    removeCallback: Function,
+    successCallback: Function,
+    errorCallback: Function,
     applicationLink: String,
   },
   data() {
@@ -103,16 +104,19 @@ export default Vue.extend({
           "Content-Type": "application/json",
           "Authorization": this.apiToken,
         },
+      })
+      .catch((error) => {
+        this.errorCallback("Error in processing rejection. Please try again later.");
+        return;
       });
 
-      if (response.ok) {
-        this.success = true;
-        this.successMsg = "Job successfully rejected!";
-        this.error = false;
+      const receivedResponse = response as Response;
+
+      if (receivedResponse.ok) {
+        this.successCallback("Job successfully deleted!");
         this.close();
       } else {
-        this.error = true;
-        this.errorMsg = "Error in processing rejection. Please try again later.";
+        this.errorCallback("Error in processing rejection. Please try again later.");
       }
     },
     close() {

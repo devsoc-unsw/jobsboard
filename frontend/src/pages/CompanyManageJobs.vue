@@ -4,6 +4,16 @@
     <div class="homeBox">
     <BackButton />
       <h1>Manage Jobs</h1>
+      <div v-if="success">
+        <SuccessBox>
+        {{ successMsg }}
+        </SuccessBox>
+      </div>
+      <div v-else-if="error">
+        <ErrorBox>
+        {{ errorMsg }}
+        </ErrorBox>
+      </div>
       <div v-if="jobs.length === 1">
         {{ jobs.length }} Job Found
       </div>
@@ -18,6 +28,8 @@
         :role="job.role"
         :description="job.description"
         :applicationLink="job.applicationLink"
+        :successCallback="internalSuccessCallback"
+        :errorCallback="internalErrorCallback"
         />
       </div>
     </div>
@@ -34,6 +46,8 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 import BackButton from "@/components/buttons/back.vue";
 import CompanyJobManage from "@/components/CompanyJobManage.vue";
 import config from "@/config/config";
+import ErrorBox from "@/components/ErrorBox.vue";
+import SuccessBox from "@/components/SuccessBox.vue";
 
 export default Vue.extend({
   name: "CompanyManageJobs",
@@ -44,17 +58,32 @@ export default Vue.extend({
     StandardButton,
     BackButton,
     CompanyJobManage,
+    SuccessBox,
+    ErrorBox,
   },
   data() {
     return {
       error: false,
       errorMsg: "",
-      jobs: [],
       success: false,
+      successMsg: "",
+      jobs: [],
       apiToken: this.$store.getters.getApiToken,
     };
   },
   methods: {
+    internalErrorCallback(msg: string) {
+      console.log('yuh');
+      this.error = true;
+      this.success = false;
+      this.errorMsg = msg;
+    },
+    internalSuccessCallback(msg: string) {
+      console.log('bruh');
+      this.error = false;
+      this.success = true;
+      this.successMsg = msg;
+    }
   },
   async mounted() {
     const response = await fetch(`${config.apiRoot}/companyjobs`, {
@@ -63,14 +92,19 @@ export default Vue.extend({
         "Content-Type": "application/json",
         "Authorization": this.apiToken,
       },
+    })
+    .catch((error) => {
+      this.error = true;
+      this.errorMsg = "Failed to get pending jobs.";
+      return;
     });
 
-    const msg = await response.json();
+    const returnedRequest = response as Response;
+    const msg = await returnedRequest.json();
     if (msg.token) {
       this.$store.dispatch("setApiToken", msg.token);
     }
-    if (response.ok) {
-      this.success = true;
+    if (returnedRequest.ok) {
       this.jobs = msg.companyJobs.map((job: any) => {
         return {
           id: job.id,
