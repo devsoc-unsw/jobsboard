@@ -31,17 +31,14 @@ services:
       - "3306:3306"
     expose:
       - 3306
-    volumes:
-      - ./backend/db/mysql:/var/lib/mysql
+    # volumes:
+    #   - ./backend/db/mysql:/var/lib/mysql
     environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_LOG_CONSOLE=true
-      - MYSQL_DATABASE=test
-      - MYSQL_USER=jb
-      - MYSQL_PASSWORD=jb
-      # MYSQL_DATABASE: /run/secrets/MYSQL_DATABASE
-      # MYSQL_USER: /run/secrets/MYSQL_USER
-      # MYSQL_PASSWORD: /run/secrets/MYSQL_PASSWORD
+      MYSQL_RANDOM_ROOT_PASSWORD: "true"
+      MYSQL_LOG_CONSOLE: "true"
+      MYSQL_DATABASE: /run/secrets/MYSQL_DATABASE
+      MYSQL_USER: /run/secrets/MYSQL_USER
+      MYSQL_PASSWORD: /run/secrets/MYSQL_PASSWORD
 
 
 secrets:
