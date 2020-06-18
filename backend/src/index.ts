@@ -89,11 +89,11 @@ const specs = swaggerJsdoc(swaggerjsdocOptions);
 
 const options: ConnectionOptions = {
   type: "mysql",
-  host: "database",
+  host: "db",
   port: 3306,
-  username: "jb",
-  password: "jb",
-  database: "test",
+  username: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
   synchronize: true,
   logging: false,
   entities: activeEntities,
