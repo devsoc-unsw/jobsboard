@@ -555,8 +555,7 @@ app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {
     await bootstrap();
   } else {
-    // TODO(ad-t): This is very temporary for use in production, must remove very soon.
-    // await bootstrap();
+    await createConnection(options);
   }
   if (process.env.NODE_ENV === "production") {
     MailFunctions.InitMailQueueScheduler(2000);
