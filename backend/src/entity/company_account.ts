@@ -32,7 +32,7 @@ export class CompanyAccount {
   })
   public verified: boolean;
 
-  @Column({ default: "none issued yet" })
+  @Column({ type: "text", default: "no token set" })
   public latestValidToken: string;
 
   @CreateDateColumn()

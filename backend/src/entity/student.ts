@@ -8,7 +8,7 @@ export class Student {
   @Column({ unique: true })
   public zID: string;
 
-  @Column({ default: "none issued yet" })
+  @Column({ type: "text", default: "no token set" })
   public latestValidToken: string;
 
   @CreateDateColumn()

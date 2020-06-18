@@ -12,7 +12,7 @@ export default class StudentFunctions {
     Helpers.catchAndLogError(res, async () => {
       const jobs = await getRepository(Job)
         .createQueryBuilder()
-        .select(["Company.name", "Company.location", "Company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+        .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
         .leftJoinAndSelect("Job.company", "company")
         .where("Job.approved = :approved", { approved: true })
         .andWhere("Job.hidden = :hidden", { hidden: false })
@@ -52,7 +52,7 @@ export default class StudentFunctions {
 
       const jobs = await getRepository(Job)
         .createQueryBuilder()
-        .select(["Company.name", "Company.location", "Company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+        .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
         .leftJoinAndSelect("Job.company", "company")
         .where("Job.approved = :approved", { approved: true })
         .andWhere("Job.hidden = :hidden", { hidden: false })
@@ -93,7 +93,7 @@ export default class StudentFunctions {
       const jobInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
-          .select(["Company.name", "Company.location", "Company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .leftJoinAndSelect("Job.company", "company")
           .where("Job.approved = :approved", { approved: true })
           .andWhere("Job.id = :id", { id: parseInt(req.params.jobID, 10) })

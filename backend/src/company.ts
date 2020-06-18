@@ -20,7 +20,7 @@ export default class CompanyFunctions {
           .createQueryBuilder()
           .select(["Company.name", "Company.location", "Company.description"])
           .leftJoinAndSelect("Company.jobs", "Job")
-          .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
+          .where("Company.id = :id", { id: parseInt(req.params.companyID, 10) })
           .getOne();
       }, `Company ${req.params.companyID} not found.`);
       return {

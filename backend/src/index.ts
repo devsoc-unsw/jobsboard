@@ -88,15 +88,19 @@ const swaggerjsdocOptions: any = {
 const specs = swaggerJsdoc(swaggerjsdocOptions);
 
 const options: ConnectionOptions = {
-  database: './db/prod.sqlite',
+  type: "mysql",
+  host: "database",
+  port: 3306,
+  username: "jb",
+  password: "jb",
+  database: "test",
+  synchronize: true,
+  logging: false,
   entities: activeEntities,
-  // logging: true,
   migrations: [
   ],
   subscribers: [
   ],
-  synchronize: true,
-  type: "sqlite",
 };
 
 async function bootstrap() {

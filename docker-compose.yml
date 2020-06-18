@@ -25,6 +25,24 @@ services:
       - "8081:80"
     expose:
       - 8081
+  database:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    volumes:
+      - ./backend/db/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_LOG_CONSOLE=true
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=jb
+      - MYSQL_PASSWORD=jb
+      # MYSQL_DATABASE: /run/secrets/MYSQL_DATABASE
+      # MYSQL_USER: /run/secrets/MYSQL_USER
+      # MYSQL_PASSWORD: /run/secrets/MYSQL_PASSWORD
+
 
 secrets:
   MAIL_SMTP_SERVER:
@@ -35,3 +53,10 @@ secrets:
     external: true
   MAIL_PASSWORD:
     external: true
+  MYSQL_DATABASE:
+    external: true
+  MYSQL_USER:
+    external: true
+  MYSQL_PASSWORD:
+    external: true
+    

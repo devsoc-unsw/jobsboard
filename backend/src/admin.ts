@@ -14,15 +14,22 @@ import Logger from "./logging";
 export default class AdminFunctions {
   public static async ApproveJobRequest(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
-      const jobID: string = req.params.jobID;
-      Helpers.requireParameters(jobID);
+      Helpers.requireParameters(req.params.jobID);
+      const jobID: number = Number(req.params.jobID);
+      if (isNaN(jobID)) {
+        Logger.Info(`Rejected jobID ${jobID} as it is not a numeric value`);
+        return {
+          status: 400,
+          msg: undefined,
+        } as IResponseWithStatus;
+      }
 
       const jobToApprove = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
           .where("Job.approved = :approved", { approved: false })
           .andWhere("Job.hidden = :hidden", { hidden: false })
-          .andWhere("Job.id = :id", { id: parseInt(jobID, 10) })
+          .andWhere("Job.id = :id", { id: jobID })
           .getOne();
       }, `Couldn't find job with ID: ${jobID}`);
 
@@ -78,16 +85,22 @@ export default class AdminFunctions {
 
   public static async RejectJobRequest(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
-      const jobID: string = req.params.jobID;
-      Helpers.requireParameters(jobID);
+      Helpers.requireParameters(req.params.jobID);
+      const jobID: number = Number(req.params.jobID);
+      if (isNaN(jobID)) {
+        return {
+          status: 400,
+          msg: undefined,
+        } as IResponseWithStatus;
+      }
 
       const conn: Connection = getConnection();
       const jobToReject = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
-          .where("job.approved = :approved", { approved: false })
-          .andWhere("job.hidden = :hidden", { hidden: false })
-          .andWhere("job.id = :id", { id: parseInt(jobID, 10) })
+          .where("Job.approved = :approved", { approved: false })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .andWhere("Job.id = :id", { id: jobID })
           .getOne();
       }, `Couldn't find job with ID: ${jobID}`);
 
@@ -145,8 +158,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         return await getRepository(Job)
           .createQueryBuilder()
           .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
-          .where("job.approved = :approved", { approved: false })
-          .andWhere("job.hidden = :hidden", { hidden: false })
+          .where("Job.approved = :approved", { approved: false })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
           .getMany();
       }, `Couldn't find any pending job requests`);
 

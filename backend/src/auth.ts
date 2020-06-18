@@ -52,17 +52,25 @@ export default class Auth {
 
         const token: JWT = JWT.create(rawToken);
 
-        const student: Student = new Student()
-        student.zID = msg.zID;
-        student.latestValidToken = token as string,
+        // find whether the student has logged on here before
+        const studentQuery = await getRepository(Student)
+          .createQueryBuilder()
+          .where("Student.zID = :zID", { zID: msg.zID })
+          .getOne();
 
-        await getConnection().createQueryBuilder()
-            .insert()
-            .into(Student)
-            .values(student)
-            .onConflict(`("zID") DO UPDATE SET "latestValidToken" = :latestValidToken`)
-            .setParameter("latestValidToken", token)
+        if (studentQuery === undefined) {
+          // never logged on here before
+          const student: Student = new Student()
+          student.zID = msg.zID;
+          student.latestValidToken = token as string;
+          await getConnection().manager.save(student);
+        } else {
+          await getConnection().createQueryBuilder()
+            .update(Student)
+            .set({ latestValidToken: token as string})
+            .where("id = :id", { id: studentQuery.id })
             .execute();
+        }
 
         return {
           status: 200,

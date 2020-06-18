@@ -17,8 +17,10 @@ import Secrets from "./secrets";
 export async function seedDB(activeEntities: any[]) {
   // clear all tables
   if (process.env.NODE_ENV === "development") {
+    /*
     Logger.Info("Clearing all tables.");
     await getConnection().synchronize(true);
+    */
   }
   const conn: Connection = getConnection();
   const manager: EntityManager = getManager();
