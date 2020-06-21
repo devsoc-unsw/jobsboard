@@ -1,8 +1,6 @@
 version: '3.3'
 services:
   api:
-    env_file:
-      - .env
     build:
       context: ./backend
     image: webpersonal.azurecr.io/jb-api:latest
@@ -12,6 +10,7 @@ services:
       - 8080
     env_file:
       - .env
+      - ./backend/.env
   frontend:
     env_file:
       - .env
@@ -22,7 +21,7 @@ services:
       - "8081:80"
     expose:
       - 8081
-  database:
+  db:
     image: mariadb:latest
     ports:
       - "3306:3306"

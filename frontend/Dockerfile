@@ -2,13 +2,11 @@ FROM node:latest AS build
 
 RUN yarn global add @vue/cli-service-global
 
-
 WORKDIR /app
-ADD . /app
-
-ARG jobs_board_api_url
-
-RUN yarn install && yarn build
+COPY ["./package.json", "./yarn.lock", "/app"]
+RUN yarn install --frozen-lockfile
+COPY "./" "/app"
+RUN yarn build
 
 FROM nginx:stable
 
