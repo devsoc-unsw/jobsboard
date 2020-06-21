@@ -10,11 +10,8 @@ services:
       - "8080:8080"
     expose:
       - 8080
-    environment:
-      MAIL_SMTP_SERVER: /run/secrets/MAIL_SMTP_SERVER
-      MAIL_SMTP_SERVER_PORT: /run/secrets/MAIL_SMTP_SERVER_PORT
-      MAIL_USERNAME: /run/secrets/MAIL_USERNAME
-      MAIL_PASSWORD: /run/secrets/MAIL_PASSWORD
+    env_file:
+      - .env
   frontend:
     env_file:
       - .env
@@ -31,15 +28,8 @@ services:
       - "3306:3306"
     expose:
       - 3306
-    # volumes:
-    #   - ./backend/db/mysql:/var/lib/mysql
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: "true"
-      MYSQL_LOG_CONSOLE: "true"
-      MYSQL_DATABASE: /run/secrets/MYSQL_DATABASE
-      MYSQL_USER: /run/secrets/MYSQL_USER
-      MYSQL_PASSWORD: /run/secrets/MYSQL_PASSWORD
-
+    env_file:
+      - ./backend/.env
 
 secrets:
   MAIL_SMTP_SERVER:
