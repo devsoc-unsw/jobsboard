@@ -193,7 +193,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
   public static async GetPendingCompanyVerifications(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
-      Logger.Info(`ADMIN=${req.adminID} attempting to query pending jobs`);
+      Logger.Info(`ADMIN=${req.adminID} attempting to query pending companies`);
       let pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
         const pendingCompanyAccounts = await getRepository(CompanyAccount)
           .createQueryBuilder()
