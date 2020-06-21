@@ -15,7 +15,7 @@
         name="username"
         v-model="username"
         type="text"
-        placeholder="username" 
+        placeholder="email" 
         @keyup.enter="performCompanyLogin()"
       />
       <br/>
