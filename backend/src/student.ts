@@ -4,12 +4,15 @@ import {
 } from "typeorm";
 import { Job } from "./entity/job";
 import Helpers, { IResponseWithStatus } from "./helpers";
+import Logger from "./logging";
 
 const paginatedJobLimit: number = 10;
 
 export default class StudentFunctions {
+  /*
   public static async GetAllActiveJobs(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
+      Logger.Info
       const jobs = await getRepository(Job)
         .createQueryBuilder()
         .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
@@ -44,10 +47,12 @@ export default class StudentFunctions {
       } as IResponseWithStatus;
     }, next);
   }
+  */
 
   public static async GetPaginatedJobs(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       const offset: number = req.params.offset;
+      Logger.Info(`STUDENT=${req.studentZID} getting paginated jobs with OFFSET=${offset}`);
       Helpers.requireParameters(offset);
 
       const jobs = await getRepository(Job)
@@ -89,6 +94,7 @@ export default class StudentFunctions {
 
   public static async GetJob(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
       Helpers.requireParameters(req.params.jobID);
       const jobInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
@@ -99,7 +105,7 @@ export default class StudentFunctions {
           .andWhere("Job.id = :id", { id: parseInt(req.params.jobID, 10) })
           .andWhere("Job.deleted = :deleted", { deleted: false })
           .getOne();
-      }, `Couldn't find job with ID: ${req.params.jobID}`);
+      }, `Failed to find JOB=${req.params.jobID}`);
 
       return {
         status: 200,

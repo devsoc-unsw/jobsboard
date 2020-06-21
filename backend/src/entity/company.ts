@@ -19,6 +19,11 @@ export class Company {
   })
   public description: string;
 
+  @Column({
+    default: false,
+  })
+  public sponsor: boolean;
+
   @OneToMany(_ => Job, job => job.company, {
     cascade: true,
     onDelete: "CASCADE",

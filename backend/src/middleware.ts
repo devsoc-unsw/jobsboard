@@ -27,10 +27,12 @@ export default class Middleware {
   private static verifyTokenProperties(req: Request, jwt: IToken) {
     if (Date.now() - jwt.lastRequestTimestamp > 5 * 60 * 1000) {
       // token has expired, is now considered invalid
+      Logger.Info(`EXPIRED TOKEN=${jwt}`);
       throw new Error("Token has expired.");
     }
     if (req.ip != jwt.ipAddress) {
       // TODO(ad-t): Investigate this - https://stackoverflow.com/questions/10849687/express-js-how-to-get-remote-client-address
+      Logger.Info(`MISMATCHED IP ADDRESS=${req.ip} COMPARED TO TOKEN=${jwt}`);
       throw new Error("IP address has changed.");
     }
   }
@@ -54,7 +56,7 @@ export default class Middleware {
         .createQueryBuilder()
         .where("Student.zID = :zID", { zID: jwt.id })
         .getOne();
-      }, `Couldn't find or create a student record with zID: ${jwt.id}`);
+      }, `Failed to find or create student record with zID=${jwt.id}`);
       // check whether the tokens are equivalent
       const tokenAsString = rawJWT as string;
       if (tokenAsString !== studentQuery.latestValidToken) {
@@ -136,6 +138,7 @@ export default class Middleware {
 
   private static verifyAccountType(val: AccountType, expected: AccountType) {
     if (val !== expected) {
+      Logger.Error("Attempted to authenticate with incorrect account type");
       throw new Error("Incorrect account type");
     }
   }

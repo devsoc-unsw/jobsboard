@@ -75,7 +75,7 @@ export default class MailFunctions {
           .where("MailRequest.send = :send", { send: false })
           .orderBy("MailRequest.createdAt", "ASC")
           .getOne();
-        }, `Couldn't find a mail request to send`);
+        }, `No mail request to send`);
         if (process.env.NODE_ENV === "production") {
           mailTransporter.sendMail({
             from: mailRequest.sender,
@@ -83,7 +83,7 @@ export default class MailFunctions {
             subject: mailRequest.subject,
             text: mailRequest.content,
             html: mailRequest.content,
-          }, () => Logger.Info(`Successfully sent email id: ${mailRequest.id}.`));
+          }, () => Logger.Info(`Successfully sent EMAIL=${mailRequest.id}`));
         } else {
           Logger.Info(`NODE_ENV is not production (currently ${process.env.NODE_ENV}), therefore no email will be sent. Here is the email that would have been sent:
                       ${JSON.stringify(mailRequest)}`);

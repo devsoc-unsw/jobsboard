@@ -31,6 +31,7 @@ import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import { Student } from "./entity/student";
 import { MailRequest } from "./entity/mail_request";
+import { Logs } from "./entity/logs";
 
 // custom middleware
 import Middleware from "./middleware";
@@ -71,6 +72,7 @@ const activeEntities = [
   Student,
   AdminAccount,
   MailRequest,
+  Logs,
 ];
 
 // swagger api generator based on jsdoc
@@ -560,5 +562,5 @@ app.listen(port, async () => {
   if (process.env.NODE_ENV === "production") {
     MailFunctions.InitMailQueueScheduler(2000);
   }
-  Logger.Info(`Server started at ${port}`);
+  Logger.Info(`SERVER STARTED AT PORT=${port}`);
 });

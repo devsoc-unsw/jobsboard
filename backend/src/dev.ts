@@ -15,6 +15,7 @@ import { Job } from "./entity/job";
 import Secrets from "./secrets";
 
 export async function seedDB(activeEntities: any[]) {
+  Logger.Info("SEEDING DATABASE");
   // clear all tables
   if (process.env.NODE_ENV === "development") {
     /*
@@ -72,5 +73,5 @@ export async function seedDB(activeEntities: any[]) {
     job4,
   ];
   await manager.save(companyAccount);
-  Logger.Info("Finished seeding.");
+  Logger.Info("FINISHED SEEDING");
 }

@@ -47,7 +47,7 @@
     "build": "tsc",
     "prestart": "yarn run build",
     "serve": "nodemon -w ./src -w ./tests -x yarn run watch",
-    "watch": "rm db/*.sqlite; ts-node src/index.ts",
+    "watch": "ts-node src/index.ts",
     "watch:test": "sleep 7 && ./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
     "test": "nodemon -w ./src -w ./tests -x yarn run watch:test"
   },

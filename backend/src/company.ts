@@ -15,6 +15,7 @@ import Logger from "./logging";
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`);
       const companyInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Company)
           .createQueryBuilder()
@@ -22,7 +23,7 @@ export default class CompanyFunctions {
           .leftJoinAndSelect("Company.jobs", "Job")
           .where("Company.id = :id", { id: parseInt(req.params.companyID, 10) })
           .getOne();
-      }, `Company ${req.params.companyID} not found.`);
+      }, `Failed to find COMPANY=${req.params.companyID}.`);
       return {
         status: 200,
         msg: {
@@ -42,6 +43,7 @@ export default class CompanyFunctions {
 
   public static async GetJobsFromCompany(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`STUDENT=${req.studentZID} getting jobs for COMPANY=${req.params.companyID}`);
       const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
@@ -52,7 +54,7 @@ export default class CompanyFunctions {
           .andWhere("Job.deleted = :deleted", { deleted: false })
           .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .getMany();
-      }, `Couldn't find jobs for company with ID: ${req.params.companyID}`);
+      }, `Failed to find jobs for COMPANY=${req.params.companyID}`);
 
       return {
         status: 200,
@@ -84,6 +86,7 @@ export default class CompanyFunctions {
       Helpers.requireParameters(msg.password);
       Helpers.requireParameters(msg.name);
       Helpers.requireParameters(msg.location);
+      Logger.Info(`Attempting to create company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`);
       // check if the company account exists with the same name
       const conn: Connection = getConnection();
       // using the original typeorm OR convention fails to construct a suitable MySQL
@@ -114,6 +117,8 @@ export default class CompanyFunctions {
       newCompany.companyAccount = newCompanyAccount;
 
       await conn.manager.save(newCompanyAccount);
+
+      Logger.Info(`Created company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`);
 
       // await conn.manager.save(newCompanyAccount);
       MailFunctions.AddMailToQueue(
@@ -161,6 +166,7 @@ export default class CompanyFunctions {
       Helpers.requireParameters(msg.description);
       Helpers.requireParameters(msg.applicationLink);
       Helpers.validApplicationLink(msg.applicationLink);
+      Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`);
       const conn: Connection = getConnection();
       const newJob = new Job();
       newJob.role = msg.role;
@@ -176,7 +182,7 @@ export default class CompanyFunctions {
             .where("CompanyAccount.id = :id", { id: req.companyAccountID })
             .andWhere("CompanyAccount.verified = :verified", { verified: true })
             .getOne();
-        }, `Couldn't find company account with ID ${req.companyAccountID}`);
+        }, `Failed to find COMPANY_ACCOUNT=${req.companyAccountID}`);
       } catch (error) {
         // reject because a verified account could not be found and thus can't post a job
         return {
@@ -193,14 +199,14 @@ export default class CompanyFunctions {
           .relation(Company, "jobs")
           .of(companyAccount.company)
           .loadMany();
-      }, `Cannot find jobs for company account with ID: ${req.companyAccountID}`);
+      }, `Failed to find jobs for COMPANY_ACCOUNT=${req.companyAccountID}`);
 
       companyAccount.company.jobs.push(newJob);
 
       await conn.manager.save(companyAccount);
 
       const newJobID: number = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
-      Logger.Info(`Created job with id: ${newJobID}`);
+      Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
 
       // check to see if that job is queryable
       const newJobQueryVerification = await Helpers.doSuccessfullyOrFail(async () => {
@@ -208,7 +214,7 @@ export default class CompanyFunctions {
           .createQueryBuilder()
           .where("Job.id = :id", { id: newJobID })
           .getOne();
-      }, `Couldn't fetch the newly created job with ID: ${newJobID}`);
+      }, `Failed to fetch the newly created JOB=${newJobID}`);
 
       MailFunctions.AddMailToQueue(
         companyAccount.username,
@@ -242,6 +248,7 @@ export default class CompanyFunctions {
 
   public static async GetAllJobsFromCompany(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`);
       const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
@@ -258,7 +265,7 @@ export default class CompanyFunctions {
             "Job.hidden"
           ])
           .getMany();
-      }, `Couldn't find jobs for company with ID: ${req.companyAccountID}`);
+      }, `Failed to find jobs for COMPANY=${req.companyAccountID}`);
 
       const fixedCompanyJobs = companyJobs.map((job: any) => {
         let jobStatus = "Unknown";
@@ -297,6 +304,7 @@ export default class CompanyFunctions {
 
   public static async MarkJobPostRequestAsDeleted(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`);
       const jobToDelete = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Job)
           .createQueryBuilder()
@@ -305,7 +313,7 @@ export default class CompanyFunctions {
           .andWhere("Job.id = :jobID", { jobID: req.params.jobID })
           .andWhere("Job.deleted = :deleted", { deleted: false })
           .getOne();
-      }, `Couldn't find job ${req.params.jobID} for company with ID: ${req.companyAccountID}`);
+      }, `Failed to find JOB=${req.params.jobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
 
       // found a valid job that can be deleted
       await getConnection().createQueryBuilder()
@@ -313,6 +321,7 @@ export default class CompanyFunctions {
         .set({ deleted: true })
         .where("id = :id", { id: jobToDelete.id })
         .execute();
+      Logger.Info(`COMPANY=${req.companyAccountID} marked JOB=${req.params.jobID} as deleted`);
 
       return {
         status: 200,

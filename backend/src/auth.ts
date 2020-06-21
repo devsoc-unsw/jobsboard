@@ -42,6 +42,7 @@ export default class Auth {
       Helpers.requireParameters(msg.password);
       const result = await Auth.authenticateStudent(msg.zID, msg.password)
       if (result === true) {
+        Logger.Info(`Successfully authenticated STUDENT=${msg.zID}`);
         // successful login
         const rawToken: IToken = {
           id: msg.zID,
@@ -64,6 +65,7 @@ export default class Auth {
           student.zID = msg.zID;
           student.latestValidToken = token as string;
           await getConnection().manager.save(student);
+          Logger.Info(`Created student record for STUDENT=${msg.zID}`);
         } else {
           await getConnection().createQueryBuilder()
             .update(Student)
@@ -79,6 +81,7 @@ export default class Auth {
           } 
         } as IResponseWithStatus;
       } else {
+        Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
         throw new Error("Invalid credentials");
       }
     }, () => {
@@ -101,8 +104,10 @@ export default class Auth {
       }, `Couldn't find company with username: ${msg.username}`);
       try {
         if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
+          Logger.Info(`Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`);
           throw new Error("Invalid credentials");
         }
+        Logger.Info(`Successfully authenticated COMPANY=${msg.username}`);
         const rawToken: IToken = {
           id: companyQuery.id,
           type: AccountType.Company,
@@ -145,8 +150,10 @@ export default class Auth {
       }, `Couldn't find admin account with username: ${msg.username}`);
       try {
         if (!Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
+          Logger.Info(`Failed to authenticate ADMIN=${msg.username} due to invalid credentials`);
           throw new Error("Invalid credentials");
         }
+        Logger.Info(`Successfully authenticated ADMIN=${msg.username}`);
         // credentials match, so grant them a token
         const rawToken: IToken = {
           id: adminQuery.id,
@@ -176,7 +183,6 @@ export default class Auth {
 
   // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
-    // TODO: Implement
     if (process.env.NODE_ENV !== "development") {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
         const client = new Client({
@@ -186,10 +192,11 @@ export default class Auth {
           // },
         });
         const result = await client.bind(`${zID}@ad.unsw.edu.au`, password);
-        Logger.Info(`RESULT FOR ${zID} IS: ${result}`);
+        Logger.Info(`Authentication state for STUDENT=${zID} IS=${result}`);
         return true;
       } else {
         // if unexpected characters are found, immediately reject
+        Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);
         return false;
       }
     } else {
