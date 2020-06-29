@@ -15,7 +15,7 @@
       :key="pendingCompany.key"
       :companyAccountID="pendingCompany.id"
       :name="pendingCompany.company.name"
-      :location="pendingCompany.company.name"
+      :location="pendingCompany.company.location"
       :description="pendingCompany.company.description"
       />
   </div>
