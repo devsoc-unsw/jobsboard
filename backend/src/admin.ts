@@ -64,8 +64,8 @@ export default class AdminFunctions {
         `
         Congratulations! You job post request titled "${jobToApprove.role}" has been approved. UNSW CSESoc students are now able to view the posting.
           <br>
-        Best regards,
-        CSESoc Jobs Board Administrator
+        <p>Best regards,</p>
+        <p>CSESoc Jobs Board Administrator</p>
         `,
       );
       Logger.Info(`Admin ID=${req.adminID} approved JOB=${req.params.jobID}`);
@@ -135,8 +135,8 @@ export default class AdminFunctions {
         `
 You job post request titled "${jobToReject.role}" has been rejected as it does not follow our <a href="">job post guidelines</a>. You are more than welcome to re-submit a revised version of the job application that better follows the aforementioned guidelines.
           <br>
-        Best regards,
-        CSESoc Jobs Board Administrator
+        <p>Best regards,</p>
+        <p>CSESoc Jobs Board Administrator</p>
         `,
       );
       Logger.Info(`Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
@@ -249,7 +249,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         "CSESoc Jobs Board - Success! Your account has been verified",
         `
 
-        Congratulations! Your company account for ${pendingCompany.name} has been successful. You are now able to post job requests on the CSESoc Jobs Board. The process for doing so is as follows:
+        Congratulations! Your company account creation has been successful. You are now able to post job requests on the CSESoc Jobs Board. The process for doing so is as follows:
             <ul>
               <li>
                 Log in to the company account portal
@@ -268,8 +268,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
               </li>
             </ul>
           <br>
-        Best regards,
-        CSESoc Jobs Board Administrator
+        <p>Best regards,</p>
+        <p>CSESoc Jobs Board Administrator</p>
         `,
       );
       Logger.Info(`Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);

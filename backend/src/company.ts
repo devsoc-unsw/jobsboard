@@ -129,9 +129,9 @@ export default class CompanyFunctions {
             <br>
           Please contact our executive committee at <a href="mailto:info@csesoc.org.au">info@csesoc.org.au</a> to verify your company account.
           <br>
-        Best regards,
-        Adam Tizzone
-        CSESoc Jobs Board Administrator
+        <p>Best regards,</p>
+        <p>Adam Tizzone</p>
+        <p>CSESoc Jobs Board Administrator</p>
         `,
       );
       return {
@@ -224,9 +224,9 @@ export default class CompanyFunctions {
             <br>
           A result will be sent to you shortly.
           <br>
-        Best regards,
-        Adam Tizzone
-        CSESoc Jobs Board Administrator
+        <p>Best regards,</p>
+        <p>Adam Tizzone</p>
+        <p>CSESoc Jobs Board Administrator</p>
         `,
       );
       return {

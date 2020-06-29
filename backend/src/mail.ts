@@ -69,10 +69,11 @@ export default class MailFunctions {
     }
     setInterval(async () => {
       try {
+        Logger.Info("[DEBUG] Mailing queue access begin.");
         const mailRequest = await Helpers.doSuccessfullyOrFail(async () => {
-          return getRepository(MailRequest)
+          return await getConnection().getRepository(MailRequest)
           .createQueryBuilder()
-          .where("MailRequest.send = :send", { send: false })
+          .where("MailRequest.sent = :sent", { sent: false })
           .orderBy("MailRequest.createdAt", "ASC")
           .getOne();
         }, `No mail request to send`);
@@ -102,11 +103,29 @@ export default class MailFunctions {
 
   public static async AddMailToQueue(recipient: string, subject: string, content: string): Promise<boolean> {
     try {
+      Logger.Info("[DEBUG] Calling AddMailToQueue");
       // check parameters
-      Helpers.requireParameters(process.env.MAIL_USERNAME);
-      Helpers.requireParameters(recipient);
-      Helpers.requireParameters(subject);
-      Helpers.requireParameters(content);
+      try {
+        Helpers.requireParameters(process.env.MAIL_USERNAME);
+      } catch (error) {
+        Logger.Error(`[DEBUG] Mail username parameter checking failed`);
+      }
+      try {
+        Helpers.requireParameters(recipient);
+      } catch (error) {
+        Logger.Error(`[DEBUG] Recipient parameter checking failed`);
+      }
+      try {
+        Helpers.requireParameters(subject);
+      } catch (error) {
+        Logger.Error(`[DEBUG] Subject parameter checking failed`);
+      }
+      try {
+        Helpers.requireParameters(content);
+      } catch (error) {
+        Logger.Error(`[DEBUG] Content parameter checking failed`);
+      }
+      Logger.Info("[DEBUG] Using getConnection");
       const conn: Connection = getConnection();
       const newMailRequest: MailRequest = new MailRequest();
       newMailRequest.sender = process.env.MAIL_USERNAME;
@@ -115,13 +134,14 @@ export default class MailFunctions {
       newMailRequest.content = content;
 
       await conn.manager.save(newMailRequest); 
+      Logger.Info("[DEBUG] Saved user mail request");
 
       // send a copy of this email to the admin
       const newMailRequestForAdmin: MailRequest = new MailRequest();
-      newMailRequest.sender = process.env.MAIL_USERNAME;
-      newMailRequest.recipient = process.env.MAIL_USERNAME;
-      newMailRequest.subject = subject;
-      newMailRequest.content = `The following was sent to "${recipient}" with subject "${subject}":
+      newMailRequestForAdmin.sender = process.env.MAIL_USERNAME;
+      newMailRequestForAdmin.recipient = process.env.MAIL_USERNAME;
+      newMailRequestForAdmin.subject = subject;
+      newMailRequestForAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
 
         CONTENT BEGINS HERE
       ------------------------
@@ -129,9 +149,11 @@ export default class MailFunctions {
       `;
 
       await conn.manager.save(newMailRequestForAdmin);
+      Logger.Info("[DEBUG] Saved admin mail request");
 
       return true;
     } catch (error) {
+      Logger.Error(`AddMailToQueue FAILED with error ${error}`);
       return false;
     }
   }

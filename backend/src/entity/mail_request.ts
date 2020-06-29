@@ -12,11 +12,13 @@ export class MailRequest {
   public recipient: string;
 
   @Column({
+    type: "text",
     default: ""
   })
   public subject: string;
 
   @Column({
+    type: "longtext",
     default: ""
   })
   public content: string;
