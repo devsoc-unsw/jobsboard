@@ -69,7 +69,6 @@ export default class MailFunctions {
     }
     setInterval(async () => {
       try {
-        Logger.Info("[DEBUG] Mailing queue access begin.");
         const mailRequest = await Helpers.doSuccessfullyOrFail(async () => {
           return await getConnection().getRepository(MailRequest)
           .createQueryBuilder()
@@ -103,7 +102,6 @@ export default class MailFunctions {
 
   public static async AddMailToQueue(recipient: string, subject: string, content: string): Promise<boolean> {
     try {
-      Logger.Info("[DEBUG] Calling AddMailToQueue");
       // check parameters
       try {
         Helpers.requireParameters(process.env.MAIL_USERNAME);
@@ -125,7 +123,6 @@ export default class MailFunctions {
       } catch (error) {
         Logger.Error(`[DEBUG] Content parameter checking failed`);
       }
-      Logger.Info("[DEBUG] Using getConnection");
       const conn: Connection = getConnection();
       const newMailRequest: MailRequest = new MailRequest();
       newMailRequest.sender = process.env.MAIL_USERNAME;
