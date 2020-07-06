@@ -18,7 +18,11 @@
       <h2>
         Job Description
       </h2>
-      {{ description }}
+      <p
+        v-for="line in description"
+        >
+        <span v-html="line"/>
+      </p>
       <br/>
       <br/>
     </div>
@@ -39,7 +43,7 @@
       {{ companyDescription }}
       <br/>
       <br/>
-      <h2>
+      <h2 v-if="jobs.length !== 0">
         More jobs at {{ company }}
       </h2>
       <div class="jobContainer">
@@ -89,7 +93,7 @@ export default Vue.extend({
       role: "",
       company: "",
       companyDescription: "",
-      description: "",
+      description: [""],
       jobs: [],
       location: "",
       applicationLink: "",
@@ -126,7 +130,32 @@ export default Vue.extend({
       if (response.ok) {
         this.role = msg.job.role;
         this.company = msg.job.company.name;
-        this.description = msg.job.description;
+        let splitDescription = msg.job.description.split("\n");
+
+        let listFlag = false;
+        for (let lineIndex in splitDescription) {
+          let line = splitDescription[lineIndex];
+          // apply italics
+          line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
+          if (line.startsWith("- ")) {
+            // remove that hyphen when rendering
+            line = line.replace(/^- ?/, "");
+            if (!listFlag) {
+              listFlag = true;
+              this.description.push(`<ul>`);
+            } else {
+              this.description.push(`<li>${line}</li>`);
+            }
+          } else if (/^#/.test(line)) {
+            this.description.push(`<h3>${line}</h3>`);
+          } else {
+            if (listFlag) {
+              listFlag = false;
+              this.description.push(`</ul>`);
+            }
+            this.description.push(line);
+          }
+        }
         this.companyDescription = msg.job.company.description;
         this.location = msg.job.company.location;
         this.companyID = msg.job.company.id;
