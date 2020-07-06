@@ -25,7 +25,7 @@ export default class Middleware {
   }
 
   private static verifyTokenProperties(req: Request, jwt: IToken) {
-    if (Date.now() - jwt.lastRequestTimestamp > 5 * 60 * 1000) {
+    if (Date.now() - jwt.lastRequestTimestamp > 20 * 60 * 1000) {
       // token has expired, is now considered invalid
       Logger.Info(`EXPIRED TOKEN=${jwt}`);
       throw new Error("Token has expired.");
