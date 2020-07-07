@@ -127,7 +127,7 @@ export default class CompanyFunctions {
         `
         Thank you for registering your company with the CSESoc Jobs Board. We really appreciate your time and are looking forward to working with you to share amazing opportunities with our students.
             <br>
-          Please contact our executive committee at <a href="mailto:info@csesoc.org.au">info@csesoc.org.au</a> to verify your company account.
+          Please contact our executive committee at <a href="mailto:careers@csesoc.org.au">careers@csesoc.org.au</a> to verify your company account.
           <br>
         <p>Best regards,</p>
         <p>Adam Tizzone</p>

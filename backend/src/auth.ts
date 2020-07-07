@@ -183,6 +183,15 @@ export default class Auth {
 
   // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
+    // inclusions list for beta testing
+    const betaTesters = [
+      "z5060214",
+    ];
+
+    if (!betaTesters.includes(zID)) {
+      return false;
+    }
+
     if (process.env.NODE_ENV !== "development") {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
         const client = new Client({
