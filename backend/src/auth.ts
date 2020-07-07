@@ -189,6 +189,7 @@ export default class Auth {
     ];
 
     if (!betaTesters.includes(zID)) {
+      Logger.Info(`REJECTED login from STUDENT=${zID} as they are not a beta tester.`);
       return false;
     }
 
