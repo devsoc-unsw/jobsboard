@@ -78,7 +78,6 @@ export default class StudentFunctions {
       return {
         status: 200,
         msg: {
-          token: req.newJbToken,
           jobs: fixedJobs
         }
       } as IResponseWithStatus;
