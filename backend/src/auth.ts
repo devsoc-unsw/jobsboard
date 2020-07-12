@@ -184,8 +184,25 @@ export default class Auth {
   // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
     // inclusions list for beta testing
+    /*
+     *
+      Arsham	Emad	        z5313115
+      Luke	Fisk-Lennon	z5169800
+      Angeni	Bai	        z5169778
+      Shrey	Somaiya	        z5257343
+      Gordon	Zhong	        z5258720
+      An Thy	Tran	        z5255918
+      Max	Wo	        z5215628
+     */
     const betaTesters = [
       "z5060214",
+      "z5313115",
+      "z5169800",
+      "z5169778",
+      "z5257343",
+      "z5258720",
+      "z5255918",
+      "z5215628",
     ];
 
     if (!betaTesters.includes(zID)) {
