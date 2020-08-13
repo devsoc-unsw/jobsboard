@@ -15,9 +15,9 @@
       :location="location"
       />
     <div class="jobInformation">
-      <h2>
+      <h1>
         Job Description
-      </h2>
+      </h1>
       <p
         v-for="line in description"
         >
