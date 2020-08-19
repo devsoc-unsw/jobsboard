@@ -1,4 +1,4 @@
-language: typescript
+language: javascript
 
 services:
   - docker

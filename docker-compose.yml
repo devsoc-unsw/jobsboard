@@ -8,12 +8,12 @@ services:
       - "8080:8080"
     expose:
       - 8080
-    env_file:
-      - .env
-      - ./backend/.env
+    # env_file:
+    #   - .env
+    #   - ./backend/.env
   frontend:
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     build:
       context: ./frontend
     image: webpersonal.azurecr.io/jb-frontend:latest
@@ -27,8 +27,8 @@ services:
       - "3306:3306"
     expose:
       - 3306
-    env_file:
-      - ./backend/.env
+    # env_file:
+    #   - ./backend/.env
 
 secrets:
   MAIL_SMTP_SERVER:
