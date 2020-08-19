@@ -5,3 +5,10 @@ services:
 
 before_install:
 - docker-compose build
+- docker-compose run db
+- sleep 10
+- docker-compose run api
+- cd backend && yarn install
+
+script:
+  - cd backend && yarn travis:test

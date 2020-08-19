@@ -49,7 +49,8 @@
     "serve": "nodemon -w ./src -w ./tests -x yarn run watch",
     "watch": "ts-node src/index.ts",
     "watch:test": "sleep 7 && ./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
-    "test": "nodemon -w ./src -w ./tests -x yarn run watch:test"
+    "test": "nodemon -w ./src -w ./tests -x yarn run watch:test",
+    "travis:test": "./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.18.0",
