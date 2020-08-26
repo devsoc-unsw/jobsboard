@@ -3,6 +3,16 @@ language: javascript
 services:
   - docker
 
+env:
+  NODE_ENV: development
+  SERVER_PORT: 8000
+  MYSQL_RANDOM_ROOT_PASSWORD: true
+  MYSQL_HOST: db
+  MYSQL_PORT: 3367
+  MYSQL_USER: jb_ci
+  MYSQL_PASSWORD: jb_ci
+  MYSQL_DATABASE: jb_ci
+
 before_install:
 - docker-compose build
 - docker-compose run db
