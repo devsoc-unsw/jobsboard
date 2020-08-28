@@ -15,6 +15,7 @@ env:
 
 before_install:
   # set up secrets
+- docker swarm init
 - echo "$NODE_ENV" | docker secret create NODE_ENV -
 - echo "$SERVER_PORT" | docker secret create SERVER_PORT -
 - echo "$MYSQL_RANDOM_ROOT_PASSWORD" | docker secret create MYSQL_RANDOM_ROOT_PASSWORD -
