@@ -15,14 +15,14 @@ env:
 
 before_install:
   # set up secrets
-- kubectl create secret generic NODE_ENV --from-literal=$NODE_ENV
-- kubectl create secret generic SERVER_PORT --from-literal=$SERVER_PORT
-- kubectl create secret generic MYSQL_RANDOM_ROOT_PASSWORD --from-literal=$MYSQL_RANDOM_ROOT_PASSWORD
-- kubectl create secret generic MYSQL_HOST --from-literal=$MYSQL_HOST
-- kubectl create secret generic MYSQL_POST --from-literal=$MYSQL_PORT
-- kubectl create secret generic MYSQL_USER --from-literal=$MYSQL_USER
-- kubectl create secret generic MYSQL_PASSWORD --from-literal=$MYSQL_PASSWORD
-- kubectl create secret generic MYSQL_DATABASE --from-literal=$MYSQL_DATABASE
+- echo "$NODE_ENV" > /run/secrets/NODE_ENV
+- echo "$SERVER_PORT" > /run/secrets/SERVER_PORT
+- echo "$MYSQL_RANDOM_ROOT_PASSWORD" > /run/secrets/MYSQL_RANDOM_ROOT_PASSWORD
+- echo "$MYSQL_HOST" > /run/secrets/MYSQL_HOST
+- echo "$MYSQL_PORT" > /run/secrets/MYSQL_PORT
+- echo "$MYSQL_USER" > /run/secrets/MYSQL_USER
+- echo "$MYSQL_PASSWORD" > /run/secrets/MYSQL_PASSWORD
+- echo "$MYSQL_DATABASE" > /run/secrets/MYSQL_DATABASE
   # build
 - docker-compose build
 - docker-compose run db
