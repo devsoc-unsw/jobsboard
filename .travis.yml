@@ -16,14 +16,15 @@ env:
 before_install:
   # set up secrets
 - sudo mkdir -p /run/secrets/
-- sudo echo "$NODE_ENV" > /run/secrets/NODE_ENV
-- sudo echo "$SERVER_PORT" > /run/secrets/SERVER_PORT
-- sudo echo "$MYSQL_RANDOM_ROOT_PASSWORD" > /run/secrets/MYSQL_RANDOM_ROOT_PASSWORD
-- sudo echo "$MYSQL_HOST" > /run/secrets/MYSQL_HOST
-- sudo echo "$MYSQL_PORT" > /run/secrets/MYSQL_PORT
-- sudo echo "$MYSQL_USER" > /run/secrets/MYSQL_USER
-- sudo echo "$MYSQL_PASSWORD" > /run/secrets/MYSQL_PASSWORD
-- sudo echo "$MYSQL_DATABASE" > /run/secrets/MYSQL_DATABASE
+- sudo chown -R $USER:$USER /run/secrets/
+- echo "$NODE_ENV" > /run/secrets/NODE_ENV
+- echo "$SERVER_PORT" > /run/secrets/SERVER_PORT
+- echo "$MYSQL_RANDOM_ROOT_PASSWORD" > /run/secrets/MYSQL_RANDOM_ROOT_PASSWORD
+- echo "$MYSQL_HOST" > /run/secrets/MYSQL_HOST
+- echo "$MYSQL_PORT" > /run/secrets/MYSQL_PORT
+- echo "$MYSQL_USER" > /run/secrets/MYSQL_USER
+- echo "$MYSQL_PASSWORD" > /run/secrets/MYSQL_PASSWORD
+- echo "$MYSQL_DATABASE" > /run/secrets/MYSQL_DATABASE
   # build
 - docker-compose build
 - docker-compose run db
