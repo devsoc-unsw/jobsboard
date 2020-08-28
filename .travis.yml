@@ -15,6 +15,7 @@ env:
 
 before_install:
   # set up secrets
+- mkdir -p /run/secrets/
 - echo "$NODE_ENV" > /run/secrets/NODE_ENV
 - echo "$SERVER_PORT" > /run/secrets/SERVER_PORT
 - echo "$MYSQL_RANDOM_ROOT_PASSWORD" > /run/secrets/MYSQL_RANDOM_ROOT_PASSWORD
