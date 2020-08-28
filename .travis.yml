@@ -7,11 +7,11 @@ services:
 before_install:
   # build
 - docker-compose build
-- docker-compose run db
+- docker-compose run -d db
   # sleep to allow db to initialise
 - sleep 10
   # start the api
-- docker-compose run api
+- docker-compose run -d api
 
 script:
   - cd backend && yarn travis:test
