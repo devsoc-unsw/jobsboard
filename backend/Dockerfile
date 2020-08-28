@@ -14,4 +14,4 @@ COPY --from=builder "/app/package.json" "/app/package.json"
 
 EXPOSE 8080
 
-CMD node ./dist/index.js
+CMD sleep 10 && node ./dist/index.js

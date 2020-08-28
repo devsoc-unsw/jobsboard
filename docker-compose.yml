@@ -10,10 +10,10 @@ services:
       - 8080
     environment:
       - NODE_ENV=development
-      - SERVER_PORT=8000
+      - SERVER_PORT=8080
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_HOST=db
-      - MYSQL_PORT=3367
+      - MYSQL_PORT=3306
       - MYSQL_USER=jb_ci
       - MYSQL_PASSWORD=jb_ci
       - MYSQL_DATABASE=jb_ci
@@ -34,7 +34,7 @@ services:
     environment:
       - MYSQL_RANDOM_ROOT_PASSWORD=true
       - MYSQL_HOST=db
-      - MYSQL_PORT=3367
+      - MYSQL_PORT=3306
       - MYSQL_USER=jb_ci
       - MYSQL_PASSWORD=jb_ci
       - MYSQL_DATABASE=jb_ci
