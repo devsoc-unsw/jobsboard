@@ -2,6 +2,7 @@ version: '3.3'
 services:
   api:
     build:
+      dockerfile: Dockerfile
       context: ./backend
     image: webpersonal.azurecr.io/jb-api:latest
     ports:
@@ -40,4 +41,5 @@ services:
       - MYSQL_DATABASE=jb_ci
   test:
     build:
-      context: ./test
+      dockerfile: Dockerfile.test
+      context: ./backend

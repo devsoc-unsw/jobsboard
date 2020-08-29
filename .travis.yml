@@ -9,11 +9,8 @@ services:
 before_install:
   # build
 - docker-compose build
-- docker-compose run -d db
-  # sleep to allow db to initialise
-- sleep 10
-  # start the api
-- docker-compose run -d api
+  # start services
+- docker-compose up -d db api
 
 script:
-  - docker-compose run test
+  - docker-compose up test
