@@ -16,4 +16,4 @@ before_install:
 - docker-compose run -d api
 
 script:
-  - cd backend && yarn install && yarn travis:test
+  - docker-compose run test
