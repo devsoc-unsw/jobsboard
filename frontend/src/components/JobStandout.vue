@@ -2,7 +2,6 @@
   <div>
     <br />
     <div class="jobStandout">
-      <BackButton />
       <div class="companyLogo">
         <font-awesome-icon icon="building" />
       </div>
@@ -18,11 +17,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import BackButton from "@/components/buttons/back.vue";
 
 @Component({
   components: {
-    BackButton,
   },
 })
 
@@ -41,20 +38,17 @@ export default class JobStandout extends Vue {
   width: 75%;
   background: $white;
   margin: auto;
-  padding: 2rem;
+  padding: 1rem;
   flex: 1 1 auto;
 }
 
 .companyLogo {
-  font-size: 4em;
+  font-size: 2em;
   color: $grey;
   text-decoration: none;
   margin: auto;
 }
 @media screen and (min-width: 900px) {
-  .companyLogo {
-    font-size: 3em;
-  }
 }
 
 .back {

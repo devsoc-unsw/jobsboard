@@ -20,10 +20,16 @@ button {
   /* border-radius: 0.2rem; */
   text-align: center;
   width: fit-content();
-  padding: 1rem;
+  padding: 0.5rem;
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
-  margin: 1rem;
+  // margin: 1rem;
+}
+
+@media screen and (min-width: 900px) {
+  button {
+    padding: 1rem;
+  }
 }
 
 button:hover {

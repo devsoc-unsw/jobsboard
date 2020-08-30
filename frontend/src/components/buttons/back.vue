@@ -19,7 +19,6 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .back {
-  color: black;
   font-size: 2rem;
   text-align: left;
 }

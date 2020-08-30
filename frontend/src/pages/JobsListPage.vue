@@ -30,6 +30,7 @@
       </div>
     </div>
     <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>
+    <br />
   </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
