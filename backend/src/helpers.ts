@@ -50,7 +50,7 @@ export default class Helpers {
     try {
       response = await func();
     } catch (error) {
-      Logger.Error(error);
+      Logger.Error(`EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
       response = await funcOnError();
     }
     if (!res.headersSent) {

@@ -1,14 +1,14 @@
 <template>
   <div class="viewport">
     <div class="stretchyPage">
-      <div class="navbar">
-        <div class="leftBox">
+      <div class="navbarCompact">
+        <div class="leftBoxCompact">
           <div v-if="!disableBack">
             <BackButton />
           </div>
         </div>
-        <img class="main-logo-student" :src="logo" />
-        <div class="rightBox" @click="logOut">
+        <img class="main-logo-student-compact" :src="logo" />
+        <div class="rightBoxCompact" @click="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
         </div>
         <!-- <br /> -->
@@ -72,7 +72,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.navbar {
+.navbarCompact {
   background: $blue;
   color: $white;
   width: 80%;
@@ -82,7 +82,7 @@ export default Vue.extend({
   justify-content: space-between;
 }
 @media screen and (min-width: 900px) {
-  .navbar {
+  .navbarCompact {
     width: 50%;
     padding: 2.5rem;
   }
@@ -125,7 +125,7 @@ export default Vue.extend({
   min-height: 100%;
 }
 
-.rightBox {
+.rightBoxCompact {
   color: $white;
   margin-top: auto;
   margin-bottom: auto;
@@ -135,7 +135,7 @@ export default Vue.extend({
   cursor: pointer;
 }
 
-.main-logo-student {
+.main-logo-student-compact {
   height: auto;
   width: 10%;
   margin-top: auto;
@@ -143,7 +143,7 @@ export default Vue.extend({
   flex-grow: 1;
 }
 
-.leftBox {
+.leftBoxCompact {
   color: $white;
   margin-top: auto;
   margin-bottom: auto;
