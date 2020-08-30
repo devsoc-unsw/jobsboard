@@ -56,20 +56,26 @@ export default class StudentFunctions {
       Helpers.requireParameters(offset);
 
       const jobs = await getRepository(Job)
-        .createQueryBuilder()
-        .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
-        .leftJoinAndSelect("Job.company", "company")
-        .where("Job.approved = :approved", { approved: true })
-        .andWhere("Job.hidden = :hidden", { hidden: false })
-        .andWhere("Job.deleted = :deleted", { deleted: false })
+        .createQueryBuilder("job")
+        // TODO(ad-t): not the most gracefull or efficient way to go about this, however
+        // I'm not sure whether it's possible to partial select on a join
+        .innerJoinAndSelect("job.company", "company")
+        .where("job.approved = :approved", { approved: true })
+        .andWhere("job.hidden = :hidden", { hidden: false })
+        .andWhere("job.deleted = :deleted", { deleted: false })
+        .take(paginatedJobLimit)
         .skip(offset)
-        .limit(paginatedJobLimit)
         .getMany();
 
       const fixedJobs = jobs.map((job: Job) => { 
+        const newCompany: any = {};
+        newCompany.name = job.company.name;
+        newCompany.description = job.company.description;
+        newCompany.location = job.company.location;
+
         const newJob: any = {};
         newJob.applicationLink = job.applicationLink;
-        newJob.company = job.company;
+        newJob.company = newCompany;
         newJob.description = job.description;
         newJob.role = job.role;
         newJob.id = job.id;
