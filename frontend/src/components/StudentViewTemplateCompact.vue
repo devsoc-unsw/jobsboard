@@ -131,7 +131,8 @@ export default Vue.extend({
   margin-bottom: auto;
   flex-basis: 0;
   flex-grow: 1;
-  font-size: 1.25rem;
+  font-size: 2.0rem;
+  text-align: right;
   cursor: pointer;
 }
 
