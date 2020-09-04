@@ -3,28 +3,22 @@
     <div class="stretchyPage">
       <div class="navbar">
         <div class="leftBox">
-          <DarkBlueStandardButton>
-            <Button @callback="goToJobs">
-              <font-awesome-icon class="paddedIcon" icon="suitcase" /> 
-                Jobs
-            </Button>
-          </DarkBlueStandardButton>
-          <DarkBlueStandardButton>
-            <Button @callback="logOut">
-              <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
-                Log Out
-            </Button>
-          </DarkBlueStandardButton>
+          <div v-if="!disableBack">
+            <BackButton />
+          </div>
         </div>
-        <img class="main-logo-student" :src="logo" />
-        <h1>Discover student jobs and internships</h1>
-        <br />
+        <img class="main-logo-student" :src="logo"/>
+        <div class="rightBox" @click="logOut">
+          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+        </div>
         <!--
         <div>
           <input class="searchBar" type="text" placeholder="Search all jobs..."/>
         </div>
         -->
       </div>
+      <h1>Discover student jobs and internships</h1>
+      <br />
       <div class="content">
         <div class="contentWidth">
           <slot />
@@ -79,6 +73,8 @@ export default Vue.extend({
   width: 80%;
   margin: auto;
   padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
 }
 @media screen and (min-width: 900px) {
   .navbar {
@@ -124,24 +120,35 @@ export default Vue.extend({
   min-height: 100%;
 }
 
-.leftBox {
-  display: flex;
-  justify-content: flex-end;
-  color: $white;
-  width: 75%;
-  margin-left: 25%;
-}
-
 .navButtons {
   color: $white;
   padding: 0.5rem;
 }
 
-.main-logo-student {
-  width: 30%;
+.rightBox {
+  color: $white;
+  margin-top: auto;
+  margin-bottom: auto;
+  flex-basis: 0;
+  flex-grow: 1;
+  font-size: 2.0rem;
+  text-align: right;
+  cursor: pointer;
 }
 
-.paddedIcon {
-  padding-right: 0.75rem;
+.main-logo-student {
+  height: auto;
+  width: 10%;
+  margin-top: auto;
+  margin-bottom: auto;
+  flex-grow: 1;
+}
+
+.leftBox {
+  color: $white;
+  margin-top: auto;
+  margin-bottom: auto;
+  flex-basis: 0;
+  flex-grow: 1;
 }
 </style>

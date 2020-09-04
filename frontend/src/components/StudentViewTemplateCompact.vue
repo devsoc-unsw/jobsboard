@@ -11,7 +11,6 @@
         <div class="rightBoxCompact" @click="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
         </div>
-        <!-- <br /> -->
         <!--
         <div>
           <input class="searchBar" type="text" placeholder="Search all jobs..."/>
@@ -51,10 +50,6 @@ export default Vue.extend({
     logOut() {
       this.$store.dispatch("clearApiToken");
       this.$router.push("/login/student");
-    },
-    goToJobs() {
-      // NOTE: unused
-      this.$router.push("/jobs");
     }
   },
   data() {
@@ -150,9 +145,5 @@ export default Vue.extend({
   margin-bottom: auto;
   flex-basis: 0;
   flex-grow: 1;
-}
-
-.paddedIcon {
-  // padding-right: 0.75rem;
 }
 </style>
