@@ -18,7 +18,7 @@
         -->
       </div>
       <h1>Discover student jobs and internships</h1>
-      <br />
+      <!-- <br /> -->
       <div class="content">
         <div class="contentWidth">
           <slot />
@@ -79,7 +79,7 @@ export default Vue.extend({
 @media screen and (min-width: 900px) {
   .navbar {
     width: 50%;
-    padding: 1.5rem;
+    padding: 2.5rem;
   }
   .searchBar {
     margin-bottom: 0;
