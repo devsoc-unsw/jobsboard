@@ -17,7 +17,7 @@
         </div>
         -->
       </div>
-      <h1>Discover student jobs and internships</h1>
+      <h1 class="tagline">Discover student jobs and internships</h1>
       <!-- <br /> -->
       <div class="content">
         <div class="contentWidth">
@@ -150,5 +150,9 @@ export default Vue.extend({
   margin-bottom: auto;
   flex-basis: 0;
   flex-grow: 1;
+}
+
+.tagline {
+  color: $white;
 }
 </style>
