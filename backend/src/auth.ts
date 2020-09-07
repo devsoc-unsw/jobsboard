@@ -205,12 +205,13 @@ export default class Auth {
       "z5215628",
     ];
 
-    /*
-    if (!betaTesters.includes(zID)) {
-      Logger.Info(`REJECTED login from STUDENT=${zID} as they are not a beta tester.`);
-      return false;
+    if (process.env.RESTRICTED_LOGINS === "true") {
+      Logger.Info("Restricted logins ENABLED");
+      if (!betaTesters.includes(zID)) {
+        Logger.Info(`REJECTED login from STUDENT=${zID} as they are not a beta tester.`);
+        return false;
+      }
     }
-    */
 
     if (process.env.NODE_ENV !== "development") {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {

@@ -18,6 +18,7 @@ services:
       - MYSQL_USER=jb_ci
       - MYSQL_PASSWORD=jb_ci
       - MYSQL_DATABASE=jb_ci
+      - RESTRICTED_LOGINS=false
   frontend:
     build:
       context: ./frontend
