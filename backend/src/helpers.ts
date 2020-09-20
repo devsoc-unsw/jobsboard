@@ -66,6 +66,12 @@ export default class Helpers {
       await next();
     }
   }
+
+  public static doesMatchZidFormat(result: string) {
+    if (!/^z[0-9]{7}$/.test(result)) {
+      throw new Error(`zID ${result} doesn't match required format`);
+    }
+  }
 }
 
 export {

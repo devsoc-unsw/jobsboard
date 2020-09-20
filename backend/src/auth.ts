@@ -215,6 +215,9 @@ export default class Auth {
 
     if (process.env.NODE_ENV !== "development") {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
+        // check if it matches the zID format, throw otherwise.
+        Helpers.doesMatchZidFormat(zID);
+
         const client = new Client({
           url: 'ldaps://ad.unsw.edu.au',
           // tlsOptions: {
