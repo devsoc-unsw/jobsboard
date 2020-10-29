@@ -46,6 +46,7 @@ export default Vue.extend({
 <style scoped lang="scss">
 p {
   color: grey;
+  font-size: 0.75em;
 }
 
 span {
@@ -55,5 +56,11 @@ span {
 
 a {
   text-decoration: none;
+}
+
+@media screen and (min-width: 900px) {
+  p {
+    font-size: 1em;
+  }
 }
 </style>

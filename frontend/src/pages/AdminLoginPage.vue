@@ -1,5 +1,5 @@
 <template>
-  <LeftHalfPageTemplate>
+  <GeneralPageTemplate>
     <div>
       <h1>Admin Login</h1>
       <div v-if="error">
@@ -31,7 +31,7 @@
         </Button>
       </StandardButton>
     </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
 </template>
 
 <script lang="ts">
@@ -39,7 +39,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 // components
-import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
@@ -50,7 +50,7 @@ import config from "@/config/config";
 export default Vue.extend({
   name: "AdminLoginPage",
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
     ErrorBox,
     Button,
     StandardButton,

@@ -1,5 +1,5 @@
 <template>
-  <LeftHalfPageTemplate>
+  <GeneralPageTemplate>
     <div class="formatting">
       <div>
         <h1>Page not found</h1>
@@ -8,16 +8,16 @@
         <p>Redirecting...</p>
       </div>
     </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "../components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "../components/GeneralPageTemplate.vue";
 
 @Component({
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
   },
 })
 

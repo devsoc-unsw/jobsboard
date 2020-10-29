@@ -1,7 +1,7 @@
 <template>
   <LoggedInTemplate>
-  <LeftHalfPageTemplate loggedIn>
-    <div class="homeBox">
+  <GeneralPageTemplate loggedIn>
+    <div class="contentBox">
     <BackButton />
       <h1>Manage Jobs</h1>
       <div v-if="success">
@@ -33,13 +33,13 @@
         />
       </div>
     </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
@@ -52,7 +52,7 @@ import SuccessBox from "@/components/SuccessBox.vue";
 export default Vue.extend({
   name: "CompanyManageJobs",
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
     LoggedInTemplate,
     Button,
     StandardButton,
@@ -157,5 +157,17 @@ export default Vue.extend({
   grid-auto-rows: 1fr;
   grid-gap: 3%;
   padding-top: 2%;
+}
+
+.contentBox {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (min-width: 900px) {
+  .contentBox {
+    width: 85%;
+  }
 }
 </style>

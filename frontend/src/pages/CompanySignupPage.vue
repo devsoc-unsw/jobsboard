@@ -1,5 +1,5 @@
 <template>
-  <LeftHalfPageTemplate>
+  <GeneralPageTemplate>
     <div>
       <h1>Create a company account</h1>
       <div v-if="success">
@@ -54,12 +54,12 @@
       <br/>
       Already have an account? <router-link to="/login/company">Company Login</router-link>
     </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import config from "@/config/config";
@@ -69,7 +69,7 @@ import Button from "@/components/buttons/button.vue";
 export default Vue.extend({
   name: "CompanySignupPage",
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
     ErrorBox,
     SuccessBox,
     Button,

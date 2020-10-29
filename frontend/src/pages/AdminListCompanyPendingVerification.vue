@@ -1,7 +1,7 @@
 <template>
   <LoggedInTemplate>
-  <LeftHalfPageTemplate loggedIn>
-  <div class="homeBox">
+  <GeneralPageTemplate loggedIn>
+  <div class="contentBox">
     <BackButton />
     <h1>Companies Pending Verification</h1>
     <div v-if="companies.length === 1">
@@ -19,13 +19,13 @@
       :description="pendingCompany.company.description"
       />
   </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
 import SingleCompanyManage from "@/components/SingleCompanyManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
@@ -35,7 +35,7 @@ import ErrorBox from "@/components/ErrorBox.vue";
 export default Vue.extend({
   name: "AdminListPendingJobs",
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
     SingleCompanyManage,
     LoggedInTemplate,
     BackButton,
@@ -72,4 +72,15 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.contentBox {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (min-width: 900px) {
+  .contentBox {
+    width: 85%;
+  }
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <LeftHalfPageTemplate>
+  <GeneralPageTemplate>
     <div class="loginBox">
       <h1>Jobs for UNSW CSE Students</h1>
       <div class="buttonBox">
@@ -15,19 +15,19 @@
         </StandardButton>
       </div>
     </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
 </template>
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "LoginPage",
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
     Button,
     StandardButton,
   },

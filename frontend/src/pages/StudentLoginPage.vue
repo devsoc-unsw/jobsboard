@@ -1,5 +1,5 @@
 <template>
-  <LeftHalfPageTemplate>
+  <GeneralPageTemplate>
     <div>
       <h1>Student Login</h1>
       Welcome back! Please log in to your account.
@@ -23,12 +23,12 @@
       <br/>
       Not a student? <router-link to="/login/company">Company Login</router-link>
     </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
@@ -37,7 +37,7 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 export default Vue.extend({
   name: "StudentLoginPage",
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
     ErrorBox,
     Button,
     StandardButton,

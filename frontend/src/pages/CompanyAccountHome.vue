@@ -1,7 +1,7 @@
 <template>
   <LoggedInTemplate>
-  <LeftHalfPageTemplate loggedIn>
-    <div class="homeBox">
+  <GeneralPageTemplate loggedIn>
+    <div>
       <h1>Welcome!</h1>
       <div class="buttonBox">
         <StandardButton>
@@ -16,13 +16,13 @@
         </StandardButton>
       </div>
     </div>
-  </LeftHalfPageTemplate>
+  </GeneralPageTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import LeftHalfPageTemplate from "@/components/LeftHalfPageTemplate.vue";
+import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
@@ -30,7 +30,7 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 export default Vue.extend({
   name: "CompanyAccountHome",
   components: {
-    LeftHalfPageTemplate,
+    GeneralPageTemplate,
     LoggedInTemplate,
     Button,
     StandardButton,
