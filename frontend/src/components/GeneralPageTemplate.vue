@@ -1,21 +1,21 @@
 <template>
   <div class="viewport">
+    <div class="header" v-if="loggedIn">
+      <div class="logoutDiv">
+        <StandardButton>
+        <Button @callback="logOut">
+          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+            Log Out
+        </Button>
+        </StandardButton>
+        <br/>
+      </div>
+      <img class="main-logo" :src="logo" />
+    </div>
+    <div v-if="!loggedIn">
+      <img class="main-logo" :src="logo" />
+    </div>
     <div class="homeBox">
-      <div class="header" v-if="loggedIn">
-        <div class="logoutDiv">
-          <StandardButton>
-          <Button @callback="logOut">
-            <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
-              Log Out
-          </Button>
-          </StandardButton>
-          <br/>
-        </div>
-        <img class="main-logo" :src="logo" />
-      </div>
-      <div v-if="!loggedIn">
-        <img class="main-logo" :src="logo" />
-      </div>
       <slot />
       <div class="footer">
         <Footer />
@@ -28,7 +28,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
-import logo from "@/assets/logos/csesocgreyblue.png";
+import logo from "@/assets/logos/csesocwhite.png";
 import Footer from "@/components/Footer.vue";
 
 export default Vue.extend({
@@ -61,6 +61,7 @@ export default Vue.extend({
 <style lang="scss">
 div {
   flex-direction: row;
+  color: $black;
 }
 
 input, textarea {
@@ -76,7 +77,7 @@ input, textarea {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: $blue;
-  background: $white;
+  background: $grey;
   color: $blue;
   padding: 1rem;
   /* offset-x | offset-y | blur-radius | spread-radius | color */
@@ -126,6 +127,7 @@ input, textarea {
 
 .main-logo {
   width: 20%;
+  padding: 2rem;
 }
 
 .footer {
@@ -142,6 +144,8 @@ input, textarea {
   margin-left: auto;
   margin-right: auto;
   padding: 0;
+  background: $darkblue;
+  width: 100%;
 }
 .header {
   margin-top: 5rem;

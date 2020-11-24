@@ -1,5 +1,5 @@
 <template>
-  <GeneralPageTemplate>
+  <StudentViewTemplate notLoggedIn>
     <div>
       <h1>Company Login</h1>
       Welcome back! Please log in to your account.
@@ -38,7 +38,7 @@
       <br/>
       Don't have an account? <router-link to="/signup/company">Create one!</router-link>
     </div>
-  </GeneralPageTemplate>
+  </StudentViewTemplate>
 </template>
 
 <script lang="ts">
@@ -46,7 +46,7 @@
 import { Vue } from "vue-property-decorator";
 
 // components
-import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
@@ -57,7 +57,7 @@ import config from "@/config/config";
 export default Vue.extend({
   name: "LoginPage",
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
     ErrorBox,
     Button,
     StandardButton,

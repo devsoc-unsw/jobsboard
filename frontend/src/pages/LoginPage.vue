@@ -1,33 +1,31 @@
 <template>
-  <GeneralPageTemplate>
-    <div class="loginBox">
-      <h1>Jobs for UNSW CSE Students</h1>
-      <div class="buttonBox">
-        <StandardButton>
-          <Button @callback="toStudentLogin">
-            Student
-          </Button>
-        </StandardButton>
-        <StandardButton>
-          <Button @callback="toCompanyLogin">
-            Company
-          </Button>
-        </StandardButton>
-      </div>
-    </div>
-  </GeneralPageTemplate>
+  <StudentViewTemplate notLoggedIn disableBack>
+  <h1>Jobs for UNSW CSE Students</h1>
+  <div class="buttonBox">
+    <StandardButton>
+    <Button @callback="toStudentLogin">
+      Student
+    </Button>
+    </StandardButton>
+    <StandardButton>
+    <Button @callback="toCompanyLogin">
+      Company
+    </Button>
+    </StandardButton>
+  </div>
+  </StudentViewTemplate>
 </template>
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "LoginPage",
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
     Button,
     StandardButton,
   },

@@ -21,6 +21,8 @@ button {
   text-align: center;
   width: fit-content();
   padding: 1rem;
+  min-width: 50%;
+  max-width: 100%;
 }
 
 button:hover {

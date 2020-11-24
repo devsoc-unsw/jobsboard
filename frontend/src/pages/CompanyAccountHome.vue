@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <GeneralPageTemplate loggedIn>
+  <StudentViewTemplate>
     <div>
       <h1>Welcome!</h1>
       <div class="buttonBox">
@@ -16,13 +16,13 @@
         </StandardButton>
       </div>
     </div>
-  </GeneralPageTemplate>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
@@ -30,7 +30,7 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 export default Vue.extend({
   name: "CompanyAccountHome",
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
     LoggedInTemplate,
     Button,
     StandardButton,
@@ -49,18 +49,17 @@ export default Vue.extend({
 <style scoped lang="scss">
 .buttonBox {
   padding: 2%;
-  margin-left: 15%;
 }
 
 .button {
   min-width: 70%;
   max-width: 70%;
   border-radius: 0.5rem;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin: 1%;
+  /* padding-top: 2%; */
+  /* padding-bottom: 2%; */
+  /* padding-left: 5%; */
+  /* padding-right: 5%; */
+  /* margin: 1%; */
 }
 
 .editButton {

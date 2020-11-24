@@ -1,8 +1,7 @@
 <template>
   <LoggedInTemplate>
-  <GeneralPageTemplate loggedIn>
+  <StudentViewTemplate loggedIn>
     <div class="contentBox">
-    <BackButton />
       <h1>Manage Jobs</h1>
       <div v-if="success">
         <SuccessBox>
@@ -33,13 +32,13 @@
         />
       </div>
     </div>
-  </GeneralPageTemplate>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
@@ -52,7 +51,7 @@ import SuccessBox from "@/components/SuccessBox.vue";
 export default Vue.extend({
   name: "CompanyManageJobs",
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
     LoggedInTemplate,
     Button,
     StandardButton,

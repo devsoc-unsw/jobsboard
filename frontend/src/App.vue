@@ -49,8 +49,7 @@ html, body {
   right: 0;
   bottom: 0;
 
-  align-items: center;
-  display: flex;
-  justify-content: center;
+  /* align-items: center; */
+  /* justify-content: center; */
 }
 </style>

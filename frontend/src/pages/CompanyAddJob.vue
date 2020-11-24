@@ -1,8 +1,36 @@
 <template>
   <LoggedInTemplate>
-  <GeneralPageTemplate loggedIn>
+  <StudentViewTemplate loggedIn>
   <div class="contentBox">
-    <BackButton />
+    <Modal 
+      v-if="modalVisible"
+      @closeCallback="closeJobModal()"
+    >
+      <div class="modalGroup">
+        <div class="modalHeading">
+          Role: 
+        </div>
+        {{ this.role }}
+      </div>
+
+      <div class="modalGroup">
+        <div class="modalHeading">
+          Job Description: 
+        </div>
+        {{ this.description }}
+      </div>
+
+      <div class="modalGroup">
+        <div class="modalHeading">
+          Application Link: 
+        </div>
+        <a
+          :href="this.applicationLink"
+        >
+          {{ this.applicationLink }}
+        </a>
+      </div>
+    </Modal>
     <h1>Add a job</h1>
     <div v-if="success">
       <br/>
@@ -41,12 +69,17 @@
         />
       <br />
       <StandardButton>
+        <Button @callback="showJobModal">
+          Preview
+        </Button>
+      </StandardButton>
+      <GreenStandardButton>
         <Button @callback="submitJobPost">
           Post!
         </Button>
-      </StandardButton>
+      </GreenStandardButton>
   </div>
-  </GeneralPageTemplate>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
@@ -55,13 +88,15 @@
 import { Component, Vue } from "vue-property-decorator";
 
 // components
-import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import BackButton from "@/components/buttons/back.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
+import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
+import Modal from "@/components/Modal.vue";
 
 // config
 import config from "@/config/config";
@@ -69,13 +104,15 @@ import config from "@/config/config";
 export default Vue.extend({
   name: "CompanyAddJob",
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
     SuccessBox,
     ErrorBox,
     LoggedInTemplate,
     BackButton,
     Button,
     StandardButton,
+    GreenStandardButton,
+    Modal,
   },
   data() {
     return {
@@ -87,6 +124,8 @@ export default Vue.extend({
       success: false,
       successMsg: "",
       apiToken: this.$store.getters.getApiToken,
+      modalVisible: false,
+      modalContent: "",
     };
   },
   methods: {
@@ -122,6 +161,14 @@ export default Vue.extend({
         }
       }
     },
+    async showJobModal() {
+      this.modalVisible = true;
+      this.modalContent = "Test.";
+    },
+    async closeJobModal() {
+      this.modalVisible = false;
+      this.modalContent = "";
+    },
   },
 });
 </script>
@@ -139,6 +186,7 @@ export default Vue.extend({
 @media screen and (min-width: 900px) {
   input, textarea {
     padding: 1rem;
+    background: $white;
   }
   .contentBox {
     width: 85%;

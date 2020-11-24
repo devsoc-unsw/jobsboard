@@ -1,5 +1,5 @@
 <template>
-  <GeneralPageTemplate>
+  <StudentViewTemplate notLoggedIn>
     <div class="formatting">
       <div>
         <h1>Page not found</h1>
@@ -8,16 +8,16 @@
         <p>Redirecting...</p>
       </div>
     </div>
-  </GeneralPageTemplate>
+  </StudentViewTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import GeneralPageTemplate from "../components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "../components/StudentViewTemplate.vue";
 
 @Component({
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
   },
 })
 

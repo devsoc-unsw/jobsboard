@@ -9,7 +9,7 @@
         </div>
         <img class="main-logo-student" :src="logo"/>
         <div class="rightBox" @click="logOut">
-          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" v-if="!notLoggedIn"/>
         </div>
         <!--
         <div>
@@ -33,6 +33,7 @@
 import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
+import BackButton from "@/components/buttons/back.vue";
 import logo from "@/assets/logos/csesocwhite.png";
 import Footer from "@/components/Footer.vue";
 
@@ -42,6 +43,17 @@ export default Vue.extend({
     Button,
     DarkBlueStandardButton,
     Footer,
+    BackButton,
+  },
+  props: {
+    notLoggedIn: {
+      type: Boolean,
+      default: false
+    },
+    disableBack: {
+      type: Boolean,
+      default: false
+    }
   },
   methods: {
     logOut() {
@@ -59,7 +71,10 @@ export default Vue.extend({
     };
   },
   async mounted() {
-    if (this.apiToken === undefined) {
+    if (this.notLoggedIn === true) {
+      return;
+    }
+    else if (this.apiToken === undefined) {
       this.$router.push("/login");
     }
   },
@@ -104,6 +119,7 @@ export default Vue.extend({
 
 .content {
   background: $grey;
+  color: $black;
   /* padding: 0.5rem; */
   min-height: 10%;
   flex: 1 1 auto;
@@ -154,5 +170,26 @@ export default Vue.extend({
 
 .tagline {
   color: $white;
+}
+
+input, textarea {
+  font-weight: 100;
+  border: 1px solid $blue;
+  /* border-radius: 0.2rem; */
+  margin: 0.5rem;
+  font-size: 1rem;
+  padding: 1rem;
+  width: inherit;
+
+  border-width: 0px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: $blue;
+  background: $white;
+  color: $blue;
+  padding: 1rem;
+  /* offset-x | offset-y | blur-radius | spread-radius | color */
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <GeneralPageTemplate loggedIn>
+  <StudentViewTemplate>
   <div class="contentBox">
     <BackButton />
     <h1>Pending Job Requests</h1>
@@ -19,13 +19,13 @@
       :description="job.description"
       />
   </div>
-  </GeneralPageTemplate>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleJobManage from "@/components/SingleJobManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
@@ -34,7 +34,7 @@ import BackButton from "@/components/buttons/back.vue";
 export default Vue.extend({
   name: "AdminListPendingJobs",
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
     SingleJobManage,
     LoggedInTemplate,
     BackButton,

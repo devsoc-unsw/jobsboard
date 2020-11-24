@@ -24,6 +24,8 @@ button {
   /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
   // margin: 1rem;
+  min-width: 50%;
+  max-width: 100%;
 }
 
 @media screen and (min-width: 900px) {

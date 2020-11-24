@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <GeneralPageTemplate loggedIn>
+  <StudentViewTemplate>
   <div class="contentBox">
     <BackButton />
     <h1>Companies Pending Verification</h1>
@@ -19,13 +19,13 @@
       :description="pendingCompany.company.description"
       />
   </div>
-  </GeneralPageTemplate>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleCompanyManage from "@/components/SingleCompanyManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
@@ -35,7 +35,7 @@ import ErrorBox from "@/components/ErrorBox.vue";
 export default Vue.extend({
   name: "AdminListPendingJobs",
   components: {
-    GeneralPageTemplate,
+    StudentViewTemplate,
     SingleCompanyManage,
     LoggedInTemplate,
     BackButton,
