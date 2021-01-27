@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p :key="line" v-for="line in description">
+    <p v-for="line in finalDescription">
       <span v-html="line"/>
     </p>
   </div>
@@ -14,42 +14,56 @@ export default Vue.extend({
   name: "JobDescriptionView",
   components: {
   },
+  props: {
+    description: String,
+  },
   data() {
     return {
-      description: [""],
-      rawDescription: this.$props.description,
+      finalDescription: [""],
     };
   },
-  mounted() {
-    let splitDescription = this.description.split("\n");
+  methods: {
+    parseText() {
+      let splitDescription = this.$props.description.split("\n");
 
-    let listFlag = false;
-    for (let lineIndex in splitDescription) {
-      let line = splitDescription[lineIndex];
-      // apply italics
-      line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
-      if (line.startsWith("- ")) {
-        // remove that hyphen when rendering
-        line = line.replace(/^- ?/, "");
-        if (!listFlag) {
-          listFlag = true;
-          this.description.push(`<ul>`);
+      let listFlag = false;
+      for (let lineIndex in splitDescription) {
+        let line = splitDescription[lineIndex];
+        // apply italics
+        line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
+        if (line.startsWith("- ")) {
+          // remove that hyphen when rendering
+          line = line.replace(/^- ?/, "");
+          if (!listFlag) {
+            listFlag = true;
+            this.finalDescription.push(`<ul>`);
+          }
+          this.finalDescription.push(`<li>${line}</li>`);
+        } else if (/^#/.test(line)) {
+          this.finalDescription.push(`<h3>${line}</h3>`);
         } else {
-          this.description.push(`<li>${line}</li>`);
+          if (listFlag) {
+            listFlag = false;
+            this.finalDescription.push(`</ul>`);
+          }
+          this.finalDescription.push(line);
         }
-      } else if (/^#/.test(line)) {
-        this.description.push(`<h3>${line}</h3>`);
-      } else {
-        if (listFlag) {
-          listFlag = false;
-          this.description.push(`</ul>`);
-        }
-        this.description.push(line);
       }
-    }
+      console.log(this.finalDescription);
+    },
+  },
+  updated() {
+    // TODO this is causing problems
+    // this.parseText();
+  },
+  mounted() {
+    this.parseText();
   },
 });
 </script>
 
 <style scoped lang="scss">
+p, span {
+  color: $black;
+}
 </style>

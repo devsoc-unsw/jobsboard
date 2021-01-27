@@ -2,7 +2,6 @@
   <LoggedInTemplate>
   <StudentViewTemplate>
   <div class="contentBox">
-    <BackButton />
     <h1>Pending Job Requests</h1>
     <div v-if="jobs.length === 1">
       {{ jobs.length }} Pending Job Found

@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate>
+  <StudentViewTemplate notLoggedIn>
     <div>
       <h1>Admin Login</h1>
       <div v-if="error">

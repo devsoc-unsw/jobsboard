@@ -49,7 +49,6 @@ export default Vue.extend({
 <style scoped lang="scss">
 .buttonBox {
   padding: 2%;
-  margin-left: 15%;
 }
 
 .button {

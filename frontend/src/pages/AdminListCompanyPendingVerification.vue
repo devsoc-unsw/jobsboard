@@ -2,7 +2,6 @@
   <LoggedInTemplate>
   <StudentViewTemplate>
   <div class="contentBox">
-    <BackButton />
     <h1>Companies Pending Verification</h1>
     <div v-if="companies.length === 1">
       {{ companies.length }} Company Found

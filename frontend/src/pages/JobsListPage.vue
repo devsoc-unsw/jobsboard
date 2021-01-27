@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate>
+  <StudentViewTemplate disableBack>
     <div v-if="error">
       <br/>
       <ErrorBox>

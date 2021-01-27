@@ -18,10 +18,8 @@
       <h1>
         Job Description
       </h1>
-      <p
-        v-for="line in description"
-        >
-        <span v-html="line"/>
+      <p>
+        <JobDescriptionView v-if="jobInfoReady" :description="description" />
       </p>
       <br/>
       <br/>
@@ -74,6 +72,7 @@ import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
+import JobDescriptionView from "@/components/JobDescriptionView.vue";
 
 export default Vue.extend({
   name: "JobsListPage",
@@ -85,6 +84,7 @@ export default Vue.extend({
     LoggedInTemplate,
     Button,
     DarkBlueStandardButton,
+    JobDescriptionView,
   },
   data() {
     return {
@@ -93,12 +93,13 @@ export default Vue.extend({
       role: "",
       company: "",
       companyDescription: "",
-      description: [""],
+      description: "",
       jobs: [],
       location: "",
       applicationLink: "",
       error: false,
       errorMsg: "",
+      jobInfoReady: false,
     };
   },
   methods: {
@@ -130,6 +131,7 @@ export default Vue.extend({
       if (response.ok) {
         this.role = msg.job.role;
         this.company = msg.job.company.name;
+        /*
         let splitDescription = msg.job.description.split("\n");
 
         let listFlag = false;
@@ -156,6 +158,8 @@ export default Vue.extend({
             this.description.push(line);
           }
         }
+        */
+        this.description = msg.job.description;
         this.companyDescription = msg.job.company.description;
         this.location = msg.job.company.location;
         this.companyID = msg.job.company.id;
@@ -188,6 +192,8 @@ export default Vue.extend({
         this.error = true;
         this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
       }
+
+      this.jobInfoReady = true;
     }
   },
   watch: {

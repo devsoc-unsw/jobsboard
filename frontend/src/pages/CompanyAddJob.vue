@@ -1,7 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
-  <div class="contentBox">
+  <div class="modalWrapper">
     <Modal 
       v-if="modalVisible"
       @closeCallback="closeJobModal()"
@@ -17,7 +17,7 @@
         <div class="modalHeading">
           Job Description: 
         </div>
-        {{ this.description }}
+        <JobDescriptionView :description="description" />
       </div>
 
       <div class="modalGroup">
@@ -31,6 +31,8 @@
         </a>
       </div>
     </Modal>
+  </div>
+  <div class="contentBox">
     <h1>Add a job</h1>
     <div v-if="success">
       <br/>
@@ -97,6 +99,7 @@ import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import Modal from "@/components/Modal.vue";
+import JobDescriptionView from "@/components/JobDescriptionView.vue";
 
 // config
 import config from "@/config/config";
@@ -113,6 +116,7 @@ export default Vue.extend({
     StandardButton,
     GreenStandardButton,
     Modal,
+    JobDescriptionView,
   },
   data() {
     return {
@@ -182,6 +186,16 @@ export default Vue.extend({
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+}
+.modalWrapper {
+  text-align: left;
+}
+.modalHeading {
+  font-size: 1.5rem;
+  font-weight: 1000;
+}
+.modalGroup {
+  padding: 0.5rem;
 }
 @media screen and (min-width: 900px) {
   input, textarea {

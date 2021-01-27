@@ -2,11 +2,13 @@
   <div>
     <div class="modal">
       <slot />
-      <dark-blue-standard-button>
-        <Button @click="modalClose">
-          Close
-        </Button>
-      </dark-blue-standard-button>
+      <div class="alignCenter">
+        <dark-blue-standard-button>
+          <Button @click="modalClose">
+            Close
+          </Button>
+        </dark-blue-standard-button>
+      </div>
     </div>
     <div class="modalOverlay">
     </div>
@@ -56,5 +58,9 @@ export default Vue.extend({
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.alignCenter {
+  text-align: center;
 }
 </style>
