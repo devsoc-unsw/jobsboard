@@ -583,6 +583,235 @@ describe("admin", () => {
         });
       }
     );
+  });
 
+  describe("listing companies as an admin", () => {
+    before( async function() {
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+
+      // login as a company
+      this.companyToken = await server
+      .post("/authenticate/company")
+      .send({ username: "test", password: "test" })
+      .then(response => response.body.token);
+
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+    });
+
+    it(
+      "companies cannot be listed when not logged in",
+      function (done) {
+        server
+        .get(`/admin/companies`)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+
+    it(
+      "companies cannot be listed when logged in as a student",
+      function (done) {
+        server
+        .get(`/admin/companies`)
+        .set('Authorization', this.studentToken)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+
+    it(
+      "companies cannot be listed when logged in as a company",
+      function (done) {
+        server
+        .get(`/admin/companies`)
+        .set('Authorization', this.companyToken)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+
+    it(
+      "companies are listen when requested by an admin",
+      function (done) {
+        server
+        .get(`/admin/companies`)
+        .set('Authorization', this.adminToken)
+        .expect(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+      }
+    );
+  });
+
+  describe("create job post as a company while logged in as an admin", () => {
+    before( async function() {
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+
+      // login as a company
+      this.companyToken = await server
+      .post("/authenticate/company")
+      .send({ username: "test", password: "test" })
+      .then(response => response.body.token);
+
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+    });
+
+    it(
+      "creates a valid job using a valid admin account with a valid company id",
+      function (done) {
+        server
+        .put(`/admin/company/1/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+        })
+        .expect(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create a job using a valid admin account with an invalid company id",
+      function (done) {
+        server
+        .put(`/admin/company/989898/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+        })
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create a job using a valid admin account and valid company id with role field missing",
+      function (done) {
+        server
+        .put(`/admin/company/989898/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          // role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+        })
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create a job using a valid admin account and valid company id with description field missing",
+      function (done) {
+        server
+        .put(`/admin/company/989898/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          role: "some generic SWE role",
+          // description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+        })
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create a job using a valid admin account and valid company id with application link field missing",
+      function (done) {
+        server
+        .put(`/admin/company/989898/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          // applicationLink: "https://some.application.link",
+        })
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create job using a valid student account with a valid company id",
+      function (done) {
+        server
+        .put(`/admin/company/1/jobs`)
+        .set('Authorization', this.studentToken)
+        .send({
+          role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+        })
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create job using a valid company account with a valid company id",
+      function (done) {
+        server
+        .put(`/admin/company/1/jobs`)
+        .set('Authorization', this.companyToken)
+        .send({
+          role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+        })
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
   });
 });
