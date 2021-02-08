@@ -684,13 +684,41 @@ describe("admin", () => {
       .post("/authenticate/admin")
       .send({ username: "admin", password: "incorrect pony plug paperclip" })
       .then(response => response.body.token);
+
+      const newCompanyCredentials = {
+        username: "testingagain@testing.com",
+        password: "testPassword",
+        location: "Sydney",
+        name: "Such Company, Huge Wow, Testing Wow",
+      };
+
+      await server
+      .put("/company")
+      .send(newCompanyCredentials)
+      .expect(200);
+
+      // approve said company
+      const pendingCompanies = await server
+      .get("/admin/pending/companies")
+      .set('Authorization', this.adminToken)
+      .expect(200)
+      .then(response => response.body);
+
+      const pendingCompany = pendingCompanies.pendingCompanyVerifications.find((company) => company.company.name === newCompanyCredentials.name);
+
+      this.companyID = pendingCompany.id;
+
+      await server
+        .patch(`/admin/company/${this.companyID}/verify`)
+        .set('Authorization', this.adminToken)
+        .expect(200);
     });
 
     it(
       "creates a valid job using a valid admin account with a valid company id",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
@@ -730,7 +758,7 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with role field missing",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           // role: "some generic SWE role",
@@ -750,7 +778,7 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with description field missing",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
@@ -770,7 +798,7 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with application link field missing",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
@@ -790,7 +818,7 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with expiry field missing",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
@@ -810,7 +838,7 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with an out-of-date expiry field",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
@@ -830,7 +858,7 @@ describe("admin", () => {
       "fails to create job using a valid student account with a valid company id",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.studentToken)
         .send({
           role: "some generic SWE role",
@@ -850,7 +878,7 @@ describe("admin", () => {
       "fails to create job using a valid company account with a valid company id",
       function (done) {
         server
-        .put(`/admin/company/1/jobs`)
+        .put(`/admin/company/${this.companyID}/jobs`)
         .set('Authorization', this.companyToken)
         .send({
           role: "some generic SWE role",

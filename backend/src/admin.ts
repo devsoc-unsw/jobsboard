@@ -339,19 +339,28 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${req.params.companyID}`);
       let company = await Helpers.doSuccessfullyOrFail(async () => {
-        let innerCompany = await getRepository(Company)
+        return await getRepository(Company)
           .createQueryBuilder()
           .where("Company.id = :id", { id: req.params.companyID })
           .getOne();
-        // get it's associated company account to verify
-        innerCompany.companyAccount = await getConnection()
-          .createQueryBuilder()
-          .relation(Company, "companyAccount")
-          .of(innerCompany)
-          .loadOne();
-        return innerCompany;
       }, `Couldn't get request company object ID=${req.params.companyID} as Admin ID=${req.adminID}`);
 
+      // get it's associated company account to verify
+      company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
+        return getConnection()
+          .createQueryBuilder()
+          .relation(Company, "companyAccount")
+          .of(company)
+          .loadOne();
+      }, `Could not get the related company account for company ID=${company.id}`);
+
+      company.jobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getConnection()
+          .createQueryBuilder()
+          .relation(Company, "jobs")
+          .of(company)
+          .loadMany();
+      }, `Failed to find jobs for COMPANY_ACCOUNT=${req.companyAccountID}`);
 
       // verify whether the associated company account is verified
       if (!company.companyAccount.verified) {
