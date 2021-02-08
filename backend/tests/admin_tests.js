@@ -691,6 +691,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
+          expiry: new Date(2022, 01, 01).toString(),
         })
         .expect(200)
         .end( function(_, res) {
@@ -710,6 +711,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
+          expiry: new Date(2022, 01, 01).toString(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -729,6 +731,7 @@ describe("admin", () => {
           // role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
+          expiry: new Date(2022, 01, 01).toString(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -748,6 +751,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           // description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
+          expiry: new Date(2022, 01, 01).toString(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -767,6 +771,47 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           // applicationLink: "https://some.application.link",
+          expiry: new Date(2022, 01, 01).toString(),
+        })
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create a job using a valid admin account and valid company id with expiry field missing",
+      function (done) {
+        server
+        .put(`/admin/company/989898/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+          // expiry: new Date(2022, 01, 01).toString(),
+        })
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to create a job using a valid admin account and valid company id with an out-of-date expiry field",
+      function (done) {
+        server
+        .put(`/admin/company/989898/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          role: "some generic SWE role",
+          description: "just doing some cool SWE things",
+          applicationLink: "https://some.application.link",
+          expiry: new Date(2000, 01, 01).toString(),
         })
         .expect(400)
         .end( function(_, res) {

@@ -1,15 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import {
-  Connection,
+  // Connection,
   getConnection,
   getRepository,
 } from "typeorm";
 import { Client } from "ldapts";
-import assert from "assert";
 import { AdminAccount } from "./entity/admin_account";
-import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
-import { Job } from "./entity/job";
 import { Student } from "./entity/student";
 import Helpers, { IResponseWithStatus } from "./helpers";
 import JWT from "./jwt";

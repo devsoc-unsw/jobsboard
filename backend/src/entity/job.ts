@@ -34,6 +34,16 @@ export class Job {
   })
   public deleted: boolean;
 
+  @Column({
+    default: false,
+  })
+  public adminCreated: boolean;
+
+  @Column({
+    default: null,
+  })
+  public expiry: Date;
+
   @ManyToOne((_) => Company, (company) => company.jobs)
   public company: Company;
 

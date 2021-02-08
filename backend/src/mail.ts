@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 import {
   Connection,
   getConnection,
-  getRepository,
+  // getRepository,
 } from "typeorm";
 // import EmailTemplates from "email-templates";
 

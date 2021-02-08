@@ -1,4 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { 
+  // Request, 
+  Response, 
+  NextFunction 
+} from "express";
 import {
   Connection,
   getConnection,
@@ -161,10 +165,13 @@ export default class CompanyFunctions {
         applicationLink: req.body.applicationLink.trim(),
         description: req.body.description.trim(),
         role: req.body.role.trim(),
+        expiry: req.body.expiry.trim(),
       };
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
       Helpers.requireParameters(msg.applicationLink);
+      Helpers.requireParameters(msg.expiry);
+      Helpers.isDateInTheFuture(msg.expiry);
       Helpers.validApplicationLink(msg.applicationLink);
       Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`);
       const conn: Connection = getConnection();
@@ -172,6 +179,7 @@ export default class CompanyFunctions {
       newJob.role = msg.role;
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
+      newJob.expiry = msg.expiry;
 
       let companyAccount: CompanyAccount = undefined;
       try {

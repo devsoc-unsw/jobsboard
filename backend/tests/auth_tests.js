@@ -234,6 +234,7 @@ describe("authentication", () => {
                 role: "some generic SWE role",
                 description: "just doing some cool SWE things",
                 applicationLink: "https://some.application.link",
+                expiry: new Date(2022, 01, 01).toString(),
               })
               .expect(403)
               .end( function (_, res) {
@@ -252,6 +253,7 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "https://some.application.link",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(200)
             .end( function (_, res) {
@@ -270,6 +272,7 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "call:0298765432",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -288,6 +291,7 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "ftp://some.randomweb.server",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -304,7 +308,8 @@ describe("authentication", () => {
             .set('Authorization', this.unverifiedCompanyToken)
             .send({
               role: " ",
-              description: "just doing some cool SWE things"
+              description: "just doing some cool SWE things",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -321,7 +326,8 @@ describe("authentication", () => {
             .set('Authorization', this.unverifiedCompanyToken)
             .send({
               role: "some generic SWE role",
-              description: ""
+              description: "",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -337,7 +343,8 @@ describe("authentication", () => {
           server.put("/jobs")
             .set('Authorization', this.unverifiedCompanyToken)
             .send({
-              description: "just doing some cool SWE things"
+              description: "just doing some cool SWE things",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -354,6 +361,7 @@ describe("authentication", () => {
             .set('Authorization', this.unverifiedCompanyToken)
             .send({
               role: "some generic SWE role",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -370,7 +378,7 @@ describe("authentication", () => {
             .set('Authorization', this.unverifiedCompanyToken)
             .send({
               test: "some generic SWE role",
-              undefined: "just doing some cool SWE things"
+              undefined: "just doing some cool SWE things",
             })
             .expect(400)
             .end( function (_, res) {
@@ -405,6 +413,7 @@ describe("authentication", () => {
                 role: "some generic SWE role",
                 description: "just doing some cool SWE things",
                 applicationLink: "https://some.application.link",
+                expiry: new Date(2022, 01, 01).toString(),
               })
               .expect(403)
               .end( function (_, res) {
@@ -423,6 +432,7 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "https://some.application.link",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(200)
             .end( function (_, res) {
@@ -441,6 +451,7 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "call:0298765432",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -459,6 +470,7 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "ftp://some.randomweb.server",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -475,7 +487,8 @@ describe("authentication", () => {
             .set('Authorization', this.verifiedCompanyToken)
             .send({
               role: " ",
-              description: "just doing some cool SWE things"
+              description: "just doing some cool SWE things",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -492,7 +505,8 @@ describe("authentication", () => {
             .set('Authorization', this.verifiedCompanyToken)
             .send({
               role: "some generic SWE role",
-              description: ""
+              description: "",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -508,7 +522,8 @@ describe("authentication", () => {
           server.put("/jobs")
             .set('Authorization', this.verifiedCompanyToken)
             .send({
-              description: "just doing some cool SWE things"
+              description: "just doing some cool SWE things",
+              expiry: new Date(2022, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {
@@ -525,6 +540,45 @@ describe("authentication", () => {
             .set('Authorization', this.verifiedCompanyToken)
             .send({
               role: "some generic SWE role",
+              expiry: new Date(2022, 01, 01).toString(),
+            })
+            .expect(400)
+            .end( function (_, res) {
+              expect(res.status).to.equal(400);
+              done();
+            });
+        }
+      );
+
+      it(
+        "fails when requesting to add a job when missing an expiry field",
+        function (done) {
+          server.put("/jobs")
+            .set('Authorization', this.verifiedCompanyToken)
+            .send({
+              role: "some generic SWE role",
+              description: "just doing some cool SWE things",
+              applicationLink: "https://some.application.link",
+              // expiry: new Date(2022, 01, 01).toString(),
+            })
+            .expect(400)
+            .end( function (_, res) {
+              expect(res.status).to.equal(400);
+              done();
+            });
+        }
+      );
+
+      it(
+        "fails when requesting to add a job when the expiry field is out of date",
+        function (done) {
+          server.put("/jobs")
+            .set('Authorization', this.verifiedCompanyToken)
+            .send({
+              role: "some generic SWE role",
+              description: "just doing some cool SWE things",
+              applicationLink: "https://some.application.link",
+              expiry: new Date(2000, 01, 01).toString(),
             })
             .expect(400)
             .end( function (_, res) {

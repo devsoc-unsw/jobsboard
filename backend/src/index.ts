@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import swaggerJsdoc from "swagger-jsdoc";
-import swaggerUi from "swagger-ui-express";
+// import swaggerUi from "swagger-ui-express";
 import helmet from "helmet";
 
 import "reflect-metadata";
@@ -543,6 +543,43 @@ app.delete(
   cors(corsOptions),
   Middleware.authenticateCompanyMiddleware,
   CompanyFunctions.MarkJobPostRequestAsDeleted,
+  Middleware.genericLoggingMiddleware
+);
+
+/**
+ *  @swagger
+ *  /admin/companies:
+ *    get:
+ *      description: Get a list of all onboarded companies as an admin
+ *    responses:
+ *      200:
+ *        description: success
+ *      401:
+ *        description: bad permissions
+ */
+app.get(
+  "/admin/companies",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.ListAllCompaniesAsAdmin,
+  Middleware.genericLoggingMiddleware
+);
+/**
+ *  @swagger
+ *  /admin/company/:companyID/jobs:
+ *    delete:
+ *      description: Create a job as an admin on behalf of a company account
+ *    responses:
+ *      200:
+ *        description: success
+ *      401:
+ *        description: bad permissions
+ */
+app.put(
+  "/admin/company/:companyID/jobs",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.CreateJobOnBehalfOfExistingCompany,
   Middleware.genericLoggingMiddleware
 );
 

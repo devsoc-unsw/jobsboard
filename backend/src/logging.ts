@@ -1,7 +1,7 @@
 import winston from "winston";
 import { Logs } from "./entity/logs";
 import {
-  Connection,
+  // Connection,
   getConnection,
 } from "typeorm";
 

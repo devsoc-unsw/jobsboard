@@ -1,4 +1,8 @@
-import { Request, Response, NextFunction } from "express";
+import { 
+  // Request, 
+  Response, 
+  NextFunction 
+} from "express";
 import {
   Connection,
   getConnection,
@@ -273,6 +277,123 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         `,
       );
       Logger.Info(`Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);
+      return {
+        status: 200, 
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
+
+  public static async ListAllCompaniesAsAdmin(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`Admin ID=${req.adminID} attempting to query all companies`);
+      let companyAccounts = await Helpers.doSuccessfullyOrFail(async () => {
+        const companyAccounts = await getRepository(CompanyAccount)
+          .createQueryBuilder()
+          .where("CompanyAccount.verified = :verified", { verified: false })
+          .getMany();
+        for (let companyAccountIndex = 0; companyAccountIndex < companyAccounts.length; companyAccountIndex++) {
+          companyAccounts[companyAccountIndex].company = await getConnection()
+            .createQueryBuilder()
+            .relation(CompanyAccount, "company")
+            .of(companyAccounts[companyAccountIndex])
+            .loadOne();
+        }
+        return companyAccounts;
+      }, `Couldn't get all verified company objects as Admin ID=${req.adminID}`);
+
+
+      const fixedCompanies = companyAccounts.map((companyAccount: CompanyAccount) => {
+        return {
+          id: companyAccount.company.id,
+          name: companyAccount.company.name,
+          location: companyAccount.company.location
+        };
+      });
+
+      return {
+        status: 200, 
+        msg: {
+          companies: fixedCompanies,
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
+
+  public static async CreateJobOnBehalfOfExistingCompany(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${req.params.companyID}`);
+      let company = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Company)
+          .createQueryBuilder()
+          .where("Company.id = :id", { id: req.params.companyID })
+      }, `Couldn't get request company object ID=${req.params.companyID} as Admin ID=${req.adminID}`);
+
+      // get it's associated company account to verify
+      company.companyAccount = await getConnection()
+        .createQueryBuilder()
+        .relation(Company, "companyAccount")
+        .of(company)
+        .loadOne();
+
+      // verify whether the associated company account is verified
+      if (!company.companyAccount.verified) {
+        throw new Error(`Admin ID=${req.adminID} attempted to create a job post for company ID=${req.params.companyID} however it was not a verified company`);
+      }
+
+      // create the job now
+      // ensure required parameters are present
+      const msg = {
+        applicationLink: req.body.applicationLink.trim(),
+        description: req.body.description.trim(),
+        role: req.body.role.trim(),
+        expiry: req.body.expiry.trim(),
+      };
+      Helpers.requireParameters(msg.role);
+      Helpers.requireParameters(msg.description);
+      Helpers.requireParameters(msg.applicationLink);
+      Helpers.requireParameters(msg.expiry);
+      Helpers.isDateInTheFuture(msg.expiry);
+      Helpers.validApplicationLink(msg.applicationLink);
+      Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`);
+      const conn: Connection = getConnection();
+      const newJob = new Job();
+      newJob.role = msg.role;
+      newJob.description = msg.description;
+      newJob.applicationLink = msg.applicationLink;
+      newJob.expiry = msg.expiry;
+
+      company.jobs.push(newJob);
+
+      await conn.manager.save(company);
+
+      const newJobID: number = company.jobs[company.jobs.length - 1].id;
+      Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID} as adminID=${req.adminID}`);
+
+      // check to see if that job is queryable
+      const newJobQueryVerification = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(Job)
+          .createQueryBuilder()
+          .where("Job.id = :id", { id: newJobID })
+          .getOne();
+      }, `Failed to fetch the newly created JOB=${newJobID}`);
+
       return {
         status: 200, 
         msg: {

@@ -72,6 +72,12 @@ export default class Helpers {
       throw new Error(`zID ${result} doesn't match required format`);
     }
   }
+
+  public static isDateInTheFuture(val: number) {
+    if (val <= Date.now()) {
+      throw new Error(`Attempted to create a job post with a date in the past=${val}`);
+    }
+  }
 }
 
 export {
