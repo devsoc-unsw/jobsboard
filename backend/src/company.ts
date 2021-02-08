@@ -165,7 +165,7 @@ export default class CompanyFunctions {
         applicationLink: req.body.applicationLink.trim(),
         description: req.body.description.trim(),
         role: req.body.role.trim(),
-        expiry: req.body.expiry.trim(),
+        expiry: req.body.expiry,
       };
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
@@ -179,7 +179,7 @@ export default class CompanyFunctions {
       newJob.role = msg.role;
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
-      newJob.expiry = msg.expiry;
+      newJob.expiry = new Date(msg.expiry);
 
       let companyAccount: CompanyAccount = undefined;
       try {

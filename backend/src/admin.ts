@@ -299,7 +299,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       let companyAccounts = await Helpers.doSuccessfullyOrFail(async () => {
         const companyAccounts = await getRepository(CompanyAccount)
           .createQueryBuilder()
-          .where("CompanyAccount.verified = :verified", { verified: false })
+          .where("CompanyAccount.verified = :verified", { verified: true })
           .getMany();
         for (let companyAccountIndex = 0; companyAccountIndex < companyAccounts.length; companyAccountIndex++) {
           companyAccounts[companyAccountIndex].company = await getConnection()
@@ -310,7 +310,6 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         }
         return companyAccounts;
       }, `Couldn't get all verified company objects as Admin ID=${req.adminID}`);
-
 
       const fixedCompanies = companyAccounts.map((companyAccount: CompanyAccount) => {
         return {
@@ -340,17 +339,19 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${req.params.companyID}`);
       let company = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Company)
+        let innerCompany = await getRepository(Company)
           .createQueryBuilder()
           .where("Company.id = :id", { id: req.params.companyID })
+          .getOne();
+        // get it's associated company account to verify
+        innerCompany.companyAccount = await getConnection()
+          .createQueryBuilder()
+          .relation(Company, "companyAccount")
+          .of(innerCompany)
+          .loadOne();
+        return innerCompany;
       }, `Couldn't get request company object ID=${req.params.companyID} as Admin ID=${req.adminID}`);
 
-      // get it's associated company account to verify
-      company.companyAccount = await getConnection()
-        .createQueryBuilder()
-        .relation(Company, "companyAccount")
-        .of(company)
-        .loadOne();
 
       // verify whether the associated company account is verified
       if (!company.companyAccount.verified) {
@@ -363,7 +364,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         applicationLink: req.body.applicationLink.trim(),
         description: req.body.description.trim(),
         role: req.body.role.trim(),
-        expiry: req.body.expiry.trim(),
+        expiry: req.body.expiry,
       };
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
@@ -377,7 +378,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       newJob.role = msg.role;
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
-      newJob.expiry = msg.expiry;
+      newJob.expiry = new Date(msg.expiry);
 
       company.jobs.push(newJob);
 

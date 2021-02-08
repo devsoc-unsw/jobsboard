@@ -13,6 +13,8 @@ export default class Helpers {
     if (result === undefined) {
       throw new Error("Missing parameters.");
     }
+    // convert it to a string
+    result = result.toString();
     if (result.trim() === "") {
       throw new Error("Parameter is an empty string.");
     }

@@ -27,6 +27,7 @@ describe("admin", () => {
         role: "sample role title",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
+        expiry: (new Date(2022, 01, 01)).valueOf(),
       })
       .then(response => response.body.id);
 
@@ -156,6 +157,7 @@ describe("admin", () => {
         role: "some sample role title",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
+        expiry: (new Date(2022, 01, 01)).valueOf(),
       })
       .expect(403)
       .then(response => response.body.id);
@@ -168,6 +170,7 @@ describe("admin", () => {
         role: "some sample role title that's rejectable",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
+        expiry: (new Date(2022, 01, 01)).valueOf(),
       })
       .expect(403)
       .then(response => response.body.id);
@@ -427,6 +430,7 @@ describe("admin", () => {
         role: "some sample role title random random",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
+        expiry: (new Date(2022, 01, 01)).valueOf(),
       })
       .expect(200)
       .then(response => response.body.id);
@@ -439,6 +443,7 @@ describe("admin", () => {
         role: "some sample role title that's rejectable one two three",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
+        expiry: (new Date(2022, 01, 01)).valueOf(),
       })
       .expect(200)
       .then(response => response.body.id);
@@ -691,7 +696,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: new Date(2022, 01, 01).toString(),
+          expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(200)
         .end( function(_, res) {
@@ -711,7 +716,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: new Date(2022, 01, 01).toString(),
+          expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -725,13 +730,13 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with role field missing",
       function (done) {
         server
-        .put(`/admin/company/989898/jobs`)
+        .put(`/admin/company/1/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           // role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: new Date(2022, 01, 01).toString(),
+          expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -745,13 +750,13 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with description field missing",
       function (done) {
         server
-        .put(`/admin/company/989898/jobs`)
+        .put(`/admin/company/1/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
           // description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: new Date(2022, 01, 01).toString(),
+          expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -765,13 +770,13 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with application link field missing",
       function (done) {
         server
-        .put(`/admin/company/989898/jobs`)
+        .put(`/admin/company/1/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           // applicationLink: "https://some.application.link",
-          expiry: new Date(2022, 01, 01).toString(),
+          expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -785,13 +790,13 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with expiry field missing",
       function (done) {
         server
-        .put(`/admin/company/989898/jobs`)
+        .put(`/admin/company/1/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          // expiry: new Date(2022, 01, 01).toString(),
+          // expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -805,13 +810,13 @@ describe("admin", () => {
       "fails to create a job using a valid admin account and valid company id with an out-of-date expiry field",
       function (done) {
         server
-        .put(`/admin/company/989898/jobs`)
+        .put(`/admin/company/1/jobs`)
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: new Date(2000, 01, 01).toString(),
+          expiry: (new Date(2000, 01, 01)).valueOf(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -831,6 +836,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
+          expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(401)
         .end( function(_, res) {
@@ -850,6 +856,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
+          expiry: (new Date(2022, 01, 01)).valueOf(),
         })
         .expect(401)
         .end( function(_, res) {
