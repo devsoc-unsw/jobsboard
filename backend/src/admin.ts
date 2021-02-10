@@ -66,7 +66,7 @@ export default class AdminFunctions {
         jobToApprove.company.companyAccount.username,
         "CSESoc Jobs Board - Job Post request approved",
         `
-        Congratulations! You job post request titled "${jobToApprove.role}" has been approved. UNSW CSESoc students are now able to view the posting.
+        Congratulations! Your job post request titled "${jobToApprove.role}" has been approved. UNSW CSESoc students are now able to view the posting.
           <br>
         <p>Best regards,</p>
         <p>CSESoc Jobs Board Administrator</p>
@@ -337,13 +337,14 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
   public static async CreateJobOnBehalfOfExistingCompany(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
-      Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${req.params.companyID}`);
+      const companyID = req.params.companyID;
+      Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
       let company = await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(Company)
           .createQueryBuilder()
-          .where("Company.id = :id", { id: req.params.companyID })
+          .where("Company.id = :id", { id: companyID })
           .getOne();
-      }, `Couldn't get request company object ID=${req.params.companyID} as Admin ID=${req.adminID}`);
+      }, `Couldn't get request company object ID=${companyID} as Admin ID=${req.adminID}`);
 
       // get it's associated company account to verify
       company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
@@ -360,11 +361,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .relation(Company, "jobs")
           .of(company)
           .loadMany();
-      }, `Failed to find jobs for COMPANY_ACCOUNT=${req.companyAccountID}`);
+      }, `Failed to find jobs for COMPANY_ACCOUNT=${companyID}`);
 
       // verify whether the associated company account is verified
       if (!company.companyAccount.verified) {
-        throw new Error(`Admin ID=${req.adminID} attempted to create a job post for company ID=${req.params.companyID} however it was not a verified company`);
+        throw new Error(`Admin ID=${req.adminID} attempted to create a job post for company ID=${companyID} however it was not a verified company`);
       }
 
       // create the job now
@@ -381,20 +382,35 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       Helpers.requireParameters(msg.expiry);
       Helpers.isDateInTheFuture(msg.expiry);
       Helpers.validApplicationLink(msg.applicationLink);
-      Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`);
+      Logger.Info(`Attempting to create job for COMPANY=${companyID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`);
       const conn: Connection = getConnection();
       const newJob = new Job();
       newJob.role = msg.role;
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
       newJob.expiry = new Date(msg.expiry);
+      // jobs created by admin are implicitly approved
+      newJob.approved = true;
+      // mark this job as one that the admin has created
+      newJob.adminCreated = true;
+
+      MailFunctions.AddMailToQueue(
+        process.env.MAIL_USERNAME,
+        "CSESoc Jobs Board - CSESoc has created a job on your behalf",
+        `
+        Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
+          <br>
+        <p>Best regards,</p>
+        <p>CSESoc Jobs Board Administrator</p>
+        `,
+      );
 
       company.jobs.push(newJob);
 
       await conn.manager.save(company);
 
       const newJobID: number = company.jobs[company.jobs.length - 1].id;
-      Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID} as adminID=${req.adminID}`);
+      Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`);
 
       // check to see if that job is queryable
       const newJobQueryVerification = await Helpers.doSuccessfullyOrFail(async () => {

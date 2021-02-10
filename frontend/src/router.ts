@@ -17,6 +17,7 @@ const AdminLoginPage = () => import("@/pages/AdminLoginPage.vue");
 const AdminAccountHome = () => import("@/pages/AdminAccountHome.vue");
 const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
 const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
+const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
 const CompanyManageJobs = () => import("@/pages/CompanyManageJobs.vue");
 
 export default new Router({
@@ -46,6 +47,9 @@ export default new Router({
   }, {
     path: "/admin/companies/pending",
     component: AdminListCompanyPendingVerification,
+  }, {
+    path: "/admin/jobs/post",
+    component: AdminCreateJobAsCompany,
   }, {
     path: "/company/jobs/add",
     component: CompanyAddJob,

@@ -14,6 +14,11 @@
           Pending Company Verification
         </Button>
       </StandardButton>
+      <StandardButton>
+        <Button @callback="goToAdminCreateJobPostAsCompany">
+          Create job post as Company
+        </Button>
+      </StandardButton>
     </div>
   </div>
   </StudentViewTemplate>
@@ -42,6 +47,9 @@ export default Vue.extend({
     goToAdminCompanyPendingVerification() {
       this.$router.push("/admin/companies/pending");
     },
+    goToAdminCreateJobPostAsCompany() {
+      this.$router.push("/admin/jobs/post");
+    }
   },
 })
 </script>

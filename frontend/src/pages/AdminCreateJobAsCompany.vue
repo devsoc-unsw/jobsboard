@@ -46,6 +46,15 @@
       {{ errorMsg }}
       </ErrorBox>
     </div>
+    <h2>Select Company</h2>
+      <select name="" id="" v-model="selectedCompanyID">
+        <option 
+          v-for="company in verifiedCompanies"
+          :key="company.id"
+          :value="company.id">
+          {{ company.name }} - {{ company.location }}
+        </option>
+      </select>
     <h2>Name of the role</h2>
     <input 
       name="role"
@@ -105,7 +114,7 @@ import JobDescriptionView from "@/components/JobDescriptionView.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
-  name: "CompanyAddJob",
+  name: "AdminCreateJobAsCompany",
   components: {
     StudentViewTemplate,
     SuccessBox,
@@ -130,11 +139,49 @@ export default Vue.extend({
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
       modalContent: "",
+      verifiedCompanies: {},
+      selectedCompanyID: "",
     };
+  },
+  async mounted() {
+    // make the call to get a list of verified companies to select from
+    const response = await fetch(`${config.apiRoot}/admin/companies`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": this.apiToken,
+      },
+      // mode: "no-cors",
+    });
+
+    const msg = await response.json();
+    if (response.ok) {
+      this.verifiedCompanies = msg.companies;
+    } else {
+      this.error = true;
+      if (response.status === 401) {
+        this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 3000);
+      } else {
+        this.errorMsg = "Malformed request. Please contact the admin.";
+      }
+    }
   },
   methods: {
     async submitJobPost() {
-      const response = await fetch(`${config.apiRoot}/jobs`, {
+      // ensure that there is a selected company
+      console.log(this.selectedCompanyID);
+      if (parseInt(this.selectedCompanyID, 10) < 0) {
+        // error message
+        this.error = true;
+        this.errorMsg = "Please select a valid company.";
+      } else {
+        this.error = false;
+        this.errorMsg = "";
+      }
+      const response = await fetch(`${config.apiRoot}/admin/company/${this.selectedCompanyID}/jobs`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -154,14 +201,19 @@ export default Vue.extend({
       this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
         this.success = true;
-        this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
+        this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to the admin account home...";
         setTimeout(() => {
-          this.$router.push("/company/home");
+          this.$router.push("/admin/home");
         }, 5000);
       } else {
         this.error = true;
         if (response.status === 403) {
-          this.errorMsg = "Failed to post job request as your account has not yet been verified.";
+          this.errorMsg = "Failed to post job request as this company has not been verified.";
+        } else if (response.status === 401) {
+          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          setTimeout(() => {
+            this.$router.push("/login");
+          }, 3000);
         } else {
           this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
         }
