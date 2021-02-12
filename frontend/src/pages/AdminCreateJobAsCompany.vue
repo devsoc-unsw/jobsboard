@@ -79,6 +79,13 @@
         placeholder="Application Link"
         />
       <br />
+      <h2>Expiry Date</h2>
+      <input
+        type="date"
+        class="dateEntryBox"
+        v-model="selectedDate"
+      />
+      <br />
       <StandardButton>
         <Button @callback="showJobModal">
           Preview
@@ -141,6 +148,7 @@ export default Vue.extend({
       modalContent: "",
       verifiedCompanies: {},
       selectedCompanyID: "",
+      selectedDate: "",
     };
   },
   async mounted() {
@@ -171,8 +179,12 @@ export default Vue.extend({
   },
   methods: {
     async submitJobPost() {
+      // create a date object using this value
+      let jobDate = new Date(this.selectedDate);
+      // set to the end of the set day
+      jobDate.setHours(23);
+      jobDate.setMinutes(59);
       // ensure that there is a selected company
-      console.log(this.selectedCompanyID);
       if (parseInt(this.selectedCompanyID, 10) < 0) {
         // error message
         this.error = true;
@@ -259,5 +271,16 @@ export default Vue.extend({
   .contentBox {
     width: 85%;
   }
+}
+.dateEntryBox {
+  width: auto;
+  font-family: 'sans-serif';
+}
+option, select {
+  padding: 1rem;
+  background: $white;
+  font-size: 1rem;
+  color: $blue;
+  font-family: 'sans-serif';
 }
 </style>

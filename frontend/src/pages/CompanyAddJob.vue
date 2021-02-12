@@ -62,24 +62,31 @@
       placeholder="Job Description"
       rows="6"
       />
-      <h2>Application Link</h2>
-      <input 
-        name="applicationLink"
-        v-model="applicationLink"
-        type="text"
-        placeholder="Application Link"
-        />
-      <br />
-      <StandardButton>
-        <Button @callback="showJobModal">
-          Preview
-        </Button>
-      </StandardButton>
-      <GreenStandardButton>
-        <Button @callback="submitJobPost">
-          Post!
-        </Button>
-      </GreenStandardButton>
+    <h2>Application Link</h2>
+    <input 
+      name="applicationLink"
+      v-model="applicationLink"
+      type="text"
+      placeholder="Application Link"
+      />
+    <br />
+    <h2>Expiry Date</h2>
+    <input
+      type="date"
+      class="dateEntryBox"
+      v-model="selectedDate"
+    />
+    <br />
+    <StandardButton>
+      <Button @callback="showJobModal">
+        Preview
+      </Button>
+    </StandardButton>
+    <GreenStandardButton>
+      <Button @callback="submitJobPost">
+        Post!
+      </Button>
+    </GreenStandardButton>
   </div>
   </StudentViewTemplate>
   </LoggedInTemplate>
@@ -130,10 +137,16 @@ export default Vue.extend({
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
       modalContent: "",
+      selectedDate: "",
     };
   },
   methods: {
     async submitJobPost() {
+      // create a date object using this value
+      let jobDate = new Date(this.selectedDate);
+      // set to the end of the set day
+      jobDate.setHours(23);
+      jobDate.setMinutes(59);
       const response = await fetch(`${config.apiRoot}/jobs`, {
         method: "PUT",
         headers: {
@@ -145,8 +158,7 @@ export default Vue.extend({
           role: this.role,
           description: this.description,
           applicationLink: this.applicationLink,
-          // TODO: this is a temporary stop-gap, we need to have an actual selector
-          expiry: new Date(2022, 1, 1).valueOf(),
+          expiry: jobDate.valueOf(),
         }),
       });
 
@@ -207,5 +219,9 @@ export default Vue.extend({
   .contentBox {
     width: 85%;
   }
+}
+.dateEntryBox {
+  width: auto;
+  font-family: 'sans-serif';
 }
 </style>
