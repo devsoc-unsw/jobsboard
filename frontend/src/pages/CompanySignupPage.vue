@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate>
+  <StudentViewTemplate notLoggedIn>
     <div>
       <h1>Create a company account</h1>
       <div v-if="success">
