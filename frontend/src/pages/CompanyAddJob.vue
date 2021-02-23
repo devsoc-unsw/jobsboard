@@ -53,13 +53,13 @@
       type="text"
       placeholder="Role"
       />
-    <h2>Job Description</h2>
-    <h4>Text only (for now!)</h4>
+    <h2>Job Description (Text only - for now!)</h2>
+    <h4>Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the <a href="https://www.fairwork.gov.au/pay/unpaid-work/student-placements">Australian Fair Work Act 2009</a> to determine whether the job post follows all guidelines and prioritises the safety of our constituents.</h4>
     <textarea
       name="description"
       v-model="description"
       type="text"
-      placeholder="Job Description"
+      placeholder="Job Description - Markdown headings and dot points are supported."
       rows="6"
       />
     <h2>Application Link</h2>
@@ -210,6 +210,9 @@ export default Vue.extend({
 }
 .modalGroup {
   padding: 0.5rem;
+}
+input, textarea {
+  font-family: 'sans-serif';
 }
 @media screen and (min-width: 900px) {
   input, textarea {

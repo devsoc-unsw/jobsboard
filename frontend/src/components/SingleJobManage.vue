@@ -12,6 +12,37 @@
       {{ errorMsg }}
       </ErrorBox>
     </div>
+    <div class="modalWrapper">
+      <Modal 
+        v-if="modalVisible"
+        @closeCallback="closeJobModal()"
+        >
+        <div class="modalGroup">
+          <div class="modalHeading">
+            Role: 
+          </div>
+      {{ this.role }}
+        </div>
+
+        <div class="modalGroup">
+          <div class="modalHeading">
+            Job Description: 
+          </div>
+          <JobDescriptionView :description="description" />
+        </div>
+
+        <div class="modalGroup">
+          <div class="modalHeading">
+            Application Link: 
+          </div>
+          <a
+            :href="applicationLink"
+            >
+            {{ applicationLink }}
+          </a>
+        </div>
+      </Modal>
+    </div>
     <br />
     <div v-if="!success">
       <JobListingMinimal
@@ -21,15 +52,20 @@
         :description="description"
         :actAsLink="actAsLink"
         >
+        <StandardButton>
+          <Button @callback="showJobModal">
+            Preview
+          </Button>
+        </StandardButton>
         <GreenStandardButton>
-        <Button @callback="approveJob">
-          Approve
-        </Button>
+          <Button @callback="approveJob">
+            Approve
+          </Button>
         </GreenStandardButton>
         <RedStandardButton>
-        <Button @callback="rejectJob">
-          Reject
-        </Button>
+          <Button @callback="rejectJob">
+            Reject
+          </Button>
         </RedStandardButton>
       </JobListingMinimal>
     </div>
@@ -43,8 +79,11 @@ import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
+import Modal from "@/components/Modal.vue";
+import JobDescriptionView from "@/components/JobDescriptionView.vue";
 
 export default Vue.extend({
   name: "SingleJobManage",
@@ -53,8 +92,11 @@ export default Vue.extend({
     SuccessBox,
     ErrorBox,
     Button,
+    StandardButton,
     GreenStandardButton,
-    RedStandardButton
+    RedStandardButton,
+    Modal,
+    JobDescriptionView,
   },
   data() {
     return {
@@ -64,6 +106,8 @@ export default Vue.extend({
       errorMsg: "",
       actAsLink: false,
       apiToken: this.$store.getters.getApiToken,
+      modalVisible: false,
+      modalContent: "",
     };
   },
   props: {
@@ -71,6 +115,7 @@ export default Vue.extend({
     company: String,
     description: String,
     jobID: Number,
+    applicationLink: String,
   },
   methods: {
     async approveJob() {
@@ -120,7 +165,15 @@ export default Vue.extend({
         this.$destroy();
         this.$el.parentNode!.removeChild(this.$el);
       }, 5000);
-    }
+    },
+    async showJobModal() {
+      this.modalVisible = true;
+      this.modalContent = "Test.";
+    },
+    async closeJobModal() {
+      this.modalVisible = false;
+      this.modalContent = "";
+    },
   },
 });
 </script>
@@ -143,5 +196,15 @@ export default Vue.extend({
   color: $white;
   background: $red;
   border: 0px;
+}
+.modalWrapper {
+  text-align: left;
+}
+.modalHeading {
+  font-size: 1.5rem;
+  font-weight: 1000;
+}
+.modalGroup {
+  padding: 0.5rem;
 }
 </style>

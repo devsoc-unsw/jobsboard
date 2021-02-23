@@ -13,6 +13,7 @@
         </ErrorBox>
       </div>
       <br/>
+      We recommend not using an individualised company email but rather a generic email alias, e.g. recruiting@company.com.au rather than firstname.lastname@company.com.au
       <input
         name="username"
         v-model="username"
