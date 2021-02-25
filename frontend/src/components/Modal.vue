@@ -43,9 +43,11 @@ export default Vue.extend({
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
-  height: 50%;
+  min-height: 50%;
+  max-height: 80%;
   z-index: 1011;
   padding: 3rem;
+  overflow: scroll;
 }
 
 .modalOverlay {
