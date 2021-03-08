@@ -164,7 +164,8 @@ export default Vue.extend({
 
     const msg = await response.json();
     if (response.ok) {
-      this.verifiedCompanies = msg.companies;
+      // alphabetically sort them
+      this.verifiedCompanies = msg.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name);
     } else {
       this.error = true;
       if (response.status === 401) {
