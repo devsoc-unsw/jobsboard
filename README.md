@@ -1,25 +1,11 @@
+# Jobs Board
+## By [Adam Tizzone](https://github.com/ad-t)
+
 # Build
+Run `docker-compose build` to build all containers, or `docker-compose build [container-name]` for a specific container specified in the compose file.
 
-Now uses `docker-compose` and `docker`, meaning you need to run:
+# Push
+Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
 
-```
-docker-compose build
-```
 
-to build the backend and frontend images.
-
-# Run (and build the frontend)
-
-Use `docker-compose` to run the backend and build the frontend, which gets placed into `/frontend/dist`:
-
-```
-docker-compose up
-```
-
-# Stop
-
-```
-docker-compose down
-```
-
-[API docs](http://localhost:8080/docs/)
+[API docs - available when the api is started](http://localhost:8080/docs/)
