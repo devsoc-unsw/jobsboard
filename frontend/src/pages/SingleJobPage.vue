@@ -124,11 +124,13 @@ export default Vue.extend({
         },
       });
 
-      const msg = await response.json();
+      /*
       if (msg.token) {
         this.$store.dispatch("setApiToken", msg.token);
       }
+      */
       if (response.ok) {
+        const msg = await response.json();
         this.role = msg.job.role;
         this.company = msg.job.company.name;
         /*
@@ -166,7 +168,14 @@ export default Vue.extend({
         this.applicationLink = msg.job.applicationLink;
       } else {
         this.error = true;
-        this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+        if (response.status == 401) {
+          this.errorMsg = "Login expired. Redirecting to login page.";
+          setTimeout(() => {
+            this.$router.push("/login/company");
+          }, 3000);
+        } else {
+          this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+        }
       }
 
       const jobResponse = await fetch(`${config.apiRoot}/company/${this.companyID}/jobs`, {
@@ -177,11 +186,13 @@ export default Vue.extend({
         },
       });
 
-      const companyJobMsg = await jobResponse.json();
+      /*
       if (companyJobMsg.token) {
         this.$store.dispatch("setApiToken", companyJobMsg.token);
       }
+      */
       if (jobResponse.ok) {
+        const companyJobMsg = await jobResponse.json();
         // TODO(ad-t): Fix below, as it will always be true
         this.jobs = companyJobMsg.companyJobs.filter((job: any) => {
           const jobResultID = parseInt(job.id, 10);

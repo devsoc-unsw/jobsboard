@@ -80,15 +80,24 @@ export default Vue.extend({
           },
         });
 
-      const msg = await response.json();
+      /*
       if (msg.token) {
         this.$store.dispatch("setApiToken", msg.token);
       }
+      */
       if (response.ok) {
+        const msg = await response.json();
         this.jobs = [... this.jobs, ... msg.jobs];
       } else {
         this.error = true;
-        this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+        if (response.status == 401) {
+          this.errorMsg = "Login expired. Redirecting to login page.";
+          setTimeout(() => {
+            this.$router.push("/login/company");
+          }, 3000);
+        } else {
+          this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+        }
         this.jobs = [];
       }
       this.loadMoreJobsLock = false;

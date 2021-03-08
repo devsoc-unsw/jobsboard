@@ -91,19 +91,16 @@ export default Vue.extend({
         "Content-Type": "application/json",
         "Authorization": this.apiToken,
       },
-    })
-    .catch((error) => {
-      this.error = true;
-      this.errorMsg = "Failed to get pending jobs.";
-      return;
     });
 
-    const returnedRequest = response as Response;
-    const msg = await returnedRequest.json();
+    /*
     if (msg.token) {
       this.$store.dispatch("setApiToken", msg.token);
     }
+    */
+    const returnedRequest = response as Response;
     if (returnedRequest.ok) {
+      const msg = await returnedRequest.json();
       this.jobs = msg.companyJobs.map((job: any) => {
         return {
           id: job.id,
@@ -115,7 +112,14 @@ export default Vue.extend({
       })
     } else {
       this.error = true;
-      this.errorMsg = "Failed to get pending jobs.";
+      if (response.status == 401) {
+        this.errorMsg = "Login expired. Redirecting to login page.";
+        setTimeout(() => {
+          this.$router.push("/login/company");
+        }, 3000);
+      } else {
+        this.errorMsg = "Failed to get pending jobs.";
+      }
     }
   },
 });

@@ -57,14 +57,21 @@ export default Vue.extend({
       },
     });
 
-    const msg = await response.json();
-    this.$store.dispatch("setApiToken", msg.token);
     if (response.ok) {
+      const msg = await response.json();
+      this.$store.dispatch("setApiToken", msg.token);
       this.success = true;
       this.companies = msg.pendingCompanyVerifications;
     } else {
       this.error = true;
-      this.errorMsg = "Failed to get pending companies.";
+      if (response.status === 401) {
+        this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 3000);
+      } else {
+        this.errorMsg = "Failed to get pending companies.";
+      }
     }
   },
 });

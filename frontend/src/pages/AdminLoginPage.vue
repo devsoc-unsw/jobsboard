@@ -63,6 +63,9 @@ export default Vue.extend({
       errorMsg: "",
     };
   },
+  async mounted() {
+    this.$store.dispatch("clearApiToken");
+  },
   methods: {
     async performAdminLogin() {
       const response = await fetch(`${config.apiRoot}/authenticate/admin`, {

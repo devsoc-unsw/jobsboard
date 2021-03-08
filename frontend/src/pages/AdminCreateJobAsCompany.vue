@@ -162,8 +162,8 @@ export default Vue.extend({
       // mode: "no-cors",
     });
 
-    const msg = await response.json();
     if (response.ok) {
+      const msg = await response.json();
       // alphabetically sort them
       this.verifiedCompanies = msg.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name);
     } else {

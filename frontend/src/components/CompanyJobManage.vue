@@ -104,10 +104,6 @@ export default Vue.extend({
           "Content-Type": "application/json",
           "Authorization": this.apiToken,
         },
-      })
-      .catch((error) => {
-        this.errorCallback("Error in processing rejection. Please try again later.");
-        return;
       });
 
       const receivedResponse = response as Response;
@@ -116,7 +112,14 @@ export default Vue.extend({
         this.successCallback("Job successfully deleted!");
         this.close();
       } else {
-        this.errorCallback("Error in processing rejection. Please try again later.");
+        if (response.status == 401) {
+          this.errorMsg = "Login expired. Redirecting to login page.";
+          setTimeout(() => {
+            this.$router.push("/login/company");
+          }, 3000);
+        } else {
+          this.errorCallback("Error in processing rejection. Please try again later.");
+        }
       }
     },
     close() {

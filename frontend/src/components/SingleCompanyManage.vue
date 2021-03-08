@@ -71,15 +71,22 @@ export default Vue.extend({
         },
       });
 
-      const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
+      // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
+        const msg = await response.json();
         this.success = true;
         this.successMsg = "Company successfully verified!";
         this.close();
       } else {
         this.error = true;
-        this.errorMsg = "Error in processing verification. Please try again later.";
+        if (response.status === 401) {
+          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          setTimeout(() => {
+            this.$router.push("/login");
+          }, 3000);
+        } else {
+          this.errorMsg = "Error in processing verification. Please try again later.";
+        }
       }
     },
     close() {

@@ -162,9 +162,9 @@ export default Vue.extend({
         }),
       });
 
-      const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
+        const msg = await response.json();
+        this.$store.dispatch("setApiToken", msg.token);
         this.success = true;
         this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
         setTimeout(() => {
@@ -174,6 +174,12 @@ export default Vue.extend({
         this.error = true;
         if (response.status === 403) {
           this.errorMsg = "Failed to post job request as your account has not yet been verified.";
+        } else if (response.status === 401) {
+          this.errorMsg = "Login expired. Redirecting to login page.";
+          console.log("wtf");
+          setTimeout(() => {
+            this.$router.push("/login/company");
+          }, 3000);
         } else {
           this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
         }

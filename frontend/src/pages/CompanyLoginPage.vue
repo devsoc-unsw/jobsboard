@@ -70,6 +70,9 @@ export default Vue.extend({
       errorMsg: "",
     };
   },
+  async mounted() {
+    this.$store.dispatch("clearApiToken");
+  },
   methods: {
     async performCompanyLogin() {
       const response = await fetch(`${config.apiRoot}/authenticate/company`, {
