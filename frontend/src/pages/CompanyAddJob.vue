@@ -172,11 +172,11 @@ export default Vue.extend({
         }, 5000);
       } else {
         this.error = true;
+        window.scrollTo(0, 10);
         if (response.status === 403) {
           this.errorMsg = "Failed to post job request as your account has not yet been verified.";
         } else if (response.status === 401) {
           this.errorMsg = "Login expired. Redirecting to login page.";
-          console.log("wtf");
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);

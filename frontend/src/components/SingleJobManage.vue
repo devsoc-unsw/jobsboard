@@ -136,6 +136,7 @@ export default Vue.extend({
         this.close();
       } else {
         this.error = true;
+        window.scrollTo(0, 10);
         if (response.status === 401) {
           this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
           setTimeout(() => {

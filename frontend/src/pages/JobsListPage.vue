@@ -90,6 +90,7 @@ export default Vue.extend({
         this.jobs = [... this.jobs, ... msg.jobs];
       } else {
         this.error = true;
+        window.scrollTo(0, 10);
         if (response.status == 401) {
           this.errorMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {

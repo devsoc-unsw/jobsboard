@@ -75,6 +75,7 @@ export default Vue.extend({
         this.$router.push("/jobs");
       } else {
         this.error = true;
+        window.scrollTo(0, 10);
         this.errorMsg = "Invalid credentials. Please try again.";
       }
     },

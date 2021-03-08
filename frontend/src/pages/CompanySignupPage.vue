@@ -137,6 +137,7 @@ export default Vue.extend({
         }, 5000);
       } else {
         this.error = true;
+        window.scrollTo(0, 10);
         this.errorMsg = "Invalid username. Please try again.";
       }
     },

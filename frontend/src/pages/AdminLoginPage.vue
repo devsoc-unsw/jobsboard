@@ -86,6 +86,7 @@ export default Vue.extend({
         this.error = false;
         this.$router.push("/admin/home");
       } else {
+        window.scrollTo(0, 10);
         this.error = true;
         this.errorMsg = "Invalid credentials. Please try again.";
       }
