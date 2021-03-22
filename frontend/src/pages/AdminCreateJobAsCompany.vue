@@ -25,6 +25,8 @@
           Application Link: 
         </div>
         <a
+          target="_blank"
+          rel="noopener noreferrer"
           :href="this.applicationLink"
         >
           {{ this.applicationLink }}
