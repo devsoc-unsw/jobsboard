@@ -148,6 +148,21 @@ export default class MailFunctions {
       await conn.manager.save(newMailRequestForAdmin);
       Logger.Info("[DEBUG] Saved admin mail request");
 
+      // send a copy of this email to the csesoc admin
+      const newMailRequestForCsesocAdmin: MailRequest = new MailRequest();
+      newMailRequestForAdmin.sender = process.env.MAIL_USERNAME;
+      newMailRequestForAdmin.recipient = "careers@csesoc.org.au";
+      newMailRequestForAdmin.subject = subject;
+      newMailRequestForAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
+
+        CONTENT BEGINS HERE
+      ------------------------
+        ${content}
+      `;
+
+      await conn.manager.save(newMailRequestForCsesocAdmin);
+      Logger.Info("[DEBUG] Saved admin mail request");
+
       return true;
     } catch (error) {
       Logger.Error(`AddMailToQueue FAILED with error ${error}`);
