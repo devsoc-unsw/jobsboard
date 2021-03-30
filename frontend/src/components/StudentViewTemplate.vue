@@ -121,8 +121,6 @@ export default Vue.extend({
   background: $grey;
   color: $black;
   /* padding: 0.5rem; */
-  min-height: 10%;
-  flex: 1 1 auto;
 }
 
 .contentWidth {

@@ -111,7 +111,7 @@ export default Vue.extend({
 .jobsBox {
   width: 75%;
   margin: auto;
-  padding: 2rem;
+  /* padding: 2rem; */
 }
 
 @media screen and (min-width: 900px) {
@@ -123,7 +123,7 @@ export default Vue.extend({
     margin-bottom: 0;
   }
   .content {
-    padding: 2rem;
+    /* padding: 2rem; */
   }
   .contentWidth {
     width: 70%;
@@ -136,7 +136,7 @@ export default Vue.extend({
   align-items: stretch;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-auto-rows: 1fr;
-  grid-gap: 3%;
+  grid-gap: 10px;
 }
 
 .resultsFound {
