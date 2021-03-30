@@ -86,7 +86,10 @@ export default Vue.extend({
   background: $blue;
   color: $white;
   width: 80%;
-  margin: auto;
+  margin-top: 0px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -121,6 +124,8 @@ export default Vue.extend({
   background: $grey;
   color: $black;
   /* padding: 0.5rem; */
+  min-height: 100%;
+  flex: 1 1 auto;
 }
 
 .contentWidth {
