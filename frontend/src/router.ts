@@ -68,6 +68,9 @@ export default new Router({
     path: "/company/jobs/manage",
     component: CompanyManageJobs,
   }, {
+    path: "/",
+    component: LoginPage,
+  }, {
     path: "*",
     component: PageNotFoundPage,
   }],

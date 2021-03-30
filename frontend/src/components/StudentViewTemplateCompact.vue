@@ -7,7 +7,7 @@
             <BackButton />
           </div>
         </div>
-        <img class="main-logo-student-compact" :src="logo" />
+        <img class="main-logo-student-compact" :src="logo" @click="logoOnClick"/>
         <div class="rightBoxCompact" @click="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
         </div>
@@ -50,6 +50,9 @@ export default Vue.extend({
     logOut() {
       this.$store.dispatch("clearApiToken");
       this.$router.push("/login/student");
+    },
+    logoOnClick() {
+      this.$router.push("/jobs");
     }
   },
   data() {
@@ -71,7 +74,10 @@ export default Vue.extend({
   background: $blue;
   color: $white;
   width: 80%;
-  margin: auto;
+  margin-top: 0px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0.5rem;
   display: flex;
   justify-content: space-between;
@@ -138,6 +144,9 @@ export default Vue.extend({
   margin-top: auto;
   margin-bottom: auto;
   flex-grow: 1;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .leftBoxCompact {

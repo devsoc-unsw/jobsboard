@@ -49,7 +49,6 @@ export default Vue.extend({
           this.finalDescription.push(line);
         }
       }
-      console.log(this.finalDescription);
     },
   },
   updated() {

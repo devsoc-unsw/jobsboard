@@ -62,7 +62,7 @@ export default Vue.extend({
     background: rgba(0, 0, 0, 0.05);
     cursor: pointer;
   }
-  height: 100%;
+  min-height: 100%;
 }
 
 .companyLogo {
