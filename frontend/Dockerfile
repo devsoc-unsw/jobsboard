@@ -4,6 +4,8 @@ RUN yarn global add @vue/cli-service-global
 
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
+RUN apt-get update &&\
+    apt-get install python -y
 RUN yarn install --frozen-lockfile
 COPY "./" "/app"
 RUN yarn build
