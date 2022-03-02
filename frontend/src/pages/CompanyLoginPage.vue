@@ -36,6 +36,9 @@
       Not a company? <router-link to="/login/student">Student Login</router-link>
       <br/>
       <br/>
+      Forgot your Password? <router-link to="/company/password-forgot">Reset Your Password</router-link>
+      <br/>
+      <br/>
       Don't have an account? <router-link to="/signup/company">Create one!</router-link>
     </div>
   </StudentViewTemplate>
