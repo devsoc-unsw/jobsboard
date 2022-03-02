@@ -356,6 +356,10 @@ app.put(
  *    responses:
  *      200:
  *        description: success
+ *      400:
+ *        description: invalid token
+ *      400:
+ *        descriptions: required parameters not supplied
  */
 app.put(
   "/company/password-reset",

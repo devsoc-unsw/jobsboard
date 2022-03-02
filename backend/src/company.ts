@@ -126,7 +126,18 @@ export default class CompanyFunctions {
 
       Logger.Info(`Password for company NAME=${activeResetToken.name} updated`);
 
-      // save the updates in the database
+      // save the password into the database
+      await conn.manager.save(CompanyAccount);
+      
+      // delete the token for that company
+      await conn
+      .createQueryBuilder()
+      .delete()
+      .from(ActiveResetTokens)
+      .where("name = :username", { username: activeResetToken.name })
+      .execute();
+
+      // save the changes into the database
       await conn.manager.save(ActiveResetTokens);
 
       return {
