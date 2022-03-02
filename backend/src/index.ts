@@ -342,6 +342,30 @@ app.put(
 
 /**
  *  @swagger
+ *  /company/password-reset:
+ *    put:
+ *      description: Reset a company's password
+ *      parameters:
+ *        - name: newPassword 
+ *          description: The company's new password which will be hashed and stored in the database
+ *          type: string
+ *          required: true
+ *        - name: token
+ *          description: Token associated with a company's attempt of password reset
+ *  
+ *    responses:
+ *      200:
+ *        description: success
+ */
+app.put(
+  "/company/password-reset",
+  cors(corsOptions),
+  CompanyFunctions.PasswordReset,
+  Middleware.genericLoggingMiddleware
+);
+
+/**
+ *  @swagger
  *  /authenticate/company:
  *    post:
  *      description: Authenticate a company's credentials
