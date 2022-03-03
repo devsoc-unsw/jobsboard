@@ -80,12 +80,6 @@ export default class Helpers {
       throw new Error(`Attempted to create a job post with a date in the past=${val}`);
     }
   }
-
-  public static hasResetTokenExpired(expiry: Date) {
-    if (expiry.getTime() > Date.now()) {
-      throw new Error('Company attempted to reset a password using an epxired token');
-    }
-  }
 }
 
 export {

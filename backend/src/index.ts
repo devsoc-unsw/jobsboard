@@ -350,20 +350,19 @@ app.put(
  *          description: The company's new password which will be hashed and stored in the database
  *          type: string
  *          required: true
- *        - name: token
- *          description: Token associated with a company's attempt of password reset
  *  
  *    responses:
  *      200:
  *        description: success
  *      400:
- *        description: invalid token
- *      400:
  *        descriptions: required parameters not supplied
+ *      401:
+ *        description: invalid token
  */
 app.put(
   "/company/password-reset",
   cors(corsOptions),
+  Middleware.authenticateResetPasswordRequestMiddleware,
   CompanyFunctions.PasswordReset,
   Middleware.genericLoggingMiddleware
 );

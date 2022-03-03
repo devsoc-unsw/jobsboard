@@ -15,7 +15,6 @@ import Helpers, { IResponseWithStatus } from "./helpers";
 import Secrets from "./secrets";
 import MailFunctions from "./mail";
 import Logger from "./logging";
-import { ActiveResetTokens } from "./entity/active_reset_tokens";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
@@ -80,66 +79,20 @@ export default class CompanyFunctions {
 
   public static async PasswordReset(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
-    
       // check if required parameters are supplied
       const msg = {
         newPassword: req.body.newPassword,
-        token: req.body.token
       }
       Helpers.requireParameters(msg.newPassword);
-      Helpers.requireParameters(msg.token);
-
-      Logger.Info(`Attempting to reset a company\'s password with TOKEN=${msg.token}`);
-
-      // connect to the database
-      const conn: Connection = getConnection();
-      
-      let activeResetToken: ActiveResetTokens = undefined;
-      try { 
-        // check if there 
-        activeResetToken = await Helpers.doSuccessfullyOrFail(async () => {
-          return await getRepository(ActiveResetTokens)
-          .createQueryBuilder("active_reset_tokens")
-          .where("company_reset_tokens.token = :token", { token: msg.token })
-          .getOne()
-        // fail message 
-        }, "failed to find the company that holds the provided token")
-      }
-      catch (err) {
-        // send 403 error if no company with matching token can be found 
-        return {
-          status: 403,
-          msg: undefined
-        } as IResponseWithStatus;
-      };
-
-      // now a company with the provided token has been found, check if it has expired
-      Helpers.hasResetTokenExpired(activeResetToken.expiry);
-
+      Logger.Info(`Attempting to reset password for COMPANY=${req.params.companyAccountID}`);
       // update the company's password with the new password 
-      await conn
-      .createQueryBuilder()
-      .update(CompanyAccount)
-      .set({ hash: Secrets.hash(msg.newPassword) })
-      .where("username = :username", { username: activeResetToken.name })
-      .execute();
+      await getConnection().createQueryBuilder()
+        .update(CompanyAccount)
+        .set({ hash: Secrets.hash(msg.newPassword) })
+        .where("id = :id", { id: req.params.companyAccountID })
+        .execute();
 
-      Logger.Info(`Password for company NAME=${activeResetToken.name} updated`);
-
-      // save the password into the database
-      await conn.manager.save(CompanyAccount);
-      
-      // delete the token for that company
-      await conn
-      .createQueryBuilder()
-      .delete()
-      .from(ActiveResetTokens)
-      .where("name = :username", { username: activeResetToken.name })
-      .execute();
-
-      // save the changes into the database
-      await conn.manager.save(ActiveResetTokens);
-
+      Logger.Info(`Password for COMPANY=${req.params.companyAccountID} updated`);
       return {
         status: 200,
         msg: undefined
