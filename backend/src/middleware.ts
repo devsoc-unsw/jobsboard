@@ -151,7 +151,7 @@ export default class Middleware {
         .getOne();
       }, `Failed to find company account with id=${jwt.id}`);
       // check whether the tokens are equivalent
-      if (jwtString as string !== companyQuery.latestValidToken) {
+      if (jwtString as string !== companyQuery.latestValidResetToken) {
         // tokens don't match, therefore the token is invalid and authentication
         // is rejected
         throw new Error("Provided password reset token doesn't match current tracked token");
