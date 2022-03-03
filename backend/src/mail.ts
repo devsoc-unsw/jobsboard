@@ -169,4 +169,40 @@ export default class MailFunctions {
       return false;
     }
   }
+
+  public static async SendResetPasswordMail(recipientEmail: string, token: string) {
+    const transportOptions = {
+      host: process.env.MAIL_SMTP_SERVER,
+      port: parseInt(process.env.MAIL_SMTP_SERVER_PORT, 10),
+      secure: false,
+      auth: {
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD,
+      },
+      requireTLS: true,
+    };
+
+    const emailContent = `
+      We received a request to reset the password for your JobsBoard account.
+      <br>
+      To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/token=${token}">link</a>.
+      <br>
+      <p>If you did not request a password reset for your account, simply ignore this message.</p>
+      <p>Best regards,</p>
+      <p>The JobsBoard Team</p>
+    `;
+
+    const mailTransporter = nodemailer.createTransport(transportOptions);
+    if (process.env.NODE_ENV === "production") {
+      mailTransporter.sendMail({
+        from: process.env.MAIL_USERNAME,
+        to: recipientEmail,
+        subject: "JobsBoard Password Reset Request",
+        text: emailContent,
+        html: emailContent,
+      }, () => Logger.Info(`Successfully sent password request to EMAIL=${recipientEmail}`));
+    } else {
+      Logger.Info(`NODE_ENV is not production (currently ${process.env.NODE_ENV}), therefore no email will be sent to ${recipientEmail} to reset their password.`);
+    }
+  }
 }

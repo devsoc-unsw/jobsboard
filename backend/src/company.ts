@@ -15,6 +15,8 @@ import Helpers, { IResponseWithStatus } from "./helpers";
 import Secrets from "./secrets";
 import MailFunctions from "./mail";
 import Logger from "./logging";
+import { AccountType } from "./auth";
+import JWT from "./jwt";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
@@ -345,5 +347,51 @@ export default class CompanyFunctions {
         }
       } as IResponseWithStatus;
     }, next);
+  }
+
+  public static async SendResetPasswordEmail(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      // check for required params
+      const receipientEmail = req.body.username;
+      Helpers.requireParameters(receipientEmail);
+      Logger.Info(`Attempting to send a 'reset-password' email to company with USERNAME=${receipientEmail}`);
+      // check if company with provided username exists
+      const companyAccountUsernameSearchResult = await getRepository(CompanyAccount)
+        .createQueryBuilder("company_account")
+        .where("company_account.username = :username", { username: receipientEmail })
+        .getOne();
+      if (companyAccountUsernameSearchResult === undefined) {
+        return {
+          status: 400,
+          msg: undefined,
+        } as IResponseWithStatus;
+      }
+      // create new token
+      const token: JWT = JWT.create({
+        id: companyAccountUsernameSearchResult.id,
+        type: AccountType.Company,
+        lastRequestTimestamp: Date.now(),
+        ipAddress: req.ip,
+      });
+      await getConnection().createQueryBuilder()
+        .update(CompanyAccount)
+        .set({ latestValidResetToken: token as string })
+        .where("id = :id", { id: companyAccountUsernameSearchResult.id })
+        .execute();
+
+      MailFunctions.SendResetPasswordMail(receipientEmail, token as string);
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next)
   }
 }

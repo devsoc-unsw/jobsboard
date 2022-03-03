@@ -35,6 +35,9 @@ export class CompanyAccount {
   @Column({ type: "text", default: "no token set" })
   public latestValidToken: string;
 
+  @Column({ type: "text", default: "no token set" })
+  public latestValidResetToken: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
