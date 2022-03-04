@@ -93,6 +93,13 @@ export default class CompanyFunctions {
         .execute();
 
       Logger.Info(`Password for COMPANY=${req.params.companyAccountID} updated`);
+
+      await getConnection().createQueryBuilder()
+        .update(CompanyAccount)
+        .set({ latestValidToken: "no token set" })
+        .where("id = :id", { id: req.params.companyAccountID })
+        .execute();
+
       return {
         status: 200,
         msg: undefined
