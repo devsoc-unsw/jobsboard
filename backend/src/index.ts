@@ -413,7 +413,6 @@ app.put(
 app.post(
   "/company/forgot",
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
   CompanyFunctions.SendResetPasswordEmail,
   Middleware.genericLoggingMiddleware
 );

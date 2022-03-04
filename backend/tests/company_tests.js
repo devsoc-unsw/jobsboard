@@ -396,4 +396,58 @@ describe("company", () => {
       }
     );
   })
+
+  describe("sending an email to reset company's password", () => {
+    it("successfully sends email",
+      function (done) {
+        server
+          .post("/company/forgot")
+          .send({ username: "test" })
+          .expect(200)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            done();
+          })
+      }
+    );
+
+    it("fails if username of company account is not provided",
+      function (done) {
+        server
+          .post("/company/forgot")
+          .send({})
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    );
+
+    it("fails if provided username is an empty string",
+      function (done) {
+        server
+          .post("/company/forgot")
+          .send({ username: "" })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    );
+
+    it("fails if username provided is not associated with a company account",
+      function (done) {
+        server
+          .post("/company/forgot")
+          .send({ username: "this-username-should-not-exists-in-db" })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    );
+  })
 });
