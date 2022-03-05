@@ -411,7 +411,7 @@ app.put(
 *        description: failed to find company account
 */
 app.post(
-  "/company/forgot",
+  "/company/forgot-password",
   cors(corsOptions),
   CompanyFunctions.SendResetPasswordEmail,
   Middleware.genericLoggingMiddleware

@@ -401,7 +401,7 @@ describe("company", () => {
     it("successfully sends email",
       function (done) {
         server
-          .post("/company/forgot")
+          .post("/company/forgot-password")
           .send({ username: "test" })
           .expect(200)
           .end((err, res) => {
@@ -414,7 +414,7 @@ describe("company", () => {
     it("fails if username of company account is not provided",
       function (done) {
         server
-          .post("/company/forgot")
+          .post("/company/forgot-password")
           .send({})
           .expect(400)
           .end((err, res) => {
@@ -427,7 +427,7 @@ describe("company", () => {
     it("fails if provided username is an empty string",
       function (done) {
         server
-          .post("/company/forgot")
+          .post("/company/forgot-password")
           .send({ username: "" })
           .expect(400)
           .end((err, res) => {
@@ -440,7 +440,7 @@ describe("company", () => {
     it("fails if username provided is not associated with a company account",
       function (done) {
         server
-          .post("/company/forgot")
+          .post("/company/forgot-password")
           .send({ username: "this-username-should-not-exists-in-db" })
           .expect(400)
           .end((err, res) => {
