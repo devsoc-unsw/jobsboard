@@ -379,12 +379,23 @@ export default class CompanyFunctions {
         .where("id = :id", { id: companyAccountUsernameSearchResult.id })
         .execute();
 
-      MailFunctions.SendResetPasswordMail(receipientEmail, token as string);
+      MailFunctions.AddMailToQueue(
+        receipientEmail,
+        "JobsBoard Password Reset Request",
+        `
+        We received a request to reset the password for your JobsBoard account.
+        <br>
+        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/password-reset?token=${token}">link</a>.
+        <br>
+        <p>If you did not request a password reset for your account, simply ignore this message.</p>
+        <p>Best regards,</p>
+        <p>The JobsBoard Team</p>
+        `,
+      );
       return {
         status: 200,
         msg: undefined
       } as IResponseWithStatus;
-
     }, () => {
       return {
         status: 400,

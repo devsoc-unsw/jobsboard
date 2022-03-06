@@ -398,7 +398,7 @@ describe("company", () => {
   })
 
   describe("sending an email to reset company's password", () => {
-    it("successfully sends email",
+    it("succeeds if username provided is associated with a company account",
       function (done) {
         server
           .post("/company/forgot-password")
