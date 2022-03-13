@@ -5,7 +5,13 @@
       Please enter your email address. <br/>
       You will receive an email with instructions on how to reset your password.
       <br/>
-      <div v-if="error">
+      <div v-if="success">
+        <br/>
+        <SuccessBox>
+        {{ successMsg }}
+        </SuccessBox>
+      </div>
+      <div v-else-if="error">
         <br/>
         <ErrorBox>
           {{ errorMsg }}
@@ -13,15 +19,15 @@
       </div>
       <br/>
       <input 
-        name="username"
-        v-model="username"
+        name="email"
+        v-model="email"
         type="text"
         placeholder="email" 
-        @keyup.enter=""
+        @keyup.enter="performCompanyPasswordForgot()"
       />
       <br/>
       <StandardButton>
-        <Button @callback="">
+        <Button @callback="performCompanyPasswordForgot">
           Send Password Reset Email
         </Button>
       </StandardButton>
@@ -41,6 +47,7 @@ import { Vue } from "vue-property-decorator";
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import SuccessBox from "@/components/SuccessBox.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 
@@ -51,9 +58,45 @@ export default Vue.extend({
   name: "PasswordForgotPage",
   components: {
     StudentViewTemplate,
+    SuccessBox,
     ErrorBox,
     Button,
     StandardButton,
+  },
+  data() {
+    return {
+      email: "",
+      error: false,
+      errorMsg: "",
+    };
+  },
+  methods: {
+    async performCompanyPasswordForgot() {
+      // To replace with stuff for company password forgot
+
+      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // mode: "no-cors",
+        body: JSON.stringify({
+          email: this.email,
+        }),
+      });
+
+      if (response.ok) {
+        const msg = await response.json();
+        window.scrollTo(0, 10);
+        this.success = true;
+        this.$store.dispatch("setApiToken", msg.token);
+        this.successMsg = "An email has been sent successfully. Please check your inbox.";
+      } else {
+        window.scrollTo(0, 10);
+        this.error = true;
+        this.errorMsg = "Email failed to send. Please try again.";
+      }
+    },
   },
 });
 </script>
