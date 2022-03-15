@@ -10,20 +10,12 @@
         {{ successMsg }}
         </SuccessBox>
       </div>
-      <div v-esle-if="error">
+      <div v-else-if="error">
         <br/>
         <ErrorBox>
           {{ errorMsg }}
         </ErrorBox>
       </div>
-      <br/>
-      <input 
-        name="code"
-        v-model="code"
-        type="text"
-        placeholder="Code" 
-        @keyup.enter="performCompanyPasswordReset()"
-      />
       <br/>
       <input 
         name="newPassword"
@@ -65,27 +57,29 @@ export default Vue.extend({
     Button,
     StandardButton,
   },
+  props: {
+    token: String,
+  },
   data() {
     return {
-      code: "",
       newPassword: "",
       error: false,
       errorMsg: "",
+      success: false,
+      successMsg: ""
     };
   },
   methods: {
     async performCompanyPasswordReset() {
-      // To replace with stuff for company password reset
-
-      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
+      const response = await fetch(`${config.apiRoot}/company/password-reset`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": Array.isArray(this.$route.query.token) ? this.$route.query.token.filter(e => e).join(" ") : this.$route.query.token
         },
         // mode: "no-cors",
         body: JSON.stringify({
-          code: this.code,
-          email: this.email,
+          newPassword: this.newPassword,
         }),
       });
 
@@ -101,7 +95,14 @@ export default Vue.extend({
       } else {
         window.scrollTo(0, 10);
         this.error = true;
-        this.errorMsg = "The code you entered may be invalid. Please try again. Password reset failed.";
+        if (response.status === 400) {
+          this.errorMsg = "Please try again. Password reset failed.";
+        } else {
+          this.errorMsg = "Token expired. Redirecting to login page.";
+          setTimeout(() => {
+            this.$router.push("/login/company");
+          }, 3000);
+        }
       }
     },
   },

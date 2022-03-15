@@ -68,13 +68,15 @@ export default Vue.extend({
       email: "",
       error: false,
       errorMsg: "",
+      success: false,
+      successMsg: ""
     };
   },
   methods: {
     async performCompanyPasswordForgot() {
       // To replace with stuff for company password forgot
 
-      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
+      const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,12 +91,15 @@ export default Vue.extend({
         const msg = await response.json();
         window.scrollTo(0, 10);
         this.success = true;
-        this.$store.dispatch("setApiToken", msg.token);
         this.successMsg = "An email has been sent successfully. Please check your inbox.";
       } else {
         window.scrollTo(0, 10);
         this.error = true;
-        this.errorMsg = "Email failed to send. Please try again.";
+        if (response.status === 400) {
+          this.errorMsg = "Could not find a company account with that email. Please try again.";
+        } else {
+          this.errorMsg = "Email failed to send. Please try again.";
+        }
       }
     },
   },
