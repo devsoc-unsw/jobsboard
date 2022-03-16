@@ -354,18 +354,14 @@ export default class CompanyFunctions {
       // check for required params
       const receipientEmail = req.body.username;
       Helpers.requireParameters(receipientEmail);
-      Logger.Info(`Attempting to send a 'reset-password' email to company with USERNAME=${receipientEmail}`);
+      Logger.Info(`Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`);
       // check if company with provided username exists
-      const companyAccountUsernameSearchResult = await getRepository(CompanyAccount)
-        .createQueryBuilder("company_account")
-        .where("company_account.username = :username", { username: receipientEmail })
-        .getOne();
-      if (companyAccountUsernameSearchResult === undefined) {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      }
+      const companyAccountUsernameSearchResult = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(CompanyAccount)
+          .createQueryBuilder("company_account")
+          .where("company_account.username = :username", { username: receipientEmail })
+          .getOne();
+      }, `Failed to find company account with USERNAME=${receipientEmail}`)
       // create new token
       const token: JWT = JWT.create({
         id: companyAccountUsernameSearchResult.id,
