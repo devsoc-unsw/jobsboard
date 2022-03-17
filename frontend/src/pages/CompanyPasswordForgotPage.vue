@@ -74,8 +74,6 @@ export default Vue.extend({
   },
   methods: {
     async performCompanyPasswordForgot() {
-      // To replace with stuff for company password forgot
-
       const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
         method: "POST",
         headers: {
@@ -88,10 +86,9 @@ export default Vue.extend({
       });
 
       if (response.ok) {
-        const msg = await response.json();
         window.scrollTo(0, 10);
         this.success = true;
-        this.successMsg = "An email has been sent successfully. Please check your inbox.";
+        this.successMsg = "An email will be sent shortly. Please check your inbox.";
       } else {
         window.scrollTo(0, 10);
         this.error = true;

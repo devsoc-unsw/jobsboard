@@ -2,7 +2,8 @@
   <StudentViewTemplate notLoggedIn>
     <div>
       <h1>Reset Your Password</h1>
-      Please enter the code you received and your new password. <br/>
+      Please enter your new password. 
+      <br/>
       <br/>
       <div v-if="success">
         <br/>
