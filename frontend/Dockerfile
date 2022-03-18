@@ -1,4 +1,4 @@
-FROM node:16 AS build
+FROM node:17 AS build
 
 RUN yarn global add @vue/cli-service-global
 
