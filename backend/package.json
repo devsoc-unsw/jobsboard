@@ -34,7 +34,7 @@
     "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.0.7",
     "tslint": "^6.0.0",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.3.0",
     "typescript": "^3.7.5",
     "winston": "^3.2.1"
   },
