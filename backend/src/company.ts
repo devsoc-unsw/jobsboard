@@ -15,6 +15,8 @@ import Helpers, { IResponseWithStatus } from "./helpers";
 import Secrets from "./secrets";
 import MailFunctions from "./mail";
 import Logger from "./logging";
+import { AccountType } from "./auth";
+import JWT from "./jwt";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
@@ -345,5 +347,58 @@ export default class CompanyFunctions {
         }
       } as IResponseWithStatus;
     }, next);
+  }
+
+  public static async SendResetPasswordEmail(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      // check for required params
+      const receipientEmail = req.body.username;
+      Helpers.requireParameters(receipientEmail);
+      Logger.Info(`Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`);
+      // check if company with provided username exists
+      const companyAccountUsernameSearchResult = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(CompanyAccount)
+          .createQueryBuilder("company_account")
+          .where("company_account.username = :username", { username: receipientEmail })
+          .getOne();
+      }, `Failed to find company account with USERNAME=${receipientEmail}`)
+      // create new token
+      const token: JWT = JWT.create({
+        id: companyAccountUsernameSearchResult.id,
+        type: AccountType.Company,
+        lastRequestTimestamp: Date.now(),
+        ipAddress: req.ip,
+      });
+      await getConnection().createQueryBuilder()
+        .update(CompanyAccount)
+        .set({ latestValidResetToken: token as string })
+        .where("id = :id", { id: companyAccountUsernameSearchResult.id })
+        .execute();
+
+      MailFunctions.AddMailToQueue(
+        receipientEmail,
+        "JobsBoard Password Reset Request",
+        `
+        We received a request to reset the password for your JobsBoard account.
+        <br>
+        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/password-reset?token=${token}">link</a>.
+        <br>
+        <p>If you did not request a password reset for your account, simply ignore this message.</p>
+        <p>Best regards,</p>
+        <p>The JobsBoard Team</p>
+        `,
+      );
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next)
   }
 }
