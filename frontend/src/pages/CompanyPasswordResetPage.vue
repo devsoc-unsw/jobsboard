@@ -69,8 +69,7 @@ export default Vue.extend({
   },
   methods: {
     async performCompanyPasswordReset() {
-      const userToken = this.$route.params.token;
-      const response = await fetch(`${config.apiRoot}/company/password-reset/${userToken}`, {
+      const response = await fetch(`${config.apiRoot}/company/password-reset`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +82,6 @@ export default Vue.extend({
       });
       
       if (response.ok) {
-        const msg = await response.json();
         window.scrollTo(0, 10);
         this.success = true;
         this.successMsg = "Your password has been successfully been reset. Redirecting you to the login page...";
