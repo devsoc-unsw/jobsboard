@@ -381,7 +381,7 @@ export default class CompanyFunctions {
         `
         We received a request to reset the password for your JobsBoard account.
         <br>
-        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/password-reset?token=${token}">link</a>.
+        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/password-reset/${token}">link</a>.
         <br>
         <p>If you did not request a password reset for your account, simply ignore this message.</p>
         <p>Best regards,</p>
