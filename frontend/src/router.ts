@@ -73,10 +73,8 @@ export default new Router({
     path: "/company/password-forgot",
     component: CompanyPasswordForgotPage,
   }, {
-    path: "/company/password-reset",
+    path: "/company/password-reset/:token",
     component: CompanyPasswordResetPage,
-    props: (route : any) => ({ token: route.query.token}),
-    name: "token"
   }, {
     path: "/",
     component: LoginPage,

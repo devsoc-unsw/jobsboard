@@ -58,9 +58,6 @@ export default Vue.extend({
     Button,
     StandardButton,
   },
-  props: {
-    token: String
-  },
   data() {
     return {
       newPassword: "",
@@ -72,22 +69,19 @@ export default Vue.extend({
   },
   methods: {
     async performCompanyPasswordReset() {
-      const response = await fetch(`${config.apiRoot}/company/password-reset`, {
+      const userToken = this.$route.params.token;
+      const response = await fetch(`${config.apiRoot}/company/password-reset/${userToken}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": Array.isArray(this.$route.query.token) ? 'undefined' : this.$route.query.token
+          "Authorization": this.$route.params.token
         },
         // mode: "no-cors",
         body: JSON.stringify({
           newPassword: this.newPassword,
         }),
       });
-      let invalidToken = false;
-      if (Array.isArray(this.$route.query.token)) {
-        console.log("true");
-        invalidToken = true;
-      }
+      
       if (response.ok) {
         const msg = await response.json();
         window.scrollTo(0, 10);
@@ -99,13 +93,10 @@ export default Vue.extend({
       } else {
         window.scrollTo(0, 10);
         this.error = true;
-        if (response.status === 400 && !invalidToken) {
+        if (response.status === 400) {
           this.errorMsg = "Please try again. Password reset failed.";
         } else {
           this.errorMsg = "Token expired. Redirecting to login page.";
-          if (invalidToken) {
-            this.errorMsg = "Token invalid. Redirecting to login page.";
-          }
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);
