@@ -93,11 +93,13 @@ export default Vue.extend({
         this.error = true;
         if (response.status === 400) {
           this.errorMsg = "Please try again. Password reset failed.";
-        } else {
-          this.errorMsg = "Token expired. Redirecting to login page.";
+        } else if (response.status === 401) {
+          this.errorMsg = "Token may be invalid or expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);
+        } else {
+          this.errorMsg = "There was an error when trying to reset your password. Please try again.";
         }
       }
     },
