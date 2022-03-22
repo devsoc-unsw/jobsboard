@@ -9,6 +9,8 @@ const LoginPage = () => import("@/pages/LoginPage.vue");
 const StudentLoginPage = () => import("@/pages/StudentLoginPage.vue");
 const CompanyLoginPage = () => import("@/pages/CompanyLoginPage.vue");
 const CompanySignupPage = () => import("@/pages/CompanySignupPage.vue");
+const CompanyPasswordForgotPage = () => import("@/pages/CompanyPasswordForgotPage.vue");
+const CompanyPasswordResetPage = () => import("@/pages/CompanyPasswordResetPage.vue");
 const JobsListPage = () => import("@/pages/JobsListPage.vue");
 const SingleJobPage = () => import("@/pages/SingleJobPage.vue");
 const CompanyAccountHome = () => import("@/pages/CompanyAccountHome.vue");
@@ -67,6 +69,14 @@ export default new Router({
   }, {
     path: "/company/jobs/manage",
     component: CompanyManageJobs,
+  }, {
+    path: "/company/password-forgot",
+    component: CompanyPasswordForgotPage,
+  }, {
+    path: "/company/password-reset/:token",
+    component: CompanyPasswordResetPage,
+    props: true,
+    name: "token",
   }, {
     path: "/",
     component: LoginPage,
