@@ -353,7 +353,6 @@ export default class CompanyFunctions {
     Helpers.catchAndLogError(res, async () => {
       // check for required params
       const receipientEmail = req.body.username;
-      console.log(receipientEmail);
       Helpers.requireParameters(receipientEmail);
       Logger.Info(`Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`);
       // check if company with provided username exists
@@ -409,34 +408,34 @@ export default class CompanyFunctions {
       const msg = {
         newPassword: req.body.newPassword,
       }
+
       Helpers.requireParameters(msg.newPassword);
     
       const jwt: IToken = JWT.get(req.get("Authorization"));
-
       // get the id of the company making this request
-      const companyID =  await Helpers.doSuccessfullyOrFail(async () => {
+      const companyAccount =  await Helpers.doSuccessfullyOrFail(async () => {
         return await getRepository(CompanyAccount)
-          .createQueryBuilder("company_account")
-          .where("company_account.latestValidResetToken = :token", { token: jwt })
-          .getOne();
-      }, `Failed to find the company id with TOKEN=${jwt}`);
+        .createQueryBuilder("company_account")
+        .where("company_account.id = :id", { id: jwt.id })
+        .getOne();
+      }, `Failed to find the company id with TOKEN=${jwt.id}`);
       
-      Logger.Info(`Attempting to reset password for COMPANY=${companyID}`);
+      Logger.Info(`Attempting to reset password for COMPANY=${companyAccount.id}`);
       // update the company's password with the new password 
       await getConnection().createQueryBuilder()
-        .update(CompanyAccount)
-        .set({ hash: Secrets.hash(msg.newPassword) })
-        .where("id = :id", { id: companyID })
-        .execute();
-
-      Logger.Info(`Password for COMPANY=${companyID} updated`);
-
+      .update(CompanyAccount)
+      .set({ hash: Secrets.hash(msg.newPassword) })
+      .where("id = :id", { id: companyAccount.id })
+      .execute();
+      
+      Logger.Info(`Password for COMPANY=${companyAccount.id} updated`);
+      
       await getConnection().createQueryBuilder()
-        .update(CompanyAccount)
-        .set({ latestValidToken: "no token set" })
-        .where("id = :id", { id: companyID })
-        .execute();
-
+      .update(CompanyAccount)
+      .set({ latestValidToken: "no token set" })
+      .where("id = :id", { id: companyAccount.id })
+      .execute();
+      
       return {
         status: 200,
         msg: undefined
@@ -449,6 +448,5 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next);
   };
-
 
 }

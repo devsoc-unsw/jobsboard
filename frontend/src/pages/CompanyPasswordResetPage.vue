@@ -70,7 +70,7 @@ export default Vue.extend({
   methods: {
     async performCompanyPasswordReset() {
       const response = await fetch(`${config.apiRoot}/company/password-reset`, {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           "Authorization": this.$route.params.token

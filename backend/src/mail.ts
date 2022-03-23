@@ -103,7 +103,6 @@ export default class MailFunctions {
   public static async AddMailToQueue(recipient: string, subject: string, content: string): Promise<boolean> {
     try {
       // check parameters
-      console.log(process.env.MAIL_USERNAME, recipient, subject, content);
       try {
         Helpers.requireParameters(process.env.MAIL_USERNAME);
       } catch (error) {
