@@ -419,6 +419,31 @@ app.post(
 
 /**
  *  @swagger
+ *  /company/password-reset/:
+ *    put:
+ *      description: Reset a company's password
+ *      parameters:
+ *        - name: newPassword 
+ *          description: The company's new password which will be hashed and stored in the database
+ *          type: string
+ *          required: true
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        descriptions: required parameters not supplied
+ */
+ app.put(
+  "/company/password-reset",
+  cors(corsOptions),
+  Middleware.authenticateResetPasswordRequestMiddleware,
+  CompanyFunctions.PasswordReset,
+  Middleware.genericLoggingMiddleware
+);
+
+
+/**
+ *  @swagger
  *  /authenticate/admin:
  *    post:
  *      description: Authenticate an admin's credentials

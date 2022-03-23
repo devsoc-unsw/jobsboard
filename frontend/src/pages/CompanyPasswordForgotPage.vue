@@ -81,7 +81,7 @@ export default Vue.extend({
         },
         // mode: "no-cors",
         body: JSON.stringify({
-          email: this.email,
+          "username": this.email,
         }),
       });
 

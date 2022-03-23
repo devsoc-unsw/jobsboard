@@ -77,7 +77,7 @@ export default Vue.extend({
         },
         // mode: "no-cors",
         body: JSON.stringify({
-          newPassword: this.newPassword,
+          "newPassword": this.newPassword,
         }),
       });
       

@@ -18,11 +18,11 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import store from "./store/store";
 
-library.add(faBuilding);
-library.add(faChevronLeft);
-library.add(faSignOutAlt);
-library.add(faSuitcase);
-library.add(faHeart);
+library.add(faBuilding as IconDefinition);
+library.add(faChevronLeft as IconDefinition);
+library.add(faSignOutAlt as IconDefinition);
+library.add(faSuitcase as IconDefinition);
+library.add(faHeart as IconDefinition);
 library.add(faGithub as IconDefinition);
 library.add(faLinkedin as IconDefinition);
 
