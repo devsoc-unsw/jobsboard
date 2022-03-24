@@ -418,7 +418,7 @@ export default class CompanyFunctions {
         .createQueryBuilder("company_account")
         .where("company_account.id = :id", { id: jwt.id })
         .getOne();
-      }, `Failed to find the company id with TOKEN=${jwt.id}`);
+      }, `Failed to find company account with ID=${jwt.id}`);
       
       Logger.Info(`Attempting to reset password for COMPANY=${companyAccount.id}`);
       // update the company's password with the new password 

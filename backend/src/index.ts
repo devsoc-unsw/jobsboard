@@ -431,7 +431,9 @@ app.post(
  *      200:
  *        description: success
  *      400:
- *        descriptions: required parameters not supplied
+ *        description: required parameters not supplied
+ *      401:
+ *        description: invalid or expired token
  */
  app.put(
   "/company/password-reset",
