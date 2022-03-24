@@ -51,7 +51,7 @@ export default class MailFunctions {
     const transportOptions = {
       host: process.env.MAIL_SMTP_SERVER,
       port: parseInt(process.env.MAIL_SMTP_SERVER_PORT, 10),
-      secure: true,
+      secure: false,
       auth: {
         user: process.env.MAIL_USERNAME,
         pass: process.env.MAIL_PASSWORD,
