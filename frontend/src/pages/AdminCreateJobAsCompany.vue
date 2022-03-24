@@ -208,8 +208,7 @@ export default Vue.extend({
           role: this.role,
           description: this.description,
           applicationLink: this.applicationLink,
-          // TODO: this is a temporary stop-gap, we need to have an actual selector
-          expiry: new Date(2022, 1, 1).valueOf(),
+          expiry: jobDate.valueOf(),
         }),
       });
 
