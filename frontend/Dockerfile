@@ -1,4 +1,4 @@
-FROM node:16.14.0 AS build
+FROM node:16.14-alpine AS build
 
 RUN yarn global add @vue/cli-service-global
 
@@ -8,7 +8,7 @@ RUN yarn install --frozen-lockfile
 COPY "./" "/app"
 RUN yarn build
 
-FROM nginx:stable
+FROM nginx:alpine
 
 COPY --from=build /app/dist /var/www/html/
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
