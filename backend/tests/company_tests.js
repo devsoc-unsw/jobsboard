@@ -508,7 +508,7 @@ describe("company", () => {
           })
       }
     );
-    it("fails if using a admin token token",
+    it("fails if using an admin token",
       function (done) {
         server
           .put("/company/password-reset")
