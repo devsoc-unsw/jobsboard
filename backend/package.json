@@ -18,7 +18,7 @@
     "sqlite3": "^5.0.0",
     "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.0.7",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.3.4",
     "winston": "^3.2.1"
   },
   "nodemonConfig": {
