@@ -1,8 +1,6 @@
 FROM node:16.14-alpine as builder
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
-RUN apt-get update &&\
-  apt-get install python -y
 RUN yarn install --frozen-lockfile
 COPY ./ .
 
