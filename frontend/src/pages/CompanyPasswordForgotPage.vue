@@ -1,10 +1,17 @@
 <template>
   <StudentViewTemplate notLoggedIn>
     <div>
-      <h1>Company Login</h1>
-      Welcome back! Please log in to your account.
+      <h1>Forgot Your Password?</h1>
+      Please enter your email address. <br/>
+      You will receive an email with instructions on how to reset your password.
       <br/>
-      <div v-if="error">
+      <div v-if="success">
+        <br/>
+        <SuccessBox>
+        {{ successMsg }}
+        </SuccessBox>
+      </div>
+      <div v-else-if="error">
         <br/>
         <ErrorBox>
           {{ errorMsg }}
@@ -12,31 +19,20 @@
       </div>
       <br/>
       <input 
-        name="username"
-        v-model="username"
+        name="email"
+        v-model="email"
         type="text"
         placeholder="email" 
-        @keyup.enter="performCompanyLogin()"
-      />
-      <br/>
-      <input 
-        name="password"
-        v-model="password"
-        type="password"
-        placeholder="password"
-        @keyup.enter="performCompanyLogin()"
+        @keyup.enter="performCompanyPasswordForgot()"
       />
       <br/>
       <StandardButton>
-        <Button @callback="performCompanyLogin">
-          Login
+        <Button @callback="performCompanyPasswordForgot">
+          Send Password Reset Email
         </Button>
       </StandardButton>
       <br/>
       Not a company? <router-link to="/login/student">Student Login</router-link>
-      <br/>
-      <br/>
-      Forgot your Password? <router-link to="/company/password-forgot">Reset Your Password</router-link>
       <br/>
       <br/>
       Don't have an account? <router-link to="/signup/company">Create one!</router-link>
@@ -51,6 +47,7 @@ import { Vue } from "vue-property-decorator";
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import SuccessBox from "@/components/SuccessBox.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 
@@ -58,47 +55,48 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
-  name: "LoginPage",
+  name: "PasswordForgotPage",
   components: {
     StudentViewTemplate,
+    SuccessBox,
     ErrorBox,
     Button,
     StandardButton,
   },
   data() {
     return {
-      username: "",
-      password: "",
+      email: "",
       error: false,
       errorMsg: "",
+      success: false,
+      successMsg: ""
     };
   },
-  async mounted() {
-    this.$store.dispatch("clearApiToken");
-  },
   methods: {
-    async performCompanyLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
+    async performCompanyPasswordForgot() {
+      const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         // mode: "no-cors",
         body: JSON.stringify({
-          username: this.username,
-          password: this.password,
+          "username": this.email,
         }),
       });
 
       if (response.ok) {
-        const msg = await response.json();
-        this.error = false;
-        this.$store.dispatch("setApiToken", msg.token);
-        this.$router.push("/company/home");
+        window.scrollTo(0, 10);
+        this.success = true;
+        this.successMsg = "An email will be sent shortly. Please check your inbox.";
       } else {
         window.scrollTo(0, 10);
         this.error = true;
-        this.errorMsg = "Invalid credentials. Please try again.";
+        if (response.status === 400) {
+          this.errorMsg = "Could not find a company account with that email. Please try again.";
+        } else {
+          this.errorMsg = "Email failed to send. Please try again.";
+        }
       }
     },
   },

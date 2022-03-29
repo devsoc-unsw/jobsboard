@@ -15,6 +15,7 @@ import {
 } from "./auth";
 
 import { Student } from "./entity/student";
+import { CompanyAccount } from "./entity/company_account";
 
 export default class Middleware {
   public static genericLoggingMiddleware(req: Request, resp: Response, next: NextFunction): void {
@@ -133,6 +134,39 @@ export default class Middleware {
       res.sendStatus(401);
       Middleware.genericLoggingMiddleware(req, res, undefined);
       Logger.Error(`Authentication Middleware Error (admin): ${error}`);
+    }
+  }
+
+  public static async authenticateResetPasswordRequestMiddleware(req: any, res: Response, next: NextFunction) {
+    try {
+      const jwtString = req.get("Authorization");
+      const jwt: IToken = JWT.get(req.get("Authorization"));
+
+      Middleware.verifyAccountType(jwt.type, AccountType.Company);
+      // verify that this token is the latest valid token for this account
+      const companyQuery = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(CompanyAccount)
+        .createQueryBuilder()
+        .where("CompanyAccount.id = :id", { id: jwt.id })
+        .getOne();
+      }, `Failed to find company account with id=${jwt.id}`);
+      // check whether the tokens are equivalent
+      if (jwtString as string !== companyQuery.latestValidResetToken) {
+        // tokens don't match, therefore the token is invalid and authentication
+        // is rejected
+        throw new Error("Provided password reset token doesn't match current tracked token");
+      }
+      // check that token has not expired
+      Middleware.verifyTokenProperties(req, jwt);
+      req.companyAccountID = jwt.id;
+      // continue
+      next();
+    } 
+    catch (error) {
+      // if there are any errors, send a forbidden
+      res.sendStatus(401);
+      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Logger.Error(`Authentication Middleware Error (reset password request): ${error}`);
     }
   }
 

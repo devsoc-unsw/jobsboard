@@ -395,6 +395,56 @@ app.put(
 );
 
 /**
+*  @swagger
+*  /company/forgot:
+*    post:
+*      description: Send mail to company account to reset password
+*      parameters:
+*        - name: username
+*          description: The username of the company account
+*          type: string
+*          required: true
+*    responses:
+*      200:
+*        description: success
+*      400:
+*        description: failed to find company account
+*/
+app.post(
+  "/company/forgot-password",
+  cors(corsOptions),
+  CompanyFunctions.SendResetPasswordEmail,
+  Middleware.genericLoggingMiddleware
+);
+
+/**
+ *  @swagger
+ *  /company/password-reset/:
+ *    put:
+ *      description: Reset a company's password
+ *      parameters:
+ *        - name: newPassword 
+ *          description: The company's new password which will be hashed and stored in the database
+ *          type: string
+ *          required: true
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: required parameters not supplied
+ *      401:
+ *        description: invalid or expired token
+ */
+ app.put(
+  "/company/password-reset",
+  cors(corsOptions),
+  Middleware.authenticateResetPasswordRequestMiddleware,
+  CompanyFunctions.PasswordReset,
+  Middleware.genericLoggingMiddleware
+);
+
+
+/**
  *  @swagger
  *  /authenticate/admin:
  *    post:
