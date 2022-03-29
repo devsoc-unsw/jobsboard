@@ -450,4 +450,76 @@ describe("company", () => {
       }
     );
   })
+
+  describe("resetting a company's password", () => {
+    before(async function () {
+      this.companyToken = await server
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+      
+      this.adminToken = await server
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
+      
+      this.studentToken = await server
+        .post("/authenticate/student")
+        .send({ zID: "z1234567", password: "test" })
+        .then(response => response.body.token);
+    });
+
+    it("fails if invalid token is provided",
+      function (done) {
+        server
+          .put("/company/password-reset")
+          .set("Authorization", "some-invalid-token")
+          .send({ newPassword: "mockPassword" })
+          .expect(401)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+    it("fails if company with token has not requested to change their password",
+      function (done) {
+        server
+          .put("/company/password-reset")
+          .set("Authorization", this.companyToken)
+          .send({ newPassword: "mockPassword" })
+          .expect(401)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+    it("fails if using a student token",
+      function (done) {
+        server
+          .put("/company/password-reset")
+          .set("Authorization", this.studentToken)
+          .send({ newPassword: "mockPassword" })
+          .expect(401)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+    it("fails if using a admin token token",
+      function (done) {
+        server
+          .put("/company/password-reset")
+          .set("Authorization", this.adminToken)
+          .send({ newPassword: "mockPassword" })
+          .expect(401)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+  })
 });
