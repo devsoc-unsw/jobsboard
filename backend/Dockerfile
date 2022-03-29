@@ -1,19 +1,21 @@
-FROM node:latest as builder
-
+FROM node:16.14-alpine as builder
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
 RUN apt-get update &&\
   apt-get install python -y
 RUN yarn install --frozen-lockfile
-COPY "./" "/app/"
+COPY ./ .
+
 RUN yarn build
 
-FROM node:slim
+FROM node:16.14-alpine as runner
+ENV NODE_ENV production
 WORKDIR /app
+COPY ["./package.json", "./yarn.lock", "/app/"]
+RUN yarn install --frozen-lockfile
+
 COPY --from=builder "/app/dist/" "/app/dist/"
-COPY --from=builder "/app/node_modules/" "/app/node_modules/"
-COPY --from=builder "/app/package.json" "/app/package.json"
 
 EXPOSE 8080
 
-CMD sleep 10 && node ./dist/index.js
+CMD node ./dist/index.js
