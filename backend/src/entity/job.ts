@@ -38,7 +38,8 @@ export class Job {
       "nz_ctz_and_perm_res",
       "no_wr",
       "all"
-    ]
+    ],
+    default: ["aus_ctz", "aus_perm_res"]
   })
   public workingRights: WorkingRights[];
 
