@@ -168,13 +168,23 @@ export default class CompanyFunctions {
         description: req.body.description.trim(),
         role: req.body.role.trim(),
         expiry: req.body.expiry,
+        jobMode: req.body.jobMode,
+        studentDemographic: req.body.studentDemographic,
+        jobType: req.body.jobType,
+        workingRights: req.body.workingRights,
       };
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
       Helpers.requireParameters(msg.applicationLink);
       Helpers.requireParameters(msg.expiry);
-      Helpers.isDateInTheFuture(msg.expiry);
-      Helpers.validApplicationLink(msg.applicationLink);
+
+      Helpers.isValidJobMode(msg.jobMode);
+      Helpers.isValidStudentDemographic(msg.studentDemographic);
+      Helpers.isValidJobType(msg.jobType);
+      Helpers.isValidWorkingRights(msg.workingRights);
+
+    Helpers.isDateInTheFuture(msg.expiry);
+    Helpers.validApplicationLink(msg.applicationLink);
       Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`);
       const conn: Connection = getConnection();
       const newJob = new Job();
@@ -182,6 +192,10 @@ export default class CompanyFunctions {
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
       newJob.expiry = new Date(msg.expiry);
+      newJob.mode = msg.jobMode;
+      newJob.studentDemographic = msg.studentDemographic;
+      newJob.jobType = msg.jobType;
+      newJob.workingRights = msg.workingRights;
 
       let companyAccount: CompanyAccount = undefined;
       try {

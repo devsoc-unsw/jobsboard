@@ -1,5 +1,6 @@
 import Logger from "./logging";
 import { Response, NextFunction } from "express";
+import { JobMode, JobType, StudentDemographic, WorkingRights } from "./types/job_field";
 
 interface IResponseWithStatus {
   msg: any;
@@ -79,6 +80,39 @@ export default class Helpers {
     if (val <= Date.now()) {
       throw new Error(`Attempted to create a job post with a date in the past=${val}`);
     }
+  }
+
+  public static isValidJobMode(value: string): void {
+    if (value !== "onsite" && value !== "hybrid" && value !== "remote") {
+      throw new Error(`Invalid JobMode=${value} provided.`);
+    }
+  }
+
+  public static isValidStudentDemographic(value: string): void {
+    if (value !== "penultimate" && value !== "final_year" && value !== "all") {
+      throw new Error(`Invalid StudentDemogaphic=${value} provided.`);
+    }
+  }
+
+  public static isValidJobType(value: string): void {
+    if (value !== "intern" && value !== "grad") {
+      throw new Error(`Invalid JobType=${value} provided.`);
+    }
+  }
+
+  public static isValidWorkingRights(workingRights: Array<string>): void {
+    workingRights.forEach(value => {
+      if (
+        value !== "aus_ctz" &&
+        value !== "aus_perm_res" &&
+        value !== "aus_stud_visa" &&
+        value !== "aus_temp_grad_visa" &&
+        value !== "nz_ctz_and_perm_res" &&
+        value !== "no_wr" &&
+        value !== "all") {
+        throw new Error(`Invalid WorkingRights=${value} provided.`);
+      }
+    })
   }
 }
 
