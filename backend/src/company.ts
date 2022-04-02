@@ -58,6 +58,7 @@ export default class CompanyFunctions {
           .andWhere("Job.approved = :approved", { approved: true })
           .andWhere("Job.hidden = :hidden", { hidden: false })
           .andWhere("Job.deleted = :deleted", { deleted: false })
+          .andWhere("Job.expiry > :expiry", { expiry: new Date() })
           .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .getMany();
       }, `Failed to find jobs for COMPANY=${req.params.companyID}`);
