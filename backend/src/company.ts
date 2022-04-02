@@ -266,6 +266,7 @@ export default class CompanyFunctions {
           .leftJoinAndSelect("Job.company", "company")
           .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
           .andWhere("Job.deleted = :deleted", { deleted: false })
+          .andWhere("job.expiry > :expiry", { expiry: new Date() })
           .orderBy("Job.createdAt", "DESC")
           .select([
             "Job.id",
@@ -402,6 +403,39 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next)
   }
+
+  public static async GetPasswordResetToken(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async() => {
+      const username = req.params.username;
+      Helpers.requireParameters(username);
+
+      Logger.Info(`Retrieving paswsword reset token for COMPANY=${username} `);
+
+      const resetToken = await Helpers.doSuccessfullyOrFail(async () => {
+        return await getRepository(CompanyAccount)
+          .createQueryBuilder("company_account")
+          .select(["company_account.latestValidResetToken"])
+          .where("company_account.username = :username", {username: username})
+          .getOne()
+      }, `Failed to find password reset token for COMPANY=${username}`);
+
+      // check the reset token is not empty 
+      Helpers.requireParameters(resetToken.latestValidResetToken);
+
+      return {
+        status: 200,
+        msg: {
+          token: resetToken.latestValidResetToken
+        }
+      } as IResponseWithStatus
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next)
+  }
+
 
   public static async PasswordReset(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {

@@ -467,6 +467,15 @@ describe("company", () => {
         .post("/authenticate/student")
         .send({ zID: "z1234567", password: "test" })
         .then(response => response.body.token);
+
+      await server
+        .post("/company/forgot-password")
+        .send({ username: "test" })
+        .expect(200);
+        
+      this.passwordResetToken = await server
+        .get("/company/password-reset-token/test")
+        .then(response => response.body.token);     
     });
 
     it("fails if invalid token is provided",
@@ -514,6 +523,43 @@ describe("company", () => {
           .put("/company/password-reset")
           .set("Authorization", this.adminToken)
           .send({ newPassword: "mockPassword" })
+          .expect(401)
+          .end((err, res) => {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+    it("successfully reset a company's password",
+      function (done) {
+        server
+          .put("/company/password-reset")
+          .set("Authorization", this.passwordResetToken)
+          .send({ newPassword: "newpassword" })
+          .expect(200)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            done();
+          })
+      }
+    );
+    it("successfully login into a company account using the new password",
+      function (done) {
+        server
+          .post("/authenticate/company")
+          .send({ username: "test", password: "newpassword" })
+          .expect(200)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            done();
+          })
+      }
+    );
+    it("fails to login into a company account using the old password",
+      function (done) {
+        server
+          .post("/authenticate/company")
+          .send({ username: "test", password: "test" })
           .expect(401)
           .end((err, res) => {
             expect(res.status).to.equal(401);

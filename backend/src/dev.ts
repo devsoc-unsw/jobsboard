@@ -24,7 +24,7 @@ export async function seedDB(activeEntities: any[]) {
   const conn: Connection = getConnection();
   const manager: EntityManager = getManager();
 
-  // create dummy admina ccount
+  // create dummy admin account
   const adminAccount = new AdminAccount();
   adminAccount.username = "admin";
   adminAccount.hash = Secrets.hash("incorrect pony plug paperclip");
@@ -38,6 +38,16 @@ export async function seedDB(activeEntities: any[]) {
   company.name = "Test company";
   company.location = "Sydney";
   companyAccount.company = company;
+
+  // create a company account used for password reset
+  // not useful yet
+  // const companyAccount2 = new CompanyAccount();
+  // companyAccount2.username = "test2";
+  // companyAccount2.hash = Secrets.hash("test2");
+  // const company2 = new Company();
+  // company2.name = "Test company 2";
+  // company2.location = "Hong Kong";
+  // companyAccount2.company = company2;
 
   // every job except job1 and job 2 have not expired yet
   const job1 = new Job();
@@ -98,16 +108,8 @@ export async function seedDB(activeEntities: any[]) {
     job5,
     job6,
   ];
-  await manager.save(companyAccount);
 
-  // create a company account used for password reset
-  const companyAccount2 = new CompanyAccount();
-  companyAccount2.username = "test2";
-  companyAccount2.hash = Secrets.hash("test2");
-  const company2 = new Company();
-  company2.name = "Test company 2";
-  company2.location = "Hong Kong";
-  companyAccount2.company = company2;
+  await manager.save(companyAccount);
   
   Logger.Info("FINISHED SEEDING");
 }
