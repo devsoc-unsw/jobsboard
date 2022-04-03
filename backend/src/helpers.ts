@@ -1,6 +1,5 @@
 import Logger from "./logging";
 import { Response, NextFunction } from "express";
-import { JobMode, JobType, StudentDemographic, WorkingRights } from "./types/job_field";
 
 interface IResponseWithStatus {
   msg: any;
@@ -113,6 +112,12 @@ export default class Helpers {
         throw new Error(`Invalid WorkingRights=${value} provided.`);
       }
     })
+  }
+
+  public static isValidWamRequirement(value: string): void {
+    if (value !== "HD" && value !== "D" && value !== "C" && value !== "none") {
+      throw new Error(`Invalid WamRequirements=${value} provided.`);
+    }
   }
 }
 

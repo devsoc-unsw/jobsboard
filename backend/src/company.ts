@@ -66,7 +66,10 @@ export default class CompanyFunctions {
             "Job.mode",
             "Job.studentDemographic",
             "Job.jobType",
-            "Job.workingRights"
+            "Job.workingRights",
+            "Job.wamRequirements",
+            "Job.additionalInfo",
+            "Job.isPaid"
           ])
           .getMany();
       }, `Failed to find jobs for COMPANY=${req.params.companyID}`);
@@ -181,19 +184,24 @@ export default class CompanyFunctions {
         studentDemographic: req.body.studentDemographic,
         jobType: req.body.jobType,
         workingRights: req.body.workingRights,
+        wamRequirements: req.body.wamRequirements,
+        additionalInfo: req.body.additionalInfo.trim(),
+        isPaid: req.body.isPaid,
       };
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
       Helpers.requireParameters(msg.applicationLink);
       Helpers.requireParameters(msg.expiry);
+      Helpers.requireParameters(msg.isPaid);
 
       Helpers.isValidJobMode(msg.jobMode);
       Helpers.isValidStudentDemographic(msg.studentDemographic);
       Helpers.isValidJobType(msg.jobType);
       Helpers.isValidWorkingRights(msg.workingRights);
+      Helpers.isValidWamRequirement(msg.wamRequirements);
 
-    Helpers.isDateInTheFuture(msg.expiry);
-    Helpers.validApplicationLink(msg.applicationLink);
+      Helpers.isDateInTheFuture(msg.expiry);
+      Helpers.validApplicationLink(msg.applicationLink);
       Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`);
       const conn: Connection = getConnection();
       const newJob = new Job();
@@ -205,6 +213,9 @@ export default class CompanyFunctions {
       newJob.studentDemographic = msg.studentDemographic;
       newJob.jobType = msg.jobType;
       newJob.workingRights = msg.workingRights;
+      newJob.isPaid = msg.isPaid;
+      newJob.additionalInfo = msg.additionalInfo;
+      newJob.wamRequirements = msg.wamRequirements;
 
       let companyAccount: CompanyAccount = undefined;
       try {
@@ -295,7 +306,14 @@ export default class CompanyFunctions {
             "Job.description",
             "Job.applicationLink",
             "Job.approved",
-            "Job.hidden"
+            "Job.hidden",
+            "Job.mode",
+            "Job.studentDemographic",
+            "Job.jobType",
+            "Job.workingRights",
+            "Job.wamRequirements",
+            "Job.additionalInfo",
+            "Job.isPaid"
           ])
           .getMany();
       }, `Failed to find jobs for COMPANY=${req.companyAccountID}`);

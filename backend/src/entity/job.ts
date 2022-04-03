@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Company } from "./company";
-import { JobMode, StudentDemographic, JobType, WorkingRights } from "../types/job_field";
+import { JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements } from "../types/job-field";
 
 @Entity()
 export class Job {
@@ -18,9 +18,10 @@ export class Job {
 
   @Column({
     type: "enum",
-    enum: ["penultimate", "final_year", "all"]
+    enum: ["penultimate", "final_year", "all"],
+    default: ["all"]
   })
-  public studentDemographic: StudentDemographic;
+  public studentDemographic: StudentDemographic[];
 
   @Column({
     type: "enum",
@@ -44,6 +45,18 @@ export class Job {
   public workingRights: WorkingRights[];
 
   @Column({
+    type: "enum",
+    enum: ["HD", "D", "C", "none"]
+  })
+  public wamRequirements: WamRequirements;
+
+  @Column({
+    type: "longtext",
+    default: ""
+  })
+  public additionalInfo: string;
+
+  @Column({
     type: "longtext"
   })
   public description: string;
@@ -52,6 +65,11 @@ export class Job {
     default: "",
   })
   public applicationLink: string;
+  
+  @Column({
+    default: true,
+  })
+  public isPaid: boolean;
 
   @Column({
     default: false,

@@ -87,6 +87,9 @@ export default class StudentFunctions {
         newJob.studentDemographic = job.studentDemographic;
         newJob.jobType = job.jobType;
         newJob.workingRights = job.workingRights;
+        newJob.additionalInfo = job.additionalInfo;
+        newJob.wamRequirements = job.wamRequirements;
+        newJob.isPaid = job.isPaid;
         return newJob;
       });
       return {
@@ -123,7 +126,10 @@ export default class StudentFunctions {
             "Job.mode",
             "Job.studentDemographic",
             "Job.jobType",
-            "Job.workingRights"
+            "Job.workingRights",
+            "Job.additionalInfo",
+            "Job.wamRequirements",
+            "Job.isPaid"
           ])
           .leftJoinAndSelect("Job.company", "company")
           .where("Job.approved = :approved", { approved: true })
