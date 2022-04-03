@@ -17,7 +17,7 @@ export class Job {
   public mode: JobMode;
 
   @Column({
-    type: "enum",
+    type: "set",
     enum: ["penultimate", "final_year", "all"],
     default: ["all"]
   })
@@ -46,7 +46,8 @@ export class Job {
 
   @Column({
     type: "enum",
-    enum: ["HD", "D", "C", "none"]
+    enum: ["HD", "D", "C", "none"],
+    default: "none"
   })
   public wamRequirements: WamRequirements;
 

@@ -87,10 +87,12 @@ export default class Helpers {
     }
   }
 
-  public static isValidStudentDemographic(value: string): void {
-    if (value !== "penultimate" && value !== "final_year" && value !== "all") {
-      throw new Error(`Invalid StudentDemogaphic=${value} provided.`);
-    }
+  public static isValidStudentDemographic(studentDemographic: Array<string>): void {
+    studentDemographic.forEach(value => {
+      if (value !== "penultimate" && value !== "final_year" && value !== "all") {
+        throw new Error(`Invalid StudentDemogaphic=${value} provided.`);
+      }
+    })
   }
 
   public static isValidJobType(value: string): void {
