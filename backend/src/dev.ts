@@ -47,9 +47,13 @@ export async function seedDB(activeEntities: any[]) {
   job1.hidden = false;
   job1.company = company;
   job1.mode = "remote";
-  job1.studentDemographic = "all";
+  job1.studentDemographic = ["all"];
   job1.jobType = "intern";
   job1.workingRights = ["aus_ctz", "aus_perm_res"];
+  job1.wamRequirements = "HD";
+  job1.additionalInfo = "";
+  job1.isPaid = true;
+
 
   const job2 = new Job();
   job2.role = "Software Engineer";
@@ -59,9 +63,13 @@ export async function seedDB(activeEntities: any[]) {
   job2.hidden = false;
   job2.company = company;
   job2.mode = "remote";
-  job2.studentDemographic = "all";
+  job2.studentDemographic = ["all"];
   job2.jobType = "intern";
   job2.workingRights = ["aus_ctz", "aus_perm_res"];
+  job2.wamRequirements = "C";
+  job2.additionalInfo = "";
+  job2.isPaid = true;
+
 
   const job3 = new Job();
   job3.role = "Mechanical Engineer";
@@ -70,9 +78,13 @@ export async function seedDB(activeEntities: any[]) {
   job3.approved = true;
   job3.company = company;
   job3.mode = "hybrid";
-  job3.studentDemographic = "final_year";
+  job3.studentDemographic = ["final_year", "penultimate"];
   job3.jobType = "grad";
   job3.workingRights = ["all"];
+  job3.wamRequirements = "none";
+  job3.additionalInfo = "";
+  job3.isPaid = true;
+
 
   const job4 = new Job();
   job4.role = "Computer Scientist";
@@ -81,9 +93,13 @@ export async function seedDB(activeEntities: any[]) {
   job4.company = company;
   job4.approved = true;
   job4.mode = "remote";
-  job4.studentDemographic = "all";
+  job4.studentDemographic = ["all"];
   job4.jobType = "intern";
   job4.workingRights = ["aus_ctz", "aus_perm_res", "aus_stud_visa"];
+  job4.wamRequirements = "HD";
+  job4.additionalInfo = "";
+  job4.isPaid = true;
+
   companyAccount.company.jobs = [
     job1,
     job2,

@@ -81,13 +81,18 @@ export default class Helpers {
     }
   }
 
-  public static isValidJobMode(value: string): void {
+  public static isValidJobMode(value: any): void {
+    this.requireParameters(value);
     if (value !== "onsite" && value !== "hybrid" && value !== "remote") {
       throw new Error(`Invalid JobMode=${value} provided.`);
     }
   }
 
-  public static isValidStudentDemographic(studentDemographic: Array<string>): void {
+  public static isValidStudentDemographic(studentDemographic: any): void {
+    this.requireParameters(studentDemographic);
+    if (!Array.isArray(studentDemographic)) {
+      throw new Error(`studentDemographic=${studentDemographic} is not an array.`)
+    }
     studentDemographic.forEach(value => {
       if (value !== "penultimate" && value !== "final_year" && value !== "all") {
         throw new Error(`Invalid StudentDemogaphic=${value} provided.`);
@@ -95,13 +100,18 @@ export default class Helpers {
     })
   }
 
-  public static isValidJobType(value: string): void {
+  public static isValidJobType(value: any): void {
+    this.requireParameters(value);
     if (value !== "intern" && value !== "grad") {
       throw new Error(`Invalid JobType=${value} provided.`);
     }
   }
 
-  public static isValidWorkingRights(workingRights: Array<string>): void {
+  public static isValidWorkingRights(workingRights: any): void {
+    this.requireParameters(workingRights);
+    if (!Array.isArray(workingRights)) {
+      throw new Error(`workingRights=${workingRights} is not an array.`)
+    }
     workingRights.forEach(value => {
       if (
         value !== "aus_ctz" &&
@@ -116,7 +126,8 @@ export default class Helpers {
     })
   }
 
-  public static isValidWamRequirement(value: string): void {
+  public static isValidWamRequirement(value: any): void {
+    this.requireParameters(value);
     if (value !== "HD" && value !== "D" && value !== "C" && value !== "none") {
       throw new Error(`Invalid WamRequirements=${value} provided.`);
     }
