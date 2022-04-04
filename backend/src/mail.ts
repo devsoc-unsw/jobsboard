@@ -150,10 +150,10 @@ export default class MailFunctions {
 
       // send a copy of this email to the csesoc admin
       const newMailRequestForCsesocAdmin: MailRequest = new MailRequest();
-      newMailRequestForAdmin.sender = process.env.MAIL_USERNAME;
-      newMailRequestForAdmin.recipient = "careers@csesoc.org.au";
-      newMailRequestForAdmin.subject = subject;
-      newMailRequestForAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
+      newMailRequestForCsesocAdmin.sender = process.env.MAIL_USERNAME;
+      newMailRequestForCsesocAdmin.recipient = "careers@csesoc.org.au";
+      newMailRequestForCsesocAdmin.subject = subject;
+      newMailRequestForCsesocAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
 
         CONTENT BEGINS HERE
       ------------------------
@@ -161,7 +161,7 @@ export default class MailFunctions {
       `;
 
       await conn.manager.save(newMailRequestForCsesocAdmin);
-      Logger.Info("[DEBUG] Saved admin mail request");
+      Logger.Info("[DEBUG] Saved CSESoc admin mail request");
 
       return true;
     } catch (error) {
