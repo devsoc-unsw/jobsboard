@@ -7,6 +7,13 @@ const config = require("./config");
 
 const server = supertest.agent(config.apiUrl);
 
+// TODO: extract this and other test helper functions to another file
+const getFutureDateValue = () => {
+  const futureExpiryDate = new Date();
+  futureExpiryDate.setDate(futureExpiryDate.getDate() + 10);
+  return futureExpiryDate.valueOf();
+}
+
 describe("authentication", () => {
   describe("students", () => {
     it("fails when there is no json message", 
@@ -214,7 +221,16 @@ describe("authentication", () => {
           server.put("/jobs")
             .send({
               role: "some generic SWE role",
-              description: "just doing some cool SWE things"
+              description: "just doing some cool SWE things",
+              applicationLink: "http://sample.application.link",
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"
             })
             .expect(401)
             .end( function (_, res) {
@@ -234,7 +250,14 @@ describe("authentication", () => {
                 role: "some generic SWE role",
                 description: "just doing some cool SWE things",
                 applicationLink: "https://some.application.link",
-                expiry: (new Date(2022, 01, 01)).valueOf(),
+                expiry: getFutureDateValue(),
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"        
               })
               .expect(403)
               .end( function (_, res) {
@@ -253,7 +276,14 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "https://some.application.link",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(200)
             .end( function (_, res) {
@@ -272,7 +302,14 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "call:0298765432",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -291,7 +328,14 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "ftp://some.randomweb.server",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -309,7 +353,16 @@ describe("authentication", () => {
             .send({
               role: " ",
               description: "just doing some cool SWE things",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -327,7 +380,15 @@ describe("authentication", () => {
             .send({
               role: "some generic SWE role",
               description: "",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -344,7 +405,15 @@ describe("authentication", () => {
             .set('Authorization', this.unverifiedCompanyToken)
             .send({
               description: "just doing some cool SWE things",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -361,7 +430,15 @@ describe("authentication", () => {
             .set('Authorization', this.unverifiedCompanyToken)
             .send({
               role: "some generic SWE role",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -413,7 +490,14 @@ describe("authentication", () => {
                 role: "some generic SWE role",
                 description: "just doing some cool SWE things",
                 applicationLink: "https://some.application.link",
-                expiry: (new Date(2022, 01, 01)).valueOf(),
+                expiry: getFutureDateValue(),
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"        
               })
               .expect(403)
               .end( function (_, res) {
@@ -432,7 +516,14 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "https://some.application.link",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(200)
             .end( function (_, res) {
@@ -451,7 +542,14 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "call:0298765432",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -470,7 +568,14 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "ftp://some.randomweb.server",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -488,7 +593,15 @@ describe("authentication", () => {
             .send({
               role: " ",
               description: "just doing some cool SWE things",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -506,7 +619,15 @@ describe("authentication", () => {
             .send({
               role: "some generic SWE role",
               description: "",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -523,7 +644,15 @@ describe("authentication", () => {
             .set('Authorization', this.verifiedCompanyToken)
             .send({
               description: "just doing some cool SWE things",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -540,7 +669,15 @@ describe("authentication", () => {
             .set('Authorization', this.verifiedCompanyToken)
             .send({
               role: "some generic SWE role",
-              expiry: (new Date(2022, 01, 01)).valueOf(),
+              expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"      
             })
             .expect(400)
             .end( function (_, res) {
@@ -559,7 +696,15 @@ describe("authentication", () => {
               role: "some generic SWE role",
               description: "just doing some cool SWE things",
               applicationLink: "https://some.application.link",
-              // expiry: (new Date(2022, 01, 01)).valueOf(),
+              // expiry: getFutureDateValue(),
+              applicationLink: "http://sample.application.link",
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -579,6 +724,14 @@ describe("authentication", () => {
               description: "just doing some cool SWE things",
               applicationLink: "https://some.application.link",
               expiry: (new Date(2000, 01, 01)).valueOf(),
+              isPaid: true,
+              additionalInfo: "",
+              jobMode: "onsite",
+              studentDemographic: ["penultimate", "final_year"],
+              jobType: "intern",
+              workingRights: ["aus_ctz", "aus_perm_res"],
+              wamRequirements: "C"
+      
             })
             .expect(400)
             .end( function (_, res) {
