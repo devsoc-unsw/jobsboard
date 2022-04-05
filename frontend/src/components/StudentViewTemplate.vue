@@ -24,6 +24,7 @@
           <slot />
         </div>
         <Footer />
+        <NewFooter />
       </div>
     </div>
   </div>
@@ -36,6 +37,7 @@ import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.
 import BackButton from "@/components/buttons/back.vue";
 import logo from "@/assets/logos/csesocwhite.png";
 import Footer from "@/components/Footer.vue";
+import NewFooter from "@/components/NewFooter.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
@@ -43,6 +45,7 @@ export default Vue.extend({
     Button,
     DarkBlueStandardButton,
     Footer,
+    NewFooter,
     BackButton,
   },
   props: {
@@ -103,7 +106,7 @@ export default Vue.extend({
     margin-bottom: 0;
   }
   .content {
-    padding: 2rem;
+    padding: 2rem 0 0 0;
   }
   .contentWidth {
     width: 70%;
