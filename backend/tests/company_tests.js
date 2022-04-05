@@ -470,11 +470,11 @@ describe("company", () => {
 
       await server
         .post("/company/forgot-password")
-        .send({ username: "test" })
+        .send({ username: "test2" })
         .expect(200);
         
       this.passwordResetToken = await server
-        .get("/company/password-reset-token/test")
+        .get("/company/password-reset-token/test2")
         .then(response => response.body.token);     
     });
 
@@ -547,7 +547,7 @@ describe("company", () => {
       function (done) {
         server
           .post("/authenticate/company")
-          .send({ username: "test", password: "newpassword" })
+          .send({ username: "test2", password: "newpassword" })
           .expect(200)
           .end((err, res) => {
             expect(res.status).to.equal(200);
@@ -559,7 +559,7 @@ describe("company", () => {
       function (done) {
         server
           .post("/authenticate/company")
-          .send({ username: "test", password: "test" })
+          .send({ username: "test2", password: "test2" })
           .expect(401)
           .end((err, res) => {
             expect(res.status).to.equal(401);
@@ -568,4 +568,5 @@ describe("company", () => {
       }
     );
   })
+  
 });

@@ -40,15 +40,16 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount.company = company;
 
   // create a company account used for password reset
-  // not useful yet
-  // const companyAccount2 = new CompanyAccount();
-  // companyAccount2.username = "test2";
-  // companyAccount2.hash = Secrets.hash("test2");
-  // const company2 = new Company();
-  // company2.name = "Test company 2";
-  // company2.location = "Hong Kong";
-  // companyAccount2.company = company2;
+  const companyAccount2 = new CompanyAccount();
+  companyAccount2.username = "test2";
+  companyAccount2.hash = Secrets.hash("test2");
+  const company2 = new Company();
+  company2.name = "Test company 2";
+  company2.location = "Hong Kong";
+  companyAccount2.company = company2;
 
+  await manager.save(companyAccount2);
+  
   // every job except job1 and job 2 have not expired yet
   const job1 = new Job();
   job1.role = "Software Engineer and Reliability";
