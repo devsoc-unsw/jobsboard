@@ -39,15 +39,13 @@ export class Job {
       "nz_ctz_and_perm_res",
       "no_wr",
       "all"
-    ],
-    default: ["aus_ctz", "aus_perm_res"]
+    ]
   })
   public workingRights: WorkingRights[];
 
   @Column({
     type: "enum",
-    enum: ["HD", "D", "C", "none"],
-    default: "none"
+    enum: ["HD", "D", "C", "none"]
   })
   public wamRequirements: WamRequirements;
 
