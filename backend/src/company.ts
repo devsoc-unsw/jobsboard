@@ -266,7 +266,7 @@ export default class CompanyFunctions {
           .leftJoinAndSelect("Job.company", "company")
           .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
           .andWhere("Job.deleted = :deleted", { deleted: false })
-          .andWhere("job.expiry > :expiry", { expiry: new Date() })
+          .andWhere("Job.expiry > :expiry", { expiry: new Date() })
           .orderBy("Job.createdAt", "DESC")
           .select([
             "Job.id",
