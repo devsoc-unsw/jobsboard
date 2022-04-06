@@ -1,6 +1,7 @@
 version: '3.3'
 services:
   api:
+    platform: linux/amd64
     build:
       dockerfile: Dockerfile
       context: ./backend
