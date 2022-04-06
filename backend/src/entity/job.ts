@@ -40,7 +40,7 @@ export class Job {
   public adminCreated: boolean;
 
   @Column({
-    nullable: false,
+    default: null,
   })
   public expiry: Date;
 
