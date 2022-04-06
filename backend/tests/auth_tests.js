@@ -7,7 +7,6 @@ const config = require("./config");
 
 const server = supertest.agent(config.apiUrl);
 
-// TODO: extract this and other test helper functions to another file
 const getFutureDateValue = () => {
   const futureExpiryDate = new Date();
   futureExpiryDate.setDate(futureExpiryDate.getDate() + 10);
@@ -240,7 +239,6 @@ describe("authentication", () => {
         }
       );
       
-      // TODO: do we need an entire section for this?
       describe("using an unverified company account", () => {
         it(
           "fails when requesting to add a job with a valid web link",

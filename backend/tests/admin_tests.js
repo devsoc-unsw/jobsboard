@@ -7,7 +7,6 @@ const config = require("./config");
 
 const server = supertest.agent(config.apiUrl);
 
-// TODO: extract this and other test helper functions to another file
 const getFutureDateValue = () => {
   const futureExpiryDate = new Date();
   futureExpiryDate.setDate(futureExpiryDate.getDate() + 10);
