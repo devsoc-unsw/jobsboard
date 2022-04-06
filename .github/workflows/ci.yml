@@ -22,4 +22,4 @@ jobs:
       - name: Run api and db
         run: docker-compose up -d db api
       - name: Run tests
-        run: docker-compose up test
+        run: docker-compose run --rm test
