@@ -2,41 +2,45 @@
   <div id="footer-container">
     <div>
       <img class="main-logo" :src="logo" />
-      <div class="footer-list">
-        <p>Got a Question?</p>
-        <p>Found a Bug?</p>
+      <div class="footer-links">
+        <a 
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeldliO0mbbbJWvJk3CoUhiN-ACwmHGnX-e3xtO-l4rGk9bPg/viewform"
+          target="_blank"
+        >
+        Got a Question?
+        </a>
+        <a>Meet the Team</a>
       </div>
       <p>&#169; CSESoc UNSW - 2022</p>
       <div class="social-media-container">
-        <a href="https://www.facebook.com/csesoc">
+        <a href="https://www.facebook.com/csesoc" target="__blank">
           <img class="social-media-logo" :src="facebookLogo" />
         </a>
-        <a href="https://www.instagram.com/csesoc_unsw/?hl=en">
+        <a href="https://www.instagram.com/csesoc_unsw/?hl=en" target="__blank">
           <img class="social-media-logo" :src="instagramLogo" />
         </a>
-        <a href="https://au.linkedin.com/company/csesoc">
+        <a href="https://au.linkedin.com/company/csesoc" target="__blank">
           <img class="social-media-logo" :src="linkedinLogo" />
         </a>
-        <a href="https://www.youtube.com/channel/UC1JHpRrf9j5IKluzXhprUJg">
+        <a href="https://www.youtube.com/channel/UC1JHpRrf9j5IKluzXhprUJg" target="__blank">
           <img class="social-media-logo" :src="youtubeLogo" />
         </a>
-        <a href="https://bit.ly/CSESocDiscord">
+        <a href="https://bit.ly/CSESocDiscord" target="__blank">
           <img class="social-media-logo" :src="discordLogo" />
         </a>
-        <a href="https://github.com/csesoc">
+        <a href="https://github.com/csesoc" target="__blank">
           <img class="social-media-logo" :src="githubLogo" />
         </a>
       </div>
     </div>
 
-    <div id="footer-excerpt">
+    <div id="box-right">
       <p>
         CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. 
         We do not represent the School, Faculty, or University. 
-        This is not official advice, and you should confirm any statements are correct with regard to your 
-        situation before relying on it. Any opinions expressed are those of the authors, and may not necessarily
-        represent those of the University, Faculty, School, or Society. You are responsible for any content 
-        provided and should only post content which you are comfortable with sharing. We reserve the right 
+        Any job posts made are those of the company's, and may not necessarily
+        represent those of the University, Faculty, School, or Society. These job posts
+        also may or may not be made by companies that are sponsoring the Society. We reserve the right 
         to remove content from the website if it is deemed to be abusive, offensive or otherwise inappropriate. 
         UNSW policies apply and if a breach is detected, further action may be taken with the University.
         <br />
@@ -44,6 +48,8 @@
         Jobsboard was made with 
         <font-awesome-icon icon="heart" />
         by CSE students for CSE students.
+      </p>
+      <p>
       </p>
     </div>
   </div>
@@ -81,9 +87,10 @@ export default Vue.extend({
   justify-content: space-between;
   padding: 30px 50px 30px 30px;
   background-color: #2C8BF4;
+  align-items: center;
 }
 
-#footer-excerpt {
+#box-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -95,7 +102,7 @@ export default Vue.extend({
 p {
   color: white;
   font-size: 0.75em;
-  margin: 10px 0 0 0;
+  margin: 0;
 }
 
 span {
@@ -108,17 +115,27 @@ a {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+  color: #ffffff;
+}
+
+.footer-links {
+  padding: 10px 0 10px 0;
+  font-weight: bold;
+}
+
+.footer-links a {
+  margin: 10px 0;
 }
 
 .main-logo {
   width: 45%;
-  padding: 1rem;
+  padding: 1rem 1rem 0 1rem;
 }
 
 .social-media-container {
   display: flex;
   justify-content: center;
-  padding: 10px 0 10px 0;
+  padding: 15px 0 10px 0;
 }
 
 .social-media-logo {
