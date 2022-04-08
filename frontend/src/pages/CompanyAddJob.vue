@@ -18,6 +18,7 @@
           Job Description: 
         </div>
         <JobDescriptionView :description="description" />
+        <!-- {{ this.description }} -->
       </div>
 
       <div class="modalGroup">
@@ -57,13 +58,17 @@
       />
     <h2>Job Description (Text only - for now!)</h2>
     <h4>Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the <a href="https://www.fairwork.gov.au/pay/unpaid-work/student-placements">Australian Fair Work Act 2009</a> to determine whether the job post follows all guidelines and prioritises the safety of our members.</h4>
-    <textarea
+    
+    <!-- <textarea
       name="description"
       v-model="description"
       type="text"
       placeholder="Job Description - Markdown headings and dot points are supported."
       rows="6"
-      />
+    /> -->
+
+    <RichTextEditor class = "rteditor"> </RichTextEditor>
+    
     <h2>Application Link</h2>
     <input 
       name="applicationLink"
@@ -109,6 +114,7 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import RichTextEditor from "@/components/RichTextEditor.vue";
 
 // config
 import config from "@/config/config";
@@ -126,6 +132,7 @@ export default Vue.extend({
     GreenStandardButton,
     Modal,
     JobDescriptionView,
+    RichTextEditor
   },
   data() {
     return {
@@ -200,6 +207,12 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+
+.rteditor {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .bigTextEntry {
   width: 100%;
   min-height: 100%;
