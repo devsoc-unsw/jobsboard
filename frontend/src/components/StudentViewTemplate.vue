@@ -23,8 +23,9 @@
         <div class="contentWidth">
           <slot />
         </div>
-        <Footer />
-        <NewFooter />
+        <div class="footer">
+          <NewFooter />
+        </div>
       </div>
     </div>
   </div>
@@ -36,7 +37,6 @@ import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import BackButton from "@/components/buttons/back.vue";
 import logo from "@/assets/logos/csesocwhite.png";
-import Footer from "@/components/Footer.vue";
 import NewFooter from "@/components/NewFooter.vue";
 
 export default Vue.extend({
@@ -44,7 +44,6 @@ export default Vue.extend({
   components: {
     Button,
     DarkBlueStandardButton,
-    Footer,
     NewFooter,
     BackButton,
   },
@@ -176,6 +175,19 @@ export default Vue.extend({
 
 .tagline {
   color: $white;
+}
+
+.footer {
+  margin-top: 40px;
+  float: below;
+}
+
+@media screen
+and (min-width: 320px) 
+and (max-width: 768.98px) {
+  .footer {
+    margin-top: 100px;
+  }
 }
 
 input, textarea {
