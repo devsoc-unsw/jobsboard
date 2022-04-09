@@ -144,7 +144,47 @@ a {
   height: 67%;
 }
 
-@media screen and (min-width: 900px) {
+// Mobile to Tablet devices
+@media screen 
+and (min-width: 320px) 
+and (max-width: 768.98px) {
+  p {
+    font-size: 1em;
+  }
+
+  #footer-container {
+    flex-direction: column;
+  }
+
+  .footer-links {
+    margin-top: 20px;
+  }
+
+  .social-media-container {
+    margin: 10px 0;
+  }
+}
+
+// Mobile devices
+@media screen 
+and (min-width: 320px)
+and (max-width: 480.98px) {
+  .main-logo {
+    width: 50%;
+  }
+}
+
+// Tablet devices
+@media screen 
+and (min-width: 481px) 
+and (max-width: 768.98px) {
+  .main-logo {
+    width: 37%;
+  }
+}
+
+// Desktop devices
+@media screen and (min-width: 769px) {
   p {
     font-size: 1em;
   }
