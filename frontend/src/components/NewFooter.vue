@@ -38,11 +38,15 @@
       <p>
         CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. 
         We do not represent the School, Faculty, or University. 
-        Any job posts made are those of the company's, and may not necessarily
-        represent those of the University, Faculty, School, or Society. These job posts
-        also may or may not be made by companies that are sponsoring the Society. We reserve the right 
-        to remove content from the website if it is deemed to be abusive, offensive or otherwise inappropriate. 
-        UNSW policies apply and if a breach is detected, further action may be taken with the University.
+        This website seeks to be a centralised platform for students looking 
+        for employment opportunities, but its information has not been officially 
+        endorsed by  the University, Faculty, School, or the Computer Science and 
+        Engineering Society.  You should confirm with the employer that any information 
+        received through this website is correct. Please reach out to us immediately if 
+        you have any concerns or grievances about the features or content of this website.
+        We reserve the right to remove content from the website if it is deemed 
+        to be abusive, offensive or otherwise inappropriate. UNSW policies apply 
+        and if a breach is detected, further action may be taken with the University. 
         <br />
         <br />
         Jobsboard was made with 
