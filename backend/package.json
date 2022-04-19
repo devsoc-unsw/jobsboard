@@ -16,7 +16,7 @@
     "nodemailer": "^6.3.0",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.0",
-    "swagger-jsdoc": "^6.1.0",
+    "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.0.7",
     "typeorm": "^0.2.18",
     "winston": "^3.2.1"
