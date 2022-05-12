@@ -1,9 +1,10 @@
 <template> 
     <div class="rich-text-editor">
         <quill-editor 
-            v-model="description"
             ref="quillRichTextEditor"
+            @change="onEditorChange($event)"
             :options="editorOptions"
+            v-model="description"
         />
     </div> 
 </template>
@@ -14,27 +15,34 @@ import { quillEditor } from 'vue-quill-editor';
 import { Button, Input, Select } from 'iview';
 
 export default {
-    name: 'description',
     components: {
         quillEditor,
         Button,
         Input,
         Select
     },
-    data: () => ({
-        description: '',
-        editorOptions: {
-            debug: 'info',
-            placeholder: 'Enter the job description...',
-            readOnly: true,
-            theme: 'snow'
-        },
-        delta: undefined
-
-    }),
+    props: ['description'],
+    data: () => {
+        return { 
+            description: this.description,
+            editorOptions: {
+                debug: 'info',
+                placeholder: 'Enter the job description...',
+                readOnly: true,
+                theme: 'snow'
+            },
+            delta: undefined
+        }
+    },
     watch: {
-        description (val) {
+        description () {
             this.delta = this.$refs.quillRichTextEditor.quill.getContents();
+        }
+    },
+    method: {
+        onEditorChange({ }) {
+            this.description = this.$refs.quillRichTextEditor.quill.getContents();
+            this.$emit('textChange', text);
         }
     }
 }

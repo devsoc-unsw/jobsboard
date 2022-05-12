@@ -18,7 +18,6 @@
           Job Description: 
         </div>
         <JobDescriptionView :description="description" />
-        <!-- {{ this.description }} -->
       </div>
 
       <div class="modalGroup">
@@ -67,8 +66,10 @@
       rows="6"
     /> -->
 
-    <RichTextEditor class = "rteditor"> </RichTextEditor>
-    
+    <RichTextEditor v-model="description" contentType="text"> </RichTextEditor>
+
+    <h2> {{description}} </h2>
+
     <h2>Application Link</h2>
     <input 
       name="applicationLink"
@@ -137,7 +138,7 @@ export default Vue.extend({
   data() {
     return {
       role: "",
-      description: "",
+      description: "x",
       applicationLink: "",
       error: false,
       errorMsg: "",
