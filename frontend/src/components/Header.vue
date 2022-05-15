@@ -2,7 +2,7 @@
   <div class="header-container">
     <img class="main-logo" :src="logo" alt="CSESoc" />
     <div v-if="!loggedIn">
-      <button class="login-button" @click="logIn">Log In</button>
+      <button class="login-button" @click="toStudentLogin">Log In</button>
     </div>
     <div v-else-if="loggedIn">
       <button class="logout-button" @click="logOut">Logout</button>
@@ -24,9 +24,18 @@ export default Vue.extend({
   props: {
     loggedIn: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
+  methods: {
+    toStudentLogin() {
+      this.$router.push("/login/student");
+    },
+    logOut() {
+      this.$store.dispatch("clearApiToken");
+      this.$router.push("/login/student");
+    },
+  }
 });
 </script>
 
@@ -38,11 +47,13 @@ export default Vue.extend({
   padding: 45px 5%;
   background: linear-gradient(166deg, #3a76f8, #2c8bf4, #619fcc);
 }
+
 .main-logo {
   width: 13%;
 }
 
-.login-button, .logout-button {
+.login-button, 
+.logout-button {
   background: transparent;
   border: 2px solid #f9f7f1;
   border-radius: 12px;
@@ -51,7 +62,7 @@ export default Vue.extend({
   font-weight: bold;
 
   &:hover {
-    background: white;
+    background: $white;
     color: #3a76f8;
     transition-duration: 0.5s;
     transform: translateY(-2px);
