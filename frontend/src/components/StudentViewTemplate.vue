@@ -1,7 +1,8 @@
 <template>
   <div class="viewport">
     <div class="stretchyPage">
-      <div class="navbar">
+      <Header />
+      <!-- <div class="navbar">
         <div class="leftBox">
           <div v-if="!disableBack">
             <BackButton />
@@ -11,14 +12,12 @@
         <div class="rightBox" @click="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" v-if="!notLoggedIn"/>
         </div>
-        <!--
+        
         <div>
           <input class="searchBar" type="text" placeholder="Search all jobs..."/>
         </div>
-        -->
-      </div>
-      <h1 class="tagline">Discover student jobs and internships</h1>
-      <!-- <br /> -->
+        
+      </div> -->
       <div class="content">
         <div class="contentWidth">
           <slot />
@@ -37,11 +36,13 @@ import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import BackButton from "@/components/buttons/back.vue";
 import logo from "@/assets/logos/csesocwhite.png";
+import Header from "@/components/Header.vue";
 import NewFooter from "@/components/NewFooter.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
   components: {
+    Header,
     Button,
     DarkBlueStandardButton,
     NewFooter,
@@ -84,26 +85,7 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.navbar {
-  background: $blue;
-  color: $white;
-  width: 80%;
-  margin-top: 0px;
-  margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-}
 @media screen and (min-width: 900px) {
-  .navbar {
-    width: 50%;
-    padding: 2.5rem;
-  }
-  .searchBar {
-    margin-bottom: 0;
-  }
   .content {
     padding: 2rem 0 0 0;
   }
@@ -111,15 +93,6 @@ export default Vue.extend({
     width: 70%;
     margin: auto;
   }
-}
-
-.searchBar {
-  padding: 1.25%;
-  /* border-radius: 0.2rem; */
-  text-align: center;
-  width: 95%;
-  margin: 0;
-  margin-bottom: 1.5rem;
 }
 
 .content {
@@ -144,37 +117,6 @@ export default Vue.extend({
 .navButtons {
   color: $white;
   padding: 0.5rem;
-}
-
-.rightBox {
-  color: $white;
-  margin-top: auto;
-  margin-bottom: auto;
-  flex-basis: 0;
-  flex-grow: 1;
-  font-size: 2.0rem;
-  text-align: right;
-  cursor: pointer;
-}
-
-.main-logo-student {
-  height: auto;
-  width: 10%;
-  margin-top: auto;
-  margin-bottom: auto;
-  flex-grow: 1;
-}
-
-.leftBox {
-  color: $white;
-  margin-top: auto;
-  margin-bottom: auto;
-  flex-basis: 0;
-  flex-grow: 1;
-}
-
-.tagline {
-  color: $white;
 }
 
 .footer {
