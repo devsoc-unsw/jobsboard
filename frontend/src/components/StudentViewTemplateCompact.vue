@@ -21,7 +21,9 @@
         <div class="contentWidth">
           <slot />
         </div>
-        <Footer />
+        <div class="footer">
+          <NewFooter />
+        </div>
       </div>
     </div>
   </div>
@@ -32,7 +34,7 @@ import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import logo from "@/assets/logos/csesocwhite.png";
-import Footer from "@/components/Footer.vue";
+import NewFooter from "@/components/NewFooter.vue";
 import BackButton from "@/components/buttons/back.vue";
 
 export default Vue.extend({
@@ -40,7 +42,7 @@ export default Vue.extend({
   components: {
     Button,
     DarkBlueStandardButton,
-    Footer,
+    NewFooter,
     BackButton,
   },
   props: {
@@ -91,7 +93,7 @@ export default Vue.extend({
     margin-bottom: 0;
   }
   .content {
-    padding: 2rem;
+    padding: 2rem 0 0 0;
   }
   .contentWidth {
     width: 70%;
@@ -147,6 +149,11 @@ export default Vue.extend({
   &:hover {
     cursor: pointer;
   }
+}
+
+.footer {
+  margin-top: 40px;
+  float: below;
 }
 
 .leftBoxCompact {
