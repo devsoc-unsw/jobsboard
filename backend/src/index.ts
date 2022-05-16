@@ -417,6 +417,36 @@ app.post(
   Middleware.genericLoggingMiddleware
 );
 
+
+/**
+*  @swagger
+*  /company/password-reset-token/{username}:
+*    get:
+*      description: Retrieve the token that a company is using to reset its password
+*
+*    responses:
+*      200:
+*        description: success
+*        content:
+*          application/json:
+*            schema:
+*              type: array
+*              items:
+*                token:
+*                  type: string
+*                  description: API token
+*      400:
+*        description: failed to find company account
+*/
+
+
+app.get(
+  "/company/password-reset-token/:username",
+  cors(corsOptions),
+  CompanyFunctions.GetPasswordResetToken,
+  Middleware.genericLoggingMiddleware
+)
+
 /**
  *  @swagger
  *  /company/password-reset/:

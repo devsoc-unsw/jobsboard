@@ -7,6 +7,12 @@ const config = require("./config");
 
 const server = supertest.agent(config.apiUrl);
 
+const getFutureDateValue = () => {
+  const futureExpiryDate = new Date();
+  futureExpiryDate.setDate(futureExpiryDate.getDate() + 10);
+  return futureExpiryDate.valueOf();
+};
+
 describe("admin", () => {
   describe("accessing while unauthenticated", () => {
     before( async function() {
@@ -27,7 +33,7 @@ describe("admin", () => {
         role: "sample role title",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
-        expiry: (new Date(2022, 01, 01)).valueOf(),
+        expiry: getFutureDateValue(),
       })
       .then(response => response.body.id);
 
@@ -157,7 +163,7 @@ describe("admin", () => {
         role: "some sample role title",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
-        expiry: (new Date(2022, 01, 01)).valueOf(),
+        expiry: getFutureDateValue(),
       })
       .expect(403)
       .then(response => response.body.id);
@@ -170,7 +176,7 @@ describe("admin", () => {
         role: "some sample role title that's rejectable",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
-        expiry: (new Date(2022, 01, 01)).valueOf(),
+        expiry: getFutureDateValue(),
       })
       .expect(403)
       .then(response => response.body.id);
@@ -430,7 +436,7 @@ describe("admin", () => {
         role: "some sample role title random random",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
-        expiry: (new Date(2022, 01, 01)).valueOf(),
+        expiry: getFutureDateValue(),
       })
       .expect(200)
       .then(response => response.body.id);
@@ -443,7 +449,7 @@ describe("admin", () => {
         role: "some sample role title that's rejectable one two three",
         description: "sample role description",
         applicationLink: "http://sample.application.link",
-        expiry: (new Date(2022, 01, 01)).valueOf(),
+        expiry: getFutureDateValue(),
       })
       .expect(200)
       .then(response => response.body.id);
@@ -724,7 +730,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: (new Date(2022, 01, 01)).valueOf(),
+          expiry: getFutureDateValue(),
         })
         .expect(200)
         .end( function(_, res) {
@@ -744,7 +750,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: (new Date(2022, 01, 01)).valueOf(),
+          expiry: getFutureDateValue(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -764,7 +770,7 @@ describe("admin", () => {
           // role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: (new Date(2022, 01, 01)).valueOf(),
+          expiry: getFutureDateValue(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -784,7 +790,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           // description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: (new Date(2022, 01, 01)).valueOf(),
+          expiry: getFutureDateValue(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -804,7 +810,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           // applicationLink: "https://some.application.link",
-          expiry: (new Date(2022, 01, 01)).valueOf(),
+          expiry: getFutureDateValue(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -824,7 +830,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          // expiry: (new Date(2022, 01, 01)).valueOf(),
+          // expiry: getFutureDateValue(),
         })
         .expect(400)
         .end( function(_, res) {
@@ -864,7 +870,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: (new Date(2022, 01, 01)).valueOf(),
+          expiry: getFutureDateValue(),
         })
         .expect(401)
         .end( function(_, res) {
@@ -884,7 +890,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: (new Date(2022, 01, 01)).valueOf(),
+          expiry: getFutureDateValue(),
         })
         .expect(401)
         .end( function(_, res) {
