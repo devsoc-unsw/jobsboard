@@ -67,8 +67,10 @@ export default class StudentFunctions {
         .where("job.approved = :approved", { approved: true })
         .andWhere("job.hidden = :hidden", { hidden: false })
         .andWhere("job.deleted = :deleted", { deleted: false })
+        .andWhere("job.expiry > :expiry", { expiry: new Date() })
         .take(paginatedJobLimit)
         .skip(offset)
+        .orderBy("job.expiry", "ASC")
         .getMany();
 
       const fixedJobs = jobs.map((job: Job) => { 
