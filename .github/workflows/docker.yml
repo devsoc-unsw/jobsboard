@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - "main"
-  pull_request:
-    branches:
-      - "main"
+      - "renovate/*"
 
 jobs:
   build:
@@ -49,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     concurrency: production
-    if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ github.event_name != 'pull_request' && github.refs == 'refs/heads/main' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -57,7 +55,7 @@ jobs:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
       - name: Install yq - portable yaml processor
-        uses: mikefarah/yq@v4.24.2
+        uses: mikefarah/yq@v4.24.5
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

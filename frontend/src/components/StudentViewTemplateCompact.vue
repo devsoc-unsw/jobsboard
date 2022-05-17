@@ -1,7 +1,8 @@
 <template>
   <div class="viewport">
     <div class="stretchyPage">
-      <div class="navbarCompact">
+      <Header />
+      <!-- <div class="navbarCompact">
         <div class="leftBoxCompact">
           <div v-if="!disableBack">
             <BackButton />
@@ -11,12 +12,12 @@
         <div class="rightBoxCompact" @click="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
         </div>
-        <!--
+
         <div>
           <input class="searchBar" type="text" placeholder="Search all jobs..."/>
         </div>
-        -->
-      </div>
+
+      </div> -->
       <div class="content">
         <div class="contentWidth">
           <slot />
@@ -35,11 +36,13 @@ import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import logo from "@/assets/logos/csesocwhite.png";
 import NewFooter from "@/components/NewFooter.vue";
+import Header from "@/components/Header.vue";
 import BackButton from "@/components/buttons/back.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplateCompact",
   components: {
+    Header,
     Button,
     DarkBlueStandardButton,
     NewFooter,
