@@ -132,6 +132,19 @@ and (max-width: 768.98px) {
   }
 }
 
+.footer {
+  margin-top: 40px;
+  float: below;
+}
+
+@media screen
+and (min-width: 320px) 
+and (max-width: 768.98px) {
+  .footer {
+    margin-top: 100px;
+  }
+}
+
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
