@@ -1,12 +1,33 @@
-// TODO: include in /entity/job.ts or extract as is?
+export enum JobMode {
+  Onsite = "onsite",
+  Hybrid = "hybrid",
+  Remote = "remote"
+};
 
-export type JobMode = "onsite" | "hybrid" | "remote";
+export enum StudentDemographic {
+  Penultimate = "penultimate",
+  FinalYear = "final_year",
+  All = "all",
+};
 
-export type StudentDemographic = "penultimate" | "final_year" | "all";
+export enum JobType {
+  Intern = "intern",
+  Grad = "grad"
+}
 
-export type JobType = "intern" | "grad";
+export enum WorkingRights {
+  AusCtz = "aus_ctz",
+  AusPermRes =  "aus_perm_res",
+  AusStudVisa =  "aus_stud_visa", 
+  AusTempGradVisa = "aus_temp_grad_visa",
+  NzCtzPermRes = "nz_ctz_and_perm_res",
+  NoWr = "no_wr",
+  All = "all",
+};
 
-// TODO: to be determined by 'careers'
-export type WorkingRights = "aus_ctz" | "aus_perm_res" | "aus_stud_visa" | "aus_temp_grad_visa" | "nz_ctz_and_perm_res" | "no_wr" | "all";
-
-export type WamRequirements = "HD" | "D" | "C" | "none";
+export enum WamRequirements {
+  HD = "HD",
+  D = "D",
+  C = "C",
+  None = "none"
+};

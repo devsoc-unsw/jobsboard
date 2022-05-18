@@ -1,5 +1,6 @@
 import Logger from "./logging";
 import { Response, NextFunction } from "express";
+import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from "./types/job-field";
 
 interface IResponseWithStatus {
   msg: any;
@@ -83,7 +84,7 @@ export default class Helpers {
 
   public static isValidJobMode(value: any): void {
     this.requireParameters(value);
-    if (value !== "onsite" && value !== "hybrid" && value !== "remote") {
+    if (!(Object.values(JobMode).includes(value))) {
       throw new Error(`Invalid JobMode=${value} provided.`);
     }
   }
@@ -94,7 +95,7 @@ export default class Helpers {
       throw new Error(`studentDemographic=${studentDemographic} is not an array.`)
     }
     studentDemographic.forEach(value => {
-      if (value !== "penultimate" && value !== "final_year" && value !== "all") {
+      if (!(Object.values(StudentDemographic).includes(value))) {
         throw new Error(`Invalid StudentDemogaphic=${value} provided.`);
       }
     })
@@ -102,7 +103,7 @@ export default class Helpers {
 
   public static isValidJobType(value: any): void {
     this.requireParameters(value);
-    if (value !== "intern" && value !== "grad") {
+    if (!(Object.values(JobType).includes(value))) {
       throw new Error(`Invalid JobType=${value} provided.`);
     }
   }
@@ -113,14 +114,7 @@ export default class Helpers {
       throw new Error(`workingRights=${workingRights} is not an array.`)
     }
     workingRights.forEach(value => {
-      if (
-        value !== "aus_ctz" &&
-        value !== "aus_perm_res" &&
-        value !== "aus_stud_visa" &&
-        value !== "aus_temp_grad_visa" &&
-        value !== "nz_ctz_and_perm_res" &&
-        value !== "no_wr" &&
-        value !== "all") {
+      if (!(Object.values(WorkingRights).includes(value))) {
         throw new Error(`Invalid WorkingRights=${value} provided.`);
       }
     })
@@ -128,7 +122,7 @@ export default class Helpers {
 
   public static isValidWamRequirement(value: any): void {
     this.requireParameters(value);
-    if (value !== "HD" && value !== "D" && value !== "C" && value !== "none") {
+    if (!(Object.values(WamRequirements).includes(value))) {
       throw new Error(`Invalid WamRequirements=${value} provided.`);
     }
   }

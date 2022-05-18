@@ -12,40 +12,36 @@ export class Job {
 
   @Column({
     type: "enum",
-    enum: ["onsite", "hybrid", "remote"]
+    enum: JobMode,
+    default: JobMode.Onsite
   })
   public mode: JobMode;
 
   @Column({
     type: "set",
-    enum: ["penultimate", "final_year", "all"],
-    default: ["all"]
+    enum: StudentDemographic,
+    default: [StudentDemographic.All]
   })
   public studentDemographic: StudentDemographic[];
 
   @Column({
-    type: "enum",
-    enum: ["intern", "grad"]
+  type: "enum",
+    enum: JobType,
+    default: JobType.Intern
   })
   public jobType: JobType;
 
   @Column({
     type: "set",
-    enum: [
-      "aus_ctz",
-      "aus_perm_res",
-      "aus_stud_visa",
-      "aus_temp_grad_visa",
-      "nz_ctz_and_perm_res",
-      "no_wr",
-      "all"
-    ]
+    enum: WorkingRights,
+    default: [WorkingRights.AusCtz, WorkingRights.AusPermRes] 
   })
   public workingRights: WorkingRights[];
 
   @Column({
     type: "enum",
-    enum: ["HD", "D", "C", "none"]
+    enum: WamRequirements,
+    default: WamRequirements.None
   })
   public wamRequirements: WamRequirements;
 

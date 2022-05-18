@@ -13,6 +13,7 @@ import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import Secrets from "./secrets";
+import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from "./types/job-field";
 
 export async function seedDB(activeEntities: any[]) {
   Logger.Info("SEEDING DATABASE");
@@ -46,11 +47,11 @@ export async function seedDB(activeEntities: any[]) {
   job1.approved = true;
   job1.hidden = false;
   job1.company = company;
-  job1.mode = "remote";
-  job1.studentDemographic = ["all"];
-  job1.jobType = "intern";
-  job1.workingRights = ["aus_ctz", "aus_perm_res"];
-  job1.wamRequirements = "HD";
+  job1.mode = JobMode.Remote;
+  job1.studentDemographic = [StudentDemographic.All];
+  job1.jobType = JobType.Intern;
+  job1.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes];
+  job1.wamRequirements = WamRequirements.HD;
   job1.additionalInfo = "";
   job1.isPaid = true;
 
@@ -62,11 +63,11 @@ export async function seedDB(activeEntities: any[]) {
   job2.approved = true;
   job2.hidden = false;
   job2.company = company;
-  job2.mode = "remote";
-  job2.studentDemographic = ["all"];
-  job2.jobType = "intern";
-  job2.workingRights = ["aus_ctz", "aus_perm_res"];
-  job2.wamRequirements = "C";
+  job2.mode = JobMode.Remote;
+  job2.studentDemographic = [StudentDemographic.All];
+  job2.jobType = JobType.Intern;
+  job2.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes];
+  job2.wamRequirements = WamRequirements.C;
   job2.additionalInfo = "";
   job2.isPaid = true;
 
@@ -77,14 +78,13 @@ export async function seedDB(activeEntities: any[]) {
   job3.applicationLink = "https://sampleapplication.net";
   job3.approved = true;
   job3.company = company;
-  job3.mode = "hybrid";
-  job3.studentDemographic = ["final_year", "penultimate"];
-  job3.jobType = "grad";
-  job3.workingRights = ["all"];
-  job3.wamRequirements = "none";
+  job3.mode = JobMode.Hybrid;
+  job3.studentDemographic = [StudentDemographic.FinalYear, StudentDemographic.Penultimate];
+  job3.jobType = JobType.Grad;
+  job3.workingRights = [WorkingRights.All];
+  job3.wamRequirements = WamRequirements.None;
   job3.additionalInfo = "";
   job3.isPaid = true;
-
 
   const job4 = new Job();
   job4.role = "Computer Scientist";
@@ -92,11 +92,11 @@ export async function seedDB(activeEntities: any[]) {
   job4.applicationLink = "https://sampleapplicationlink.net";
   job4.company = company;
   job4.approved = true;
-  job4.mode = "remote";
-  job4.studentDemographic = ["all"];
-  job4.jobType = "intern";
-  job4.workingRights = ["aus_ctz", "aus_perm_res", "aus_stud_visa"];
-  job4.wamRequirements = "HD";
+  job4.mode = JobMode.Remote;
+  job1.studentDemographic = [StudentDemographic.All];
+  job1.jobType = JobType.Intern;
+  job1.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job1.wamRequirements = WamRequirements.HD;
   job4.additionalInfo = "";
   job4.isPaid = true;
 
