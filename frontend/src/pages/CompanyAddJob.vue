@@ -1,5 +1,4 @@
 <template>
-  <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
   <div class="modalWrapper">
     <Modal 
@@ -35,7 +34,17 @@
     </Modal>
   </div>
   <div class="contentBox">
-    <h1>Add a job</h1>
+    <h1 style="margin-bottom: 0; font-weight: bold">Post a Job</h1>
+    <p style="margin: 0 0 3.125rem 0; color: #00000080">
+      Reach out to a talented pool of over 10 000 Computer Science and Engineering students
+    </p>
+    <!-- disclaimer box -->
+    <div style="border: 1px solid black; background-color: #FFFAE7; text-align: center; padding: 0.75rem">
+      Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the
+      <span style="color: #2C8BF4; cursor: pointer">Australian Fair Work Act 2009</span>
+      to determine whether the job post follows all guidelines and prioritises the safety of our members.
+    </div>
+    <!-- success/error popups -->
     <div v-if="success">
       <br/>
       <SuccessBox>
@@ -48,50 +57,129 @@
       {{ errorMsg }}
       </ErrorBox>
     </div>
-    <h2>Name of the role</h2>
+    <!-- input fields -->
+    <h2>Job Title</h2>
     <input 
       name="role"
       v-model="role"
       type="text"
-      placeholder="Role"
-      />
-    <h2>Job Description (Text only - for now!)</h2>
-    <h4>Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the <a href="https://www.fairwork.gov.au/pay/unpaid-work/student-placements">Australian Fair Work Act 2009</a> to determine whether the job post follows all guidelines and prioritises the safety of our members.</h4>
-    <textarea
+      placeholder="Job Title"
+    />
+    <h2>Job Description</h2>
+    <textarea 
       name="description"
       v-model="description"
       type="text"
-      placeholder="Job Description - Markdown headings and dot points are supported."
+      placeholder="Job Description - Markdown supported"
       rows="6"
-      />
+      style="resize: none"
+    />
     <h2>Application Link</h2>
     <input 
       name="applicationLink"
       v-model="applicationLink"
       type="text"
-      placeholder="Application Link"
-      />
-    <br />
-    <h2>Expiry Date</h2>
-    <input
-      type="date"
-      class="dateEntryBox"
-      v-model="selectedDate"
+      placeholder="www.example.com"
     />
-    <br />
-    <StandardButton>
-      <Button @callback="showJobModal">
-        Preview
-      </Button>
-    </StandardButton>
-    <GreenStandardButton>
-      <Button @callback="submitJobPost">
-        Post!
-      </Button>
-    </GreenStandardButton>
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column">
+        <h2>Application Expiry Date</h2>
+        <input 
+          name="expiryDate"
+          v-model="expiryDate"
+          type="date"
+        />
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <h2>Is this position paid?</h2>
+        <!-- TODO: insert dropdown -->
+        <input 
+          name="expiryDate"
+          v-model="expiryDate"
+          type="date"
+        />
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column">
+        <h2>Type of Role</h2>
+        <!-- TODO: insert dropdown -->
+        <input 
+          name="expiryDate"
+          v-model="expiryDate"
+          type="date"
+        />
+      </div>
+      <div style="display: flex; flex-direction: column">
+        <h2>Workplace Type</h2>
+        <!-- TODO: insert dropdown -->
+        <input 
+          name="expiryDate"
+          v-model="expiryDate"
+          type="date"
+        />
+      </div>
+    </div>
+    <h2>Applicant's Working Rights</h2>
+    <p style="margin: 0 0 3.125rem 0; color: #00000080">
+      Please check all that applies
+    </p>
+    <div>
+      <input type="checkbox" />
+      <label>Australian Citizen</label>
+      <input type="checkbox" />
+      <label>Australian Permanent Resident</label>
+      <input type="checkbox" />
+      <label>Australian Student Visa</label>
+      <input type="checkbox" />
+      <label>Australian Temporary Grad Visa</label>
+      <input type="checkbox" />
+      <label>NZ Citizen/Permanent Resident</label>
+      <input type="checkbox" />
+      <label>No Working Rights</label>
+      <input type="checkbox" />
+      <label>All</label>
+    </div>
+    <div style="display: flex; flex-direction: row">
+      <div style="display: flex, flex-direction: column">
+        <h2>Who Should Apply for this Role?</h2>
+        <p style="margin: 0 0 3.125rem 0; color: #00000080">
+          Please check all that applies
+        </p>
+        <div>
+          <input type="checkbox" />
+          <label>Graduates</label>
+          <input type="checkbox" />
+          <label>Penultimate Students</label>
+          <input type="checkbox" />
+          <label>All Students</label>
+        </div>
+      </div>
+      <div style="display: flex, flex-direction: column">
+        <h2>Applicant's WAM</h2>
+        <div>
+          <input type="checkbox" />
+          <label>High Distinction | 85 and above</label>
+          <input type="checkbox" />
+          <label>Distinction | 75 and above</label>
+          <input type="checkbox" />
+          <label>Credit | 65 and above</label>
+          <input type="checkbox" />
+          <label>No preference</label>
+        </div>
+      </div>
+    </div>
+    <h2>Additional Information</h2>
+    <textarea 
+      name="additionalInfo"
+      v-model="additionalInfo"
+      type="text"
+      placeholder="Please note down any additional information that will make recommending jobs to students easier."
+      rows="6"
+      style="resize: none"
+    />
   </div>
   </StudentViewTemplate>
-  </LoggedInTemplate>
 </template>
 
 <script lang="ts">
@@ -221,6 +309,14 @@ export default Vue.extend({
 }
 input, textarea {
   font-family: 'sans-serif';
+  border: 1px solid black;
+  border-left-style: solid;
+  border-left-width: 5px;
+  border-left-color: $blue;
+  border-radius: 0.25rem;
+}
+h2 {
+  margin-bottom: 0;
 }
 @media screen and (min-width: 900px) {
   input, textarea {
