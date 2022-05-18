@@ -66,11 +66,21 @@
       rows="6"
     /> -->
 
-    <RichTextEditor v-model="description" contentType="text"> </RichTextEditor>
+    <!-- <RichTextEditor 
+      name="description"
+      ref="description"
+      contentType = "html"
+    /> -->
 
-    <h2> {{description}} </h2>
+    <quill-editor 
+      ref="quillRichTextEditor"
+      v-model:content="description"
+      :value="description"
+      :options="editorOptions"
+    />
 
     <h2>Application Link</h2>
+
     <input 
       name="applicationLink"
       v-model="applicationLink"
@@ -100,9 +110,12 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
+<script setup>
+
 // libraries
 import { Component, Vue } from "vue-property-decorator";
+import 'quill/dist/quill.snow.css'
+import { quillEditor } from 'vue-quill-editor';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
@@ -133,12 +146,16 @@ export default Vue.extend({
     GreenStandardButton,
     Modal,
     JobDescriptionView,
-    RichTextEditor
+    RichTextEditor,
+    quillEditor
   },
   data() {
     return {
       role: "",
-      description: "x",
+      description: "",
+      editorOptions: {
+        placeholder: 'Enter the job description...',
+      },
       applicationLink: "",
       error: false,
       errorMsg: "",

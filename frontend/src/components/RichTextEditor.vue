@@ -1,48 +1,41 @@
+
 <template> 
     <div class="rich-text-editor">
         <quill-editor 
             ref="quillRichTextEditor"
-            @change="onEditorChange($event)"
+            v-model:content="description"
+            :value="description"
             :options="editorOptions"
-            v-model="description"
         />
-    </div> 
+        <h2> {{ description }} </h2>
+    </div>
 </template>
 
 <script> 
+
 import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor';
-import { Button, Input, Select } from 'iview';
 
 export default {
     components: {
-        quillEditor,
-        Button,
-        Input,
-        Select
+        quillEditor
     },
-    props: ['description'],
-    data: () => {
-        return { 
-            description: this.description,
+    data() {
+        return {
+            description: '',
             editorOptions: {
-                debug: 'info',
-                placeholder: 'Enter the job description...',
-                readOnly: true,
-                theme: 'snow'
-            },
-            delta: undefined
+                placeholder: 'Enter the job description...'
+            }
         }
     },
-    watch: {
-        description () {
-            this.delta = this.$refs.quillRichTextEditor.quill.getContents();
+    methods: {
+        onEditorChange({ quill, html, text }) {
+            this.description = html;
         }
     },
-    method: {
-        onEditorChange({ }) {
-            this.description = this.$refs.quillRichTextEditor.quill.getContents();
-            this.$emit('textChange', text);
+    computed: {
+        editor() {
+            return this.$refs.quillRichTextEditor.quill;
         }
     }
 }
