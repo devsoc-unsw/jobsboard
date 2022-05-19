@@ -26,21 +26,11 @@ export async function seedDB(activeEntities: any[]) {
   const companyAccount = new CompanyAccount();
   companyAccount.username = "test";
   companyAccount.hash = Secrets.hash("test");
+  companyAccount.verified = true;
   const company = new Company();
   company.name = "Test company";
   company.location = "Sydney";
   companyAccount.company = company;
-
-  // create a company account used for password reset
-  const companyAccount2 = new CompanyAccount();
-  companyAccount2.username = "test2";
-  companyAccount2.hash = Secrets.hash("test2");
-  const company2 = new Company();
-  company2.name = "Test company 2";
-  company2.location = "Hong Kong";
-  companyAccount2.company = company2;
-
-  await AppDataSource.manager.save(companyAccount2);
   
   // every job except job1 and job 2 have not expired yet
   const job1 = new Job();
@@ -104,5 +94,16 @@ export async function seedDB(activeEntities: any[]) {
 
   await AppDataSource.manager.save(companyAccount);
   
+  // create a company account used for password reset
+  const companyAccount2 = new CompanyAccount();
+  companyAccount2.username = "test2";
+  companyAccount2.hash = Secrets.hash("test2");
+  const company2 = new Company();
+  company2.name = "Test company 2";
+  company2.location = "Hong Kong";
+  companyAccount2.company = company2;
+
+  await AppDataSource.manager.save(companyAccount2);
+
   Logger.Info("FINISHED SEEDING");
 }

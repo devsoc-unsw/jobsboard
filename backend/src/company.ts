@@ -180,12 +180,14 @@ export default class CompanyFunctions {
       newJob.applicationLink = msg.applicationLink;
       newJob.expiry = new Date(msg.expiry);
 
+      // get the company and the list of its jobs
       let companyAccount: CompanyAccount = undefined;
       try {
         companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
           return await AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder()
             .leftJoinAndSelect("CompanyAccount.company", "company")
+            .leftJoinAndSelect("company.jobs", "job")
             .where("CompanyAccount.id = :id", { id: req.companyAccountID })
             .andWhere("CompanyAccount.verified = :verified", { verified: true })
             .getOne();
@@ -199,24 +201,14 @@ export default class CompanyFunctions {
           }
         } as IResponseWithStatus;
       }
-
-      companyAccount.company.jobs = await Helpers.doSuccessfullyOrFail(async () => {
-        return await AppDataSource
-          .createQueryBuilder()
-          .relation(Company, "jobs")
-          .of(companyAccount.company)
-          .loadMany();
-      }, `Failed to find jobs for COMPANY_ACCOUNT=${req.companyAccountID}`);
-
+      // add the new job to the list and commit to db
       companyAccount.company.jobs.push(newJob);
-
       await AppDataSource.manager.save(companyAccount);
 
+      // get the supposed id for the new job and check if it's queryable from the db
       const newJobID: number = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
       Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
-
-      // check to see if that job is queryable
-      const newJobQueryVerification = await Helpers.doSuccessfullyOrFail(async () => {
+      await Helpers.doSuccessfullyOrFail(async () => {
         return await AppDataSource.getRepository(Job)
           .createQueryBuilder()
           .where("Job.id = :id", { id: newJobID })
