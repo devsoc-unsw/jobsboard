@@ -4,6 +4,9 @@ import {
   getConnection,
   getRepository,
 } from "typeorm";
+
+import { AppDataSource } from "./index";
+
 import { Client } from "ldapts";
 import { AdminAccount } from "./entity/admin_account";
 import { CompanyAccount } from "./entity/company_account";
@@ -51,7 +54,7 @@ export default class Auth {
         const token: JWT = JWT.create(rawToken);
 
         // find whether the student has logged on here before
-        const studentQuery = await getRepository(Student)
+        const studentQuery = await AppDataSource.getRepository(Student)
           .createQueryBuilder()
           .where("Student.zID = :zID", { zID: msg.zID })
           .getOne();
@@ -61,10 +64,10 @@ export default class Auth {
           const student: Student = new Student()
           student.zID = msg.zID;
           student.latestValidToken = token as string;
-          await getConnection().manager.save(student);
+          await AppDataSource.manager.save(student);
           Logger.Info(`Created student record for STUDENT=${msg.zID}`);
         } else {
-          await getConnection().createQueryBuilder()
+          await AppDataSource.createQueryBuilder()
             .update(Student)
             .set({ latestValidToken: token as string})
             .where("id = :id", { id: studentQuery.id })
@@ -94,7 +97,7 @@ export default class Auth {
       Helpers.requireParameters(msg.password);
       // check if account exists
       const companyQuery = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(CompanyAccount)
+        return await AppDataSource.getRepository(CompanyAccount)
         .createQueryBuilder()
         .where("CompanyAccount.username = :username", { username: msg.username })
         .getOne();
@@ -112,7 +115,7 @@ export default class Auth {
           ipAddress: req.ip,
         };
         const token: JWT = JWT.create(rawToken);
-        await getConnection().createQueryBuilder()
+        await AppDataSource.createQueryBuilder()
           .update(CompanyAccount)
           .set({ latestValidToken: token as string})
           .where("id = :id", { id: companyQuery.id })
@@ -140,7 +143,7 @@ export default class Auth {
       Helpers.requireParameters(msg.password);
       // check if account exists
       const adminQuery = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(AdminAccount)
+        return await AppDataSource.getRepository(AdminAccount)
         .createQueryBuilder()
         .where("AdminAccount.username = :username", { username: msg.username })
         .getOne();
@@ -159,7 +162,7 @@ export default class Auth {
           ipAddress: req.ip,
         };
         const token: JWT = JWT.create(rawToken);
-        await getConnection().createQueryBuilder()
+        await AppDataSource.createQueryBuilder()
           .update(AdminAccount)
           .set({ latestValidToken: token as string})
           .where("id = :id", { id: adminQuery.id })
