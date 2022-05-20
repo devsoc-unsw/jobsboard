@@ -24,10 +24,16 @@ export default {
   min-height: 100%;
 }
 
-html, body {
+body {
+  background: #F6F9FC;
   margin: 0;
   height: 100%;
-  background: $blue;
+}
+
+html {
+  height: 100%;
+  overflow: overlay;
+  /* background: $blue; */
   a {
     text-decoration: none;
   }
@@ -39,7 +45,7 @@ html, body {
   h2 {
     font-weight: 100;
   }
-  overflow-y: overlay;
+  /* overflow-y: overlay; */
 }
 
 .viewport {
