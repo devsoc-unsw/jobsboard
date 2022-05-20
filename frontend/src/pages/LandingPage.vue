@@ -26,68 +26,52 @@
       </div>
       <div class="landing-content">
         <h3 class="landing-header">Our Sponsors</h3>
-
-        <div class="carousel">
-          <div class="carousel-bar-left"></div>
-          <div class="carousel-content">
-            <div class="sponsor-container carousel-animation-first">
-              <div class="sponsor">
-                <img
-                  class="sponsor-logo"
-                  :src="GoogleLogo"
-                  loading="lazy"
-                  alt="sponsor logo"
-                />
-              </div>
-              <div class="sponsor">
-                <img
-                  class="sponsor-logo"
-                  :src="AmazonLogo"
-                  loading="lazy"
-                  alt="sponsor logo"
-                />
-              </div>
-              <div class="sponsor">
-                <img
-                  class="sponsor-logo"
-                  :src="MicrosoftLogo"
-                  loading="lazy"
-                  alt="sponsor logo"
-                />
-              </div>
-            </div>
-            <div class="sponsor-container carousel-animation-second">
-              <div class="sponsor">
-                <img
-                  class="sponsor-logo"
-                  :src="GoogleLogo"
-                  loading="lazy"
-                  alt="sponsor logo"
-                />
-              </div>
-              <div class="sponsor">
-                <img
-                  class="sponsor-logo"
-                  :src="AmazonLogo"
-                  loading="lazy"
-                  alt="sponsor logo"
-                />
-              </div>
-              <div class="sponsor">
-                <img
-                  class="sponsor-logo"
-                  :src="MicrosoftLogo"
-                  loading="lazy"
-                  alt="sponsor logo"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="carousel-bar-right"></div>
+        <p class="landing-description">
+          We aim to give you a pleasant student working experience by partnering up with only the best.
+        </p>
+        <SponsorCarousel />
+        <h3 class="landing-header">Discover Featured Student Jobs and Internships</h3>
+        <p class="landing-description">
+          Spent hours trying to find something that suited you? Look no further, we've got you covered with some amazing opportunities.
+        </p>
+        <div class="featured-jobs">
+          <FeaturedJobCard 
+            jobTitle="STEP Intern, 2022 Summer"
+            jobDescription="The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship."
+            :jobTag="['AU/NZ Citizens', 'Internationals']"
+            :imagePath="GoogleLogo"
+           />
         </div>
-        <h3 class="landing-header">
-          Discover Featured Student Jobs and Internships
-        </h3>
+
+        <h3 class="landing-header">Want to Post a Job?</h3>
+        <p class="landing-description">
+          Are you a company looking to advertise with us? We'd absolutely love to hear from you.
+          In the meantime, you can also check out 
+          <span class="text-link">other companies</span> 
+          that have partnered with us.
+        </p>
+        <div class="content-button-container">
+          <button class="content-button" @click="companyRegister">Join Us</button>
+          <button class="content-button">Post a Job</button>
+        </div>
+
+        <h3 class="landing-header">Looking for More?</h3>
+        <p class="landing-description">
+          Check out the full list of open jobs 
+          <span class="text-link">here</span>.
+        </p>
+        <p class="landing-description">
+          If you're a CSE student with a keen interest in Jobs Board and looking to get involved in the project,
+          keep an eye out for our recruitment announcements on CSESoc's socials. 
+          Otherwise, you can also contribute by suggesting cool new features or
+          even make a pull request on the Jobs Board repo.
+        </p>
+        <div class="content-button-container">
+          <button class="content-button" @click="toGithubRepo">Source Code</button>
+        </div>
+        <div class="scroll-button-container">
+          <font-awesome-icon icon="chevron-circle-up" size="3x" @click="scrollToTop" class="scroll-button"/>
+        </div>
       </div>
       <NewFooter />
     </div>
@@ -102,10 +86,10 @@ import Blob from "@/assets/misc/Blob.svg";
 import CsesocLogoSmall from "@/assets/logos/CsesocLogoSmall.svg";
 import Header from "@/components/Header.vue";
 import NewFooter from "@/components/NewFooter.vue";
+import FeaturedJobCard from "@/components/FeaturedJobCard.vue";
+import SponsorCarousel from "@/components/SponsorCarousel.vue";
 
 import GoogleLogo from "@/assets/companies/googleLogo.png";
-import AmazonLogo from "@/assets/companies/amazonLogo.png";
-import MicrosoftLogo from "@/assets/companies/microsoftLogo.svg";
 
 export default Vue.extend({
   name: "StudentLoginPage",
@@ -113,18 +97,31 @@ export default Vue.extend({
     Header,
     NewFooter,
     StudentViewTemplate,
+    FeaturedJobCard,
+    SponsorCarousel
   },
   data() {
     return {
-      MicrosoftLogo: MicrosoftLogo,
       GoogleLogo: GoogleLogo,
-      AmazonLogo: AmazonLogo,
       Blob: Blob,
       Logo: CsesocLogoSmall,
     };
   },
-  async mounted() {},
-  methods: {},
+  methods: {
+    scrollToTop() {
+      window.scrollTo({ 
+        left: 0,
+        top: 0, 
+        behavior: "smooth" 
+      });
+    },
+    companyRegister() {
+      this.$router.push("/signup/company");
+    },
+    toGithubRepo() {
+      window.open("https://github.com/csesoc/jobs-board");
+    }
+  },
 });
 </script>
 
@@ -224,11 +221,69 @@ main {
 }
 
 .landing-header {
-  text-align: left;
   font-weight: bold;
   font-size: 24pt;
   line-height: 36px;
+  margin-bottom: 0;
   color: #0c3149;
+}
+
+.landing-description {
+  font-size: 14pt;
+  color: #415d6d;
+  margin: 1em 4em;
+}
+
+
+.featured-jobs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3em 0;
+}
+
+.scroll-button-container {
+  margin: 5rem 0 0 0;
+}
+
+.scroll-button {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.content-button-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 2em 10em 7em 10em;
+}
+
+.content-button { 
+  background: #2c8bf4;
+  border-radius: 5px;
+  width: 160px;
+  height: 45px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 12pt;
+  border: 0;
+  box-shadow: -5px 5px 10px -1px rgb(0 0 0 / 15%);
+  transition: .25s linear;
+  cursor: pointer;
+  &:hover {
+    background-color: #1f7ade;
+    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 50%);
+  }
+}
+
+.text-link {
+  color: #2c8bf4;
+  font-weight: bold;
+  transition: color 0.25s linear;
+  cursor: pointer;
+  &:hover {
+    color: #1f7ade;
+  }
 }
 
 @media screen and (min-width: 900px) and (max-width: 1120px) {
@@ -316,103 +371,5 @@ main {
     width: 255vw;
     height: 85vh;
   }
-}
-
-// ticker tape carousel
-@keyframes carousel-right-container {
-  0% {
-    transform: translate3d(0, 0, 0);
-    visibility: visible;
-  }
-
-  100% {
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-@keyframes carousel-left-container {
-  0% {
-    transform: translate3d(0, 0, 0);
-    visibility: visible;
-  }
-
-  100% {
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-.carousel-animation-second {
-  animation-name: carousel-right-container;
-  left: 100%;
-}
-
-.carousel-animation-first {
-  animation-name: carousel-left-container;
-}
-
-.sponsor-container {
-  display: flex;
-  align-items: center;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  animation-duration: 20s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-.sponsor {
-  flex: 1 1 200px;
-  min-width: 0;
-  margin: 20px;
-}
-
-.carousel {
-  position: relative;
-  overflow: hidden;
-  flex: 0 0 230px;
-}
-
-.carousel-bar-left {
-  left: 0;
-  top: 0;
-  background-image: linear-gradient(
-    to right,
-    #f6f9fc 30%,
-    rgba(255, 255, 255, 0)
-  );
-  height: 100%;
-  width: 40px;
-  position: absolute;
-  z-index: 1;
-}
-
-.carousel-bar-right {
-  right: 0;
-  top: 0;
-  background-image: linear-gradient(
-    to left,
-    #f6f9fc 30%,
-    rgba(255, 255, 255, 0)
-  );
-  height: 100%;
-  width: 40px;
-  position: absolute;
-  z-index: 1;
-}
-
-.sponsor-logo {
-  user-select: none;
-  pointer-events: none;
-  object-fit: contain;
-  width: 100%;
-}
-
-.carousel-content {
-  position: relative;
-  width: 1200px;
-  height: 100px;
-  margin: 40px 0;
-  flex: 0 0 auto;
 }
 </style>

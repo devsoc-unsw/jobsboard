@@ -8,6 +8,7 @@ import {
   faSignOutAlt,
   faSuitcase,
   faHeart,
+  faChevronCircleUp,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -25,6 +26,7 @@ library.add(faSuitcase as IconDefinition);
 library.add(faHeart as IconDefinition);
 library.add(faGithub as IconDefinition);
 library.add(faLinkedin as IconDefinition);
+library.add(faChevronCircleUp as IconDefinition);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
