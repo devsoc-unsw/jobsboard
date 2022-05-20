@@ -83,6 +83,8 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 #footer-container {
+  bottom: 0;
+  left: 0;
   display: flex;
   justify-content: space-between;
   padding: 30px 50px 30px 30px;
