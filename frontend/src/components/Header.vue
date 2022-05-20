@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import logo from "@/assets/logos/csesocwhite.png";
-import moon from "@/assets/moon.svg";
+import moon from "@/assets/misc/moon.svg";
 
 export default Vue.extend({
   name: "Header",
