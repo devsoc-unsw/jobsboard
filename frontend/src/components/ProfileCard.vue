@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <h1>HI</h1>
+    <h2>Name</h2>
   </div>
 </template>
 
@@ -18,6 +18,6 @@ export default Vue.extend({
 .view {
   width: 30%;
   height: 100%;
-  background-color    : black;
+  background-color    : grey;
 }
 </style>

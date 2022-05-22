@@ -4,6 +4,13 @@
       Interested about the people behind <br />
       Jobs Board?
     </h1>
+    <h4>
+      Hi there! We're the jobsboard team and we want <br />
+      to help you find your dream student job!
+    </h4>
+    
+    <div class="lineSeparator" />
+
     <ProfileCardVue />
     <p>HELLO</p>
   </GeneralPageTemplateVue>
@@ -25,5 +32,20 @@ export default Vue.extend({
 <style scoped lang="scss">
 .wrapper{
   background-color: white;
+}
+h1 { 
+  font-weight: bolder;
+  text-shadow: 1px 1px #B0B0B0;
+}
+.lineSeparator {
+  width: 400px;
+  height: 4px;
+  background-color: #E3E3E3;
+  margin: auto;
+  margin-top: 5%;
+}
+h4 {
+  color: #415D6D;
+  font-weight: bold;
 }
 </style>
