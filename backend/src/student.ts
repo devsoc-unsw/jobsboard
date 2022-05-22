@@ -3,9 +3,7 @@ import {
   Response, 
   NextFunction 
 } from "express";
-import {
-  getRepository
-} from "typeorm";
+import { AppDataSource } from "./index";
 import { Job } from "./entity/job";
 import Helpers, { IResponseWithStatus } from "./helpers";
 import Logger from "./logging";
@@ -59,7 +57,7 @@ export default class StudentFunctions {
       Logger.Info(`STUDENT=${req.studentZID} getting paginated jobs with OFFSET=${offset}`);
       Helpers.requireParameters(offset);
 
-      const jobs = await getRepository(Job)
+      const jobs = await AppDataSource.getRepository(Job)
         .createQueryBuilder("job")
         // TODO(ad-t): not the most gracefull or efficient way to go about this, however
         // I'm not sure whether it's possible to partial select on a join
@@ -108,7 +106,7 @@ export default class StudentFunctions {
       Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
       Helpers.requireParameters(req.params.jobID);
       const jobInfo = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Job)
+        return await AppDataSource.getRepository(Job)
           .createQueryBuilder()
           .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .leftJoinAndSelect("Job.company", "company")
