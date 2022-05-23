@@ -1,9 +1,9 @@
 <template>
   <GeneralPageTemplateVue>
-    <h1>
+    <h2>
       Interested about the people behind <br />
       Jobs Board?
-    </h1>
+    </h2>
     <h4>
       Hi there! We're the jobsboard team and we want <br />
       to help you find your dream student job!
@@ -11,7 +11,7 @@
     
     <div class="lineSeparator" />
 
-    <ProfileCardVue />
+    <ProfileCardVue name="Sam" />
     <p>HELLO</p>
   </GeneralPageTemplateVue>
 </template>
@@ -25,7 +25,7 @@ export default Vue.extend({
   components: {
     ProfileCardVue,
     GeneralPageTemplateVue,
-  },
+  }
 });
 </script>
 
@@ -33,7 +33,7 @@ export default Vue.extend({
 .wrapper{
   background-color: white;
 }
-h1 { 
+h2 { 
   font-weight: bolder;
   text-shadow: 1px 1px #B0B0B0;
 }
@@ -46,6 +46,6 @@ h1 {
 }
 h4 {
   color: #415D6D;
-  font-weight: bold;
+  font-weight: 600;
 }
 </style>

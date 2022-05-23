@@ -1,6 +1,7 @@
 <template>
   <div class="view">
-    <h2>Name</h2>
+    <h2>{{ name }}</h2>
+    <font-awesome-icon icon="square" />
   </div>
 </template>
 
@@ -8,16 +9,17 @@
 import { Vue } from "vue-property-decorator";
 export default Vue.extend({
   name: "ProfileCard",
-  components: {
-  
+  props: {
+    name: String,
+
   }
 });
 </script>
 
 <style scoped lang="scss">
 .view {
-  width: 30%;
-  height: 100%;
-  background-color    : grey;
+  width: 35%;
+  height: 200px;
+  margin: auto;
 }
 </style>
