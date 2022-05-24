@@ -11,8 +11,7 @@
     
     <div class="lineSeparator" />
 
-    <ProfileCardVue name="Sam" />
-    <p>HELLO</p>
+    <ProfileCardVue name="Adam Tizzone" title="Founder & Project Lead (2018 - 2021)" involvement="UI Design . Frontend . Backend " funFact="Some fun fact about themselves, consectetur adipiscing elit. At eleifend in nulla elit leo. Morbi interdum in tincidunt tempor pellentesque nunc vitae. In arcu nunc, a magna. Faucibus maecenas viverra aliquet eu euismod tortor vehicula tempor elit."/>
   </GeneralPageTemplateVue>
 </template>
 
@@ -27,6 +26,7 @@ export default Vue.extend({
     GeneralPageTemplateVue,
   }
 });
+
 </script>
 
 <style scoped lang="scss">
@@ -36,16 +36,19 @@ export default Vue.extend({
 h2 { 
   font-weight: bolder;
   text-shadow: 1px 1px #B0B0B0;
+  font-family: 'Poppins';
+  font-size: 30px;
 }
 .lineSeparator {
   width: 400px;
   height: 4px;
   background-color: #E3E3E3;
   margin: auto;
-  margin-top: 5%;
+  margin-top: 3%;
 }
 h4 {
   color: #415D6D;
   font-weight: 600;
+  font-family: 'Poppins';
 }
 </style>
