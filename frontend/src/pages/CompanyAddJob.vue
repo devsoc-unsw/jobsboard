@@ -66,12 +66,6 @@
       rows="6"
     /> -->
 
-    <!-- <RichTextEditor 
-      name="description"
-      ref="description"
-      contentType = "html"
-    /> -->
-
     <quill-editor 
       ref="quillRichTextEditor"
       v-model:content="description"
@@ -155,6 +149,13 @@ export default Vue.extend({
       description: "",
       editorOptions: {
         placeholder: 'Enter the job description...',
+        modules: {
+          toolbar: [
+            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
+          ]
+        }
       },
       applicationLink: "",
       error: false,

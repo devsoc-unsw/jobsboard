@@ -2,10 +2,7 @@ import JWT from "./jwt";
 import Logger from "./logging";
 
 import { NextFunction, Request, Response } from "express";
-import {
-  getConnection,
-  getRepository
-} from "typeorm";
+import { AppDataSource } from "./index";
 
 import Helpers from "./helpers";
 
@@ -53,7 +50,7 @@ export default class Middleware {
       Middleware.verifyAccountType(jwt.type, AccountType.Student);
       // verify that this token is the latest valid token for this account
       const studentQuery = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Student)
+        return await AppDataSource.getRepository(Student)
         .createQueryBuilder()
         .where("Student.zID = :zID", { zID: jwt.id })
         .getOne();
@@ -145,7 +142,7 @@ export default class Middleware {
       Middleware.verifyAccountType(jwt.type, AccountType.Company);
       // verify that this token is the latest valid token for this account
       const companyQuery = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(CompanyAccount)
+        return await AppDataSource.getRepository(CompanyAccount)
         .createQueryBuilder()
         .where("CompanyAccount.id = :id", { id: jwt.id })
         .getOne();
