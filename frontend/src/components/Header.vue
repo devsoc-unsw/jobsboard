@@ -101,14 +101,14 @@ export default Vue.extend({
   color: #f9f7f1;
   padding: 5px 15px;
   font-weight: bold;
+  cursor: pointer;
+  transition-duration: 0.5s;
 
   &:hover {
     background: $white;
     color: #3a76f8;
-    transition-duration: 0.5s;
     transform: translateY(-2px);
     box-shadow: -5px 5px 10px -1px rgb(0 0 0 / 15%);
-    cursor: pointer;
   }
 
   @media screen and (max-width: 599px) {
