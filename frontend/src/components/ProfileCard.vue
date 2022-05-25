@@ -2,7 +2,7 @@
   <div class="view">
     <div class="left_view">
       <div>
-        <font-awesome-icon :icon="['fas', 'user-circle']" style="height: 8%; " />
+        <font-awesome-icon :icon="['fas', 'user-circle']" style="height: 16%; " />
         <div class="icon_wrapper">
           <font-awesome-icon :icon="['fab', 'linkedin']" class="linkedin_icon" />
           <font-awesome-icon :icon="['fab', 'github']" class="github_icon" />
@@ -10,10 +10,10 @@
       </div>
     </div>
     <div class="right_view">
-      <div class="nameDescrip">{{ name }}</div>
-      <div class="titleDescrip">{{ title }}</div>
-      <p class="generalDecrip">{{ involvement }}</p>
-      <p class="generalDecrip">{{funFact}}</p>
+      <div class="nameDescrip">{{ member["name"] }}</div>
+      <div class="titleDescrip">{{ member["title"] }}</div>
+      <p class="generalDecrip">{{ member["involvement"] }}</p>
+      <p class="generalDecrip">{{ member["funFact"] }}</p>
     </div>
   </div>
 </template>
@@ -23,10 +23,12 @@ import { Vue } from "vue-property-decorator";
 export default Vue.extend({
   name: "ProfileCard",
   props: {
-    name: String,
-    title: String,
-    involvement: String,
-    funFact: String, 
+    member: {
+      name: String,
+      title: String,
+      involvement: String,
+      funFact: String, 
+    }
   }
 });
 </script>
@@ -34,15 +36,14 @@ export default Vue.extend({
 <style scoped lang="scss">
 .view{
   display: flex;
-  align-items: center;
 }
 .right_view {
-  width: 30%;
+  width: 80%;
   height: 280px;
   text-align: left;
 }
 .left_view {
-  width: 14%;
+  width: 30%;
   height: 280px;
 }
 .linkedin_icon {

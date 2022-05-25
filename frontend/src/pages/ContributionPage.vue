@@ -10,8 +10,13 @@
     </h4>
     
     <div class="lineSeparator" />
-
-    <ProfileCardVue name="Adam Tizzone" title="Founder & Project Lead (2018 - 2021)" involvement="UI Design . Frontend . Backend " funFact="Some fun fact about themselves, consectetur adipiscing elit. At eleifend in nulla elit leo. Morbi interdum in tincidunt tempor pellentesque nunc vitae. In arcu nunc, a magna. Faucibus maecenas viverra aliquet eu euismod tortor vehicula tempor elit."/>
+    // Create two divs and place them next to each other.
+    <div class="wrapperView">
+      <ProfileCardVue v-for="member in members" :member="member" :key="members.name" />
+    </div>
+    <div class="wrapperView">
+      <ProfileCardVue v-for="member in members" :member="member" :key="members.name" />
+    </div>
   </GeneralPageTemplateVue>
 </template>
 
@@ -24,7 +29,25 @@ export default Vue.extend({
   components: {
     ProfileCardVue,
     GeneralPageTemplateVue,
-  }
+  },
+  data() {
+    return {
+      members: [
+        {
+          name: "Adam Tizzone",
+          title: "Founder & 2018-2021 Project Lead",
+          involvment: "Design & Frontend & Backend",
+          funFact: "Hello",
+        },
+        {
+          name: "Adam Tizzone",
+          title: "Founder & 2018-2021 Project Lead",
+          involvment: "Design & Frontend & Backend",
+          funFact: "Hello",
+        }
+      ]
+    }
+  },
 });
 
 </script>
@@ -50,5 +73,10 @@ h4 {
   color: #415D6D;
   font-weight: 600;
   font-family: 'Poppins';
+}
+.wrapperView {
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }
 </style>
