@@ -152,7 +152,7 @@ export default Vue.extend({
         modules: {
           toolbar: [
             [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block'],
+            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
           ]
         }
