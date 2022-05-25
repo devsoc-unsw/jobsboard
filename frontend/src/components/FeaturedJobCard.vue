@@ -123,4 +123,14 @@ button {
     background-color: #1f7ade;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .tags-container {
+    flex-direction: column;
+    margin: 0;
+  }
+  .tag {
+    margin: 0.25em 0;
+  }
+}
 </style>

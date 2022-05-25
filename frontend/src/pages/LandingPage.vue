@@ -20,7 +20,7 @@
             <button class="hero-button">Advertise</button>
           </div>
         </div>
-        <div>
+        <div class="hero-right">
           <img class="jobsboard-logo" :src="Logo" />
         </div>
       </div>
@@ -33,6 +33,10 @@
         <h3 class="landing-header">Discover Featured Student Jobs and Internships</h3>
         <p class="landing-description">
           Spent hours trying to find something that suited you? Look no further, we've got you covered with some amazing opportunities.
+        </p>
+        <p class="landing-description">
+          Check out the full list of open jobs 
+          <span class="text-link">here</span>.
         </p>
         <div class="featured-jobs">
           <FeaturedJobCard 
@@ -51,23 +55,25 @@
           that have partnered with us.
         </p>
         <div class="content-button-container">
-          <button class="content-button" @click="companyRegister">Join Us</button>
-          <button class="content-button">Post a Job</button>
+          <div>
+            <button class="content-button" @click="companyRegister">Join Us</button>
+          </div>
+          <div>
+            <button class="content-button">Post a Job</button>
+          </div>
         </div>
 
         <h3 class="landing-header">Looking for More?</h3>
         <p class="landing-description">
-          Check out the full list of open jobs 
-          <span class="text-link">here</span>.
-        </p>
-        <p class="landing-description">
-          If you're a CSE student with a keen interest in Jobs Board and looking to get involved in the project,
+          If you're a CSE student with a keen interest in Jobs Board and looking to get involved,
           keep an eye out for our recruitment announcements on CSESoc's socials. 
           Otherwise, you can also contribute by suggesting cool new features or
           even make a pull request on the Jobs Board repo.
         </p>
         <div class="content-button-container">
-          <button class="content-button" @click="toGithubRepo">Source Code</button>
+          <div>
+            <button class="content-button" @click="toGithubRepo">Source Code</button>
+          </div>
         </div>
         <div class="scroll-button-container">
           <font-awesome-icon icon="chevron-circle-up" size="3x" @click="scrollToTop" class="scroll-button"/>
@@ -120,18 +126,23 @@ export default Vue.extend({
     },
     toGithubRepo() {
       window.open("https://github.com/csesoc/jobs-board");
-    }
+    },
+
   },
 });
 </script>
 
 <style scoped lang="scss">
+main {
+  width: 100vw;
+  height: 100vh;
+}
 .header-container {
   position: relative;
-}
-.header {
-  position: absolute;
-  background: transparent;
+  .header {
+    position: absolute;
+    background: transparent;
+  }
 }
 
 .stretchyPage {
@@ -140,13 +151,9 @@ export default Vue.extend({
   min-height: 100%;
 }
 
-main {
-  width: 100vw;
-  height: 100vh;
-}
-
 .blob-container {
   position: relative;
+  overflow-x: clip;
 }
 
 #blob {
@@ -166,7 +173,7 @@ main {
 .hero-button {
   background: #264c79;
   border: 1px solid rgba(255, 255, 255, 0.37);
-  box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+  box-shadow: 0px 4px 4px rgb(0, 0, 0, 0.25);
   border-radius: 12px;
   color: white;
   font-size: 14pt;
@@ -192,14 +199,11 @@ main {
   align-items: center;
   width: calc(100vw - 55%);
   margin: 50px auto;
-  padding-top: 150px;
-}
-
-.hero-left {
+  padding: 150px 0 130px 0;
 }
 
 .hero-description {
-  color: $white;
+  color: #ffffff;
   text-align: left;
   font-size: 13pt;
 }
@@ -216,8 +220,7 @@ main {
 
 .landing-content {
   width: 60%;
-  margin: 50px auto;
-  padding-top: 150px;
+  margin: 0 auto 50px auto;
 }
 
 .landing-header {
@@ -250,12 +253,16 @@ main {
   &:hover {
     cursor: pointer;
   }
+
+  path {
+    fill: #0c3149;
+  }
 }
 
 .content-button-container {
   display: flex;
   justify-content: space-evenly;
-  margin: 2em 10em 7em 10em;
+  margin: 2em 6em 7em 6em;
 }
 
 .content-button { 
@@ -302,6 +309,44 @@ main {
   }
 }
 
+@media screen and (max-height: 800px) {
+  #blob {
+    height: 82vh;
+  }
+  @media screen and (min-width: 900px) and (max-width: 1120px) {
+    #blob {
+      height: 75vh;
+    }
+  }
+  @media screen and (min-width: 600px) and (max-width: 899px) {
+    #blob {
+      height: 65vh;
+    }
+    .content-button-container {
+      flex-direction: column;
+    }
+    .content-button {
+      margin: 0.5em;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    #blob {
+      height: 110vh;
+    }
+  }
+}
+
+@media screen and (max-height: 750px) {
+  #blob {
+    height: 100vh;
+  }
+  @media screen and (max-width: 480px) {
+    #blob {
+      height: 140vh;
+    }
+  }
+}
+
 @media screen and (min-width: 600px) and (max-width: 899px) {
   .hero {
     padding-top: 60px;
@@ -323,53 +368,68 @@ main {
 
 @media screen and(max-width: 599px) {
   .hero {
-    flex-direction: column;
     padding-top: 60px;
+
+    .hero-description {
+      font-size: 13pt;
+    }
+    .hero-title {
+      font-size: 48pt;
+    }
+    .hero-button-container {
+      flex-direction: column;
+    }
+    .hero-button {
+      margin: 10px 0;
+      font-size: 12pt;
+    }
   }
-  .hero-description {
-    font-size: 11pt;
-    text-align: center;
+
+  .landing-description {
+    margin: 1em 0;
   }
-  .hero-title {
-    font-size: 36pt;
-    line-height: 50px;
-    text-align: center;
-  }
-  .hero-button-container {
+  .content-button-container {
+    margin: 0;
     flex-direction: column;
   }
-  .hero-button {
-    margin: 10px 0;
-    font-size: 12pt;
+  .content-button {
+    margin: 0.5em;
   }
-  .jobsboard-logo {
-    margin: 35px 0 0 0;
-  }
+  
 }
 
 @media screen and (min-width: 481px) and (max-width: 599px) {
   #blob {
     width: 265vw;
-    height: 100vh;
-    left: -170px;
+    height: 85vh;
+    left: -275px;
   }
 }
 
 @media screen and (max-width: 480px) {
   #blob {
-    width: 210vw;
-    height: 90vh;
-    left: -170px;
+    width: 265vw;
+    height: 93vh;
+    left: -275px;
+  }
+  .hero-right {
+    position: relative;
+    top: -57px;
+  }
+  .landing-content {
+    padding-top: 0;
   }
   .jobsboard-logo {
-    display: none;
+    width: 100px;
+    margin-left: 45px;
   }
 }
 
 @media screen and (max-width: 349px) {
   #blob {
     width: 255vw;
-    height: 85vh;
+    height: 110vh;
+    left: -175px;
   }
 }
 </style>
