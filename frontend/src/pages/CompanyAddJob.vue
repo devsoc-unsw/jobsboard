@@ -17,7 +17,7 @@
         <div class="modalHeading">
           Job Description: 
         </div>
-        <JobDescriptionView :description="description" />
+        <p v-html="description"> </p>
       </div>
 
       <div class="modalGroup">
@@ -58,19 +58,11 @@
     <h2>Job Description (Text only - for now!)</h2>
     <h4>Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the <a href="https://www.fairwork.gov.au/pay/unpaid-work/student-placements">Australian Fair Work Act 2009</a> to determine whether the job post follows all guidelines and prioritises the safety of our members.</h4>
     
-    <!-- <textarea
-      name="description"
-      v-model="description"
-      type="text"
-      placeholder="Job Description - Markdown headings and dot points are supported."
-      rows="6"
-    /> -->
-
     <quill-editor 
-      ref="quillRichTextEditor"
       v-model:content="description"
       :value="description"
       :options="editorOptions"
+      v-bind:style="{ 'background-color': 'white' }"
     />
 
     <h2>Application Link</h2>
@@ -108,6 +100,9 @@
 
 // libraries
 import { Component, Vue } from "vue-property-decorator";
+
+// QuillJs Related
+import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor';
 
@@ -126,6 +121,7 @@ import RichTextEditor from "@/components/RichTextEditor.vue";
 
 // config
 import config from "@/config/config";
+
 
 export default Vue.extend({
   name: "CompanyAddJob",
@@ -149,6 +145,7 @@ export default Vue.extend({
       description: "",
       editorOptions: {
         placeholder: 'Enter the job description...',
+        theme: "snow",
         modules: {
           toolbar: [
             [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
