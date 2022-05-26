@@ -2,7 +2,7 @@
   <div class="view">
     <div class="left_view">
       <div>
-        <font-awesome-icon :icon="['fas', 'user-circle']" style="height: 16%; " />
+        <img src="https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png" class="profileImage" >
         <div class="icon_wrapper">
           <font-awesome-icon :icon="['fab', 'linkedin']" class="linkedin_icon" />
           <font-awesome-icon :icon="['fab', 'github']" class="github_icon" />
@@ -35,21 +35,25 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .view{
+  width: 500px;
+  min-width: 35%;
   display: flex;
 }
 .right_view {
+  padding-left: 10px;
   width: 80%;
   height: 280px;
   text-align: left;
 }
 .left_view {
-  width: 30%;
+  width: 100px;
   height: 280px;
 }
 .linkedin_icon {
   color: #0A66C2;
   height: 28px;
   margin-right: 15%;
+  margin-left: 15%;
 }
 .github_icon {
   height: 28px;
@@ -76,5 +80,9 @@ export default Vue.extend({
   color: #415D6D;
   font-family: 'Poppins';
   font-size: 100%;
+}
+.profileImage {
+  width: 120px;
+  height: 120px;
 }
 </style>
