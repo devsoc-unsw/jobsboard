@@ -34,14 +34,14 @@
     </Modal>
   </div>
   <div class="contentBox">
-    <h1 style="margin-bottom: 0; font-weight: bold">Post a Job</h1>
-    <p style="margin: 0 0 3.125rem 0; color: #00000080">
+    <h1>Post a Job</h1>
+    <p class="subheading">
       Reach out to a talented pool of over 10 000 Computer Science and Engineering students
     </p>
     <!-- disclaimer box -->
-    <div style="border: 1px solid black; background-color: #FFFAE7; text-align: center; padding: 0.75rem">
+    <div class="disclaimerContainer">
       Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the
-      <span style="color: #2C8BF4; cursor: pointer">Australian Fair Work Act 2009</span>
+      <span id="fairWorksLink">Australian Fair Work Act 2009</span>
       to determine whether the job post follows all guidelines and prioritises the safety of our members.
     </div>
     <!-- success/error popups -->
@@ -72,7 +72,6 @@
       type="text"
       placeholder="Job Description - Markdown supported"
       rows="6"
-      style="resize: none"
     />
     <h2>Application Link</h2>
     <input 
@@ -81,8 +80,8 @@
       type="text"
       placeholder="www.example.com"
     />
-    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-      <div style="display: flex; flex-direction: column">
+    <div class="gridContainer">
+      <div class="columnFlex">
         <h2>Application Expiry Date</h2>
         <input 
           name="expiryDate"
@@ -90,82 +89,106 @@
           type="date"
         />
       </div>
-      <div style="display: flex; flex-direction: column">
+      <div class="columnFlex">
         <h2>Is this position paid?</h2>
-        <!-- TODO: insert dropdown -->
-        <input 
-          name="expiryDate"
-          v-model="expiryDate"
-          type="date"
-        />
+        <select name="paidPosition" id="paidPosition">
+          <option value="" disabled selected>Please select an option</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
       </div>
     </div>
-    <div style="display: flex; flex-direction: row; justify-content: space-between;">
-      <div style="display: flex; flex-direction: column">
-        <h2>Type of Role</h2>
-        <!-- TODO: insert dropdown -->
-        <input 
-          name="expiryDate"
-          v-model="expiryDate"
-          type="date"
-        />
+    <div class="gridContainer">
+      <div class="columnFlex">
+        <h2>Job Type</h2>
+        <select name="jobType" id="jobType">
+          <option value="" disabled selected>Please select an option</option>
+          <option>Intern</option>
+          <option>Grad</option>
+        </select>
       </div>
-      <div style="display: flex; flex-direction: column">
-        <h2>Workplace Type</h2>
-        <!-- TODO: insert dropdown -->
-        <input 
-          name="expiryDate"
-          v-model="expiryDate"
-          type="date"
-        />
+      <div class="columnFlex">
+        <h2>Job Mode</h2>
+        <select name="jobMode" id="jobMode">
+          <option value="" disabled selected>Please select an option</option>
+          <option>Onsite</option>
+          <option>Hybrid</option>
+          <option>Remote</option>
+        </select>
       </div>
     </div>
     <h2>Applicant's Working Rights</h2>
-    <p style="margin: 0 0 3.125rem 0; color: #00000080">
+    <p class="subheading field">
       Please check all that applies
     </p>
-    <div>
+    <div class="checkBoxLabelContainer">
       <input type="checkbox" />
       <label>Australian Citizen</label>
+    </div>
+    <div class="checkBoxLabelContainer">
       <input type="checkbox" />
       <label>Australian Permanent Resident</label>
+    </div>
+    <div class="checkBoxLabelContainer">
       <input type="checkbox" />
       <label>Australian Student Visa</label>
+    </div>
+    <div class="checkBoxLabelContainer">
       <input type="checkbox" />
       <label>Australian Temporary Grad Visa</label>
+    </div>
+    <div class="checkBoxLabelContainer">
       <input type="checkbox" />
       <label>NZ Citizen/Permanent Resident</label>
+    </div>
+    <div class="checkBoxLabelContainer">
       <input type="checkbox" />
       <label>No Working Rights</label>
+    </div>
+    <div class="checkBoxLabelContainer">
       <input type="checkbox" />
       <label>All</label>
     </div>
-    <div style="display: flex; flex-direction: row">
-      <div style="display: flex, flex-direction: column">
+    <div class="gridContainer">
+      <div class="columnFlex">
         <h2>Who Should Apply for this Role?</h2>
-        <p style="margin: 0 0 3.125rem 0; color: #00000080">
+        <p class="subheading field">
           Please check all that applies
         </p>
         <div>
-          <input type="checkbox" />
-          <label>Graduates</label>
-          <input type="checkbox" />
-          <label>Penultimate Students</label>
-          <input type="checkbox" />
-          <label>All Students</label>
+          <div class="checkBoxLabelContainer">
+            <input type="checkbox" />
+            <label>Graduates</label>
+          </div>
+          <div class="checkBoxLabelContainer">
+            <input type="checkbox" />
+            <label>Penultimate Students</label>
+          </div>
+          <div class="checkBoxLabelContainer">
+            <input type="checkbox" />
+            <label>All Students</label>
+          </div>
         </div>
       </div>
-      <div style="display: flex, flex-direction: column">
+      <div class="columnFlex">
         <h2>Applicant's WAM</h2>
         <div>
-          <input type="checkbox" />
-          <label>High Distinction | 85 and above</label>
-          <input type="checkbox" />
-          <label>Distinction | 75 and above</label>
-          <input type="checkbox" />
-          <label>Credit | 65 and above</label>
-          <input type="checkbox" />
-          <label>No preference</label>
+          <div class="checkBoxLabelContainer">
+            <input type="checkbox" />
+            <label>High Distinction | 85 and above</label>
+          </div>
+          <div class="checkBoxLabelContainer">
+            <input type="checkbox" />
+            <label>Distinction | 75 and above</label>
+          </div>
+          <div class="checkBoxLabelContainer">
+            <input type="checkbox" />
+            <label>Credit | 65 and above</label>
+          </div>
+          <div class="checkBoxLabelContainer">
+            <input type="checkbox" />
+            <label>No preference</label>
+          </div>
         </div>
       </div>
     </div>
@@ -176,7 +199,6 @@
       type="text"
       placeholder="Please note down any additional information that will make recommending jobs to students easier."
       rows="6"
-      style="resize: none"
     />
   </div>
   </StudentViewTemplate>
@@ -288,11 +310,10 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.bigTextEntry {
-  width: 100%;
-  min-height: 100%;
-}
 .contentBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
@@ -307,16 +328,72 @@ export default Vue.extend({
 .modalGroup {
   padding: 0.5rem;
 }
-input, textarea {
+input, textarea, select {
+  -ms-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box; 
+  box-sizing: content-box;
   font-family: 'sans-serif';
   border: 1px solid black;
   border-left-style: solid;
   border-left-width: 5px;
   border-left-color: $blue;
   border-radius: 0.25rem;
+  align-self: flex-start;
+  margin: 0;
+  width: 100%;
+  resize: none;
+}
+input[type="checkbox"] {
+  align-self: center;
+  margin-right: 0.5rem;
+  width: auto;
 }
 h2 {
   margin-bottom: 0;
+  font-weight: bold;
+  align-self: flex-start;
+}
+h1 {
+  margin-bottom: 0;
+  font-weight: bold;
+}
+.subheading {
+  margin: 0 0 3.125rem 0;
+  color: #00000080;
+}
+.field {
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+.disclaimerContainer {
+  border: 1px solid black;
+  background-color: #FFFAE7;
+  text-align: center;
+  padding: 0.75rem;
+}
+.gridContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+}
+.columnFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 45%;
+}
+.checkBoxLabelContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-start;
+}
+#fairWorksLink {
+  color: #2C8BF4;
+  cursor: pointer;
 }
 @media screen and (min-width: 900px) {
   input, textarea {
@@ -326,9 +403,5 @@ h2 {
   .contentBox {
     width: 85%;
   }
-}
-.dateEntryBox {
-  width: auto;
-  font-family: 'sans-serif';
 }
 </style>
