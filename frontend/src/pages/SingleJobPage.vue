@@ -185,12 +185,8 @@ export default Vue.extend({
   },
   async mounted() {
     this.fetchJob();
-    console.log(this.description)
   },
 });
-
-
-
 </script>
 
 <style scoped lang="scss">

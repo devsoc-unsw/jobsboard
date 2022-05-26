@@ -12,34 +12,15 @@
 </template>
 
 <script> 
-
+import { Vue } from "vue-property-decorator";
 import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor';
 
-export default {
+export default Vue.extend({
     components: {
         quillEditor
-    },
-    data() {
-        return {
-            description: '',
-            editorOptions: {
-                placeholder: 'Enter the job description...'
-            }
-        }
-    },
-    methods: {
-        onEditorChange({ quill, html, text }) {
-            this.description = html;
-        }
-    },
-    computed: {
-        editor() {
-            return this.$refs.quillRichTextEditor.quill;
-        }
     }
-}
- 
+});
 </script>
 
 <style> 
@@ -50,5 +31,4 @@ export default {
 .ql-editor {
     height: 40vh;
 }
-
 </style>

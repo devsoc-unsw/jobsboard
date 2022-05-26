@@ -225,8 +225,7 @@ export default Vue.extend({
 <style scoped lang="scss">
 
 .rteditor {
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
 .bigTextEntry {
