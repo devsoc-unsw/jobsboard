@@ -1,13 +1,7 @@
 import "reflect-metadata";
-import {
-  Connection,
-  getConnection,
-  getManager,
-  EntityManager,
-} from "typeorm";
 
+import { AppDataSource } from './index';
 import Logger from "./logging";
-
 import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
@@ -19,36 +13,24 @@ export async function seedDB(activeEntities: any[]) {
   // clear all tables
   if (process.env.NODE_ENV === "development") {
     Logger.Info("Clearing all tables.");
-    await getConnection().synchronize(true);
+    await AppDataSource.synchronize(true);
   }
-  const conn: Connection = getConnection();
-  const manager: EntityManager = getManager();
 
   // create dummy admin account
   const adminAccount = new AdminAccount();
   adminAccount.username = "admin";
   adminAccount.hash = Secrets.hash("incorrect pony plug paperclip");
-  await manager.save(adminAccount);
+  await AppDataSource.manager.save(adminAccount);
 
   // create a company account
   const companyAccount = new CompanyAccount();
   companyAccount.username = "test";
   companyAccount.hash = Secrets.hash("test");
+  companyAccount.verified = true;
   const company = new Company();
   company.name = "Test company";
   company.location = "Sydney";
   companyAccount.company = company;
-
-  // create a company account used for password reset
-  const companyAccount2 = new CompanyAccount();
-  companyAccount2.username = "test2";
-  companyAccount2.hash = Secrets.hash("test2");
-  const company2 = new Company();
-  company2.name = "Test company 2";
-  company2.location = "Hong Kong";
-  companyAccount2.company = company2;
-
-  await manager.save(companyAccount2);
   
   // every job except job1 and job 2 have not expired yet
   const job1 = new Job();
@@ -110,7 +92,18 @@ export async function seedDB(activeEntities: any[]) {
     job6,
   ];
 
-  await manager.save(companyAccount);
+  await AppDataSource.manager.save(companyAccount);
   
+  // create a company account used for password reset
+  const companyAccount2 = new CompanyAccount();
+  companyAccount2.username = "test2";
+  companyAccount2.hash = Secrets.hash("test2");
+  const company2 = new Company();
+  company2.name = "Test company 2";
+  company2.location = "Hong Kong";
+  companyAccount2.company = company2;
+
+  await AppDataSource.manager.save(companyAccount2);
+
   Logger.Info("FINISHED SEEDING");
 }

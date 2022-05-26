@@ -1,9 +1,6 @@
 import winston from "winston";
 import { Logs } from "./entity/logs";
-import {
-  // Connection,
-  getConnection,
-} from "typeorm";
+import { AppDataSource } from "./index"
 
 export default class Logger {
   public static Init(): void {
@@ -44,6 +41,6 @@ export default class Logger {
     // write the log
     const log = new Logs();
     log.what = msg;
-    await getConnection().manager.save(log);
+    await AppDataSource.manager.save(log);
   }
 }
