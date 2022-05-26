@@ -96,7 +96,7 @@ export default Vue.extend({
 }
 
 .content {
-  background: $grey;
+  background: #f6f9fc;
   color: $black;
   /* padding: 0.5rem; */
   min-height: 100%;
@@ -105,6 +105,7 @@ export default Vue.extend({
 
 .contentWidth {
   width: 70%;
+  height: 80vh;
   margin: auto;
 }
 
