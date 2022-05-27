@@ -1,12 +1,10 @@
 <template>
   <div class="view">
     <div class="left_view">
-      <div>
-        <img src="https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png" class="profileImage" >
-        <div class="icon_wrapper">
-          <font-awesome-icon :icon="['fab', 'linkedin']" class="linkedin_icon" />
-          <font-awesome-icon :icon="['fab', 'github']" class="github_icon" />
-        </div>
+      <img src="https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png" class="profileImage" >
+      <div class="icon_wrapper">
+        <font-awesome-icon :icon="['fab', 'linkedin']" class="linkedin_icon" />
+        <font-awesome-icon :icon="['fab', 'github']" class="github_icon" />
       </div>
     </div>
     <div class="right_view">
@@ -35,25 +33,27 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .view{
-  width: 450px;
+  width: 400px;
   min-width: 35%;
   display: inline-flex;
 }
 .right_view {
-  padding-left: 10px;
-  width: 70%;
+  padding-left: 20px;
+  width: 290px;
   height: 280px;
   text-align: left;
+  margin-right: 5%;
 }
 .left_view {
-  width: 120px;
+  width: 100px;
   height: 280px;
+  text-align: center;
   margin-left: 5%;
 }
 .linkedin_icon {
   color: #0A66C2;
   height: 28px;
-  margin-right: 10%;
+  margin-right: 15%;
 }
 .github_icon {
   height: 28px;
@@ -61,6 +61,7 @@ export default Vue.extend({
 .icon_wrapper {
   margin-top: 10%;
   align-items: center;
+  justify-items: center;
 }
 .nameDescrip {
   font-size: 175%; 
@@ -82,7 +83,7 @@ export default Vue.extend({
   font-size: 100%;
 }
 .profileImage {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
 }
 </style>

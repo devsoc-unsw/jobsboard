@@ -10,10 +10,9 @@
     </h4>
     
     <div class="lineSeparator" />
+    
     <div class="profileCardWrapper">
-      <div class="wrapperView">
-        <ProfileCardVue v-for="member in members" :member="member" :key="member.name" />
-      </div>
+      <ProfileCardVue v-for="member in members" :member="member" :key="member.name" />
     </div>
     
     <div class="interestBox">
@@ -77,7 +76,7 @@ export default Vue.extend({
           name: "Sam Yu",
           title: "2022 Subcomittee Member",
           involvement: "Frontend",
-          funFact: "Fun Fact...",
+          funFact: "Learning coding and programming in my spare time has pushed me to join projects. When I am not studying or learning new skills I like to play badminton at my local recreational center.",
         },
         {
           name: "Avijit Prasad",
@@ -97,7 +96,7 @@ h2 {
   font-weight: bolder;
   text-shadow: 1px 1px #B0B0B0;
   font-family: 'Poppins';
-  font-size: 30px;
+  font-size: 35px;
 }
 .lineSeparator {
   width: 400px;
@@ -111,18 +110,18 @@ h4 {
   color: #415D6D;
   font-weight: 600;
   font-family: 'Poppins';
+  font-size: 20px;
 }
-.wrapperView {
-  display:inline;
-  justify-content: center;
-}
+
 .profileCardWrapper {
   display: flex;
   width: 100%;
+  display:inline;
   justify-content: center;
+  text-align: center;
 }
 .interestBox {
-  height: 220px;
+  height: 230px;
   width: 70%;
   background: #B0B0B0;
   border-radius: 10px;
@@ -131,12 +130,11 @@ h4 {
   background: rgba(246, 249, 252, 0.5);
   box-sizing: border-box;
   margin: auto;
-  margin-top: -5%;
 }
 .interestBoxText {
   font-family: 'Poppins';
   font-weight: 400;
-  font-size: 1.5vmin;
+  font-size: 2vmin;
   line-height: 27px;
   color: #415D6D;
   width: 95%;
