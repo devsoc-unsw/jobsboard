@@ -35,31 +35,31 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .view{
-  width: 500px;
+  width: 450px;
   min-width: 35%;
-  display: flex;
+  display: inline-flex;
 }
 .right_view {
   padding-left: 10px;
-  width: 80%;
+  width: 70%;
   height: 280px;
   text-align: left;
 }
 .left_view {
-  width: 100px;
+  width: 120px;
   height: 280px;
+  margin-left: 5%;
 }
 .linkedin_icon {
   color: #0A66C2;
   height: 28px;
-  margin-right: 15%;
-  margin-left: 15%;
+  margin-right: 10%;
 }
 .github_icon {
   height: 28px;
 }
 .icon_wrapper {
-  margin-top: 15%;
+  margin-top: 10%;
   align-items: center;
 }
 .nameDescrip {

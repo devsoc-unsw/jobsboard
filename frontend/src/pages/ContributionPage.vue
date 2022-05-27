@@ -10,12 +10,22 @@
     </h4>
     
     <div class="lineSeparator" />
-    // Create two divs and place them next to each other.
-    <div class="wrapperView">
-      <ProfileCardVue v-for="member in members" :member="member" :key="members.name" />
+    <div class="profileCardWrapper">
+      <div class="wrapperView">
+        <ProfileCardVue v-for="member in members" :member="member" :key="member.name" />
+      </div>
     </div>
-    <div class="wrapperView">
-      <ProfileCardVue v-for="member in members" :member="member" :key="members.name" />
+    
+    <div class="interestBox">
+      <p class="interestBoxText">
+        Still interested? Want to be part of this exciting team? If so, 
+        then keep an eye out for our recruitment announcements on CSESoc’s socials. 
+        We’re always looking for keen and passionate people with a drive to learn and contribute.
+      </p>
+      <p class="interestBoxText">
+        Otherwise, you can also contribute by suggesting cool new features or even coding them 
+        yourself and making a pull request on the jobsboard repo.
+      </p>
     </div>
   </GeneralPageTemplateVue>
 </template>
@@ -36,14 +46,44 @@ export default Vue.extend({
         {
           name: "Adam Tizzone",
           title: "Founder & 2018-2021 Project Lead",
-          involvment: "Design & Frontend & Backend",
-          funFact: "Hello",
+          involvement: "UI Design, Frontend & Backend",
+          funFact: "Fun Fact...",
         },
         {
-          name: "Adam Tizzone",
-          title: "Founder & 2018-2021 Project Lead",
-          involvment: "Design & Frontend & Backend",
-          funFact: "Hello",
+          name: "Darian Lee",
+          title: "2022 Project Lead",
+          involvement: "UI Design, Frontend",
+          funFact: "Fun Fact...",
+        },
+        {
+          name: "Joanna He",
+          title: "2022 Project Lead",
+          involvement: "Backend",
+          funFact: "Fun Fact...",
+        },
+        {
+          name: "Matthew Liu",
+          title: "2022 Subcomittee Member",
+          involvement: "Backend",
+          funFact: "Fun Fact...",
+        },
+        {
+          name: "Sunny Wang",
+          title: "2022 Subcomittee Member",
+          involvement: "Backend",
+          funFact: "Fun Fact...",
+        },
+        {
+          name: "Sam Yu",
+          title: "2022 Subcomittee Member",
+          involvement: "Frontend",
+          funFact: "Fun Fact...",
+        },
+        {
+          name: "Avijit Prasad",
+          title: "2022 Subcomittee Member",
+          involvement: "Backend",
+          funFact: "Fun Fact...",
         }
       ]
     }
@@ -53,9 +93,6 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.wrapper{
-  background-color: white;
-}
 h2 { 
   font-weight: bolder;
   text-shadow: 1px 1px #B0B0B0;
@@ -68,6 +105,7 @@ h2 {
   background-color: #E3E3E3;
   margin: auto;
   margin-top: 3%;
+  margin-bottom: 8%;
 }
 h4 {
   color: #415D6D;
@@ -75,8 +113,34 @@ h4 {
   font-family: 'Poppins';
 }
 .wrapperView {
+  display:inline;
+  justify-content: center;
+}
+.profileCardWrapper {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+.interestBox {
+  height: 220px;
+  width: 70%;
+  background: #B0B0B0;
+  border-radius: 10px;
+  border-top: 10px solid rgba(0, 117, 255, 0.5);
+  box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.15);
+  background: rgba(246, 249, 252, 0.5);
+  box-sizing: border-box;
+  margin: auto;
+  margin-top: -5%;
+}
+.interestBoxText {
+  font-family: 'Poppins';
+  font-weight: 400;
+  font-size: 1.5vmin;
+  line-height: 27px;
+  color: #415D6D;
+  width: 95%;
+  margin: auto;
+  margin-top: 2%;
 }
 </style>
