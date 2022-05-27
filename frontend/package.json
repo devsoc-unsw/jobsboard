@@ -17,7 +17,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "6.1.1",
     "@fortawesome/vue-fontawesome": "0.1.10",
-    "core-js": "3.22.5",
+    "core-js": "3.22.6",
     "envify": "4.1.0",
     "eslint-plugin-node": "11.1.0",
     "terser-webpack-plugin": "2.3.8",
@@ -36,7 +36,7 @@
     "@vue/cli-plugin-typescript": "4.5.17",
     "@vue/cli-service": "4.5.17",
     "eslint": "6.8.0",
-    "sass": "1.51.0",
+    "sass": "1.52.1",
     "sass-loader": "8.0.2",
     "vue-template-compiler": "2.6.14"
   }
