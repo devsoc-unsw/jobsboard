@@ -10,7 +10,7 @@
     <div class="right_view">
       <div class="nameDescrip">{{ member["name"] }}</div>
       <div class="titleDescrip">{{ member["title"] }}</div>
-      <p class="generalDecrip">{{ member["involvement"] }}</p>
+      <p class="titleDescrip">{{ member["involvement"] }}</p>
       <p class="generalDecrip">{{ member["funFact"] }}</p>
     </div>
   </div>
