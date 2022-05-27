@@ -21,12 +21,7 @@ import { Vue } from "vue-property-decorator";
 export default Vue.extend({
   name: "ProfileCard",
   props: {
-    member: {
-      name: String,
-      title: String,
-      involvement: String,
-      funFact: String, 
-    }
+    member: Object,
   }
 });
 </script>
