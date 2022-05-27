@@ -6,9 +6,10 @@
     "node": "16.14.0"
   },
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "lint": "eslint --ext .js,.vue"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "1.1.8",
@@ -17,27 +18,24 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "6.1.1",
     "@fortawesome/vue-fontawesome": "0.1.10",
-    "core-js": "3.22.6",
     "envify": "4.1.0",
     "eslint-plugin-node": "11.1.0",
-    "terser-webpack-plugin": "2.3.8",
+    "eslint-plugin-vue": "^9.0.1",
     "typescript": "3.9.10",
     "vue": "2.6.14",
     "vue-class-component": "7.2.6",
     "vue-fontawesome": "0.0.2",
     "vue-property-decorator": "8.5.1",
     "vue-router": "3.5.4",
+    "vue-template-compiler": "^2.6.14",
     "vuex": "3.6.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
-    "@vue/cli-plugin-babel": "4.5.17",
-    "@vue/cli-plugin-typescript": "4.5.17",
-    "@vue/cli-service": "4.5.17",
-    "eslint": "6.8.0",
-    "sass": "1.52.1",
-    "sass-loader": "8.0.2",
-    "vue-template-compiler": "2.6.14"
+    "eslint": "^8.16.0",
+    "sass": "^1.52.1",
+    "vite": "^2.9.9",
+    "vite-plugin-vue2": "^2.0.1"
   }
 }
