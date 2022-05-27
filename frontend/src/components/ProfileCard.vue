@@ -3,8 +3,12 @@
     <div class="left_view">
       <img src="https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png" class="profileImage" >
       <div class="icon_wrapper">
-        <font-awesome-icon :icon="['fab', 'linkedin']" class="linkedin_icon" />
-        <font-awesome-icon :icon="['fab', 'github']" class="github_icon" />
+        <a :href="member.in" >
+          <font-awesome-icon :icon="['fab', 'linkedin']" class="linkedin_icon" />
+        </a>
+        <a :href="member.gh">
+          <font-awesome-icon :icon="['fab', 'github']" class="github_icon" />
+        </a>
       </div>
     </div>
     <div class="right_view">
@@ -18,11 +22,13 @@
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
+import button from "./buttons/button.vue";
 export default Vue.extend({
+  components: { button },
   name: "ProfileCard",
   props: {
     member: Object,
-  }
+  },
 });
 </script>
 
