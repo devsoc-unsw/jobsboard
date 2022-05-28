@@ -1,10 +1,12 @@
 <template>
   <StudentViewTemplate notLoggedIn disableBack>
   <ErrorBox>
-    <h1>Under Maintenence</h1>
+    <h1>Under Maintenance</h1>
     <p>
-      Jobs Board is currently undergoing an extended period of maintence.
-      Sorry for the inconvenience caused and please check back soon as we hope to have it up and running as soon as possible.
+      Jobs Board is currently undergoing an extended period of maintenance.
+    </p>
+    <p>
+      We apologise for any inconveniences caused and we aim to have it up and running as soon as possible.
     </p>
   </ErrorBox>
   <h1>Jobs for UNSW CSE Students</h1>
