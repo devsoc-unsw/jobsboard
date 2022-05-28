@@ -10,12 +10,12 @@
   <h1>Jobs for UNSW CSE Students</h1>
   <div class="buttonBox">
     <StandardButton>
-    <Button @callback="toStudentLogin">
+    <Button @callback="toStudentLogin" disabled>
       Student
     </Button>
     </StandardButton>
     <StandardButton>
-    <Button @callback="toCompanyLogin">
+    <Button @callback="toCompanyLogin" disabled>
       Company
     </Button>
     </StandardButton>
