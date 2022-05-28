@@ -1,14 +1,21 @@
 <template>
   <StudentViewTemplate notLoggedIn disableBack>
+  <ErrorBox>
+    <h1>Under Maintenence</h1>
+    <p>
+      Jobs Board is currently undergoing an extended period of maintence.
+      Sorry for the inconvenience caused and please check back soon as we hope to have it up and running as soon as possible.
+    </p>
+  </ErrorBox>
   <h1>Jobs for UNSW CSE Students</h1>
   <div class="buttonBox">
     <StandardButton>
-    <Button @callback="toStudentLogin">
+    <Button @callback="toStudentLogin" disabled>
       Student
     </Button>
     </StandardButton>
     <StandardButton>
-    <Button @callback="toCompanyLogin">
+    <Button @callback="toCompanyLogin" disabled>
       Company
     </Button>
     </StandardButton>
@@ -21,6 +28,7 @@ import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
+import ErrorBox from "@/components/ErrorBox.vue";
 
 export default Vue.extend({
   name: "LoginPage",
@@ -28,6 +36,7 @@ export default Vue.extend({
     StudentViewTemplate,
     Button,
     StandardButton,
+    ErrorBox,
   },
   methods: {
     toStudentLogin() {
