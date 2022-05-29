@@ -8,10 +8,8 @@ import swaggerJsdoc from "swagger-jsdoc";
 import helmet from "helmet";
 
 import "reflect-metadata";
-import {
-  ConnectionOptions,
-  createConnection,
-} from "typeorm";
+
+import { DataSource } from "typeorm";
 
 // custom libraries
 import Auth from "./auth";
@@ -89,7 +87,7 @@ const swaggerjsdocOptions: any = {
 
 const specs = swaggerJsdoc(swaggerjsdocOptions);
 
-const options: ConnectionOptions = {
+export const AppDataSource = new DataSource({
   type: "mysql",
   host: process.env.MYSQL_HOST,
   port: Number(process.env.MYSQL_PORT),
@@ -103,10 +101,11 @@ const options: ConnectionOptions = {
   ],
   subscribers: [
   ],
-};
+});
+
 
 async function bootstrap() {
-  await createConnection(options);
+  await AppDataSource.initialize();
   await seedDB(activeEntities);
 }
 
@@ -417,6 +416,36 @@ app.post(
   Middleware.genericLoggingMiddleware
 );
 
+
+/**
+*  @swagger
+*  /company/password-reset-token/{username}:
+*    get:
+*      description: Retrieve the token that a company is using to reset its password
+*
+*    responses:
+*      200:
+*        description: success
+*        content:
+*          application/json:
+*            schema:
+*              type: array
+*              items:
+*                token:
+*                  type: string
+*                  description: API token
+*      400:
+*        description: failed to find company account
+*/
+
+
+app.get(
+  "/company/password-reset-token/:username",
+  cors(corsOptions),
+  CompanyFunctions.GetPasswordResetToken,
+  Middleware.genericLoggingMiddleware
+)
+
 /**
  *  @swagger
  *  /company/password-reset/:
@@ -644,10 +673,12 @@ app.listen(port, async () => {
   if (process.env.NODE_ENV === "development") {
     await bootstrap();
   } else {
-    await createConnection(options);
+    await AppDataSource.initialize();
   }
   if (process.env.NODE_ENV === "production") {
     MailFunctions.InitMailQueueScheduler(2000);
   }
   Logger.Info(`SERVER STARTED AT PORT=${port}`);
 });
+
+
