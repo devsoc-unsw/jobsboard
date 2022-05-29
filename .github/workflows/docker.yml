@@ -63,8 +63,8 @@ jobs:
           git config user.name "CSESoc CD"
           git config user.email "technical@csesoc.org.au"
           git checkout -b update/jobsboard/${{ github.sha }}
-          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-frontend:${{ github.sha }}"' apps/projects/jobsboard/deploy-frontend.yml
-          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-backend:${{ github.sha }}"' apps/projects/jobsboard/deploy-backend.yml
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-frontend:${{ github.sha }}"' apps/projects/jobsboard/prod/deploy-frontend.yml
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-backend:${{ github.sha }}"' apps/projects/jobsboard/prod/deploy-backend.yml
           git add . 
           git commit -m "feat(jobsboard): update images" 
           git push -u origin update/jobsboard/${{ github.sha }}
