@@ -5,6 +5,9 @@ module.exports = {
     extend: {
       backgroundColor: {
         'jb-blue': '#2C8BF4',
+      },
+      rotate: {
+        '220': '220deg'
       }
     },
   },
