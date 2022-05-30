@@ -15,7 +15,7 @@
         <div class="modalHeading">
           Job Description: 
         </div>
-        {{ this.description }}
+        <p v-html="this.description"> </p>
       </div>
 
       <div class="modalGroup">

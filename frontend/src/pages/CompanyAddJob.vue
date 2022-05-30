@@ -17,7 +17,7 @@
         <div class="modalHeading">
           Job Description: 
         </div>
-        <JobDescriptionView :description="description" />
+        <p v-html="description"> </p>
       </div>
 
       <div class="modalGroup">
@@ -57,14 +57,16 @@
       />
     <h2>Job Description (Text only - for now!)</h2>
     <h4>Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the <a href="https://www.fairwork.gov.au/pay/unpaid-work/student-placements">Australian Fair Work Act 2009</a> to determine whether the job post follows all guidelines and prioritises the safety of our members.</h4>
-    <textarea
-      name="description"
-      v-model="description"
-      type="text"
-      placeholder="Job Description - Markdown headings and dot points are supported."
-      rows="6"
-      />
+    
+    <quill-editor 
+      v-model:content="description"
+      :value="description"
+      :options="editorOptions"
+      v-bind:style="{ 'background-color': 'white' }"
+    />
+
     <h2>Application Link</h2>
+
     <input 
       name="applicationLink"
       v-model="applicationLink"
@@ -94,9 +96,15 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
+<script setup>
+
 // libraries
 import { Component, Vue } from "vue-property-decorator";
+
+// QuillJs Related
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import { quillEditor } from 'vue-quill-editor';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
@@ -109,9 +117,11 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import RichTextEditor from "@/components/RichTextEditor.vue";
 
 // config
 import config from "@/config/config";
+
 
 export default Vue.extend({
   name: "CompanyAddJob",
@@ -126,11 +136,24 @@ export default Vue.extend({
     GreenStandardButton,
     Modal,
     JobDescriptionView,
+    RichTextEditor,
+    quillEditor
   },
   data() {
     return {
       role: "",
       description: "",
+      editorOptions: {
+        placeholder: 'Enter the job description...',
+        theme: "snow",
+        modules: {
+          toolbar: [
+            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
+          ]
+        }
+      },
       applicationLink: "",
       error: false,
       errorMsg: "",
@@ -200,6 +223,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+
+.rteditor {
+  margin: 0 auto;
+}
+
 .bigTextEntry {
   width: 100%;
   min-height: 100%;
