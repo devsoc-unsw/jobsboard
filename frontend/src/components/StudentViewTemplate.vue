@@ -106,7 +106,7 @@ export default Vue.extend({
     padding: 2rem;
   }
   .contentWidth {
-    width: 70%;
+    width: 100%;
     margin: auto;
   }
 }
@@ -121,7 +121,7 @@ export default Vue.extend({
 }
 
 .content {
-  background: $grey;
+  background: $white;
   color: $black;
   /* padding: 0.5rem; */
   min-height: 100%;
@@ -129,7 +129,7 @@ export default Vue.extend({
 }
 
 .contentWidth {
-  width: 70%;
+  width: 100%;
   margin: auto;
 }
 
@@ -175,7 +175,7 @@ export default Vue.extend({
   color: $white;
 }
 
-input, textarea {
+input, textarea, select {
   font-weight: 100;
   border: 1px solid $blue;
   /* border-radius: 0.2rem; */

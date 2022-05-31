@@ -1,5 +1,7 @@
 <template>
+  <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
+  <!-- TODO: replace with tailwind mdal -->
   <div class="modalWrapper">
     <Modal 
       v-if="modalVisible"
@@ -83,7 +85,7 @@
     <div class="gridContainer">
       <div class="columnFlex">
         <h2>Application Expiry Date</h2>
-        <input 
+        <input
           name="expiryDate"
           v-model="expiryDate"
           type="date"
@@ -91,7 +93,7 @@
       </div>
       <div class="columnFlex">
         <h2>Is this position paid?</h2>
-        <select name="paidPosition" id="paidPosition">
+        <select name="paidPosition" id="paidPosition" v-model="isPaidPosition">
           <option value="" disabled selected>Please select an option</option>
           <option>Yes</option>
           <option>No</option>
@@ -101,7 +103,7 @@
     <div class="gridContainer">
       <div class="columnFlex">
         <h2>Job Type</h2>
-        <select name="jobType" id="jobType">
+        <select name="jobType" id="jobType" v-model="jobType">
           <option value="" disabled selected>Please select an option</option>
           <option>Intern</option>
           <option>Grad</option>
@@ -109,7 +111,7 @@
       </div>
       <div class="columnFlex">
         <h2>Job Mode</h2>
-        <select name="jobMode" id="jobMode">
+        <select name="jobMode" id="jobMode" v-model="jobMode">
           <option value="" disabled selected>Please select an option</option>
           <option>Onsite</option>
           <option>Hybrid</option>
@@ -122,32 +124,32 @@
       Please check all that applies
     </p>
     <div class="checkBoxLabelContainer">
-      <input type="checkbox" />
-      <label>Australian Citizen</label>
+      <input type="checkbox" value="aus_ctz" id="wr_aus_ctz" v-model="workingRights" />
+      <label for="wr_aus_ctz">Australian Citizen</label>
     </div>
     <div class="checkBoxLabelContainer">
-      <input type="checkbox" />
-      <label>Australian Permanent Resident</label>
+      <input type="checkbox" value="aus_perm_res" id="wr_aus_perm_res" v-model="workingRights" />
+      <label for="wr_aus_perm_res">Australian Permanent Resident</label>
     </div>
     <div class="checkBoxLabelContainer">
-      <input type="checkbox" />
-      <label>Australian Student Visa</label>
+      <input type="checkbox" value="aus_stud_visa" id="wr_aus_stud_visa" v-model="workingRights" />
+      <label for="wr_aus_stud_visa">Australian Student Visa</label>
     </div>
     <div class="checkBoxLabelContainer">
-      <input type="checkbox" />
-      <label>Australian Temporary Grad Visa</label>
+      <input type="checkbox" value="aus_temp_grad_visa" id="wr_aus_temp_grad_visa" v-model="workingRights" />
+      <label for="wr_aus_temp_grad_visa">Australian Temporary Grad Visa</label>
     </div>
     <div class="checkBoxLabelContainer">
-      <input type="checkbox" />
-      <label>NZ Citizen/Permanent Resident</label>
+      <input type="checkbox" value="nz_ctz_and_perm_res" id="wr_nz_ctz_and_perm_res" v-model="workingRights" />
+      <label for="wr_nz_ctz_and_perm_res">NZ Citizen/Permanent Resident</label>
     </div>
     <div class="checkBoxLabelContainer">
-      <input type="checkbox" />
-      <label>No Working Rights</label>
+      <input type="checkbox" value="no_wr" id="wr_no_wr" v-model="workingRights" />
+      <label for="wr_no_wr">No Working Rights</label>
     </div>
     <div class="checkBoxLabelContainer">
-      <input type="checkbox" />
-      <label>All</label>
+      <input type="checkbox" value="all" id="wr_all" v-model="workingRights" />
+      <label for="wr_all">All</label>
     </div>
     <div class="gridContainer">
       <div class="columnFlex">
@@ -157,16 +159,16 @@
         </p>
         <div>
           <div class="checkBoxLabelContainer">
-            <input type="checkbox" />
-            <label>Graduates</label>
+            <input type="checkbox" value="final_year" id="student_demographic_final_year" v-model="studentDemographic" />
+            <label for="student_demographic_final_year">Graduates</label>
           </div>
           <div class="checkBoxLabelContainer">
-            <input type="checkbox" />
-            <label>Penultimate Students</label>
+            <input type="checkbox" value="penultimate" id="student_demographic_penultimate" v-model="studentDemographic" />
+            <label for="student_demographic_penultimate">Penultimate Students</label>
           </div>
           <div class="checkBoxLabelContainer">
-            <input type="checkbox" />
-            <label>All Students</label>
+            <input type="checkbox" value="all" id="student_demographic_all" v-model="studentDemographic" />
+            <label for="student_demographic_all">All Students</label>
           </div>
         </div>
       </div>
@@ -174,20 +176,20 @@
         <h2>Applicant's WAM</h2>
         <div>
           <div class="checkBoxLabelContainer">
-            <input type="checkbox" />
-            <label>High Distinction | 85 and above</label>
+            <input type="checkbox" value="HD" id="applicantWam_HD" v-model="wamRequirements" />
+            <label for="applicantWam_HD">High Distinction | 85 and above</label>
           </div>
           <div class="checkBoxLabelContainer">
-            <input type="checkbox" />
-            <label>Distinction | 75 and above</label>
+            <input type="checkbox" value="D" id="applicantWam_D" v-model="wamRequirements" />
+            <label for="applicantWam_D">Distinction | 75 and above</label>
           </div>
           <div class="checkBoxLabelContainer">
-            <input type="checkbox" />
-            <label>Credit | 65 and above</label>
+            <input type="checkbox" value="C" id="applicantWam_C" v-model="wamRequirements" />
+            <label for="applicantWam_C">Credit | 65 and above</label>
           </div>
           <div class="checkBoxLabelContainer">
-            <input type="checkbox" />
-            <label>No preference</label>
+            <input type="checkbox" value="none" id="applicantWam_none" v-model="wamRequirements" />
+            <label for="applicantWam_none">No preference</label>
           </div>
         </div>
       </div>
@@ -200,8 +202,11 @@
       placeholder="Please note down any additional information that will make recommending jobs to students easier."
       rows="6"
     />
+    <button @callback="showJobModal" id="preview_button">Preview</button>
+    <button @click="submitJobPost" id="submit_button">Post Job</button>
   </div>
   </StudentViewTemplate>
+  </LoggedInTemplate>
 </template>
 
 <script lang="ts">
@@ -213,10 +218,6 @@ import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import BackButton from "@/components/buttons/back.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
 
@@ -230,10 +231,6 @@ export default Vue.extend({
     SuccessBox,
     ErrorBox,
     LoggedInTemplate,
-    BackButton,
-    Button,
-    StandardButton,
-    GreenStandardButton,
     Modal,
     JobDescriptionView,
   },
@@ -242,6 +239,14 @@ export default Vue.extend({
       role: "",
       description: "",
       applicationLink: "",
+      expiryDate: "",
+      isPaidPosition: "",
+      jobType: "",
+      jobMode: "",
+      workingRights: [],
+      studentDemographic: [],
+      wamRequirements: [],
+      additionalInfo: "",
       error: false,
       errorMsg: "",
       success: false,
@@ -390,6 +395,22 @@ h1 {
   flex-direction: row;
   align-items: center;
   align-self: flex-start;
+}
+#preview_button {
+  border: none;
+  color: #2C8BF4;
+  background-color: white;
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  cursor: pointer
+}
+#submit_button {
+  border-radius: 0.5rem;
+  border: 2px solid #4E5F78;
+  font-size: 1rem;
+  padding: 0.5rem 2rem;
+  margin-top: 1.5rem;
+  cursor: pointer;
 }
 #fairWorksLink {
   color: #2C8BF4;
