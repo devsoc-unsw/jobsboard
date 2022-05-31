@@ -131,12 +131,12 @@ describe("admin", () => {
       .then(response => response.body.token);
       // login as a company
       const newCompanyCredentials = {
-        username: "test@test.com",
+        username: "admin_test@test.com",   // test@test.com seemed too generic => potential 409 error (conflict)
         password: "testPassword",
         location: "Sydney",
         name: "Such Company, Big Wow",
       };
-
+    
       await server
       .put("/company")
       .send(newCompanyCredentials)

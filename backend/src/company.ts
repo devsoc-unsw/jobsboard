@@ -102,7 +102,7 @@ export default class CompanyFunctions {
         .createQueryBuilder("company")
         .where("company.name = :name", { name: msg.name })
         .getOne();
-      if (companyAccountUsernameSearchResult !== undefined || companyNameSearchResult !== undefined) {
+      if (companyAccountUsernameSearchResult !== null || companyNameSearchResult !== null) {
         // company exists, send conflict error
         return {
           status: 409,
