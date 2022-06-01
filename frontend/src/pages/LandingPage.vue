@@ -1,44 +1,64 @@
 <template>
-  <!-- <StudentViewTemplate notLoggedIn> -->
   <main>
-    <div class="stretchyPage">
-      <div class="header-container">
+    <div class="flex flex-col min-h-full">
+      <div class="relative">
         <Header class="header" />
       </div>
-      <div class="blob-container">
-        <img id="blob" :src="Blob" />
+      <div class="relative overflow-x-clip">
+        <img 
+          id="blob"
+          :src="Blob" 
+        />
       </div>
-      <div class="hero">
-        <div class="hero-left">
-          <p class="hero-description">CSESoc presents</p>
-          <h1 class="hero-title">Jobs Board</h1>
-          <p class="hero-description">
+      <div class="grid grid-rows-2 grid-cols-3 justify-center items-center content-center 
+                  w-[60%] md:w-[50%] lg:w-[40%] h-full ml-[45px] my-12 mx-auto pt-36 mb-32 hero">
+        <div class="self-start col-span-2">
+          <p class="text-white text-left text-lg">CSESoc presents</p>
+          <h1 class="font-bold text-6xl text-[#1a324e] text-left leading-[72px] drop-shadow-lg m-0">Jobs Board</h1>
+          <p class="text-white text-left text-lg">
             Connecting UNSW students with top employers since 2018.
           </p>
-          <div class="hero-button-container">
-            <button class="hero-button">Explore</button>
-            <button class="hero-button">Advertise</button>
-          </div>
         </div>
-        <div class="hero-right">
-          <img class="jobsboard-logo" :src="Logo" />
+        <div class="w-2/4 justify-center items-center content-center justify-items-center col-span-1">
+          <img class="w-[100px] ml-11 sm:w-full" :src="Logo" />
         </div>
+        <div class="flex mt-8 col-span-2 self-start justify-self-start sm:flex-row">
+          <button 
+            class="bg-[#264c79] border-2 border-[#ffffff5e] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-2 mr-6
+                    hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:text-md sm:mt-0"
+          >
+          Explore
+          </button>
+          <button 
+            class="bg-[#264c79] border-2 border-[#ffffff5e] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-2 mr-6
+                    hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:text-md sm:mt-0"
+          >
+          Advertise
+          </button>
+        </div>
+
       </div>
-      <div class="landing-content">
-        <h3 class="landing-header">Our Sponsors</h3>
-        <p class="landing-description">
+      <div class="w-3/5 mb-12 mx-auto lg:mt-0 xl:mt-40">
+        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Our Sponsors</h3>
+        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
           We aim to give you a pleasant student working experience by partnering up with only the best.
         </p>
         <SponsorCarousel />
-        <h3 class="landing-header">Discover Featured Student Jobs and Internships</h3>
-        <p class="landing-description">
+        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Discover Featured Student Jobs and Internships</h3>
+        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
           Spent hours trying to find something that suited you? Look no further, we've got you covered with some amazing opportunities.
         </p>
-        <p class="landing-description">
+        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
           Check out the full list of open jobs 
-          <span class="text-link">here</span>.
+          <span 
+            class="text-[#2c8bf4] font-bold transition-colors duration-200 ease-linear 
+                     cursor-pointer hover:text-[#1f7ade]"
+          >
+          here
+          </span>
+          .
         </p>
-        <div class="featured-jobs">
+        <div class="flex justify-between items-center my-12">
           <FeaturedJobCard 
             jobTitle="STEP Intern, 2022 Summer"
             jobDescription="The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship."
@@ -47,42 +67,58 @@
            />
         </div>
 
-        <h3 class="landing-header">Want to Post a Job?</h3>
-        <p class="landing-description">
+        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Want to Post a Job?</h3>
+        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
           Are you a company looking to advertise with us? We'd absolutely love to hear from you.
           In the meantime, you can also check out 
-          <span class="text-link">other companies</span> 
+          <span class="text-[#2c8bf4] font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-[#1f7ade]">other companies</span> 
           that have partnered with us.
         </p>
-        <div class="content-button-container">
+        <div class="flex flex-col justify-evenly sm:mt-8 sm:mb-28 sm:mx-24 sm:flex-row">
           <div>
-            <button class="content-button" @click="companyRegister">Join Us</button>
+            <button 
+              class="bg-[#2c8bf4] rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
+                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-[#1f7ade] hover:shadow-btn-hovered" 
+              @click="companyRegister"
+            >
+            Join Us
+            </button>
           </div>
           <div>
-            <button class="content-button">Post a Job</button>
+            <button 
+              class="bg-[#2c8bf4] rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 mb-10 sm:mb-0
+                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-[#1f7ade] hover:shadow-btn-hovered" 
+            >
+            Post a Job
+            </button>
           </div>
         </div>
 
-        <h3 class="landing-header">Looking for More?</h3>
-        <p class="landing-description">
+        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Looking for More?</h3>
+        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
           If you're a CSE student with a keen interest in Jobs Board and looking to get involved,
           keep an eye out for our recruitment announcements on CSESoc's socials. 
           Otherwise, you can also contribute by suggesting cool new features or
           even make a pull request on the Jobs Board repo.
         </p>
-        <div class="content-button-container">
+        <div class="flex flex-col justify-evenly sm:mt-8 sm:mb-28 sm:mx-24 sm:flex-row">
           <div>
-            <button class="content-button" @click="toGithubRepo">Source Code</button>
+            <button 
+              class="bg-[#2c8bf4] rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
+                     hover:bg-[#1f7ade] hover:shadow-btn-hovered" 
+              @click="toGithubRepo"
+            >
+            Source Code
+            </button>
           </div>
         </div>
-        <div class="scroll-button-container">
+        <div class="mt-20">
           <font-awesome-icon icon="chevron-circle-up" size="3x" @click="scrollToTop" class="scroll-button"/>
         </div>
       </div>
       <NewFooter />
     </div>
   </main>
-  <!-- </StudentViewTemplate> -->
 </template>
 
 <script lang="ts">
@@ -126,8 +162,7 @@ export default Vue.extend({
     },
     toGithubRepo() {
       window.open("https://github.com/csesoc/jobs-board");
-    },
-
+    }
   },
 });
 </script>
@@ -137,299 +172,128 @@ main {
   width: 100vw;
   height: 100vh;
 }
-.header-container {
-  position: relative;
-  .header {
-    position: absolute;
-    background: transparent;
-  }
-}
 
-.stretchyPage {
-  display: flex;
-  flex-flow: column;
-  min-height: 100%;
-}
-
-.blob-container {
-  position: relative;
-  overflow-x: clip;
-}
-
-#blob {
+.header {
   position: absolute;
-  width: 100vw;
-  height: 65vh;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-.hero-button-container {
-  display: flex;
-  margin-top: 2rem;
-}
-
-.hero-button {
-  background: #264c79;
-  border: 1px solid rgba(255, 255, 255, 0.37);
-  box-shadow: 0px 4px 4px rgb(0, 0, 0, 0.25);
-  border-radius: 12px;
-  color: white;
-  font-size: 14pt;
-  font-weight: bold;
-  padding: 3px 23px;
-  margin-right: 25px;
-
-  &:hover {
-    transition-duration: 0.5s;
-    transform: translateY(-2px);
-    border-color: $white;
-    cursor: pointer;
-  }
-}
-
-.jobsboard-logo {
-  margin: 0px 0px 0px 90px;
-}
-
-.hero {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  width: calc(100vw - 55%);
-  margin: 50px auto;
-  padding: 150px 0 130px 0;
-}
-
-.hero-description {
-  color: #ffffff;
-  text-align: left;
-  font-size: 13pt;
-}
-
-.hero-title {
-  font-weight: 600;
-  font-size: 48pt;
-  line-height: 72px;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-  color: #1a324e;
-  text-align: left;
-  margin: 0;
-}
-
-.landing-content {
-  width: 60%;
-  margin: 0 auto 50px auto;
-}
-
-.landing-header {
-  font-weight: bold;
-  font-size: 24pt;
-  line-height: 36px;
-  margin-bottom: 0;
-  color: #0c3149;
-}
-
-.landing-description {
-  font-size: 14pt;
-  color: #415d6d;
-  margin: 1em 4em;
-}
-
-
-.featured-jobs {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 3em 0;
-}
-
-.scroll-button-container {
-  margin: 5rem 0 0 0;
+  background: transparent;
 }
 
 .scroll-button {
-  &:hover {
-    cursor: pointer;
-  }
+  cursor: pointer;
 
   path {
     fill: #0c3149;
   }
 }
 
-.content-button-container {
-  display: flex;
-  justify-content: space-evenly;
-  margin: 2em 6em 7em 6em;
-}
-
-.content-button { 
-  background: #2c8bf4;
-  border-radius: 5px;
-  width: 160px;
-  height: 45px;
-  color: #fff;
-  font-weight: bold;
-  font-size: 12pt;
-  border: 0;
-  box-shadow: -5px 5px 10px -1px rgb(0 0 0 / 15%);
-  transition: .25s linear;
-  cursor: pointer;
-  &:hover {
-    background-color: #1f7ade;
-    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 50%);
+.hero {
+  @media (min-width: 481px) {
+    margin: 48px auto
+  }
+  @media (max-height: 844px) {
+    margin-bottom: 0;
   }
 }
 
-.text-link {
-  color: #2c8bf4;
-  font-weight: bold;
-  transition: color 0.25s linear;
-  cursor: pointer;
-  &:hover {
-    color: #1f7ade;
-  }
-}
+#blob {
+  position: absolute;
+  width: 370vw;
+  height: 75vh;
+  top: 0;
+  left: -350px;
+  z-index: -1;
 
-@media screen and (min-width: 900px) and (max-width: 1120px) {
-  #blob {
-    width: 115vw;
+  @media (min-width: 500px) {
+    width: 200vw;
+    height: 80vh;
+    left: -210px;
+  }
+  @media (min-width: 640px) {
+    width: 200vw;
+    height: 60vh;
+    left: -358px;
+  }
+  @media (min-width: 768.1px) {
     height: 55vh;
+    left: -487px;
   }
-  .hero {
-    padding-top: 80px;
-  }
-  .hero-description {
-    font-size: 11pt;
-  }
-  .hero-title {
-    font-size: 44pt;
-  }
-}
-
-@media screen and (max-height: 800px) {
-  #blob {
-    height: 82vh;
-  }
-  @media screen and (min-width: 900px) and (max-width: 1120px) {
-    #blob {
-      height: 75vh;
-    }
-  }
-  @media screen and (min-width: 600px) and (max-width: 899px) {
-    #blob {
-      height: 65vh;
-    }
-    .content-button-container {
-      flex-direction: column;
-    }
-    .content-button {
-      margin: 0.5em;
-    }
-  }
-  @media screen and (max-width: 480px) {
-    #blob {
-      height: 110vh;
-    }
-  }
-}
-
-@media screen and (max-height: 750px) {
-  #blob {
-    height: 100vh;
-  }
-  @media screen and (max-width: 480px) {
-    #blob {
-      height: 140vh;
-    }
-  }
-}
-
-@media screen and (min-width: 600px) and (max-width: 899px) {
-  .hero {
-    padding-top: 60px;
-  }
-  .hero-description {
-    font-size: 11pt;
-  }
-  .hero-title {
-    font-size: 42pt;
-  }
-  .hero-button {
-    font-size: 13pt;
-  }
-  #blob {
+  @media (min-width: 900px) {
     width: 150vw;
-    left: -170px;
+    height: 55vh;
+    left: -200px;
   }
-}
-
-@media screen and(max-width: 599px) {
-  .hero {
-    padding-top: 60px;
-
-    .hero-description {
-      font-size: 13pt;
-    }
-    .hero-title {
-      font-size: 48pt;
-    }
-    .hero-button-container {
-      flex-direction: column;
-    }
-    .hero-button {
-      margin: 10px 0;
-      font-size: 12pt;
-    }
-  }
-
-  .landing-description {
-    margin: 1em 0;
-  }
-  .content-button-container {
-    margin: 0;
-    flex-direction: column;
-  }
-  .content-button {
-    margin: 0.5em;
+  @media (min-width: 1075px) {
+    width: 126vw;
+    height: 52vh;
+    left: -150px;
   }
   
-}
-
-@media screen and (min-width: 481px) and (max-width: 599px) {
-  #blob {
-    width: 265vw;
-    height: 85vh;
-    left: -275px;
+  @media (max-height: 1368px) {
+    height: 42vh;
   }
-}
-
-@media screen and (max-width: 480px) {
-  #blob {
-    width: 265vw;
-    height: 93vh;
-    left: -275px;
+  
+  @media (max-height: 978px) {
+    height: 66vh;
+    left: -200px;
+    
+    @media (max-width: 1075px) {
+      height: 65vh;
+      left: -255px;
+    }
+    @media (max-width: 900px) {
+      height: 61vh;
+      left: -460px;
+    }
+    @media (max-width: 761.8px) {
+      height: 65vh;
+      left: -415px;
+    }
+    @media (max-width: 640px) {
+      height: 96vh;
+      left: -254px;
+    }
+    @media (max-width: 498px) {
+      height: 85vh;
+      left: -965px;
+    }
+    @media (max-width: 395px) {
+      height: 109vh;
+      left: -734px;
+    }
   }
-  .hero-right {
-    position: relative;
-    top: -57px;
+  
+    @media (max-height: 800px) {
+    height: 66vh;
+    left: -200px;
+    
+    @media (max-width: 1075px) {
+      height: 73vh;
+      left: -255px;
+    }
+    @media (max-width: 900px) {
+      height: 70vh;
+      left: -460px;
+    }
+    @media (max-width: 761.8px) {
+      height: 83vh;
+      left: -415px;
+    }
+    @media (max-width: 640px) {
+      height: 110vh;
+      left: -254px;
+    }
+    @media (max-width: 498px) {
+      height: 110vh;
+      left: -965px;
+    }
+    @media (max-width: 395px) {
+      height: 109vh;
+      left: -734px;
+    }
   }
-  .landing-content {
-    padding-top: 0;
-  }
-  .jobsboard-logo {
-    width: 100px;
-    margin-left: 45px;
-  }
-}
-
-@media screen and (max-width: 349px) {
-  #blob {
-    width: 255vw;
-    height: 110vh;
-    left: -175px;
+  
+  @media (max-height: 667px) {
+    height: 130vh;
   }
 }
 </style>
