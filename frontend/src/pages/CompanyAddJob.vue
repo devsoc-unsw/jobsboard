@@ -43,7 +43,7 @@
     <!-- disclaimer box -->
     <div class="disclaimerContainer">
       Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the
-      <span id="fairWorksLink">Australian Fair Work Act 2009</span>
+      <a href="https://www.fairwork.gov.au/starting-employment/unpaid-work/student-placements" target="_blank" rel="noopener noreferrer">Australian Fair Work Act 2009</a>
       to determine whether the job post follows all guidelines and prioritises the safety of our members.
     </div>
     <!-- success/error popups -->
@@ -387,6 +387,9 @@ h1 {
   text-align: center;
   padding: 0.75rem;
 }
+.disclaimerContainer > a {
+  color: #2C8BF4;
+}
 .gridContainer {
   display: flex;
   flex-direction: row;
@@ -420,10 +423,6 @@ h1 {
   font-size: 1rem;
   padding: 0.5rem 2rem;
   margin-top: 1.5rem;
-  cursor: pointer;
-}
-#fairWorksLink {
-  color: #2C8BF4;
   cursor: pointer;
 }
 @media screen and (min-width: 900px) {
