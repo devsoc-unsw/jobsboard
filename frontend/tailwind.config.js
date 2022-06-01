@@ -6,7 +6,16 @@ module.exports = {
   theme: {
     extend: {
       backgroundColor: {
+        'jb-background': '#f6f9fc',
         'jb-blue': '#2C8BF4',
+        'jb-btn-hovered': '#1f7ade',
+      },
+      colors: {
+        'jb-headings': '#0c3149',
+        'jb-subheadings': '#415d6d',
+        'jb-placeholder': '#878787',
+        'jb-textlink': '#2c8bf4',
+        'jb-tags': '#ebecf0',
       },
       rotate: {
         '220': '220deg'
@@ -26,6 +35,11 @@ module.exports = {
         'img': { 
           'max-width': 'none'
         },
+        'body': {
+          'background': '#f6f9fc',
+          'margin': '0',
+          'height': '100%'
+        }
       })
     })
   ],

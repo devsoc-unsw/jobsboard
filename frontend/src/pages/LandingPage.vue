@@ -39,20 +39,20 @@
 
       </div>
       <div class="w-3/5 mb-12 mx-auto lg:mt-0 xl:mt-40">
-        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Our Sponsors</h3>
-        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Our Sponsors</h3>
+        <p class="text-lg text-jb-subheadings my-4 sm:mx-16">
           We aim to give you a pleasant student working experience by partnering up with only the best.
         </p>
         <SponsorCarousel />
-        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Discover Featured Student Jobs and Internships</h3>
-        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Discover Featured Student Jobs and Internships</h3>
+        <p class="text-lg text-jb-subheadings my-4 sm:mx-16">
           Spent hours trying to find something that suited you? Look no further, we've got you covered with some amazing opportunities.
         </p>
-        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
+        <p class="text-lg text-jb-subheadings my-4 sm:mx-16">
           Check out the full list of open jobs 
           <span 
-            class="text-[#2c8bf4] font-bold transition-colors duration-200 ease-linear 
-                     cursor-pointer hover:text-[#1f7ade]"
+            class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
+                     cursor-pointer hover:text-jb-btn-hovered"
           >
           here
           </span>
@@ -67,18 +67,18 @@
            />
         </div>
 
-        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Want to Post a Job?</h3>
-        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Want to Post a Job?</h3>
+        <p class="text-lg text-jb-subheadings my-4 sm:mx-16">
           Are you a company looking to advertise with us? We'd absolutely love to hear from you.
           In the meantime, you can also check out 
-          <span class="text-[#2c8bf4] font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-[#1f7ade]">other companies</span> 
+          <span class="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-btn-hovered">other companies</span> 
           that have partnered with us.
         </p>
         <div class="flex flex-col justify-evenly sm:mt-8 sm:mb-28 sm:mx-24 sm:flex-row">
           <div>
             <button 
-              class="bg-[#2c8bf4] rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
-                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-[#1f7ade] hover:shadow-btn-hovered" 
+              class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
+                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
               @click="companyRegister"
             >
             Join Us
@@ -86,16 +86,16 @@
           </div>
           <div>
             <button 
-              class="bg-[#2c8bf4] rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 mb-10 sm:mb-0
-                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-[#1f7ade] hover:shadow-btn-hovered" 
+              class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 mb-10 sm:mb-0
+                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
             >
             Post a Job
             </button>
           </div>
         </div>
 
-        <h3 class="font-bold text-3xl mb-0 text-[#0c3149]">Looking for More?</h3>
-        <p class="text-lg text-[#415d6d] my-4 sm:mx-16">
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Looking for More?</h3>
+        <p class="text-lg text-jb-subheadings my-4 sm:mx-16">
           If you're a CSE student with a keen interest in Jobs Board and looking to get involved,
           keep an eye out for our recruitment announcements on CSESoc's socials. 
           Otherwise, you can also contribute by suggesting cool new features or
@@ -104,8 +104,8 @@
         <div class="flex flex-col justify-evenly sm:mt-8 sm:mb-28 sm:mx-24 sm:flex-row">
           <div>
             <button 
-              class="bg-[#2c8bf4] rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
-                     hover:bg-[#1f7ade] hover:shadow-btn-hovered" 
+              class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
+                     hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
               @click="toGithubRepo"
             >
             Source Code
