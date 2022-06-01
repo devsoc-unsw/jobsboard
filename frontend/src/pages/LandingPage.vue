@@ -52,7 +52,7 @@
           Check out the full list of open jobs 
           <span 
             class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
-                     cursor-pointer hover:text-jb-btn-hovered"
+                     cursor-pointer hover:text-jb-textlink-hovered"
           >
           here
           </span>
@@ -71,7 +71,7 @@
         <p class="text-lg text-jb-subheadings my-4 sm:mx-16">
           Are you a company looking to advertise with us? We'd absolutely love to hear from you.
           In the meantime, you can also check out 
-          <span class="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-btn-hovered">other companies</span> 
+          <span class="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered">other companies</span> 
           that have partnered with us.
         </p>
         <div class="flex flex-col justify-evenly sm:mt-8 sm:mb-28 sm:mx-24 sm:flex-row">

@@ -1,14 +1,14 @@
 <template>
-  <div class="card-container">
-    <div class="sponsor">
-      <img :src="imagePath" class="sponsor-logo" alt="sponsor logo"/>
+  <div class="flex flex-col w-[300px] shadow-card rounded-lg mr-7">
+    <div class="min-w-0 mx-5">
+      <img :src="imagePath" class="select-none pointer-events-none object-contain w-full" alt="sponsor logo"/>
     </div>
-    <h3 class="job-title">{{ jobTitle }}</h3>
-    <div class="tags-container">
-      <div v-for="(tag, idx) in jobTag" class="tag" :key="idx">{{ tag }}</div>
+    <h3 class="text-xl font-bold mx-4 mb-4">{{ jobTitle }}</h3>
+    <div class="flex flex-col m-0 justify-evenly items-center mx-5 my-2 xs:flex-row">
+      <div v-for="(tag, idx) in jobTag" class="flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base" :key="idx">{{ tag }}</div>
     </div>
-    <p class="job-description">{{ jobDescription }}</p>
-    <div class="button-container">
+    <p class="text-base m-0 py-4 px-5 text-left text-jb-placeholder">{{ jobDescription }}</p>
+    <div class="flex justify-center mt-5">
       <button>Learn More</button>
     </div>
   </div>
@@ -49,64 +49,6 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.card-container {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  box-shadow: -2px 4px 10px rgba(0, 0, 0, 0.12);
-  border-radius: 7px;
-  margin-right: 30px;
-}
-
-.sponsor {
-  min-width: 0;
-  margin: 0 20px;
-}
-
-.sponsor-logo {
-  user-select: none;
-  pointer-events: none;
-  object-fit: contain;
-  width: 100%;
-}
-
-.job-title {
-  margin: 0 1em 1em 1em;
-}
-
-.tags-container {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0 20px 15px 20px;
-}
-
-.tag {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 8px;
-  height: 25px;
-  background: #EBECF0;
-  border-radius: 5px;
-  font-size: 11pt;
-}
-
-.job-description {
-  font-size: 12pt;
-  margin: 0;
-  padding: 15px 20px;
-  text-align: left;
-  color: $black;
-  opacity: 0.6;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-}
-
 button {
   background: #2c8bf4;
   border-radius: 10px 10px 0px 0px;
@@ -121,16 +63,6 @@ button {
   &:hover {
     cursor: pointer;
     background-color: #1f7ade;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .tags-container {
-    flex-direction: column;
-    margin: 0;
-  }
-  .tag {
-    margin: 0.25em 0;
   }
 }
 </style>
