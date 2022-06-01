@@ -12,9 +12,9 @@
     <div class="lineSeparator" />
     
     <div class="profileCardWrapper">
-      <ProfileCardVue v-for="member in members" :member="member" :key="member.name" />
+      <ProfileCardVue v-for="member in members" :member="member" :key="member.name" :style="{visibility: member.hidden ? 'visible' : 'hidden'}" />
     </div>
-    
+
     <div class="interestBox">
       <p class="interestBoxText">
         Still interested? Want to be part of this exciting team? If so, 
@@ -49,46 +49,58 @@ export default Vue.extend({
           funFact: "Fun Fact...",
           in: "https://www.linkedin.com/in/darianlmj/",
           gh: "https://github.com/ad-t",
+          photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
+          hidden: true,
         },
         {
           name: "Darian Lee",
           title: "2022 Project Lead",
           involvement: "UI Design, Frontend",
-          funFact: "Fun Fact...",
+          funFact: "Hiya! I'm one of the leads who stresses about the project way more than I should. Outside of uni, I love watching sitcoms. Fun fact: I won 1st place in a \"The Big Bang Theory\" trivia once. Really excited for Jobs Board to help kickstart your career!",
           in: "https://www.linkedin.com/in/darianlmj/",
           gh: "https://github.com/Darianlmj/",
+          photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
+          hidden: true,
         },
         {
           name: "Joanna He",
           title: "2022 Project Lead",
           involvement: "Backend",
-          funFact: "Fun Fact...",
+          funFact: "Hi there! I’m one of the project leads for Jobs Board. In my spare time, I enjoy playing tennis, cafe hopping and travelling. Keen to see how Jobs Board can help you take the first step towards your career goals.",
           in: "https://www.linkedin.com/in/joannaahe/",
           gh: "",
+          photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
+          hidden: true,
         },
         {
           name: "Matthew Liu",
           title: "2022 Subcomittee Member",
           involvement: "Backend",
-          funFact: "Fun Fact...",
+          funFact: "Aspiring software engineer particularly interested working with the backend. My wildest dream would be to see Arsenal win the Champions League.",
           in: "https://www.linkedin.com/in/matthew-liu-cs/",
           gh: "",
+          photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
+          hidden: true,
         },
         {
           name: "Sunny Wang",
           title: "2022 Subcomittee Member",
           involvement: "Backend",
-          funFact: "Fun Fact...",
+          funFact: "// TODO: write an interesting fact about yourself 😆😆",
           in: "https://www.linkedin.com/in/sunny-wang-033a19206/",
           gh: "",
+          photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
+          hidden: true,
         },
         {
           name: "Sam Yu",
           title: "2022 Subcomittee Member",
           involvement: "Frontend",
-          funFact: "Learning coding and programming in my spare time has pushed me to join projects. When I am not studying or learning new skills, I like to play badminton at my local recreational center.",
+          funFact: "Hello! When I am not doing work for university or Jobs Board I like to either go out and play badminton with my local club or spend my time watching shows on netflix.",
           in: "https://www.linkedin.com/in/jihaoy/",
           gh: "https://github.com/samyu1204",
+          photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
+          hidden: true,
         },
         {
           name: "Avijit Prasad",
@@ -97,8 +109,13 @@ export default Vue.extend({
           funFact: "Fun Fact...",
           in: "https://www.linkedin.com/in/avijits01/",
           gh: "https://github.com/avijits01",
+          photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
+          hidden: true,
+        },
+        {
+          hidden: false,
         }
-      ]
+      ],
     }
   },
 });
@@ -128,11 +145,8 @@ h4 {
 }
 
 .profileCardWrapper {
-  display: flex;
   width: 100%;
-  display:inline;
-  justify-content: center;
-  text-align: center;
+  display: inline;
 }
 .interestBox {
   height: 230px;
@@ -144,6 +158,8 @@ h4 {
   background: rgba(246, 249, 252, 0.5);
   box-sizing: border-box;
   margin: auto;
+  margin-top: auto;
+
 }
 .interestBoxText {
   font-family: 'Poppins';
@@ -154,5 +170,8 @@ h4 {
   width: 95%;
   margin: auto;
   margin-top: 2%;
+}
+.finalProfileCard {
+  display: flex;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="view">
     <div class="left_view">
-      <img src="https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png" class="profileImage" >
+      <img :src="member.photo" class="profileImage" >
       <div class="icon_wrapper">
         <a :href="member.in" >
           <font-awesome-icon :icon="['fab', 'linkedin']" class="linkedin_icon" />
@@ -37,6 +37,7 @@ export default Vue.extend({
   width: 400px;
   min-width: 35%;
   display: inline-flex;
+
 }
 .right_view {
   padding-left: 20px;
