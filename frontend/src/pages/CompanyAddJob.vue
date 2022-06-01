@@ -290,6 +290,10 @@ export default Vue.extend({
         this.$store.dispatch("setApiToken", msg.token);
         this.success = true;
         this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
         setTimeout(() => {
           this.$router.push("/company/home");
         }, 5000);
