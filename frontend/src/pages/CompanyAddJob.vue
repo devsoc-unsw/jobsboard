@@ -1,7 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
-  <!-- TODO: replace with tailwind mdal -->
+  <!-- TODO: replace with tailwind modal -->
   <div class="modalWrapper">
     <Modal 
       v-if="modalVisible"
@@ -95,8 +95,8 @@
         <h2>Is this position paid?</h2>
         <select name="paidPosition" id="paidPosition" v-model="isPaidPosition">
           <option value="" disabled selected>Please select an option</option>
-          <option>Yes</option>
-          <option>No</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
         </select>
       </div>
     </div>
@@ -105,17 +105,17 @@
         <h2>Job Type</h2>
         <select name="jobType" id="jobType" v-model="jobType">
           <option value="" disabled selected>Please select an option</option>
-          <option>Intern</option>
-          <option>Grad</option>
+          <option value="intern">Intern</option>
+          <option value="grad">Grad</option>
         </select>
       </div>
       <div class="columnFlex">
         <h2>Job Mode</h2>
         <select name="jobMode" id="jobMode" v-model="jobMode">
           <option value="" disabled selected>Please select an option</option>
-          <option>Onsite</option>
-          <option>Hybrid</option>
-          <option>Remote</option>
+          <option value="onsite">Onsite</option>
+          <option value="hybrid">Hybrid</option>
+          <option value="remote">Remote</option>
         </select>
       </div>
     </div>
@@ -123,31 +123,31 @@
     <p class="subheading field">
       Please check all that applies
     </p>
-    <div class="checkBoxLabelContainer">
+    <div class="inputLabelContainer">
       <input type="checkbox" value="aus_ctz" id="wr_aus_ctz" v-model="workingRights" />
       <label for="wr_aus_ctz">Australian Citizen</label>
     </div>
-    <div class="checkBoxLabelContainer">
+    <div class="inputLabelContainer">
       <input type="checkbox" value="aus_perm_res" id="wr_aus_perm_res" v-model="workingRights" />
       <label for="wr_aus_perm_res">Australian Permanent Resident</label>
     </div>
-    <div class="checkBoxLabelContainer">
+    <div class="inputLabelContainer">
       <input type="checkbox" value="aus_stud_visa" id="wr_aus_stud_visa" v-model="workingRights" />
       <label for="wr_aus_stud_visa">Australian Student Visa</label>
     </div>
-    <div class="checkBoxLabelContainer">
+    <div class="inputLabelContainer">
       <input type="checkbox" value="aus_temp_grad_visa" id="wr_aus_temp_grad_visa" v-model="workingRights" />
       <label for="wr_aus_temp_grad_visa">Australian Temporary Grad Visa</label>
     </div>
-    <div class="checkBoxLabelContainer">
+    <div class="inputLabelContainer">
       <input type="checkbox" value="nz_ctz_and_perm_res" id="wr_nz_ctz_and_perm_res" v-model="workingRights" />
       <label for="wr_nz_ctz_and_perm_res">NZ Citizen/Permanent Resident</label>
     </div>
-    <div class="checkBoxLabelContainer">
+    <div class="inputLabelContainer">
       <input type="checkbox" value="no_wr" id="wr_no_wr" v-model="workingRights" />
       <label for="wr_no_wr">No Working Rights</label>
     </div>
-    <div class="checkBoxLabelContainer">
+    <div class="inputLabelContainer">
       <input type="checkbox" value="all" id="wr_all" v-model="workingRights" />
       <label for="wr_all">All</label>
     </div>
@@ -158,15 +158,15 @@
           Please check all that applies
         </p>
         <div>
-          <div class="checkBoxLabelContainer">
+          <div class="inputLabelContainer">
             <input type="checkbox" value="final_year" id="student_demographic_final_year" v-model="studentDemographic" />
             <label for="student_demographic_final_year">Graduates</label>
           </div>
-          <div class="checkBoxLabelContainer">
+          <div class="inputLabelContainer">
             <input type="checkbox" value="penultimate" id="student_demographic_penultimate" v-model="studentDemographic" />
             <label for="student_demographic_penultimate">Penultimate Students</label>
           </div>
-          <div class="checkBoxLabelContainer">
+          <div class="inputLabelContainer">
             <input type="checkbox" value="all" id="student_demographic_all" v-model="studentDemographic" />
             <label for="student_demographic_all">All Students</label>
           </div>
@@ -175,20 +175,20 @@
       <div class="columnFlex">
         <h2>Applicant's WAM</h2>
         <div>
-          <div class="checkBoxLabelContainer">
-            <input type="checkbox" value="HD" id="applicantWam_HD" v-model="wamRequirements" />
+          <div class="inputLabelContainer">
+            <input type="radio" value="HD" id="applicantWam_HD" v-model="wamRequirements" />
             <label for="applicantWam_HD">High Distinction | 85 and above</label>
           </div>
-          <div class="checkBoxLabelContainer">
-            <input type="checkbox" value="D" id="applicantWam_D" v-model="wamRequirements" />
+          <div class="inputLabelContainer">
+            <input type="radio" value="D" id="applicantWam_D" v-model="wamRequirements" />
             <label for="applicantWam_D">Distinction | 75 and above</label>
           </div>
-          <div class="checkBoxLabelContainer">
-            <input type="checkbox" value="C" id="applicantWam_C" v-model="wamRequirements" />
+          <div class="inputLabelContainer">
+            <input type="radio" value="C" id="applicantWam_C" v-model="wamRequirements" />
             <label for="applicantWam_C">Credit | 65 and above</label>
           </div>
-          <div class="checkBoxLabelContainer">
-            <input type="checkbox" value="none" id="applicantWam_none" v-model="wamRequirements" />
+          <div class="inputLabelContainer">
+            <input type="radio" value="none" id="applicantWam_none" v-model="wamRequirements" />
             <label for="applicantWam_none">No preference</label>
           </div>
         </div>
@@ -202,7 +202,7 @@
       placeholder="Please note down any additional information that will make recommending jobs to students easier."
       rows="6"
     />
-    <button @callback="showJobModal" id="preview_button">Preview</button>
+    <button @click="showJobModal" id="preview_button">Preview</button>
     <button @click="submitJobPost" id="submit_button">Post Job</button>
   </div>
   </StudentViewTemplate>
@@ -245,7 +245,7 @@ export default Vue.extend({
       jobMode: "",
       workingRights: [],
       studentDemographic: [],
-      wamRequirements: [],
+      wamRequirements: "",
       additionalInfo: "",
       error: false,
       errorMsg: "",
@@ -254,13 +254,12 @@ export default Vue.extend({
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
       modalContent: "",
-      selectedDate: "",
     };
   },
   methods: {
     async submitJobPost() {
       // create a date object using this value
-      let jobDate = new Date(this.selectedDate);
+      let jobDate = new Date(this.expiryDate);
       // set to the end of the set day
       jobDate.setHours(23);
       jobDate.setMinutes(59);
@@ -276,6 +275,13 @@ export default Vue.extend({
           description: this.description,
           applicationLink: this.applicationLink,
           expiry: jobDate.valueOf(),
+          jobMode: this.jobMode,
+          studentDemographic: this.studentDemographic,
+          jobType: this.jobType,
+          workingRights: this.workingRights,
+          wamRequirements: this.wamRequirements,
+          additionalInfo: this.additionalInfo,
+          isPaid: this.isPaidPosition,
         }),
       });
 
@@ -349,7 +355,7 @@ input, textarea, select {
   width: 100%;
   resize: none;
 }
-input[type="checkbox"] {
+input[type="checkbox"], input[type="radio"] {
   align-self: center;
   margin-right: 0.5rem;
   width: auto;
@@ -390,7 +396,7 @@ h1 {
   align-items: flex-start;
   width: 45%;
 }
-.checkBoxLabelContainer {
+.inputLabelContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
