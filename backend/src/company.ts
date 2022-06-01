@@ -190,15 +190,15 @@ export default class CompanyFunctions {
         .andWhere("CompanyAccount.verified = :verified", { verified: true })
         .getOne();
       
-        // prevent job from being posted since the provided company account is not verified
-        if (companyAccount === null) {
-          return {
+      // prevent job from being posted since the provided company account is not verified
+      if (companyAccount === null) {
+        return {
           status: 403,
           msg: {
             token: req.newJbToken
           }
         } as IResponseWithStatus;
-      }
+      };
         
       // add the new job to the list and commit to db
       companyAccount.company.jobs.push(newJob);
