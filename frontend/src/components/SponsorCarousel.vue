@@ -127,12 +127,6 @@ export default Vue.extend({
       JaneStreetLogo: JaneStreetLogo,
       AtlassianLogo: AtlassianLogo,
     };
-  },
-  props: {
-
-  },
-  methods: {
-
   }
 });
 </script>
@@ -190,7 +184,7 @@ export default Vue.extend({
     rgba(255, 255, 255, 0)
   );
   height: 100%;
-  width: 40px;
+  width: 2.5rem;
   position: absolute;
   z-index: 1;
 }
@@ -204,7 +198,7 @@ export default Vue.extend({
     rgba(255, 255, 255, 0)
   );
   height: 100%;
-  width: 40px;
+  width: 2.5rem;
   position: absolute;
   z-index: 1;
 }

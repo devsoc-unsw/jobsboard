@@ -188,7 +188,7 @@ main {
 
 .hero {
   @media (min-width: 481px) {
-    margin: 48px auto
+    margin: 3rem auto
   }
   @media (max-height: 844px) {
     margin-bottom: 0;

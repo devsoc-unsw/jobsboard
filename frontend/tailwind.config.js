@@ -32,9 +32,9 @@ module.exports = {
         '220': '220deg'
       },
       boxShadow: {
-        'btn': '-5px 5px 10px -1px rgb(0 0 0 / 15%)',
-        'btn-hovered': '0 2px 10px 0 rgb(0 0 0 / 50%)',
-        'card': '-2px 4px 10px rgba(0, 0, 0, 0.12)'
+        'btn': '-0.313rem 0.313rem 0.625rem -0.063rem rgb(0 0 0 / 15%)',
+        'btn-hovered': '0 0.125rem 0.625rem 0 rgb(0 0 0 / 50%)',
+        'card': '-0.125rem 0.25rem 0.625rem rgba(0, 0, 0, 0.12)'
       }
     },
   },
