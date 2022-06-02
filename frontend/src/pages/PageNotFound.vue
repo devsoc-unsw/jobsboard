@@ -1,14 +1,14 @@
 <template>
   <StudentViewTemplate notLoggedIn>
-    <main>
-      <img class="logo" :src="Logo" alt="logo"/>
-      <h1 class="title">Page not Found</h1>
-      <p>
+    <main class="flex flex-col items-center justify-center min-h-full w-full">
+      <img class="w-11/12 h-auto mt-8 mb-16 xs:w-1/2 sm:w-1/2" :src="Logo" alt="logo"/>
+      <h1 class="text-5xl font-bold text-jb-headings">Page not Found</h1>
+      <p class="text-xl text-jb-subheadings my-10 mx-auto md:mx-[25%]">
         Hmm... wondering how you ended up here in the middle of nowhere? Cause we're wondering that too. 
         But don't worry, hang tight and we will beem you back to the home page in a couple of seconds.
       </p>
-      <h3>Redirecting</h3>
-      <div class="animation">
+      <h3 class="text-xl">Redirecting</h3>
+      <div class="m-4">
         <div class="pulsing-dot">
           <div>
             <div class="pulsing-dot"></div>
@@ -43,44 +43,6 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100%;
-  width: 100%;
-}
-
-h3 {
-  font-size: 15pt;
-}
-
-.logo {
-  width: 40%;
-  height: auto;
-}
-
-.title {
-  font-size: 35pt;
-  font-weight: bold;
-  color: #0c3149;
-}
-
-p {
-  font-size: 15pt;
-  color: #415d6d;
-  margin: 0 25%;
-
-  @media screen and (max-width: 769px) {
-    margin: 0;
-  }
-}
-
-.animation {
-  margin: 1em;
-}
-
 .pulsing-dot {
   position: relative;
   left: -9999px;
