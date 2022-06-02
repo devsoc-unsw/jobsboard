@@ -51,12 +51,12 @@ export default Vue.extend({
 <style scoped lang="scss">
 button {
   background: #2c8bf4;
-  border-radius: 10px 10px 0px 0px;
-  width: 130px;
-  height: 35px;
+  border-radius: 0.625rem 0.625rem 0 0;
+  width: 8.125rem;
+  height: 2.188rem;
   color: #fff;
   font-weight: bold;
-  font-size: 12pt;
+  font-size: 1rem;
   border: 0;
   transition: 0.25s linear;
 

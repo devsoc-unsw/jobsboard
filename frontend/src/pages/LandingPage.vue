@@ -24,13 +24,13 @@
         </div>
         <div class="flex mt-8 col-span-2 self-start justify-self-start sm:flex-row">
           <button 
-            class="bg-[#264c79] border-2 border-[#ffffff5e] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-2 mr-6
+            class="bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-2 mr-6
                     hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:text-md sm:mt-0"
           >
           Explore
           </button>
           <button 
-            class="bg-[#264c79] border-2 border-[#ffffff5e] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-2 mr-6
+            class="bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-2 mr-6
                     hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:text-md sm:mt-0"
           >
           Advertise
