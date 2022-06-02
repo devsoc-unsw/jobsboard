@@ -1,51 +1,51 @@
 <template>
-  <div class="carousel">
+  <div class="relative overflow-hidden grow-0 shrink-0 basis-[230px]">
     <div class="carousel-bar-left"></div>
-    <div class="carousel-content">
+    <div class="relative w-[1450px] h-[100px] my-10 grow-0 shrink-0 basis-auto">
       <div class="sponsor-container carousel-animation-first">
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="GoogleLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="AmazonLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="MicrosoftLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="CanvaLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="JaneStreetLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="AtlassianLogo"
             loading="lazy"
             alt="sponsor logo"
@@ -53,49 +53,49 @@
         </div>
       </div>
       <div class="sponsor-container carousel-animation-second">
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="GoogleLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="AmazonLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="MicrosoftLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="CanvaLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="JaneStreetLogo"
             loading="lazy"
             alt="sponsor logo"
           />
         </div>
-        <div class="sponsor">
+        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
-            class="sponsor-logo"
+            class="select-none pointer-events-none object-contain w-full"
             :src="AtlassianLogo"
             loading="lazy"
             alt="sponsor logo"
@@ -181,18 +181,6 @@ export default Vue.extend({
   animation-timing-function: linear;
 }
 
-.sponsor {
-  flex: 1 1 200px;
-  min-width: 0;
-  margin: 20px;
-}
-
-.carousel {
-  position: relative;
-  overflow: hidden;
-  flex: 0 0 230px;
-}
-
 .carousel-bar-left {
   left: 0;
   top: 0;
@@ -219,20 +207,5 @@ export default Vue.extend({
   width: 40px;
   position: absolute;
   z-index: 1;
-}
-
-.sponsor-logo {
-  user-select: none;
-  pointer-events: none;
-  object-fit: contain;
-  width: 100%;
-}
-
-.carousel-content {
-  position: relative;
-  width: 1450px;
-  height: 100px;
-  margin: 40px 0;
-  flex: 0 0 auto;
 }
 </style>
