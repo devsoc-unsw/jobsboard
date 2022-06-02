@@ -29,18 +29,13 @@ services:
     expose:
       - 8081
   db:
-    image: mariadb:latest
+    image: postgres:14.3-alpine
     ports:
-      - "3306:3306"
-    expose:
-      - 3306
+      - "5432:5432"
     environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_HOST=db
-      - MYSQL_PORT=3306
-      - MYSQL_USER=jb_ci
-      - MYSQL_PASSWORD=jb_ci
-      - MYSQL_DATABASE=jb_ci
+      POSTGRES_PASSWORD: "password"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
   test:
     build:
       dockerfile: Dockerfile.test
