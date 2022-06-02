@@ -17,6 +17,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import store from "./store/store";
+import './style/tailwind.scss';
 
 library.add(faBuilding as IconDefinition);
 library.add(faChevronLeft as IconDefinition);
