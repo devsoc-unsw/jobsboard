@@ -357,6 +357,7 @@ input, textarea, select {
   align-self: flex-start;
   margin: 0;
   width: 100%;
+  box-shadow: none;
   resize: none;
 }
 input[type="checkbox"], input[type="radio"] {
@@ -401,6 +402,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  text-align: left;
   width: 45%;
 }
 .inputLabelContainer {
@@ -408,6 +410,7 @@ h1 {
   flex-direction: row;
   align-items: center;
   align-self: flex-start;
+  text-align: left;
 }
 #preview_button {
   border: none;
@@ -425,13 +428,23 @@ h1 {
   margin-top: 1.5rem;
   cursor: pointer;
 }
-@media screen and (min-width: 900px) {
+@media screen and (max-width: 1030px) {
   input, textarea {
     padding: 1rem;
     background: $white;
   }
   .contentBox {
     width: 85%;
+    // text-align: left;
+  }
+  .gridContainer {
+    flex-direction: column;
+  }
+  .columnFlex {
+    width: 100%;
+  }
+  h2 {
+    align-self: center;
   }
 }
 </style>
