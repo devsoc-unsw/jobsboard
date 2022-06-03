@@ -1,9 +1,10 @@
 <template>
-  <div id="footer-container">
+  <div class="flex flex-col justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-row">
     <div>
-      <img class="main-logo" :src="logo" />
-      <div class="footer-links">
-        <a 
+      <img class="inline pt-4 pr-4 pl-4 w-2/3 sm:w-1/2 md:w-2/3 xl:w-1/2 2xl:w-1/3" :src="logo" />
+      <div class="py-2.5 font-bold">
+        <a
+          class="py-2.5" 
           href="https://docs.google.com/forms/d/e/1FAIpQLSeldliO0mbbbJWvJk3CoUhiN-ACwmHGnX-e3xtO-l4rGk9bPg/viewform"
           target="_blank"
         >
@@ -12,29 +13,29 @@
         <a>Meet the Team</a>
       </div>
       <p>&#169; CSESoc UNSW - 2022</p>
-      <div class="social-media-container">
+      <div class="flex justify-center py-[15px]">
         <a href="https://www.facebook.com/csesoc" target="__blank">
-          <img class="social-media-logo" :src="facebookLogo" />
+          <img class="block w-1/2" :src="facebookLogo" />
         </a>
         <a href="https://www.instagram.com/csesoc_unsw/?hl=en" target="__blank">
-          <img class="social-media-logo" :src="instagramLogo" />
+          <img class="block w-1/2" :src="instagramLogo" />
         </a>
         <a href="https://au.linkedin.com/company/csesoc" target="__blank">
-          <img class="social-media-logo" :src="linkedinLogo" />
+          <img class="block w-1/2" :src="linkedinLogo" />
         </a>
         <a href="https://www.youtube.com/channel/UC1JHpRrf9j5IKluzXhprUJg" target="__blank">
-          <img class="social-media-logo" :src="youtubeLogo" />
+          <img class="block w-1/2" :src="youtubeLogo" />
         </a>
         <a href="https://bit.ly/CSESocDiscord" target="__blank">
-          <img class="social-media-logo" :src="discordLogo" />
+          <img class="block w-1/2" :src="discordLogo" />
         </a>
         <a href="https://github.com/csesoc" target="__blank">
-          <img class="social-media-logo" :src="githubLogo" />
+          <img class="block w-1/2" :src="githubLogo" />
         </a>
       </div>
     </div>
 
-    <div id="box-right">
+    <div class="flex flex-col justify-center items-center text-justify px-[30px]">
       <p>
         CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. 
         We do not represent the School, Faculty, or University. 
@@ -82,32 +83,20 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-#footer-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 30px 50px 30px 30px;
-  background-color: #2C8BF4;
-  align-items: center;
-}
-
-#box-right {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: justify;
-  padding: 0 30px 0 30px;
-}
-
 p {
   color: white;
   font-size: 0.75em;
   margin: 0;
-}
 
-span {
-  color: white;
-  font-size: 16px;
+  @media screen 
+  and (min-width: 320px) 
+  and (max-width: 768px) {
+    font-size: 1em;
+  }
+
+  @media screen and (min-width: 768.1px) {
+    font-size: 1em;
+  }
 }
 
 a {
@@ -116,77 +105,5 @@ a {
   align-items: center;
   text-decoration: none;
   color: #ffffff;
-}
-
-.footer-links {
-  padding: 10px 0 10px 0;
-  font-weight: bold;
-}
-
-.footer-links a {
-  margin: 10px 0;
-}
-
-.main-logo {
-  width: 40%;
-  padding: 1rem 1rem 0 1rem;
-}
-
-.social-media-container {
-  display: flex;
-  justify-content: center;
-  padding: 15px 0 10px 0;
-}
-
-.social-media-logo {
-  display: block;
-  width: 67%;
-  height: 67%;
-}
-
-// Mobile to Tablet devices
-@media screen 
-and (min-width: 320px) 
-and (max-width: 768.98px) {
-  p {
-    font-size: 1em;
-  }
-
-  #footer-container {
-    flex-direction: column;
-  }
-
-  .footer-links {
-    margin-top: 20px;
-  }
-
-  .social-media-container {
-    margin: 10px 0;
-  }
-}
-
-// Mobile devices
-@media screen 
-and (min-width: 320px)
-and (max-width: 480.98px) {
-  .main-logo {
-    width: 50%;
-  }
-}
-
-// Tablet devices
-@media screen 
-and (min-width: 481px) 
-and (max-width: 768.98px) {
-  .main-logo {
-    width: 37%;
-  }
-}
-
-// Desktop devices
-@media screen and (min-width: 769px) {
-  p {
-    font-size: 1em;
-  }
 }
 </style>
