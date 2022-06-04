@@ -1,8 +1,8 @@
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
-  purge: ['./public/index.html', './src/**/*.{vue,js,ts}'],
-  darkMode: false,
+  content: ['./public/index.html', './src/**/*.{vue,js,ts}'],
+  media: false,
   theme: {
     screens: {
       // The following screen sizes are converted into css like so

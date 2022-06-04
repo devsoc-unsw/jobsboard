@@ -1,7 +1,7 @@
 <template>
   <StudentViewTemplate notLoggedIn>
     <main class="flex flex-col items-center justify-center min-h-full w-full">
-      <img class="w-full h-auto mt-8 mb-16 xs:w-1/2 sm:w-1/2 md:w-2/5" :src="Logo" alt="logo"/>
+      <img class="filter invert w-3/5 mt-10 mb-16 xs:w-1/2 sm:w-3/5 md:w-1/5" :src="Robot" alt="logo"/>
       <h1 class="text-5xl font-bold text-jb-headings">Page not Found</h1>
       <p class="text-xl text-jb-subheadings my-10 mx-auto md:mx-[25%]">
         Hmm... wondering how you ended up here in the middle of nowhere? Cause we're wondering that too.
@@ -23,6 +23,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import StudentViewTemplate from "../components/StudentViewTemplate.vue";
 import Logo from "@/assets/logos/csesocgreyblue.png";
+import Robot from "@/assets/misc/404_Robot.png";
 
 export default Vue.extend({
   name: "PageNotFound",
@@ -32,6 +33,7 @@ export default Vue.extend({
   data() {
     return {
       Logo: Logo,
+      Robot: Robot,
     };
   },
   mounted() {
