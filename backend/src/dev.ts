@@ -22,7 +22,7 @@ export async function seedDB(activeEntities: any[]) {
   adminAccount.hash = Secrets.hash("incorrect pony plug paperclip");
   await AppDataSource.manager.save(adminAccount);
 
-  // create a company account
+  // create a verified company account
   const companyAccount = new CompanyAccount();
   companyAccount.username = "test";
   companyAccount.hash = Secrets.hash("test");
@@ -94,10 +94,11 @@ export async function seedDB(activeEntities: any[]) {
 
   await AppDataSource.manager.save(companyAccount);
   
-  // create a company account used for password reset
+  // create an unverfied company account 
   const companyAccount2 = new CompanyAccount();
   companyAccount2.username = "test2";
   companyAccount2.hash = Secrets.hash("test2");
+  companyAccount.verified = false;
   const company2 = new Company();
   company2.name = "Test company 2";
   company2.location = "Hong Kong";

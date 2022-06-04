@@ -189,26 +189,25 @@ export default class CompanyFunctions {
       newJob.expiry = new Date(msg.expiry);
 
       // get the company and the list of its jobs
-      let companyAccount: CompanyAccount = undefined;
-      try {
-        companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(CompanyAccount)
-            .createQueryBuilder()
-            .leftJoinAndSelect("CompanyAccount.company", "company")
-            .leftJoinAndSelect("company.jobs", "job")
-            .where("CompanyAccount.id = :id", { id: req.companyAccountID })
-            .andWhere("CompanyAccount.verified = :verified", { verified: true })
-            .getOne();
-        }, `Failed to find COMPANY_ACCOUNT=${req.companyAccountID}`);
-      } catch (error) {
-        // reject because a verified account could not be found and thus can't post a job
+      const companyAccount : CompanyAccount = await AppDataSource
+        .getRepository(CompanyAccount)
+        .createQueryBuilder()
+        .leftJoinAndSelect("CompanyAccount.company", "company")
+        .leftJoinAndSelect("company.jobs", "job")
+        .where("CompanyAccount.id = :id", { id: req.companyAccountID })
+        .andWhere("CompanyAccount.verified = :verified", { verified: true })
+        .getOne();
+      
+      // prevent job from being posted since the provided company account is not verified
+      if (companyAccount === null) {
         return {
           status: 403,
           msg: {
             token: req.newJbToken
           }
         } as IResponseWithStatus;
-      }
+      };
+        
       // add the new job to the list and commit to db
       companyAccount.company.jobs.push(newJob);
       await AppDataSource.manager.save(companyAccount);
