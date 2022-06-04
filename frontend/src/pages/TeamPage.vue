@@ -1,27 +1,33 @@
 <template>
   <GeneralPageTemplateVue>
-    <h2>
+    <h2 class="font-bold text-4xl text-[#1a324e] drop-shadow-xl mb-10">
       Interested about the people behind <br />
       Jobs Board?
     </h2>
-    <h4>
+    <h4 class="font-bold text-lg mb-3 text-jb-headings">
       Hi there! We're the jobsboard team and we want <br />
       to help you find your dream student job!
     </h4>
     
-    <div class="lineSeparator" />
+    <div class="lineSeparator w-80 h-1 bg-gray-300 m-auto mt-10 mb-20" />
     
-    <div class="profileCardWrapper">
-      <ProfileCardVue v-for="member in members" :member="member" :key="member.name" :style="{visibility: member.hidden ? 'visible' : 'hidden'}" />
+    <div class="justify-items-center grid grid-rows-4 grid-flow-col profileCardWrapper">
+      <ProfileCardVue :member="members[0]" :key="members[0].name" />
+      <ProfileCardVue :member="members[1]" :key="members[1].name" />
+      <ProfileCardVue :member="members[2]" :key="members[2].name" />
+      <ProfileCardVue :member="members[3]" :key="members[3].name" />
+      <ProfileCardVue :member="members[4]" :key="members[4].name" />
+      <ProfileCardVue :member="members[5]" :key="members[5].name" />
+      <ProfileCardVue :member="members[6]" :key="members[6].name" />
     </div>
 
-    <div class="interestBox">
-      <p class="interestBoxText">
+    <div class="interestBox h-60 box-border m-auto mt-auto w-8/12 rounded-md mb-24">
+      <p class="text-jb-subheadings my-4 text-lg interestBoxText">
         Still interested? Want to be part of this exciting team? If so, 
-        then keep an eye out for our recruitment announcements on CSESoc’s socials. 
-        We’re always looking for keen and passionate people with a drive to learn and contribute.
+        then keep an eye out for our recruitment announcements on CSESoc's socials. 
+        We're always looking for keen and passionate people with a drive to learn and contribute.
       </p>
-      <p class="interestBoxText">
+      <p class="text-jb-subheadings text-lg interestBoxText">
         Otherwise, you can also contribute by suggesting cool new features or even coding them 
         yourself and making a pull request on the jobsboard repo.
       </p>
@@ -34,7 +40,7 @@ import { Vue } from "vue-property-decorator";
 import ProfileCardVue from "@/components/ProfileCard.vue";
 import GeneralPageTemplateVue from "@/components/GeneralPageTemplate.vue";
 export default Vue.extend({
-  name: "ContributionPage",
+  name: "TeamPage",
   components: {
     ProfileCardVue,
     GeneralPageTemplateVue,
@@ -50,7 +56,6 @@ export default Vue.extend({
           in: "https://www.linkedin.com/in/darianlmj/",
           gh: "https://github.com/ad-t",
           photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
-          hidden: true,
         },
         {
           name: "Darian Lee",
@@ -60,7 +65,6 @@ export default Vue.extend({
           in: "https://www.linkedin.com/in/darianlmj/",
           gh: "https://github.com/Darianlmj/",
           photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
-          hidden: true,
         },
         {
           name: "Joanna He",
@@ -70,7 +74,6 @@ export default Vue.extend({
           in: "https://www.linkedin.com/in/joannaahe/",
           gh: "https://github.com/joanna209",
           photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
-          hidden: true,
         },
         {
           name: "Matthew Liu",
@@ -80,7 +83,6 @@ export default Vue.extend({
           in: "https://www.linkedin.com/in/matthew-liu-cs/",
           gh: "https://github.com/matth3wliuu",
           photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
-          hidden: true,
         },
         {
           name: "Sunny Wang",
@@ -90,7 +92,6 @@ export default Vue.extend({
           in: "https://www.linkedin.com/in/sunny-wang-033a19206/",
           gh: "https://github.com/casio987",
           photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
-          hidden: true,
         },
         {
           name: "Sam Yu",
@@ -100,7 +101,6 @@ export default Vue.extend({
           in: "https://www.linkedin.com/in/jihaoy/",
           gh: "https://github.com/samyu1204",
           photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
-          hidden: true,
         },
         {
           name: "Avijit Prasad",
@@ -110,11 +110,7 @@ export default Vue.extend({
           in: "https://www.linkedin.com/in/avijits01/",
           gh: "https://github.com/avijits01",
           photo: "https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png",
-          hidden: true,
         },
-        {
-          hidden: false,
-        }
       ],
     }
   },
@@ -123,55 +119,23 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-h2 { 
-  font-weight: bolder;
-  text-shadow: 1px 1px #B0B0B0;
-  font-family: 'Poppins';
-  font-size: 35px;
-}
-.lineSeparator {
-  width: 400px;
-  height: 4px;
-  background-color: #E3E3E3;
-  margin: auto;
-  margin-top: 3%;
-  margin-bottom: 8%;
-}
-h4 {
-  color: #415D6D;
-  font-weight: 600;
-  font-family: 'Poppins';
-  font-size: 20px;
-}
 
 .profileCardWrapper {
-  width: 100%;
-  display: inline;
+  @media (max-width: 1050px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 .interestBox {
-  height: 230px;
-  width: 70%;
-  background: #B0B0B0;
-  border-radius: 10px;
   border-top: 10px solid rgba(0, 117, 255, 0.5);
   box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.15);
   background: rgba(246, 249, 252, 0.5);
-  box-sizing: border-box;
-  margin: auto;
-  margin-top: auto;
 
 }
 .interestBoxText {
-  font-family: 'Poppins';
-  font-weight: 400;
-  font-size: 2vmin;
-  line-height: 27px;
-  color: #415D6D;
-  width: 95%;
-  margin: auto;
-  margin-top: 2%;
-}
-.finalProfileCard {
-  display: flex;
+  @media (max-width: 674px) {
+    font-size: 2.5vmin;
+  }
 }
 </style>

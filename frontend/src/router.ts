@@ -22,7 +22,7 @@ const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
 const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
 const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
 const CompanyManageJobs = () => import("@/pages/CompanyManageJobs.vue");
-const ContributionPage = () => import("@/pages/ContributionPage.vue");
+const TeamPage = () => import("@/pages/TeamPage.vue");
 
 export default new Router({
   mode: "history",
@@ -80,8 +80,8 @@ export default new Router({
     props: true,
     name: "token",
   }, {
-    path: "/contribution",
-    component: ContributionPage,
+    path: "/team",
+    component: TeamPage,
   }, {
     path: "/",
     component: LandingPage,
