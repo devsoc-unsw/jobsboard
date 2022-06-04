@@ -4,8 +4,8 @@
       <img class="filter invert w-3/5 mt-10 mb-16 xs:w-1/2 sm:w-3/5 md:w-1/5" :src="Robot" alt="logo"/>
       <h1 class="text-5xl font-bold text-jb-headings">Page not Found</h1>
       <p class="text-xl text-jb-subheadings my-10 mx-auto md:mx-[25%]">
-        Hmm... wondering how you ended up here in the middle of nowhere? Cause we're wondering that too.
-        But don't worry, hang tight and we will beem you back to the home page in a couple of seconds.
+        Hmm... wondering how you ended up here in the middle of nowhere? 'Cause we're wondering that too.
+        But don't worry, hang tight and we will beam you back to the home page in a couple of seconds.
       </p>
       <h3 class="text-xl font-bold">Redirecting</h3>
       <div class="m-4">

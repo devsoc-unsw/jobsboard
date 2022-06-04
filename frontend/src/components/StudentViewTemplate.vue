@@ -105,7 +105,6 @@ export default Vue.extend({
 
 .contentWidth {
   width: 70%;
-  height: 80vh;
   margin: auto;
 }
 
