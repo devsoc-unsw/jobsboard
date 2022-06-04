@@ -149,7 +149,6 @@ describe("admin", () => {
         password: newCompanyCredentials.password,
       })
       .then(response => response.body.token);
-
       // login as an admin
       this.adminToken = await server
       .post("/authenticate/admin")

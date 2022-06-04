@@ -159,6 +159,9 @@ export default class CompanyFunctions {
           }
         } as IResponseWithStatus;
       }
+      
+      console.log("LINE 163\n");
+      console.log(req.body);
       // ensure required parameters are present
       const msg = {
         applicationLink: req.body.applicationLink.trim(),
@@ -166,6 +169,9 @@ export default class CompanyFunctions {
         role: req.body.role.trim(),
         expiry: req.body.expiry,
       };
+      
+      console.log("LINE 173" + msg + "\n");
+      
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
       Helpers.requireParameters(msg.applicationLink);
@@ -173,7 +179,9 @@ export default class CompanyFunctions {
       Helpers.isDateInTheFuture(msg.expiry);
       Helpers.validApplicationLink(msg.applicationLink);
       Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`);
-
+        
+      console.log("LINE 183\n");
+      
       const newJob = new Job();
       newJob.role = msg.role;
       newJob.description = msg.description;
