@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex mb-16">
     <div class="profileImage">
       <img :src="member.photo" class="w-28 h-28" >
       <div class="justify-items-center mt-6 ml-3">
