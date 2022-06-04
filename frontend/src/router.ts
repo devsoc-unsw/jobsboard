@@ -4,6 +4,7 @@ import Router from "vue-router";
 Vue.use(Router);
 
 // pages
+const LandingPage = () => import("@/pages/LandingPage.vue");
 const PageNotFoundPage = () => import("@/pages/PageNotFound.vue");
 const LoginPage = () => import("@/pages/LoginPage.vue");
 const StudentLoginPage = () => import("@/pages/StudentLoginPage.vue");
@@ -83,7 +84,7 @@ export default new Router({
     component: ContributionPage,
   }, {
     path: "/",
-    component: LoginPage,
+    component: LandingPage,
   }, {
     path: "*",
     component: PageNotFoundPage,
