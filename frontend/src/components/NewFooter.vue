@@ -10,7 +10,7 @@
         >
         Got a Question?
         </a>
-        <a @click="toTeamPage">Meet the Team</a>
+        <a @click="toTeamPage" class="cursor-pointer">Meet the Team</a>
       </div>
       <p>&#169; CSESoc UNSW - 2022</p>
       <div class="flex justify-center py-[15px]">
