@@ -10,21 +10,21 @@
     </h4>
     
     <div class="lineSeparator w-80 h-1 bg-gray-300 m-auto mt-10 mb-20" />
-    
-    <div class="justify-items-center grid grid-rows-4 grid-flow-col profileCardWrapper">
+    <!-- items-center -->
+    <div class="justify-items-center grid grid-cols-1 grid-flow-row lg:grid-cols-2">
       <ProfileCard v-for="member in members" :member="member" :key="member.name" />
     </div>
 
-    <div class="borderWidth-info-box box-border m-auto w-8/12 rounded-md mb-24
+    <div class="interestBox box-border m-auto w-8/12 rounded-md mb-24
                 shadow-card bg-white"
     >
       <div class="flex flex-col items-center px-10 pt-4 pb-8">
-        <p class="text-jb-subheadings my-4 text-lg interestBoxText">
+        <p class="text-jb-subheadings my-4 text-lg">
           Still interested? Want to be part of this exciting team? If so, 
           then keep an eye out for our recruitment announcements on CSESoc's socials. 
           We're always looking for keen and passionate people with a drive to learn and contribute.
         </p>
-        <p class="text-jb-subheadings text-lg interestBoxText">
+        <p class="text-jb-subheadings text-lg">
           Otherwise, you can also contribute by suggesting cool new features or even coding them 
           yourself and making a pull request on the jobsboard repo.
         </p>
@@ -117,18 +117,7 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-
-.profileCardWrapper {
-  @media (max-width: 1050px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-.interestBoxText {
-  @media (max-width: 674px) {
-    font-size: 2.5vmin;
-  }
+.interestBox {
+  border-top: 10px solid rgba(0, 117, 255, 0.5);
 }
 </style>
