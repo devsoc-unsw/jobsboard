@@ -22,6 +22,7 @@ const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
 const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
 const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
 const CompanyManageJobs = () => import("@/pages/CompanyManageJobs.vue");
+const TeamPage = () => import("@/pages/TeamPage.vue");
 
 export default new Router({
   mode: "history",
@@ -78,6 +79,9 @@ export default new Router({
     component: CompanyPasswordResetPage,
     props: true,
     name: "token",
+  }, {
+    path: "/team",
+    component: TeamPage,
   }, {
     path: "/",
     component: LandingPage,

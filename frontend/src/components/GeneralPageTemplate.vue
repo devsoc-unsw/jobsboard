@@ -18,9 +18,9 @@
     <Header />
     <div class="homeBox">
       <slot />
-      <div class="footer">
-        <NewFooter />
-      </div>
+    </div>
+    <div class="footer">
+      <NewFooter />
     </div>
   </div>
 </template>
@@ -91,14 +91,12 @@ input, textarea {
 .homeBox {
   width: 100%;
   // padding: 2%;
-  background: $white;
   text-align: center;
   text-decoration: none;
   margin-left: auto !important;
   margin-right: auto !important;
   padding-top: 2em;
   padding-bottom: 2em;
-  box-shadow: 0px 0px 10px 1px black;
   flex-grow: 1;
 }
 
@@ -147,7 +145,6 @@ input, textarea {
   margin-left: auto;
   margin-right: auto;
   padding: 0;
-  background: $darkblue;
   width: 100%;
 }
 .header {
