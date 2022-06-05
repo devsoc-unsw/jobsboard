@@ -96,7 +96,7 @@ export default Vue.extend({
 }
 
 .content {
-  background: $grey;
+  background: #f6f9fc;
   color: $black;
   /* padding: 0.5rem; */
   min-height: 100%;
