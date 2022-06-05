@@ -10,7 +10,7 @@
         >
         Got a Question?
         </a>
-        <a>Meet the Team</a>
+        <a @click="toTeamPage">Meet the Team</a>
       </div>
       <p>&#169; CSESoc UNSW - 2022</p>
       <div class="flex justify-center py-[15px]">
@@ -78,6 +78,11 @@ export default Vue.extend({
       linkedinLogo: linkedinLogo,
       githubLogo: githubLogo,
     };
+  },
+  methods: {
+    toTeamPage() {
+      this.$router.push("/team");
+    }
   },
 });
 </script>
