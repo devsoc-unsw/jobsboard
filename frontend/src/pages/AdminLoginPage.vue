@@ -1,6 +1,6 @@
 <template>
   <StudentViewTemplate notLoggedIn>
-    <div class="h-[70vh] flex flex-col justify-center items-center">
+    <main class="h-full flex flex-col justify-center items-center my-16">
       <h1 class="font-bold text-3xl mb-0 text-jb-headings">Admin Login</h1>
       <p class="text-lg text-jb-subheadings my-4 mx-8 sm:mx-[18%]">
         Enter your username and password. If there are any problems, please get in touch with a project lead.
@@ -13,7 +13,7 @@
       </div>
       <br/>
 
-      <div class="w-1/4 relative group mt-4">
+      <div class="w-full relative group mt-4 sm:w-1/2 md:w-2/5 xl:w-1/4">
         <input 
           name="username"
           id="username"
@@ -37,7 +37,7 @@
         </p>
       </div>
 
-      <div class="w-1/4 relative group mt-4">
+      <div class="w-full relative group mt-4 sm:w-1/2 md:w-2/5 xl:w-1/4">
         <input 
           name="password"
           id="password"
@@ -62,13 +62,13 @@
       </div>
       <br />
       <button 
-        class="bg-jb-textlink rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-10 sm:mb-0
+        class="bg-jb-textlink rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
                shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
         @click="performAdminLogin"
       >
         Log In
       </button>
-    </div>
+    </main>
   </StudentViewTemplate>
 </template>
 
