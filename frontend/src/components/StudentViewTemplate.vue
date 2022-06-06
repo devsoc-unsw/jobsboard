@@ -144,11 +144,10 @@ and (max-width: 768.98px) {
     margin-top: 100px;
   }
 }
-
+/* 
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
-  /* border-radius: 0.2rem; */
   margin: 0.5rem;
   font-size: 1rem;
   padding: 1rem;
@@ -161,8 +160,7 @@ input, textarea {
   background: $white;
   color: $blue;
   padding: 1rem;
-  /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
   margin: 1rem;
-}
+} */
 </style>
