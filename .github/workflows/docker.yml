@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     concurrency: production
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/develop' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
