@@ -46,13 +46,13 @@ export class Job {
   public wamRequirements: WamRequirements;
 
   @Column({
-    type: "longtext",
+    type: "text",
     default: ""
   })
   public additionalInfo: string;
 
   @Column({
-    type: "longtext"
+    type: "text"
   })
   public description: string;
 

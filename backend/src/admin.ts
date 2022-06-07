@@ -3,11 +3,8 @@ import {
   Response, 
   NextFunction 
 } from "express";
-import {
-  Connection,
-  getConnection,
-  getRepository,
-} from "typeorm";
+
+import { AppDataSource } from "./index";
 import { Job } from "./entity/job";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
@@ -30,7 +27,8 @@ export default class AdminFunctions {
       }
 
       const jobToApprove = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Job)
+        return await AppDataSource
+          .getRepository(Job)
           .createQueryBuilder()
           .where("Job.approved = :approved", { approved: false })
           .andWhere("Job.hidden = :hidden", { hidden: false })
@@ -39,7 +37,7 @@ export default class AdminFunctions {
       }, `Failed to find job ID=${jobID}`);
 
       jobToApprove.company = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getConnection()
+        return await AppDataSource
           .createQueryBuilder()
           .relation(Job, "company")
           .of(jobToApprove)
@@ -47,16 +45,15 @@ export default class AdminFunctions {
       }, `Failed to find company record owning JOB=${jobID}`);
 
       jobToApprove.company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
-        return jobToApprove.company.companyAccount = await getConnection()
+        return jobToApprove.company.companyAccount = await AppDataSource
           .createQueryBuilder()
           .relation(Company, "companyAccount")
           .of(jobToApprove.company)
           .loadOne();
       }, `Failed to find company account owning JOB=${jobID}`);
 
-      const conn: Connection = getConnection();
-
-      await conn.createQueryBuilder()
+      await AppDataSource
+        .createQueryBuilder()
         .update(Job)
         .set({ approved: true })
         .where("id = :id", { id: jobToApprove.id })
@@ -101,9 +98,9 @@ export default class AdminFunctions {
         } as IResponseWithStatus;
       }
 
-      const conn: Connection = getConnection();
       const jobToReject = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Job)
+        return await AppDataSource
+          .getRepository(Job)
           .createQueryBuilder()
           .where("Job.approved = :approved", { approved: false })
           .andWhere("Job.hidden = :hidden", { hidden: false })
@@ -112,7 +109,7 @@ export default class AdminFunctions {
       }, `Failed to find job ID=${jobID}`);
 
       jobToReject.company = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getConnection()
+        return await AppDataSource
           .createQueryBuilder()
           .relation(Job, "company")
           .of(jobToReject)
@@ -120,14 +117,15 @@ export default class AdminFunctions {
       }, `Failed to find company record owning JOB=${jobID}`);
 
       jobToReject.company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getConnection()
+        return await AppDataSource
           .createQueryBuilder()
           .relation(Company, "companyAccount")
           .of(jobToReject.company)
           .loadOne();
       }, `Failed to find company account owning JOB=${jobID}`);
 
-      await conn.createQueryBuilder()
+      await AppDataSource
+        .createQueryBuilder()
         .update(Job)
         .set({ hidden: true })
         .where("id = :id", { id: jobToReject.id })
@@ -164,7 +162,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`ADMIN=${req.adminID} attempting to query pending jobs`);
       let pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Job)
+        return await AppDataSource
+          .getRepository(Job)
           .createQueryBuilder()
           .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
           .where("Job.approved = :approved", { approved: false })
@@ -173,7 +172,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       }, `Couldn't find any pending job requests.`);
 
       for (let jobIndex = 0; jobIndex < pendingJobs.length; jobIndex++) {
-        pendingJobs[jobIndex].company = await getConnection().createQueryBuilder()
+        pendingJobs[jobIndex].company = await AppDataSource
+          .createQueryBuilder()
           .relation(Job, "company")
           .of(pendingJobs[jobIndex])
           .loadOne();
@@ -199,13 +199,14 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`ADMIN=${req.adminID} attempting to query pending companies`);
       let pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
-        const pendingCompanyAccounts = await getRepository(CompanyAccount)
+        const pendingCompanyAccounts = await AppDataSource
+          .getRepository(CompanyAccount)
           .createQueryBuilder()
           .select("CompanyAccount.id")
           .where("CompanyAccount.verified = :verified", { verified: false })
           .getMany();
         for (let companyAccountIndex = 0; companyAccountIndex < pendingCompanyAccounts.length; companyAccountIndex++) {
-          pendingCompanyAccounts[companyAccountIndex].company = await getConnection()
+          pendingCompanyAccounts[companyAccountIndex].company = await AppDataSource
             .createQueryBuilder()
             .relation(CompanyAccount, "company")
             .of(pendingCompanyAccounts[companyAccountIndex])
@@ -234,14 +235,16 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`);
       let pendingCompany = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(CompanyAccount)
+        return await AppDataSource
+          .getRepository(CompanyAccount)
           .createQueryBuilder()
           .where("CompanyAccount.id = :id", { id: req.params.companyAccountID })
           .andWhere("CompanyAccount.verified = :verified", { verified: false })
           .getOne();
       }, `Couldn't find any pending company verifications for COMPANY_ACCOUNT=${req.params.companyAccountID}.`);
 
-      await getConnection().createQueryBuilder()
+      await AppDataSource
+        .createQueryBuilder()
         .update(CompanyAccount)
         .set({ verified: true })
         .where("id = :id", { id: pendingCompany.id })
@@ -297,12 +300,13 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`Admin ID=${req.adminID} attempting to query all companies`);
       let companyAccounts = await Helpers.doSuccessfullyOrFail(async () => {
-        const companyAccounts = await getRepository(CompanyAccount)
+        const companyAccounts = await AppDataSource
+          .getRepository(CompanyAccount)
           .createQueryBuilder()
           .where("CompanyAccount.verified = :verified", { verified: true })
           .getMany();
         for (let companyAccountIndex = 0; companyAccountIndex < companyAccounts.length; companyAccountIndex++) {
-          companyAccounts[companyAccountIndex].company = await getConnection()
+          companyAccounts[companyAccountIndex].company = await AppDataSource
             .createQueryBuilder()
             .relation(CompanyAccount, "company")
             .of(companyAccounts[companyAccountIndex])
@@ -340,7 +344,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       const companyID = req.params.companyID;
       Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
       let company = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Company)
+        return await AppDataSource
+          .getRepository(Company)
           .createQueryBuilder()
           .where("Company.id = :id", { id: companyID })
           .getOne();
@@ -348,7 +353,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
       // get it's associated company account to verify
       company.companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
-        return getConnection()
+        return AppDataSource
           .createQueryBuilder()
           .relation(Company, "companyAccount")
           .of(company)
@@ -356,7 +361,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       }, `Could not get the related company account for company ID=${company.id}`);
 
       company.jobs = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getConnection()
+        return await AppDataSource
           .createQueryBuilder()
           .relation(Company, "jobs")
           .of(company)
@@ -399,7 +404,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       Helpers.isDateInTheFuture(msg.expiry);
       Helpers.validApplicationLink(msg.applicationLink);
       Logger.Info(`Attempting to create job for COMPANY=${companyID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`);
-      const conn: Connection = getConnection();
+      
       const newJob = new Job();
       newJob.role = msg.role;
       newJob.description = msg.description;
@@ -430,14 +435,15 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
       company.jobs.push(newJob);
 
-      await conn.manager.save(company);
+      await AppDataSource.manager.save(company);
 
       const newJobID: number = company.jobs[company.jobs.length - 1].id;
       Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`);
 
       // check to see if that job is queryable
       const newJobQueryVerification = await Helpers.doSuccessfullyOrFail(async () => {
-        return await getRepository(Job)
+        return await AppDataSource
+          .getRepository(Job)
           .createQueryBuilder()
           .where("Job.id = :id", { id: newJobID })
           .getOne();
