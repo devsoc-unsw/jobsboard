@@ -13,7 +13,7 @@
       </div>
       <br/>
 
-      <div class="w-full relative group mt-4 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-full relative group mt-1 sm:w-1/2 md:w-2/5 xl:w-1/4">
         <input 
           name="username"
           id="username"
@@ -60,7 +60,7 @@
           Please provide a valid password.
         </p>
       </div>
-      <br />
+
       <button 
         class="bg-jb-textlink rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
                shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
@@ -68,6 +68,12 @@
       >
         Log In
       </button>
+      <p class="text-lg text-jb-subheadings mt-6 mb-4 mx-8 sm:mx-[18%]">
+        Or return to
+        <span class="font-bold cursor-pointer text-jb-textlink hover:text-jb-textlink-hovered" @click="toLandingPage">
+          Home
+        </span>
+      </p>
     </main>
   </StudentViewTemplate>
 </template>
@@ -124,6 +130,9 @@ export default Vue.extend({
         this.error = true;
         this.errorMsg = "Invalid credentials. Please try again.";
       }
+    },
+    toLandingPage() {
+      this.$router.push("/");
     },
   },
 });
