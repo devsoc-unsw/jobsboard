@@ -13,13 +13,11 @@ services:
     environment:
       - NODE_ENV=development
       - SERVER_PORT=8080
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
-      - MYSQL_HOST=db
-      - MYSQL_PORT=3306
-      - MYSQL_USER=jb_ci
-      - MYSQL_PASSWORD=jb_ci
-      - MYSQL_DATABASE=jb_ci
-      - RESTRICTED_LOGINS=false
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=mysecretpassword
+      - DB_NAME=postgres
   frontend:
     build:
       context: ./frontend
@@ -29,13 +27,19 @@ services:
     expose:
       - 8081
   db:
-    image: postgres:14.3-alpine
+    image: postgres:14.3-alpine # this is the image that we want to run (aka app)
+    restart: always
     ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: "password"
+      - "5432:5432" # we want to expose port `5432` on our computer and map it to 5432 in the container
+    expose:
+      - 5432
+    environment: 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - ./db-data:/var/lib/postgresql/data # mounting a local folder into the container
+      
   test:
     build:
       dockerfile: Dockerfile.test

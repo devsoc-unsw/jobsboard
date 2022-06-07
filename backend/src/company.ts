@@ -102,7 +102,7 @@ export default class CompanyFunctions {
         .createQueryBuilder("company")
         .where("company.name = :name", { name: msg.name })
         .getOne();
-      if (companyAccountUsernameSearchResult !== undefined || companyNameSearchResult !== undefined) {
+      if (companyAccountUsernameSearchResult !== null || companyNameSearchResult !== null) {
         // company exists, send conflict error
         return {
           status: 409,
@@ -166,6 +166,7 @@ export default class CompanyFunctions {
         role: req.body.role.trim(),
         expiry: req.body.expiry,
       };
+      
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
       Helpers.requireParameters(msg.applicationLink);
@@ -173,7 +174,7 @@ export default class CompanyFunctions {
       Helpers.isDateInTheFuture(msg.expiry);
       Helpers.validApplicationLink(msg.applicationLink);
       Logger.Info(`Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`);
-
+        
       const newJob = new Job();
       newJob.role = msg.role;
       newJob.description = msg.description;
@@ -181,26 +182,25 @@ export default class CompanyFunctions {
       newJob.expiry = new Date(msg.expiry);
 
       // get the company and the list of its jobs
-      let companyAccount: CompanyAccount = undefined;
-      try {
-        companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(CompanyAccount)
-            .createQueryBuilder()
-            .leftJoinAndSelect("CompanyAccount.company", "company")
-            .leftJoinAndSelect("company.jobs", "job")
-            .where("CompanyAccount.id = :id", { id: req.companyAccountID })
-            .andWhere("CompanyAccount.verified = :verified", { verified: true })
-            .getOne();
-        }, `Failed to find COMPANY_ACCOUNT=${req.companyAccountID}`);
-      } catch (error) {
-        // reject because a verified account could not be found and thus can't post a job
+      const companyAccount : CompanyAccount = await AppDataSource
+        .getRepository(CompanyAccount)
+        .createQueryBuilder()
+        .leftJoinAndSelect("CompanyAccount.company", "company")
+        .leftJoinAndSelect("company.jobs", "job")
+        .where("CompanyAccount.id = :id", { id: req.companyAccountID })
+        .andWhere("CompanyAccount.verified = :verified", { verified: true })
+        .getOne();
+      
+      // prevent job from being posted since the provided company account is not verified
+      if (companyAccount === null) {
         return {
           status: 403,
           msg: {
             token: req.newJbToken
           }
         } as IResponseWithStatus;
-      }
+      };
+        
       // add the new job to the list and commit to db
       companyAccount.company.jobs.push(newJob);
       await AppDataSource.manager.save(companyAccount);

@@ -59,7 +59,7 @@ export default class Auth {
           .where("Student.zID = :zID", { zID: msg.zID })
           .getOne();
 
-        if (studentQuery === undefined) {
+        if (studentQuery === null) {
           // never logged on here before
           const student: Student = new Student()
           student.zID = msg.zID;
