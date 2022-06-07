@@ -18,7 +18,7 @@ export class MailRequest {
   public subject: string;
 
   @Column({
-    type: "longtext",
+    type: "text",
     default: ""
   })
   public content: string;
