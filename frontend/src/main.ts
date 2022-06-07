@@ -8,6 +8,7 @@ import {
   faSignOutAlt,
   faSuitcase,
   faHeart,
+  faChevronCircleUp,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -17,6 +18,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import store from "./store/store";
+import './style/tailwind.scss';
 
 library.add(faBuilding as IconDefinition);
 library.add(faChevronLeft as IconDefinition);
@@ -25,6 +27,7 @@ library.add(faSuitcase as IconDefinition);
 library.add(faHeart as IconDefinition);
 library.add(faGithub as IconDefinition);
 library.add(faLinkedin as IconDefinition);
+library.add(faChevronCircleUp as IconDefinition);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

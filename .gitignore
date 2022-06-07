@@ -12,3 +12,6 @@ mochawesome-report
 
 # ignore secrets directory
 secrets
+
+#ignore db data
+db-data

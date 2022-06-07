@@ -1,12 +1,9 @@
 import { Request, Response } from "express";
 import nodemailer from "nodemailer";
 // import dotenv from "dotenv";
-import {
-  Connection,
-  getConnection,
-  // getRepository,
-} from "typeorm";
 // import EmailTemplates from "email-templates";
+
+import { AppDataSource } from "./index";
 
 // libraries
 import Logger from "./logging";
@@ -70,7 +67,7 @@ export default class MailFunctions {
     setInterval(async () => {
       try {
         const mailRequest = await Helpers.doSuccessfullyOrFail(async () => {
-          return await getConnection().getRepository(MailRequest)
+          return await AppDataSource.getRepository(MailRequest)
           .createQueryBuilder()
           .where("MailRequest.sent = :sent", { sent: false })
           .orderBy("MailRequest.createdAt", "ASC")
@@ -88,7 +85,7 @@ export default class MailFunctions {
           Logger.Info(`NODE_ENV is not production (currently ${process.env.NODE_ENV}), therefore no email will be sent. Here is the email that would have been sent:
                       ${JSON.stringify(mailRequest)}`);
         }
-        await getConnection().createQueryBuilder()
+        await AppDataSource.createQueryBuilder()
         .update(MailRequest)
         .set({ sent: true })
         .where("id = :id", { id: mailRequest.id })
@@ -123,14 +120,13 @@ export default class MailFunctions {
       } catch (error) {
         Logger.Error(`[DEBUG] Content parameter checking failed`);
       }
-      const conn: Connection = getConnection();
       const newMailRequest: MailRequest = new MailRequest();
       newMailRequest.sender = process.env.MAIL_USERNAME;
       newMailRequest.recipient = recipient;
       newMailRequest.subject = subject;
       newMailRequest.content = content;
 
-      await conn.manager.save(newMailRequest); 
+      await AppDataSource.manager.save(newMailRequest); 
       Logger.Info("[DEBUG] Saved user mail request");
 
       // send a copy of this email to the admin
@@ -145,23 +141,23 @@ export default class MailFunctions {
         ${content}
       `;
 
-      await conn.manager.save(newMailRequestForAdmin);
+      await AppDataSource.manager.save(newMailRequestForAdmin);
       Logger.Info("[DEBUG] Saved admin mail request");
 
       // send a copy of this email to the csesoc admin
       const newMailRequestForCsesocAdmin: MailRequest = new MailRequest();
-      newMailRequestForAdmin.sender = process.env.MAIL_USERNAME;
-      newMailRequestForAdmin.recipient = "careers@csesoc.org.au";
-      newMailRequestForAdmin.subject = subject;
-      newMailRequestForAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
+      newMailRequestForCsesocAdmin.sender = process.env.MAIL_USERNAME;
+      newMailRequestForCsesocAdmin.recipient = "careers@csesoc.org.au";
+      newMailRequestForCsesocAdmin.subject = subject;
+      newMailRequestForCsesocAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
 
         CONTENT BEGINS HERE
       ------------------------
         ${content}
       `;
 
-      await conn.manager.save(newMailRequestForCsesocAdmin);
-      Logger.Info("[DEBUG] Saved admin mail request");
+      await AppDataSource.manager.save(newMailRequestForCsesocAdmin);
+      Logger.Info("[DEBUG] Saved CSESoc admin mail request");
 
       return true;
     } catch (error) {

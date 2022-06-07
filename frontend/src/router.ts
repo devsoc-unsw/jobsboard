@@ -4,6 +4,7 @@ import Router from "vue-router";
 Vue.use(Router);
 
 // pages
+const LandingPage = () => import("@/pages/LandingPage.vue");
 const PageNotFoundPage = () => import("@/pages/PageNotFound.vue");
 const LoginPage = () => import("@/pages/LoginPage.vue");
 const StudentLoginPage = () => import("@/pages/StudentLoginPage.vue");
@@ -21,6 +22,7 @@ const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
 const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
 const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
 const CompanyManageJobs = () => import("@/pages/CompanyManageJobs.vue");
+const TeamPage = () => import("@/pages/TeamPage.vue");
 
 export default new Router({
   mode: "history",
@@ -78,8 +80,11 @@ export default new Router({
     props: true,
     name: "token",
   }, {
+    path: "/team",
+    component: TeamPage,
+  }, {
     path: "/",
-    component: LoginPage,
+    component: LandingPage,
   }, {
     path: "*",
     component: PageNotFoundPage,

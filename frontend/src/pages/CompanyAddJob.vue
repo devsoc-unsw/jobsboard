@@ -18,7 +18,7 @@
         <div class="modalHeading">
           Job Description: 
         </div>
-        <JobDescriptionView :description="description" />
+        <p v-html="description"> </p>
       </div>
 
       <div class="modalGroup">
@@ -76,6 +76,7 @@
       rows="6"
     />
     <h2>Application Link</h2>
+
     <input 
       name="applicationLink"
       v-model="applicationLink"
@@ -209,9 +210,15 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
+<script setup>
+
 // libraries
 import { Component, Vue } from "vue-property-decorator";
+
+// QuillJs Related
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import { quillEditor } from 'vue-quill-editor';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
@@ -220,9 +227,11 @@ import SuccessBox from "@/components/SuccessBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import RichTextEditor from "@/components/RichTextEditor.vue";
 
 // config
 import config from "@/config/config";
+
 
 export default Vue.extend({
   name: "CompanyAddJob",
@@ -233,11 +242,24 @@ export default Vue.extend({
     LoggedInTemplate,
     Modal,
     JobDescriptionView,
+    RichTextEditor,
+    quillEditor
   },
   data() {
     return {
       role: "",
       description: "",
+      editorOptions: {
+        placeholder: 'Enter the job description...',
+        theme: "snow",
+        modules: {
+          toolbar: [
+            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
+          ]
+        }
+      },
       applicationLink: "",
       expiryDate: "",
       isPaidPosition: "",

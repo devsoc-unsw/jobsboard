@@ -11,7 +11,7 @@ const getFutureDateValue = () => {
   const futureExpiryDate = new Date();
   futureExpiryDate.setDate(futureExpiryDate.getDate() + 10);
   return futureExpiryDate.valueOf();
-}
+};
 
 describe("authentication", () => {
   describe("students", () => {
