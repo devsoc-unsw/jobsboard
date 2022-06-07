@@ -6,7 +6,7 @@ export class Logs {
   public id: number;
 
   @Column({
-    type: "longtext"
+    type: "text"
   })
   public what: string;
 
