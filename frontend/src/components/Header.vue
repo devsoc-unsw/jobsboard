@@ -3,7 +3,7 @@
     class="flex justify-evenly items-center py-11 px-[5%] 
            bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]"
   >
-    <img class="w-[40%] sm:w-[20%] md:w-[17%] lg:w-[20%] xl:w-[15%]" :src="logo" alt="CSESoc" />
+    <img class="w-[40%] cursor-pointer sm:w-[20%] md:w-[17%] lg:w-[20%] xl:w-[15%]" :src="logo" alt="CSESoc" @click="toLandingPage"/>
     <div class="flex justify-evenly items-center">
       <img class="rotate-220 fill-black cursor-pointer w-[20%] mr-2.5 sm:mr-5" :src="moon" alt="Toggle Theme" />
       <div v-if="!loggedIn">
@@ -52,6 +52,9 @@ export default Vue.extend({
   methods: {
     toStudentLogin() {
       this.$router.push("/login/student");
+    },
+    toLandingPage() {
+      this.$router.push("/");
     },
     logOut() {
       this.$store.dispatch("clearApiToken");
