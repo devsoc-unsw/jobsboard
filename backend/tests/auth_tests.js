@@ -169,7 +169,7 @@ describe("authentication", () => {
       before( async function() {
         this.unverifiedCompanyToken = await server
           .post("/authenticate/company")
-          .send({ username: "test", password: "test" })
+          .send({ username: "test2", password: "test2" })   
           .expect(200)
           .then(response => response.body.token);
 
