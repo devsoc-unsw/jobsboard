@@ -76,7 +76,6 @@
       rows="6"
     />
     <h2>Application Link</h2>
-
     <input 
       name="applicationLink"
       v-model="applicationLink"
@@ -388,16 +387,17 @@ input[type="checkbox"], input[type="radio"] {
   width: auto;
 }
 h2 {
-  margin-bottom: 0;
+  margin: 1.875rem 0 0 0;
   font-weight: bold;
   align-self: flex-start;
 }
 h1 {
+  font-size: 3rem;
   margin-bottom: 0;
   font-weight: bold;
 }
 .subheading {
-  margin: 0 0 3.125rem 0;
+  margin: 0 0 3rem 0;
   color: #00000080;
 }
 .field {
@@ -409,6 +409,7 @@ h1 {
   background-color: #FFFAE7;
   text-align: center;
   padding: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 .disclaimerContainer > a {
   color: #2C8BF4;
@@ -437,14 +438,17 @@ h1 {
 #preview_button {
   border: none;
   color: #2C8BF4;
-  background-color: white;
+  background-color: #F6F9FC;
   font-size: 1rem;
   margin-top: 1.5rem;
-  cursor: pointer
+  cursor: pointer;
+  font-weight: bold;
 }
 #submit_button {
   border-radius: 0.5rem;
-  border: 2px solid #4E5F78;
+  background-color: #2C8BF4;
+  color: white;
+  font-weight: bold;
   font-size: 1rem;
   padding: 0.5rem 2rem;
   margin-top: 1.5rem;
