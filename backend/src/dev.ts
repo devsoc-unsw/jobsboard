@@ -104,6 +104,13 @@ export async function seedDB(activeEntities: any[]) {
   job5.company = company;
   job5.approved = true;
   job5.expiry = new Date('2035-01-01');
+  job5.mode = JobMode.Remote;
+  job5.studentDemographic = [StudentDemographic.All];
+  job5.jobType = JobType.Intern;
+  job5.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job5.wamRequirements = WamRequirements.HD;
+  job5.additionalInfo = "";
+  job5.isPaid = true;
 
   const job6 = new Job();
   job6.role = "Backend Developer";
@@ -112,6 +119,14 @@ export async function seedDB(activeEntities: any[]) {
   job6.company = company;
   job6.approved = true;
   job6.expiry = new Date('2030-01-10');
+  job6.mode = JobMode.Remote;
+  job6.studentDemographic = [StudentDemographic.All];
+  job6.jobType = JobType.Intern;
+  job6.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job6.wamRequirements = WamRequirements.HD;
+  job6.additionalInfo = "";
+  job6.isPaid = true;
+
 
   companyAccount.company.jobs = [
     job1,
