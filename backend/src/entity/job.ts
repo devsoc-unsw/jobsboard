@@ -18,22 +18,22 @@ export class Job {
   public mode: JobMode;
 
   @Column({
-    type: "set",
-    enum: StudentDemographic,
+    type: "text",
+    array: true,
     default: [StudentDemographic.All]
   })
   public studentDemographic: StudentDemographic[];
 
   @Column({
-  type: "enum",
+    type: "enum",
     enum: JobType,
     default: JobType.Intern
   })
   public jobType: JobType;
 
   @Column({
-    type: "set",
-    enum: WorkingRights,
+    type: "text",
+    array: true,
     default: [WorkingRights.AusCtz, WorkingRights.AusPermRes] 
   })
   public workingRights: WorkingRights[];
