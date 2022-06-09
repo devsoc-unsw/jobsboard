@@ -46,19 +46,12 @@
       <a href="https://www.fairwork.gov.au/starting-employment/unpaid-work/student-placements" target="_blank" rel="noopener noreferrer">Australian Fair Work Act 2009</a>
       to determine whether the job post follows all guidelines and prioritises the safety of our members.
     </div>
-    <!-- success/error popups -->
-    <div v-if="success">
-      <br/>
-      <SuccessBox>
-      {{ successMsg }}
-      </SuccessBox>
-    </div>
-    <div v-else-if="error">
-      <br/>
-      <ErrorBox>
-      {{ errorMsg }}
-      </ErrorBox>
-    </div>
+    <Alert
+      :alertType="this.alertType"
+      :alertMsg="this.alertMsg"
+      :isOpen="this.isAlertOpen"
+      :handleClose="this.closeAlert"
+    />
     <!-- input fields -->
     <h2>Job Title</h2>
     <input 
@@ -221,12 +214,11 @@ import { quillEditor } from 'vue-quill-editor';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
 import RichTextEditor from "@/components/RichTextEditor.vue";
+import Alert from "@/components/Alert.vue";
 
 // config
 import config from "@/config/config";
@@ -236,13 +228,12 @@ export default Vue.extend({
   name: "CompanyAddJob",
   components: {
     StudentViewTemplate,
-    SuccessBox,
-    ErrorBox,
     LoggedInTemplate,
     Modal,
     JobDescriptionView,
     RichTextEditor,
-    quillEditor
+    quillEditor,
+    Alert
   },
   data() {
     return {
@@ -268,10 +259,9 @@ export default Vue.extend({
       studentDemographic: [],
       wamRequirements: "",
       additionalInfo: "",
-      error: false,
-      errorMsg: "",
-      success: false,
-      successMsg: "",
+      alertType: "",
+      alertMsg: "",
+      isAlertOpen: false,
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
       modalContent: "",
@@ -309,8 +299,9 @@ export default Vue.extend({
       if (response.ok) {
         const msg = await response.json();
         this.$store.dispatch("setApiToken", msg.token);
-        this.success = true;
-        this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
+        this.alertType = "success";
+        this.alertMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
+        this.isAlertOpen = true;
         window.scrollTo({
           top: 0,
           behavior: "smooth",
@@ -319,18 +310,22 @@ export default Vue.extend({
           this.$router.push("/company/home");
         }, 5000);
       } else {
-        this.error = true;
-        window.scrollTo(0, 10);
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
         if (response.status === 403) {
-          this.errorMsg = "Failed to post job request as your account has not yet been verified.";
+          this.alertMsg = "Failed to post job request as your account has not yet been verified.";
         } else if (response.status === 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
+          this.alertMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);
         } else {
-          this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
+          this.alertMsg = "Missing one or more fields. Please ensure that all fields are filled.";
         }
+        this.alertType = "error";
+        this.isAlertOpen = true;
       }
     },
     async showJobModal() {
@@ -341,6 +336,9 @@ export default Vue.extend({
       this.modalVisible = false;
       this.modalContent = "";
     },
+    async closeAlert() {
+      this.isAlertOpen = false;
+    }
   },
 });
 </script>
