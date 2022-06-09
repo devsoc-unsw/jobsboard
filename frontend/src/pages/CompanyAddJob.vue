@@ -1,40 +1,21 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
-  <!-- TODO: replace with tailwind modal -->
-  <div class="modalWrapper">
-    <Modal 
-      v-if="modalVisible"
-      @closeCallback="closeJobModal()"
-    >
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Role: 
-        </div>
-        {{ this.role }}
-      </div>
-
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Job Description: 
-        </div>
-        <p v-html="description"> </p>
-      </div>
-
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Application Link: 
-        </div>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          :href="this.applicationLink"
-        >
-          {{ this.applicationLink }}
-        </a>
-      </div>
-    </Modal>
-  </div>
+  <Modal
+    v-if="modalVisible"
+    :jobTitle="this.role"
+    :jobDescription="this.description"
+    :applicationLink="this.applicationLink"
+    :expiryDate="this.expiryDate"
+    :isPaidPosition="this.isPaidPosition"
+    :jobType="this.jobType"
+    :jobMode="this.jobMode"
+    :workingRights="this.workingRights"
+    :studentDemographic="this.studentDemographic"
+    :wamRequirements="this.wamRequirements"
+    :additionalInfo="this.additionalInfo"
+    @closeCallback="closeJobModal()"
+  />
   <div class="contentBox">
     <h1>Post a Job</h1>
     <p class="subheading">
@@ -264,7 +245,6 @@ export default Vue.extend({
       isAlertOpen: false,
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
-      modalContent: "",
     };
   },
   methods: {
@@ -330,11 +310,10 @@ export default Vue.extend({
     },
     async showJobModal() {
       this.modalVisible = true;
-      this.modalContent = "Test.";
+      console.log(this.modalVisible);
     },
     async closeJobModal() {
       this.modalVisible = false;
-      this.modalContent = "";
     },
     async closeAlert() {
       this.isAlertOpen = false;
