@@ -6,7 +6,7 @@ COPY ./ .
 
 RUN yarn build
 
-FROM node:16.14-alpine as runner
+FROM node:16.15-alpine as runner
 ENV NODE_ENV production
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
