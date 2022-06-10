@@ -5525,7 +5525,7 @@ isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-iview@^3.5.4:
+iview@3.5.4:
   version "3.5.4"
   resolved "https://registry.yarnpkg.com/iview/-/iview-3.5.4.tgz#d516b92e73b617f2dc7f45831f99059d69932f82"
   integrity sha512-CEDHdAXxpGciMV+m1jdMDs0UVqzk/AaFhCDtSGcKDLidXRMOG2TgCZhtEHhI4mf3lchKEUFO/BcXtHAfBNuy7Q==
@@ -8911,7 +8911,7 @@ vue-property-decorator@8.5.1:
   dependencies:
     vue-class-component "^7.1.0"
 
-vue-quill-editor@^3.0.6:
+vue-quill-editor@3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vue-quill-editor/-/vue-quill-editor-3.0.6.tgz#1f85646211d68a31a80a72cb7f45bb2f119bc8fb"
   integrity sha512-g20oSZNWg8Hbu41Kinjd55e235qVWPLfg4NvsLW6d+DhgBTFbEuMpcWlUdrD6qT3+Noim6DRu18VLM9lVShXOQ==

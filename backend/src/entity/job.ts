@@ -10,7 +10,7 @@ export class Job {
   public role: string;
 
   @Column({
-    type: "longtext"
+    type: "text"
   })
   public description: string;
 
