@@ -19,7 +19,7 @@
           id="username"
           v-model="username"
           type="text"
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg sm:w-full peer"
+          class="font-bold  border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
           @keyup.enter="performAdminLogin()"
           required
         />
@@ -32,7 +32,7 @@
         >
           Username
         </label>
-        <p class="invisible group-focus-within:peer-invalid:visible text-pink-600 text-sm font-bold text-left ml-2 mt-3 mb-3">
+        <p class="invisible group-focus-within:peer-invalid:visible text-jb-warning text-sm font-bold text-left ml-2 mt-3 mb-3">
           Please provide a valid username.
         </p>
       </div>
@@ -43,7 +43,7 @@
           id="password"
           v-model="password"
           type="password"
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg sm:w-full peer"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
           @keyup.enter="performAdminLogin()"
           required
         />
@@ -56,7 +56,7 @@
         >
           Password
         </label>
-        <p class="invisible group-focus-within:peer-invalid:visible text-pink-600 text-sm font-bold text-left ml-2 mt-3">
+        <p class="invisible group-focus-within:peer-invalid:visible text-jb-warning text-sm font-bold text-left ml-2 mt-3">
           Please provide a valid password.
         </p>
       </div>
