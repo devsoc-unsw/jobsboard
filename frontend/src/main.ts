@@ -9,6 +9,12 @@ import {
   faSuitcase,
   faHeart,
   faChevronCircleUp,
+  faCalendar,
+  faGraduationCap,
+  faCircleDollarToSlot,
+  faLink,
+  faAddressCard,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -28,6 +34,12 @@ library.add(faHeart as IconDefinition);
 library.add(faGithub as IconDefinition);
 library.add(faLinkedin as IconDefinition);
 library.add(faChevronCircleUp as IconDefinition);
+library.add(faCalendar as IconDefinition);
+library.add(faGraduationCap as IconDefinition);
+library.add(faCircleDollarToSlot as IconDefinition);
+library.add(faLink as IconDefinition);
+library.add(faAddressCard as IconDefinition);
+library.add(faUser as IconDefinition);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

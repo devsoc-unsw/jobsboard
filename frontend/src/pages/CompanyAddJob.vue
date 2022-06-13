@@ -310,7 +310,6 @@ export default Vue.extend({
     },
     async showJobModal() {
       this.modalVisible = true;
-      console.log(this.modalVisible);
     },
     async closeJobModal() {
       this.modalVisible = false;
