@@ -46,7 +46,7 @@
       name="description"
       v-model="description"
       type="text"
-      placeholder="Job Description - Markdown supported"
+      placeholder="Job Description"
       rows="6"
     />
     <h2>Application Link</h2>
