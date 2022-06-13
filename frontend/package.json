@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "16.14.0"
+    "node": "16.15.1"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -17,7 +17,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "6.1.1",
     "@fortawesome/vue-fontawesome": "0.1.10",
-    "core-js": "3.22.6",
+    "core-js": "3.22.8",
     "envify": "4.1.0",
     "eslint-plugin-node": "11.1.0",
     "iview": "3.5.4",
@@ -28,7 +28,7 @@
     "vue-fontawesome": "0.0.2",
     "vue-property-decorator": "8.5.1",
     "vue-quill-editor": "3.0.6",
-    "vue-router": "3.5.3",
+    "vue-router": "3.5.4",
     "vuex": "3.6.2"
   },
   "devDependencies": {
