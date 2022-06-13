@@ -341,6 +341,9 @@ export default Vue.extend({
   padding: 0.5rem;
 }
 input, textarea, select {
+  background: $white;
+  color: $blue;
+  padding: 1rem;
   -ms-box-sizing: content-box;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box; 

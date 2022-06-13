@@ -29,5 +29,5 @@ export const WamRequirements = {
   HD: "HD",
   D: "D",
   C: "C",
-  none: "None"
+  none: "No preference"
 };
