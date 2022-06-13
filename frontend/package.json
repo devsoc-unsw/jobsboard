@@ -20,14 +20,14 @@
     "core-js": "3.22.6",
     "envify": "4.1.0",
     "eslint-plugin-node": "11.1.0",
-    "iview": "^3.5.4",
+    "iview": "3.5.4",
     "terser-webpack-plugin": "2.3.8",
     "typescript": "3.9.10",
     "vue": "2.6.14",
     "vue-class-component": "7.2.6",
     "vue-fontawesome": "0.0.2",
     "vue-property-decorator": "8.5.1",
-    "vue-quill-editor": "^3.0.6",
+    "vue-quill-editor": "3.0.6",
     "vue-router": "3.5.3",
     "vuex": "3.6.2"
   },
@@ -38,7 +38,7 @@
     "@vue/cli-plugin-typescript": "4.5.17",
     "@vue/cli-service": "4.5.17",
     "eslint": "6.8.0",
-    "sass": "1.52.1",
+    "sass": "1.52.3",
     "sass-loader": "8.0.2",
     "vue-template-compiler": "2.6.14"
   }
