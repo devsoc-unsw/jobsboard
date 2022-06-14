@@ -568,13 +568,4 @@ describe("company", () => {
       }
     );
   })
-  
-  // 1) login as company => 401
-  // 2) login as student => 401
-  // 3) login as admin => 200 
-  // 4) no verified companies => return { "num": 0 }
-  // 5) test with both verified and unverified companies => return { "num": x }
-  
-  // describe("retrieving the number of verified companies") {
-  // }
 });

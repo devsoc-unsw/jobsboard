@@ -644,10 +644,10 @@ app.delete(
  *        description: Unable to query the database
  */
 app.get(
-  "/company/stats/verifiedCompanies/",
+  "/company/stats/verifiedCompanies",
   cors(corsOptions),
   Middleware.authenticateAdminMiddleware,
-  CompanyFunctions.GetNumVerifiedCompanies,
+  AdminFunctions.GetNumVerifiedCompanies,
   Middleware.genericLoggingMiddleware
 );
 

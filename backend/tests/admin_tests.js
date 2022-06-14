@@ -899,4 +899,87 @@ describe("admin", () => {
       }
     );
   });
+  
+  describe("retrieving the number of verified registered companies", () => {
+    before( async function() {
+      // login as a student
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+      
+      // login as a verified company 
+      this.companyToken1 = await server
+      .post("/authenticate/company")
+      .send({ username: "test", password: "test" })
+      .then(response => response.body.token);
+      
+      // login as a non verified company 
+      this.companyToken2 = await server
+      .post("/authenticate/company")
+      .send({ username: "test2", password: "test2" })
+      .then(response => response.body.token);
+      
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+    });
+    
+    it("result cannot be retrieved using a student account", 
+      function (done) {
+        server
+        .get("/company/stats/verifiedCompanies")
+        .set("Authorization", this.studentToken)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+    
+    it("result cannot be retrieved using a verfied company account", 
+      function (done) {
+        server
+        .get("/company/stats/verifiedCompanies")
+        .set("Authorization", this.companyToken1)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+    
+    it("result cannot be retrieved using an unverified company account", 
+      function (done) {
+        server
+        .get("/company/stats/verifiedCompanies")
+        .set("Authorization", this.companyToken2)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+    
+    it("result successfully retrieved using an admin account", 
+      function (done) {
+        server
+        .get("/company/stats/verifiedCompanies")
+        .set("Authorization", this.adminToken)
+        .expect(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+          // prior to this test running, there is only guarantee that one verified company 
+          // will have been created (dev.ts)
+          expect(res.body.num).to.be.at.least(1);
+          done();
+        });
+      }
+    ); 
+  })
 });
