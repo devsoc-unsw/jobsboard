@@ -459,8 +459,6 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       
       Logger.Info(`Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`);
       
-      console.log(verifiedCompanies);
-      
       return {
         status: 200,
         msg: {
