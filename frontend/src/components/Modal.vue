@@ -83,15 +83,11 @@
             <h3 class="text-l font-medium text-gray-900 dark:text-white">
               Job Description:
             </h3>
-            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left">
-              {{ jobDescription }}
-            </p>
+            <p v-html="jobDescription" class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left list-inside"></p>
             <h3 class="text-l font-medium text-gray-900 dark:text-white">
-              Additional Info&nbsp;
+              Additional Info:
             </h3>
-            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left">
-              {{ additionalInfo }}
-            </p>
+            <p v-html="additionalInfo" class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left list-inside"></p>
           </div>
         </div>
       </div>
