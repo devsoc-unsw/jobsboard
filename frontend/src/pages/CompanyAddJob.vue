@@ -42,12 +42,11 @@
       placeholder="Job Title"
     />
     <h2>Job Description</h2>
-    <textarea 
-      name="description"
-      v-model="description"
-      type="text"
-      placeholder="Job Description"
-      rows="6"
+    <quill-editor 
+      v-model:content="description"
+      :value="description"
+      :options="editorOptions"
+      v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
     <h2>Application Link</h2>
     <input 
@@ -169,12 +168,11 @@
       </div>
     </div>
     <h2>Additional Information</h2>
-    <textarea 
-      name="additionalInfo"
-      v-model="additionalInfo"
-      type="text"
-      placeholder="Please note down any additional information that will make recommending jobs to students easier."
-      rows="6"
+    <quill-editor 
+      v-model:content="additionalInfo"
+      :value="additionalInfo"
+      :options="{ ...editorOptions, placeholder: 'Additional Information' }"
+      v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
     <button @click="showJobModal" id="preview_button">Preview</button>
     <button @click="submitJobPost" id="submit_button">Post Job</button>
@@ -221,7 +219,7 @@ export default Vue.extend({
       role: "",
       description: "",
       editorOptions: {
-        placeholder: 'Enter the job description...',
+        placeholder: 'Job Description',
         theme: "snow",
         modules: {
           toolbar: [
@@ -343,7 +341,7 @@ export default Vue.extend({
 input, textarea, select {
   background: $white;
   color: $blue;
-  padding: 1rem;
+  padding: 1rem 0 1rem 1rem;
   -ms-box-sizing: content-box;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box; 
