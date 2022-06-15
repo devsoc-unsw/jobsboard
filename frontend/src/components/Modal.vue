@@ -3,8 +3,8 @@
     <!-- Modal backdrop -->
     <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
     <!-- Modal -->
-    <div tabindex="-1" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex">
-      <div class="relative p-4 w-full max-w-7xl h-full md:h-auto">
+    <div tabindex="-1" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+      <div class="relative p-4 w-full max-w-full h-full md:h-auto">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
@@ -83,13 +83,13 @@
             <h3 class="text-l font-medium text-gray-900 dark:text-white">
               Job Description:
             </h3>
-            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 self-center">
+            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left">
               {{ jobDescription }}
             </p>
             <h3 class="text-l font-medium text-gray-900 dark:text-white">
               Additional Info&nbsp;
             </h3>
-            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 self-center">
+            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left">
               {{ additionalInfo }}
             </p>
           </div>
