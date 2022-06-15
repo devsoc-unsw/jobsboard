@@ -23,7 +23,7 @@
                 <font-awesome-icon icon="suitcase" class="mr-1" />
                 Job Mode:&nbsp;
                 <span class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                  {{ JobTypeObject[jobMode] }}
+                  {{ jobModeObject[jobMode] }}
                 </span>
               </h3>
               <h3 class="text-l font-medium text-gray-900 dark:text-white">
@@ -37,7 +37,7 @@
                 <font-awesome-icon icon="circle-dollar-to-slot" class="mr-1" />
                 Is this position paid?&nbsp;
                 <span class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                  {{ isPaidPosition ? "Yes" : "No" }}
+                  {{ isPaidPosition === "true" ? "Yes" : "No" }}
                 </span>
               </h3>
               <h3 class="text-l font-medium text-gray-900 dark:text-white">
@@ -115,7 +115,7 @@ export default Vue.extend({
     jobDescription: String,
     applicationLink: String,
     expiryDate: String,
-    isPaidPosition: Boolean,
+    isPaidPosition: String,
     jobType: String,
     jobMode: String,
     workingRights: Array,
