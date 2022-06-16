@@ -16,16 +16,34 @@
     :additionalInfo="this.additionalInfo"
     @closeCallback="closeJobModal()"
   />
-  <div class="contentBox">
-    <h1>Post a Job</h1>
-    <p class="subheading">
-      Reach out to a talented pool of over 10 000 Computer Science and Engineering students
+  <div class="flex flex-col items-center w-4/5 mx-auto">
+    <h1 class="text-jb-headings font-bold text-3xl mt-10 lg:mt-0">Post a Job</h1>
+    <p class="text-jb-subheadings mb-12">
+      Reach out to a talented pool of over 10,000 Computer Science and Engineering students
     </p>
+
     <!-- disclaimer box -->
-    <div class="disclaimerContainer">
-      Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the
-      <a href="https://www.fairwork.gov.au/starting-employment/unpaid-work/student-placements" target="_blank" rel="noopener noreferrer">Australian Fair Work Act 2009</a>
-      to determine whether the job post follows all guidelines and prioritises the safety of our members.
+    <div class="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md lg:mx-[15%] mb-10">
+      <div class="flex">
+        <div class="py-1">
+          <font-awesome-icon icon="circle-info" size="lg"/>
+        </div>
+        <div class="mx-[2%]">
+          <p class="font-bold text-left text-xl">Important note before making a job post</p>
+          <p class="text-left">
+            Please understand that we will be cross checking this with the
+            <a
+              class="text-jb-textlink font-bold hover:text-jb-textlink-hovered"
+              href="https://www.fairwork.gov.au/starting-employment/unpaid-work/student-placements" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              Australian Fair Work Act 2009
+            </a>
+            to determine whether the job post follows all guidelines and prioritises the safety of our members.
+          </p>
+        </div>
+      </div>
     </div>
     <Alert
       :alertType="this.alertType"
@@ -33,58 +51,77 @@
       :isOpen="this.isAlertOpen"
       :handleClose="this.closeAlert"
     />
+
     <!-- input fields -->
-    <h2>Job Title</h2>
+    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Title</h2>
     <input 
       name="role"
       v-model="role"
       type="text"
       placeholder="Job Title"
+      class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
     />
-    <h2>Job Description</h2>
+    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Description</h2>
     <quill-editor 
-      v-model:content="description"
+      v-model="description"
       :value="description"
       :options="editorOptions"
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
-    <h2>Application Link</h2>
+    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Application Link</h2>
     <input 
       name="applicationLink"
       v-model="applicationLink"
       type="text"
       placeholder="www.example.com"
+      class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
     />
-    <div class="gridContainer">
-      <div class="columnFlex">
-        <h2>Application Expiry Date</h2>
+    <div class="flex flex-col justify-between w-full text-left lg:flex-row">
+      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Application Expiry Date</h2>
         <input
           name="expiryDate"
           v-model="expiryDate"
           type="date"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
         />
       </div>
-      <div class="columnFlex">
-        <h2>Is this position paid?</h2>
-        <select name="paidPosition" id="paidPosition" v-model="isPaidPosition">
-          <option value="" disabled selected>Please select an option</option>
+      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Is this position paid?</h2>
+        <select 
+          name="paidPosition" 
+          id="paidPosition" 
+          v-model="isPaidPosition" 
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8"
+        >
+          <option value="" class="text-jb-placeholder" disabled selected>Please select an option</option>
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
       </div>
     </div>
-    <div class="gridContainer">
-      <div class="columnFlex">
-        <h2>Job Type</h2>
-        <select name="jobType" id="jobType" v-model="jobType">
+    <div class="flex flex-col justify-between w-full text-left lg:flex-row">
+      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Type</h2>
+        <select 
+          name="jobType" 
+          id="jobType" 
+          v-model="jobType"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8"
+        >
           <option value="" disabled selected>Please select an option</option>
           <option value="intern">Intern</option>
           <option value="grad">Grad</option>
         </select>
       </div>
-      <div class="columnFlex">
-        <h2>Job Mode</h2>
-        <select name="jobMode" id="jobMode" v-model="jobMode">
+      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Mode</h2>
+        <select 
+          name="jobMode" 
+          id="jobMode" 
+          v-model="jobMode" 
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8"
+        >
           <option value="" disabled selected>Please select an option</option>
           <option value="onsite">Onsite</option>
           <option value="hybrid">Hybrid</option>
@@ -92,90 +129,106 @@
         </select>
       </div>
     </div>
-    <h2>Applicant's Working Rights</h2>
-    <p class="subheading field">
+    <h2 class="text-xl text-jb-headings mt-4 font-bold self-center lg:self-start">Applicant's Working Rights</h2>
+    <p class="text-jb-subheadings mb-2 self-center lg:self-start">
       Please check all that applies
     </p>
-    <div class="inputLabelContainer">
-      <input type="checkbox" value="aus_ctz" id="wr_aus_ctz" v-model="workingRights" />
+    <div class="flex flex-row items-center self-start text-left text-lg">
+      <input type="checkbox" value="aus_ctz" id="wr_aus_ctz" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_aus_ctz">Australian Citizen</label>
     </div>
-    <div class="inputLabelContainer">
-      <input type="checkbox" value="aus_perm_res" id="wr_aus_perm_res" v-model="workingRights" />
+    <div class="flex flex-row items-center self-start text-left text-lg">
+      <input type="checkbox" value="aus_perm_res" id="wr_aus_perm_res" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_aus_perm_res">Australian Permanent Resident</label>
     </div>
-    <div class="inputLabelContainer">
-      <input type="checkbox" value="aus_stud_visa" id="wr_aus_stud_visa" v-model="workingRights" />
+    <div class="flex flex-row items-center self-start text-left text-lg">
+      <input type="checkbox" value="aus_stud_visa" id="wr_aus_stud_visa" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_aus_stud_visa">Australian Student Visa</label>
     </div>
-    <div class="inputLabelContainer">
-      <input type="checkbox" value="aus_temp_grad_visa" id="wr_aus_temp_grad_visa" v-model="workingRights" />
+    <div class="flex flex-row items-center self-start text-left text-lg">
+      <input type="checkbox" value="aus_temp_grad_visa" id="wr_aus_temp_grad_visa" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_aus_temp_grad_visa">Australian Temporary Grad Visa</label>
     </div>
-    <div class="inputLabelContainer">
-      <input type="checkbox" value="nz_ctz_and_perm_res" id="wr_nz_ctz_and_perm_res" v-model="workingRights" />
+    <div class="flex flex-row items-center self-start text-left text-lg">
+      <input type="checkbox" value="nz_ctz_and_perm_res" id="wr_nz_ctz_and_perm_res" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_nz_ctz_and_perm_res">NZ Citizen/Permanent Resident</label>
     </div>
-    <div class="inputLabelContainer">
-      <input type="checkbox" value="no_wr" id="wr_no_wr" v-model="workingRights" />
+    <div class="flex flex-row items-center self-start text-left text-lg">
+      <input type="checkbox" value="no_wr" id="wr_no_wr" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_no_wr">No Working Rights</label>
     </div>
-    <div class="inputLabelContainer">
-      <input type="checkbox" value="all" id="wr_all" v-model="workingRights" />
+    <div class="flex flex-row items-center self-start text-left text-lg">
+      <input type="checkbox" value="all" id="wr_all" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_all">All</label>
     </div>
-    <div class="gridContainer">
-      <div class="columnFlex">
-        <h2>Who Should Apply for this Role?</h2>
-        <p class="subheading field">
+    <div class="flex flex-col justify-between w-full text-left lg:flex-row">
+      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
+        <h2 class="text-xl text-jb-headings mt-4 font-bold self-center lg:self-start">
+          Who Should Apply for this Role?
+        </h2>
+        <p class="text-jb-subheadings mb-2 self-center lg:self-start">
           Please check all that applies
         </p>
         <div>
-          <div class="inputLabelContainer">
-            <input type="checkbox" value="final_year" id="student_demographic_final_year" v-model="studentDemographic" />
+          <div class="flex flex-row items-center self-start text-left text-lg">
+            <input type="checkbox" value="final_year" id="student_demographic_final_year" v-model="studentDemographic" class="self-center mr-2 w-auto"/>
             <label for="student_demographic_final_year">Graduates</label>
           </div>
-          <div class="inputLabelContainer">
-            <input type="checkbox" value="penultimate" id="student_demographic_penultimate" v-model="studentDemographic" />
+          <div class="flex flex-row items-center self-start text-left text-lg">
+            <input type="checkbox" value="penultimate" id="student_demographic_penultimate" v-model="studentDemographic" class="self-center mr-2 w-auto"/>
             <label for="student_demographic_penultimate">Penultimate Students</label>
           </div>
-          <div class="inputLabelContainer">
-            <input type="checkbox" value="all" id="student_demographic_all" v-model="studentDemographic" />
+          <div class="flex flex-row items-center self-start text-left text-lg">
+            <input type="checkbox" value="all" id="student_demographic_all" v-model="studentDemographic" class="self-center mr-2 w-auto"/>
             <label for="student_demographic_all">All Students</label>
           </div>
         </div>
       </div>
-      <div class="columnFlex">
-        <h2>Applicant's WAM</h2>
+      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
+        <h2 class="text-xl text-jb-headings mt-4 font-bold self-center lg:self-start">Applicant's WAM</h2>
+        <p class="text-jb-subheadings mb-2 self-center lg:self-start">
+          Please select one option
+        </p>
         <div>
-          <div class="inputLabelContainer">
-            <input type="radio" value="HD" id="applicantWam_HD" v-model="wamRequirements" />
+          <div class="flex flex-row items-center self-start text-left text-lg">
+            <input type="radio" value="HD" id="applicantWam_HD" v-model="wamRequirements" class="self-center mr-2 w-auto"/>
             <label for="applicantWam_HD">High Distinction | 85 and above</label>
           </div>
-          <div class="inputLabelContainer">
-            <input type="radio" value="D" id="applicantWam_D" v-model="wamRequirements" />
+          <div class="flex flex-row items-center self-start text-left text-lg">
+            <input type="radio" value="D" id="applicantWam_D" v-model="wamRequirements" class="self-center mr-2 w-auto"/>
             <label for="applicantWam_D">Distinction | 75 and above</label>
           </div>
-          <div class="inputLabelContainer">
-            <input type="radio" value="C" id="applicantWam_C" v-model="wamRequirements" />
+          <div class="flex flex-row items-center self-start text-left text-lg">
+            <input type="radio" value="C" id="applicantWam_C" v-model="wamRequirements" class="self-center mr-2 w-auto"/>
             <label for="applicantWam_C">Credit | 65 and above</label>
           </div>
-          <div class="inputLabelContainer">
-            <input type="radio" value="none" id="applicantWam_none" v-model="wamRequirements" />
+          <div class="flex flex-row items-center self-start text-left text-lg">
+            <input type="radio" value="none" id="applicantWam_none" v-model="wamRequirements" class="self-center mr-2 w-auto"/>
             <label for="applicantWam_none">No preference</label>
           </div>
         </div>
       </div>
     </div>
-    <h2>Additional Information</h2>
+    <h2 class="text-xl text-jb-headings my-4 font-bold self-center lg:self-start">Additional Information</h2>
     <quill-editor 
-      v-model:content="additionalInfo"
+      v-model="additionalInfo"
       :value="additionalInfo"
       :options="{ ...editorOptions, placeholder: 'Additional Information' }"
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
-    <button @click="showJobModal" id="preview_button">Preview</button>
-    <button @click="submitJobPost" id="submit_button">Post Job</button>
+    <button 
+      @click="showJobModal" 
+      class="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
+    >
+      Preview
+    </button>
+    <button 
+      @click="submitJobPost" 
+      class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
+              shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
+    >
+      Post Job
+    </button>
   </div>
   </StudentViewTemplate>
   </LoggedInTemplate>
@@ -320,134 +373,4 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.contentBox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.modalWrapper {
-  text-align: left;
-}
-.modalHeading {
-  font-size: 1.5rem;
-  font-weight: 1000;
-}
-.modalGroup {
-  padding: 0.5rem;
-}
-input, textarea, select {
-  background: $white;
-  color: $blue;
-  padding: 1rem 0 1rem 1rem;
-  -ms-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  -webkit-box-sizing: content-box; 
-  box-sizing: content-box;
-  font-family: 'sans-serif';
-  border: 1px solid black;
-  border-left-style: solid;
-  border-left-width: 5px;
-  border-left-color: $blue;
-  border-radius: 0.25rem;
-  align-self: flex-start;
-  margin: 0;
-  width: 100%;
-  box-shadow: none;
-  resize: none;
-}
-input[type="checkbox"], input[type="radio"] {
-  align-self: center;
-  margin-right: 0.5rem;
-  width: auto;
-}
-h2 {
-  margin: 1.875rem 0 0 0;
-  font-weight: bold;
-  align-self: flex-start;
-}
-h1 {
-  font-size: 3rem;
-  margin-bottom: 0;
-  font-weight: bold;
-}
-.subheading {
-  margin: 0 0 3rem 0;
-  color: #00000080;
-}
-.field {
-  align-self: flex-start;
-  margin-bottom: 0.5rem;
-}
-.disclaimerContainer {
-  border: 1px solid black;
-  background-color: #FFFAE7;
-  text-align: center;
-  padding: 0.75rem;
-  margin-bottom: 1.5rem;
-}
-.disclaimerContainer > a {
-  color: #2C8BF4;
-}
-.gridContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  text-align: left;
-}
-.columnFlex {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  width: 45%;
-}
-.inputLabelContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: flex-start;
-  text-align: left;
-}
-#preview_button {
-  border: none;
-  color: #2C8BF4;
-  background-color: #F6F9FC;
-  font-size: 1rem;
-  margin-top: 1.5rem;
-  cursor: pointer;
-  font-weight: bold;
-}
-#submit_button {
-  border-radius: 0.5rem;
-  background-color: #2C8BF4;
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-  padding: 0.5rem 2rem;
-  margin-top: 1.5rem;
-  cursor: pointer;
-}
-@media screen and (max-width: 1030px) {
-  input, textarea {
-    padding: 1rem;
-    background: $white;
-  }
-  .contentBox {
-    width: 85%;
-    // text-align: left;
-  }
-  .gridContainer {
-    flex-direction: column;
-  }
-  .columnFlex {
-    width: 100%;
-  }
-  h2 {
-    align-self: center;
-  }
-}
 </style>
