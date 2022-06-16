@@ -92,7 +92,7 @@
           name="paidPosition" 
           id="paidPosition" 
           v-model="isPaidPosition" 
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white"
         >
           <option value="" class="text-jb-placeholder" disabled selected>Please select an option</option>
           <option value="true">Yes</option>
@@ -107,7 +107,7 @@
           name="jobType" 
           id="jobType" 
           v-model="jobType"
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white"
         >
           <option value="" disabled selected>Please select an option</option>
           <option value="intern">Intern</option>
@@ -120,7 +120,7 @@
           name="jobMode" 
           id="jobMode" 
           v-model="jobMode" 
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white"
         >
           <option value="" disabled selected>Please select an option</option>
           <option value="onsite">Onsite</option>
