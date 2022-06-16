@@ -66,46 +66,59 @@
       />
     <h2>Job Description</h2>
     <h4>Text only (for now!)</h4>
-    <textarea
+    <!-- <textarea
       name="description"
       v-model="description"
       type="text"
       placeholder="Job Description"
       rows="6"
+      /> -->
+      
+    <quill-editor 
+      v-model:content="description"
+      :value="description"
+      :options="editorOptions"
+      v-bind:style="{ 'background-color': 'white' }"
+    />
+    
+    <h2>Application Link</h2>
+    <input 
+      name="applicationLink"
+      v-model="applicationLink"
+      type="text"
+      placeholder="Application Link"
       />
-      <h2>Application Link</h2>
-      <input 
-        name="applicationLink"
-        v-model="applicationLink"
-        type="text"
-        placeholder="Application Link"
-        />
-      <br />
-      <h2>Expiry Date</h2>
-      <input
-        type="date"
-        class="dateEntryBox"
-        v-model="selectedDate"
-      />
-      <br />
-      <StandardButton>
-        <Button @callback="showJobModal">
-          Preview
-        </Button>
-      </StandardButton>
-      <GreenStandardButton>
-        <Button @callback="submitJobPost">
-          Post!
-        </Button>
-      </GreenStandardButton>
+    <br />
+    <h2>Expiry Date</h2>
+    <input
+      type="date"
+      class="dateEntryBox"
+      v-model="selectedDate"
+    />
+    <br />
+    <StandardButton>
+      <Button @callback="showJobModal">
+        Preview
+      </Button>
+    </StandardButton>
+    <GreenStandardButton>
+      <Button @callback="submitJobPost">
+        Post!
+      </Button>
+    </GreenStandardButton>
   </div>
   </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 // libraries
 import { Component, Vue } from "vue-property-decorator";
+
+// QuillJs related 
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import { quillEditor } from 'vue-quill-editor';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
@@ -118,6 +131,7 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import RichTextEditor from "@/components/RichTextEditor.vue";
 
 // config
 import config from "@/config/config";
@@ -135,11 +149,24 @@ export default Vue.extend({
     GreenStandardButton,
     Modal,
     JobDescriptionView,
+    quillEditor,
+    RichTextEditor
   },
   data() {
     return {
       role: "",
       description: "",
+      editorOptions: {
+        placeholder: 'Enter the job description...',
+        theme: "snow",
+        modules: {
+          toolbar: [
+            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
+          ]
+        }
+      },
       applicationLink: "",
       error: false,
       errorMsg: "",
@@ -247,6 +274,11 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+
+.rteditor {
+  margin: 0 auto;
+}
+
 .bigTextEntry {
   width: 100%;
   min-height: 100%;

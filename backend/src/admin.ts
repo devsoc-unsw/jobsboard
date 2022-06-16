@@ -464,4 +464,35 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       } as IResponseWithStatus;
     }, next);
   }
+  
+  public static async GetNumVerifiedCompanies(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async() => {
+      
+      Logger.Info(`Retrieving the number of verified companies as ADMIN=${req.adminID}`);
+
+      const verifiedCompanies = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource
+          .getRepository(CompanyAccount)
+          .createQueryBuilder("ca")
+          .where("ca.verified = :verified", { verified: true })
+          .getMany();
+      }, 'Failed to retrive the number of verified comapnies')
+      
+      const numVerifiedCompanies = verifiedCompanies.length;
+      
+      Logger.Info(`Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`);
+      
+      return {
+        status: 200,
+        msg: {
+          num: numVerifiedCompanies
+        }
+      } as IResponseWithStatus
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next)
+  }
 }

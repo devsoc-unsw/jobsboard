@@ -512,5 +512,4 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next);
   };
-
 }
