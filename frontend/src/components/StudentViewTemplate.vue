@@ -90,7 +90,7 @@ export default Vue.extend({
     padding: 2rem 0 0 0;
   }
   .contentWidth {
-    width: 70%;
+    width: 100%;
     margin: auto;
   }
 }
@@ -104,7 +104,7 @@ export default Vue.extend({
 }
 
 .contentWidth {
-  width: 70%;
+  width: 100%;
   margin: auto;
 }
 
