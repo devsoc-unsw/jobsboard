@@ -1,5 +1,6 @@
 import Logger from "./logging";
 import { Response, NextFunction } from "express";
+import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from "./types/job-field";
 
 interface IResponseWithStatus {
   msg: any;
@@ -78,6 +79,51 @@ export default class Helpers {
   public static isDateInTheFuture(val: number) {
     if (val <= Date.now()) {
       throw new Error(`Attempted to create a job post with a date in the past=${val}`);
+    }
+  }
+
+  public static isValidJobMode(value: any): void {
+    this.requireParameters(value);
+    if (!(Object.values(JobMode).includes(value))) {
+      throw new Error(`Invalid JobMode=${value} provided.`);
+    }
+  }
+
+  public static isValidStudentDemographic(studentDemographic: any): void {
+    this.requireParameters(studentDemographic);
+    if (!Array.isArray(studentDemographic)) {
+      throw new Error(`studentDemographic=${studentDemographic} is not an array.`)
+    }
+    studentDemographic.forEach(value => {
+      if (!(Object.values(StudentDemographic).includes(value))) {
+        throw new Error(`Invalid StudentDemogaphic=${value} provided.`);
+      }
+    })
+  }
+
+  public static isValidJobType(value: any): void {
+    this.requireParameters(value);
+    if (!(Object.values(JobType).includes(value))) {
+      throw new Error(`Invalid JobType=${value} provided.`);
+    }
+  }
+
+  public static isValidWorkingRights(workingRights: any): void {
+    this.requireParameters(workingRights);
+    if (!Array.isArray(workingRights)) {
+      throw new Error(`workingRights=${workingRights} is not an array.`)
+    }
+    workingRights.forEach(value => {
+      if (!(Object.values(WorkingRights).includes(value))) {
+        throw new Error(`Invalid WorkingRights=${value} provided.`);
+      }
+    })
+  }
+
+  public static isValidWamRequirement(value: any): void {
+    this.requireParameters(value);
+    if (!(Object.values(WamRequirements).includes(value))) {
+      throw new Error(`Invalid WamRequirements=${value} provided.`);
     }
   }
 }
