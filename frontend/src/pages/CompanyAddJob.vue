@@ -23,7 +23,7 @@
     </p>
 
     <!-- disclaimer box -->
-    <div class="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md lg:mx-[15%] mb-10">
+    <div v-if="!isAlertOpen" class="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md lg:mx-[15%] mb-10">
       <div class="flex">
         <div class="py-1">
           <font-awesome-icon icon="circle-info" size="lg"/>
