@@ -213,7 +213,13 @@
     <quill-editor 
       v-model="additionalInfo"
       :value="additionalInfo"
-      :options="{ ...editorOptions, placeholder: 'Additional Information' }"
+      :options="{ 
+        ...editorOptions, 
+        placeholder: `Please note down any additional information that will make recommending jobs to students easier. This could be things like:
+        - Point of contact for applicants to reach out with any questions.
+        - What type of role is this? Eg: Frontend, Backend, Fullstack, Site Reliability Engineer, etc.
+        - Is your company able to sponsor the applicant's visa if needed?` 
+      }"
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
     <button 
