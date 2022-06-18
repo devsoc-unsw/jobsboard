@@ -21,7 +21,6 @@
     <p class="text-jb-subheadings mb-12">
       Reach out to a talented pool of over 10,000 Computer Science and Engineering students
     </p>
-
     <!-- disclaimer box -->
     <div v-if="!isAlertOpen" class="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md lg:mx-[15%] mb-10">
       <div class="flex">
@@ -51,7 +50,6 @@
       :isOpen="this.isAlertOpen"
       :handleClose="this.closeAlert"
     />
-
     <!-- input fields -->
     <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Title</h2>
     <input 
