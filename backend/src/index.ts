@@ -660,6 +660,30 @@ app.put(
   Middleware.genericLoggingMiddleware
 );
 
+/**
+ *  @swagger
+ *  /jobs/getFeaturedJobs:
+ *    get:
+ *      description: List top 4 jobs in database
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ *      400:
+ *        description: failed to get Jobs
+ */
+ app.get(
+  "/admin/jobs/featuredJobs",
+  cors(corsOptions),
+  AdminFunctions.GetFeaturedJobs,
+  Middleware.genericLoggingMiddleware
+);
+
 /*
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);

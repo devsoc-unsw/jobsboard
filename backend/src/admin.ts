@@ -339,6 +339,45 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     }, next);
   }
 
+  public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`Attempting to get feaured jobs`);
+      let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource
+          .getRepository(Job)
+          .createQueryBuilder()
+          .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .where("Job.approved = :approved", { approved: true })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .getMany();
+      }, `Coudn't query for jobs`);
+
+      for (let jobIndex = 0; jobIndex < featuredJobs.length; jobIndex++) {
+        featuredJobs[jobIndex].company = await AppDataSource
+          .createQueryBuilder()
+          .relation(Job, "company")
+          .of(featuredJobs[jobIndex])
+          .loadOne();
+      }
+      featuredJobs = featuredJobs.slice(0, 4)
+
+      return {
+        status: 200, 
+        msg: {
+          token: req.newJbToken,
+          featuredJobs: featuredJobs
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
+
   public static async CreateJobOnBehalfOfExistingCompany(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       const companyID = req.params.companyID;

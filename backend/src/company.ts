@@ -424,6 +424,39 @@ export default class CompanyFunctions {
     }, next)
   }
 
+  public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`STUDENT=${req.studentZID} getting jobs for COMPANY=${req.params.companyID}`);
+      const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect("Job.company", "company")
+          .where("company.id = :id", { id: parseInt(req.params.companyID, 10) })
+          .andWhere("Job.approved = :approved", { approved: true })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .andWhere("Job.deleted = :deleted", { deleted: false })
+          .andWhere("Job.expiry > :expiry", { expiry: new Date() })
+          .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .getMany();
+      }, `Failed to find jobs for COMPANY=${req.params.companyID}`);
+
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          companyJobs: companyJobs
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
+
 
   public static async PasswordReset(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
