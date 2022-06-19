@@ -244,7 +244,96 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next);
   }
+  
+  public static async EditJob(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      
+      const companyId = req.companyAccountID;
+      Helpers.requireParameters(companyId);
+      
+      const jobInfo = {
+        id: req.body.id,
+        applicationLink: req.body.applicationLink.trim(),
+        description: req.body.description.trim(),
+        role: req.body.role.trim(),
+        expiry: req.body.expiry
+      }
+      
+      // verify that the required parameters exist 
+      Helpers.requireParameters(jobInfo.id);
+      Helpers.requireParameters(jobInfo.applicationLink);
+      Helpers.requireParameters(jobInfo.description);
+      Helpers.requireParameters(jobInfo.role);
+      Helpers.requireParameters(jobInfo.expiry);
+      
+      Logger.Info(`COMPANY=${companyId} attempting to edit JOB=${jobInfo.id}`);
+      
+      // verify that job x belongs to the company 
+      const oldJob = await AppDataSource
+      .getRepository(Job)
+      .createQueryBuilder()
+      .leftJoinAndSelect("Job.company", "company")
+      .where("company.id = :id", { id: parseInt(companyId, 10) })
+      .andWhere("Job.id = :jobId", { jobId: parseInt(jobInfo.id, 10) })
+      .getOne();
+      
+      if (oldJob === null) {
+        return {
+          status: 403,
+          msg: {
+            token: req.newJbToken
+          }
+        } as IResponseWithStatus;
+      }
+      
+      // update the db
+      await AppDataSource
+      .getRepository(Job)
+      .createQueryBuilder()
+      .update(Job)
+      .set({
+        applicationLink: jobInfo.applicationLink,
+        description: jobInfo.description,
+        role: jobInfo.role,
+        expiry: jobInfo.expiry
+      })
+      .where("Job.id = :id", { id: jobInfo.id })
+      .execute() 
+      
+      // verify job has been updated 
+      const newJob = await AppDataSource 
+        .getRepository(Job)
+        .createQueryBuilder("job")
+        .where("job.id = :id", { id: jobInfo.id })
+        .getOne();
+      
+      if (newJob === null || newJob.applicationLink !== jobInfo.applicationLink 
+        || newJob.description !== jobInfo.description || newJob.role !== jobInfo.role 
+        || new Date(newJob.expiry).valueOf() !== new Date(jobInfo.expiry).valueOf()) 
+      {
+        return {
+          status: 403,
+          msg: {
+            token: req.newJbToken
+          }
+        } as IResponseWithStatus;
+      }
+      
+      Logger.Info(`COMPANY=${companyId} sucessfully edited JOB=${jobInfo.id}`);
+      
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
 
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+  }
+  
   public static async GetAllJobsFromCompany(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`);
@@ -424,7 +513,6 @@ export default class CompanyFunctions {
     }, next)
   }
 
-
   public static async PasswordReset(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       // check if required parameters are supplied
@@ -471,4 +559,9 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next);
   };
+  
+  
+  
 }
+
+

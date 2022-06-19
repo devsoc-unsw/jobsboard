@@ -391,6 +391,16 @@ app.put(
   Middleware.genericLoggingMiddleware
 );
 
+
+app.put(
+  "/company/job/edit",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.EditJob,
+  Middleware.genericLoggingMiddleware
+)
+
+
 /**
 *  @swagger
 *  /company/forgot:
