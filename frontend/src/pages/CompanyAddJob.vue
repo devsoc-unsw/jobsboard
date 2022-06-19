@@ -345,10 +345,7 @@ export default Vue.extend({
           this.$router.push("/company/home");
         }, 5000);
       } else {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
+        this.alertType = "error";
         if (response.status === 403) {
           this.alertMsg = "Failed to post job request as your account has not yet been verified.";
         } else if (response.status === 401) {
@@ -359,8 +356,11 @@ export default Vue.extend({
         } else {
           this.alertMsg = "Missing one or more fields. Please ensure that all fields are filled.";
         }
-        this.alertType = "error";
         this.isAlertOpen = true;
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
       }
     },
     async showJobModal() {

@@ -287,7 +287,7 @@ export default Vue.extend({
       additionalInfo: "",
       alertType: "",
       alertMsg: "",
-      isAlertOpen: "",
+      isAlertOpen: false,
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
       verifiedCompanies: {},
@@ -310,16 +310,20 @@ export default Vue.extend({
       // alphabetically sort them
       this.verifiedCompanies = msg.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name);
     } else {
-      this.error = true;
-      window.scrollTo(0, 10);
+      this.alertType = "error";
       if (response.status === 401) {
-        this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+        this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
         setTimeout(() => {
           this.$router.push("/login");
         }, 3000);
       } else {
-        this.errorMsg = "Malformed request. Please contact the admin.";
+        this.alertMsg = "Malformed request. Please contact the admin.";
       }
+      this.isAlertOpen = true;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      })
     }
   },
   methods: {
@@ -330,16 +334,17 @@ export default Vue.extend({
       jobDate.setHours(23);
       jobDate.setMinutes(59);
       // ensure that there is a selected company
-      // TODO: validate this with adam
-      if (parseInt(this.selectedCompanyID, 10) < 0) {
+      if (isNaN(parseInt(this.selectedCompanyID, 10)) || parseInt(this.selectedCompanyID, 10) < 0) {
         this.alertType = "error";
         this.alertMsg = "Please select a valid company";
         this.isAlertOpen = true;
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
         return;
-      } else {
-        this.alertMsg = "";
-        this.isAlertOpen = false;
       }
+
       const response = await fetch(`${config.apiRoot}/admin/company/${this.selectedCompanyID}/jobs`, {
         method: "PUT",
         headers: {
@@ -376,12 +381,7 @@ export default Vue.extend({
           this.$router.push("/admin/home");
         }, 5000);
       } else {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
         this.alertType = "error";
-        this.isAlertOpen = true;
         if (response.status === 403) {
           this.alertMsg = "Failed to post job request as this company has not been verified.";
         } else if (response.status === 401) {
@@ -392,6 +392,11 @@ export default Vue.extend({
         } else {
           this.alertMsg = "Missing one or more fields. Please ensure that all fields are filled.";
         }
+        this.isAlertOpen = true;
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
       }
     },
     async showJobModal() {
