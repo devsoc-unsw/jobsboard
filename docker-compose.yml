@@ -38,9 +38,12 @@ services:
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
     volumes:
-      - ./db-data:/var/lib/postgresql/data # mounting a local folder into the container
+      - db-data:/var/lib/postgresql/data # mounting a local folder into the container
       
   test:
     build:
       dockerfile: Dockerfile.test
       context: ./backend
+
+volumes:
+  db-data: {}

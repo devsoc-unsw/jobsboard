@@ -17,7 +17,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "6.1.1",
     "@fortawesome/vue-fontawesome": "0.1.10",
-    "core-js": "3.22.8",
+    "core-js": "3.23.1",
     "envify": "4.1.0",
     "eslint-plugin-node": "11.1.0",
     "iview": "3.5.4",
@@ -32,8 +32,8 @@
     "vuex": "3.6.2"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "2.34.0",
-    "@typescript-eslint/parser": "2.34.0",
+    "@typescript-eslint/eslint-plugin": "5.28.0",
+    "@typescript-eslint/parser": "5.28.0",
     "@vue/cli-plugin-babel": "4.5.17",
     "@vue/cli-plugin-typescript": "4.5.17",
     "@vue/cli-service": "4.5.17",
