@@ -7,6 +7,7 @@ import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
 import Secrets from "./secrets";
+import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from "./types/job-field";
 
 export async function seedDB(activeEntities: any[]) {
   Logger.Info("SEEDING DATABASE");
@@ -40,6 +41,13 @@ export async function seedDB(activeEntities: any[]) {
   job1.approved = true;
   job1.hidden = false;
   job1.company = company;
+  job1.mode = JobMode.Remote;
+  job1.studentDemographic = [StudentDemographic.All];
+  job1.jobType = JobType.Intern;
+  job1.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes];
+  job1.wamRequirements = WamRequirements.HD;
+  job1.additionalInfo = "";
+  job1.isPaid = true;
   job1.expiry = new Date('2015-01-01');
 
   const job2 = new Job();
@@ -49,6 +57,13 @@ export async function seedDB(activeEntities: any[]) {
   job2.approved = true;
   job2.hidden = false;
   job2.company = company;
+  job2.mode = JobMode.Remote;
+  job2.studentDemographic = [StudentDemographic.All];
+  job2.jobType = JobType.Intern;
+  job2.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes];
+  job2.wamRequirements = WamRequirements.C;
+  job2.additionalInfo = "";
+  job2.isPaid = true;
   job2.expiry = new Date('1995-01-01');
 
   const job3 = new Job();
@@ -57,6 +72,13 @@ export async function seedDB(activeEntities: any[]) {
   job3.applicationLink = "https://sampleapplication.net";
   job3.approved = true;
   job3.company = company;
+  job3.mode = JobMode.Hybrid;
+  job3.studentDemographic = [StudentDemographic.FinalYear, StudentDemographic.Penultimate];
+  job3.jobType = JobType.Grad;
+  job3.workingRights = [WorkingRights.All];
+  job3.wamRequirements = WamRequirements.None;
+  job3.additionalInfo = "";
+  job3.isPaid = true;
   job3.expiry = new Date('2032-01-01')
 
   const job4 = new Job();
@@ -64,6 +86,14 @@ export async function seedDB(activeEntities: any[]) {
   job4.description = "Computer science and software engineering are both degrees";
   job4.applicationLink = "https://sampleapplicationlink.net";
   job4.company = company;
+  job4.approved = true;
+  job4.mode = JobMode.Remote;
+  job4.studentDemographic = [StudentDemographic.All];
+  job4.jobType = JobType.Intern;
+  job4.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job4.wamRequirements = WamRequirements.HD;
+  job4.additionalInfo = "";
+  job4.isPaid = true;
   job4.approved = true; 
   job4.expiry = new Date('2030-01-10');
 
@@ -74,6 +104,13 @@ export async function seedDB(activeEntities: any[]) {
   job5.company = company;
   job5.approved = true;
   job5.expiry = new Date('2035-01-01');
+  job5.mode = JobMode.Remote;
+  job5.studentDemographic = [StudentDemographic.All];
+  job5.jobType = JobType.Intern;
+  job5.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job5.wamRequirements = WamRequirements.HD;
+  job5.additionalInfo = "";
+  job5.isPaid = true;
 
   const job6 = new Job();
   job6.role = "Backend Developer";
@@ -82,6 +119,14 @@ export async function seedDB(activeEntities: any[]) {
   job6.company = company;
   job6.approved = true;
   job6.expiry = new Date('2030-01-10');
+  job6.mode = JobMode.Remote;
+  job6.studentDemographic = [StudentDemographic.All];
+  job6.jobType = JobType.Intern;
+  job6.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job6.wamRequirements = WamRequirements.HD;
+  job6.additionalInfo = "";
+  job6.isPaid = true;
+
 
   companyAccount.company.jobs = [
     job1,

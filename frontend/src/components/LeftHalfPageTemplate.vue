@@ -19,7 +19,7 @@
         </div>
         <slot />
         <div class="footer">
-          <Footer />
+          <NewFooter />
         </div>
       </div>
     </div>
@@ -31,14 +31,14 @@ import { Component, Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import logo from "@/assets/logos/csesocgreyblue.png";
-import Footer from "@/components/Footer.vue";
+import NewFooter from "@/components/NewFooter.vue";
 
 export default Vue.extend({
   name: "LeftHalfPageTemplate",
   components: {
     Button,
     StandardButton,
-    Footer,
+    NewFooter,
   },
   data() {
     return {

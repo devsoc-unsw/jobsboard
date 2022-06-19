@@ -1,7 +1,10 @@
 <template>
   <StudentViewTemplate notLoggedIn>
-    <div>
-      <h1>Admin Login</h1>
+    <main class="h-full flex flex-col justify-center items-center my-16">
+      <h1 class="font-bold text-3xl mb-0 text-jb-headings">Admin Login</h1>
+      <p class="text-lg text-jb-subheadings my-4 mx-8 sm:mx-[18%]">
+        Enter your username and password. If there are any problems, please get in touch with a project lead.
+      </p>
       <div v-if="error">
         <br/>
         <ErrorBox>
@@ -9,28 +12,69 @@
         </ErrorBox>
       </div>
       <br/>
-      <input 
-        name="username"
-        v-model="username"
-        type="text"
-        placeholder="username" 
-        @keyup.enter="performAdminLogin()"
-      />
-      <br/>
-      <input 
-        name="password"
-        v-model="password"
-        type="password"
-        placeholder="password"
-        @keyup.enter="performAdminLogin()"
-      />
-      <br />
-      <StandardButton>
-        <Button @callback="performAdminLogin">
-          Login
-        </Button>
-      </StandardButton>
-    </div>
+
+      <div class="w-full relative group mt-1 sm:w-1/2 md:w-2/5 xl:w-1/4">
+        <input 
+          name="username"
+          id="username"
+          v-model="username"
+          type="text"
+          class="font-bold  border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          @keyup.enter="performAdminLogin()"
+          required
+        />
+        <label 
+          for="username" 
+          class="transform transition-all duration-400 absolute top-2 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                 group-focus-within:pl-2 group-focus-within:pb-0 group-focus-within:text-jb-textlink
+                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-0 peer-valid:text-jb-textlink"
+        >
+          Username
+        </label>
+        <p class="invisible group-focus-within:peer-invalid:visible text-jb-warning text-sm font-bold text-left ml-2 mt-3 mb-3">
+          Please provide a valid username.
+        </p>
+      </div>
+
+      <div class="w-full relative group mt-4 sm:w-1/2 md:w-2/5 xl:w-1/4">
+        <input 
+          name="password"
+          id="password"
+          v-model="password"
+          type="password"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          @keyup.enter="performAdminLogin()"
+          required
+        />
+        <label 
+          for="password" 
+          class="transform transition-all absolute top-2 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-12
+                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                 group-focus-within:pl-2 group-focus-within:pb-0 group-focus-within:text-jb-textlink
+                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-0 peer-valid:text-jb-textlink"
+        >
+          Password
+        </label>
+        <p class="invisible group-focus-within:peer-invalid:visible text-jb-warning text-sm font-bold text-left ml-2 mt-3">
+          Please provide a valid password.
+        </p>
+      </div>
+
+      <button 
+        class="bg-jb-textlink rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
+               shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
+        @click="performAdminLogin"
+      >
+        Log In
+      </button>
+      <p class="text-lg text-jb-subheadings mt-6 mb-4 mx-8 sm:mx-[18%]">
+        Or return to
+        <span class="font-bold cursor-pointer text-jb-textlink hover:text-jb-textlink-hovered" @click="toLandingPage">
+          Home
+        </span>
+      </p>
+    </main>
   </StudentViewTemplate>
 </template>
 
@@ -41,8 +85,6 @@ import { Component, Vue } from "vue-property-decorator";
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
 
 // config
 import config from "@/config/config";
@@ -51,9 +93,7 @@ export default Vue.extend({
   name: "AdminLoginPage",
   components: {
     StudentViewTemplate,
-    ErrorBox,
-    Button,
-    StandardButton,
+    ErrorBox
   },
   data() {
     return {
@@ -90,6 +130,9 @@ export default Vue.extend({
         this.error = true;
         this.errorMsg = "Invalid credentials. Please try again.";
       }
+    },
+    toLandingPage() {
+      this.$router.push("/");
     },
   },
 });

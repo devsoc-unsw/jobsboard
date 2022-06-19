@@ -1,7 +1,8 @@
 <template>
   <div class="viewport">
     <div class="stretchyPage">
-      <div class="navbarCompact">
+      <Header />
+      <!-- <div class="navbarCompact">
         <div class="leftBoxCompact">
           <div v-if="!disableBack">
             <BackButton />
@@ -11,17 +12,19 @@
         <div class="rightBoxCompact" @click="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
         </div>
-        <!--
+
         <div>
           <input class="searchBar" type="text" placeholder="Search all jobs..."/>
         </div>
-        -->
-      </div>
+
+      </div> -->
       <div class="content">
         <div class="contentWidth">
           <slot />
         </div>
-        <Footer />
+        <div class="footer">
+          <NewFooter />
+        </div>
       </div>
     </div>
   </div>
@@ -32,15 +35,17 @@ import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import logo from "@/assets/logos/csesocwhite.png";
-import Footer from "@/components/Footer.vue";
+import NewFooter from "@/components/NewFooter.vue";
+import Header from "@/components/Header.vue";
 import BackButton from "@/components/buttons/back.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplateCompact",
   components: {
+    Header,
     Button,
     DarkBlueStandardButton,
-    Footer,
+    NewFooter,
     BackButton,
   },
   props: {
@@ -91,7 +96,7 @@ export default Vue.extend({
     margin-bottom: 0;
   }
   .content {
-    padding: 2rem;
+    padding: 2rem 0 0 0;
   }
   .contentWidth {
     width: 70%;
@@ -147,6 +152,11 @@ export default Vue.extend({
   &:hover {
     cursor: pointer;
   }
+}
+
+.footer {
+  margin-top: 40px;
+  float: below;
 }
 
 .leftBoxCompact {
