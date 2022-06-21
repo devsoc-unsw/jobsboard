@@ -679,10 +679,17 @@ describe("company", () => {
           .set("Authorization", this.companyToken)
           .send({
             id: 1,
-            applicationLink: "www.google.com",
             description: "hello world", 
+            applicationLink: "www.google.com",
             role: "pooper",
-            expiry: "2022-06-19T06:00:55.691Z"
+            expiry: "2022-06-19T06:00:55.691Z",
+            jobMode: "onsite",
+            studentDemographic: ["penultimate", "final_year"],
+            jobType: "intern",
+            workingRights: ["aus_ctz", "aus_stud_visa"],
+            wamRequirements: "D",
+            additionalInfo: "hello world",
+            isPaid: true
           })
           .expect(200)
           .end((err, res) => {
