@@ -14,7 +14,7 @@
     :studentDemographic="this.studentDemographic"
     :wamRequirements="this.wamRequirements"
     :additionalInfo="this.additionalInfo"
-    @closeCallback="closeJobModal()"
+    @closeCallback="() => { this.modalVisible = false }"
   />
   <div class="flex flex-col items-center w-4/5 mx-auto">
     <h1 class="text-jb-headings font-bold text-3xl mt-10 lg:mt-0">Post a Job</h1>
@@ -48,7 +48,7 @@
       :alertType="this.alertType"
       :alertMsg="this.alertMsg"
       :isOpen="this.isAlertOpen"
-      :handleClose="this.closeAlert"
+      :handleClose="() => { this.isAlertOpen = false }"
     />
     <!-- input fields -->
     <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Title</h2>
@@ -221,7 +221,7 @@
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
     <button 
-      @click="showJobModal" 
+      @click="() => { this.modalVisible = true }" 
       class="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
     >
       Preview
@@ -363,15 +363,6 @@ export default Vue.extend({
         })
       }
     },
-    async showJobModal() {
-      this.modalVisible = true;
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-    },
-    async closeAlert() {
-      this.isAlertOpen = false;
-    }
   },
 });
 </script>
