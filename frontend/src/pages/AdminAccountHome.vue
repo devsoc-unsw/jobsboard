@@ -15,7 +15,10 @@
     />
     
     <!-- Notification Alert -->
-    <div v-if="displayAlert && !isAlertOpen" class="flex justify-center items-start my-10 mx-[25%] bg-white rounded-md py-5 px-2 border-2 border-blue-300 lg:mx-96">
+    <div 
+      v-if="displayAlert && !isAlertOpen" 
+      class="flex justify-evenly items-start my-10 mx-[25%] bg-white rounded-md py-5 px-2 border-2 border-blue-300 lg:mx-[30%]"
+    >
       <div class="mx-3 my-auto">
         <font-awesome-icon icon="bell" class="text-2xl text-jb-headings bell" />
       </div>
@@ -37,22 +40,49 @@
         <font-awesome-icon @click="closeAlert" icon="xmark" class="text-xl ml-2 text-jb-headings cursor-pointer" />
       </div>
     </div>
-    <div class="buttonBox">
-      <StandardButton>
-        <Button @callback="goToAdminJobsPending">
-          Pending Jobs
-        </Button>
-      </StandardButton>
-      <StandardButton>
-        <Button @callback="goToAdminCompanyPendingVerification">
-          Pending Company Verification
-        </Button>
-      </StandardButton>
-      <StandardButton>
-        <Button @callback="goToAdminCreateJobPostAsCompany">
-          Create job post as Company
-        </Button>
-      </StandardButton>
+    
+    <!-- Company Verification -->
+    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[25%] my-4 lg:mx-[30%] rounded-md shadow-card">
+      <h3 class="text-2xl font-bold text-jb-headings">Company Verification</h3>
+      <p class="text-md text-jb-subheadings pt-2 pb-5">
+        Please ensure that the
+        <span class="text-jb-textlink font-bold"> company is legitimate </span>
+        before verifying.
+      </p>
+      <Button @callback="goToAdminCompanyPendingVerification">
+        <font-awesome-icon icon="user-shield" class="text-white"/>
+        <p class="p-4 text-white">Verify Company</p>
+        <font-awesome-icon icon="angle-right" class="text-white"/>
+      </Button>
+    </div>
+    
+    <!-- Job Verification -->
+    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[25%] mt-6 lg:mx-[30%] rounded-md shadow-card">
+      <h3 class="text-2xl font-bold text-jb-headings">Job Verification</h3>
+      <p class="text-md text-jb-subheadings pt-2 pb-5">
+        Please ensure that all job posts complies with the
+        <span class="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>.
+      </p>
+      <Button @callback="goToAdminJobsPending">
+        <font-awesome-icon icon="briefcase" class="text-white"/>
+        <p class="p-4 text-white">Verify Job Post</p>
+        <font-awesome-icon icon="angle-right" class="text-white"/>
+      </Button>
+    </div>
+    
+    <!-- Post Job as Company -->
+    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[25%] mt-6 lg:mx-[30%] rounded-md shadow-card">
+      <h3 class="text-2xl font-bold text-jb-headings">Post job as Company</h3>
+      <p class="text-md text-jb-subheadings pt-2 pb-5">
+        Make a job
+        <span class="text-jb-textlink font-bold"> post on behalf of a company</span>.
+        Ensure that you have their explicit permission before doing so.
+      </p>
+      <Button @callback="goToAdminCreateJobPostAsCompany">
+        <font-awesome-icon icon="briefcase" class="text-white"/>
+        <p class="p-4 text-white">Post Job</p>
+        <font-awesome-icon icon="angle-right" class="text-white"/>
+      </Button>
     </div>
   </div>
   </StudentViewTemplate>
@@ -66,20 +96,18 @@ import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import Alert from "@/components/Alert.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "AdminAccountHome",
   components: {
     StudentViewTemplate,
     LoggedInTemplate,
-    Button,
-    StandardButton,
-    Alert
+    Alert,
+    Button
   },
-    data() {
+  data() {
     return {
-      alertType: false,
+      alertType: "",
       alertMsg: "",
       isAlertOpen: false,
       displayAlert: true,
@@ -90,6 +118,7 @@ export default Vue.extend({
   },
   methods: {
     goToAdminJobsPending() {
+      console.log('hi')
       this.$router.push("/admin/jobs/pending");
     },
     goToAdminCompanyPendingVerification() {
@@ -126,7 +155,7 @@ export default Vue.extend({
         this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
         setTimeout(() => {
           this.$router.push("/login");
-        }, 3000);
+        }, 5000);
       } else {
         this.alertMsg = "Failed to get pending companies.";
       }
@@ -151,10 +180,10 @@ export default Vue.extend({
       this.isAlertOpen = true;
       window.scrollTo(0, 10);
       if (response2.status == 401) {
-        this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
+        this.alertMsg = "You are not authorized to perform this action. Redirecting to login page...";
         setTimeout(() => {
           this.$router.push("/login");
-        }, 3000);
+        }, 5000);
       } else {
         this.alertMsg = "Failed to get pending jobs. You might want to check what's happening in the console";
       }
