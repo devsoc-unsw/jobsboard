@@ -9,7 +9,7 @@
         :isOpen="isAlertOpen"
         :handleClose="() => { this.isAlertOpen = false }"
       />
-      <div class="text-left w-[30%]">
+      <div class="text-left w-[50%]">
         <label for="zID" class="font-bold text-lg text-jb-subheadings pl-2">zID</label>
         <input type="text" placeholder="zXXXXXXX" v-model="zID" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink" @keyup.enter="performLogin()" required>
         <p class="invisible peer-invalid:visible text-jb-warning text-sm font-bold text-left pl-2 pt-3">Please provide a valid zID. </p>
