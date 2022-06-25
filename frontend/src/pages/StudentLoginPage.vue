@@ -3,17 +3,15 @@
     <div class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="font-bold text-3xl text-jb-headings">Student Login</h1>
       <br/>
-      <p class="text-lg text-jb-subheadings">
+      <p class="text-lg text-jb-subheadings pb-4">
         Please enter your zID in the format zXXXXXXX and your zPass.
       </p>
-      <div v-if="error">
-        <br/>
-        <ErrorBox>
-          {{ errorMsg }}
-        </ErrorBox>
-      </div>
-      <br/>
-      <br/>
+      <Alert
+        alertType="error"
+        alertMsg="Invalid credentials. Please try again."
+        :isOpen="isAlertOpen"
+        :handleClose="() => { this.isAlertOpen = false }"
+      />
       <div class="text-left">
         <label for="zID" class="font-bold text-lg text-jb-subheadings pl-2">zID &nbsp;&nbsp; </label>
         <input type="text" placeholder="zXXXXXXX" v-model="zID" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink" @keyup.enter="performLogin()" required>
@@ -45,21 +43,20 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
+import Alert from "@/components/Alert.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
   name: "StudentLoginPage",
   components: {
     StudentViewTemplate,
-    ErrorBox,
+    Alert
   },
   data() {
     return {
       zID: "",
       password: "",
-      error: false,
-      errorMsg: "",
+      isAlertOpen: false,
     };
   },
   async mounted() {
@@ -80,13 +77,15 @@ export default Vue.extend({
       });
       if (response.ok) {
         const msg = await response.json();
-        this.error = false;
         this.$store.dispatch("setApiToken", msg.token);
+        this.isAlertOpen = false;
         this.$router.push("/jobs");
       } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        this.errorMsg = "Invalid credentials. Please try again.";
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
+        this.isAlertOpen = true;
       }
     },
     async toCompanyLoginPage() {
