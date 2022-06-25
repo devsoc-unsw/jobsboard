@@ -6,7 +6,7 @@
       <p class="text-xl text-jb-subheadings my-4 text-left">Accelerate your search for talented job applicants today with us!</p>
       <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px]">Board</h1>
       <p class="text-xl text-jb-subheadings my-4 text-left">Add a new job post with our “Post Job” profile card to your board 
-        or manage your existing jobs by clicking on the profile card of any active jobs listed.</p>
+        or manage your existing jobs by double clicking on the profile card of any active jobs listed.</p>
       
       <div class="w-[700px] m-auto mt-8">
         <!-- Board select dropdown -->
@@ -25,9 +25,16 @@
         <!-- Board -->
         <div class="w-[700px] bg-[#75B2F5] h-[600px] m-auto rounded-xl grid place-items-center mt-4">
           <div class="w-[98%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-3 overflow-y-scroll">
-            <JobProfileCard  />
-            <JobProfileCard  />
-
+            <JobProfileCard 
+              v-for="job in jobs"  
+              :key="job.key"
+              :jobID="job.id"
+              :role="job.role"
+              :pay="job.pay"
+              :successCallback="internalSuccessCallback"
+              :errorCallback="internalErrorCallback"
+              />
+              {{ printing() }}
             <!-- v-for="member in members" :member="member" :key="member.name" -->
           </div>
         </div>
@@ -44,6 +51,7 @@ import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import JobProfileCard from "@/components/JobProfileCard.vue"
+import config from "@/config/config";
 
 export default Vue.extend({
   name: "CompanyAccountHome",
@@ -61,6 +69,56 @@ export default Vue.extend({
     goToCompanyManageJobs() {
       this.$router.push("/company/jobs/manage");
     },
+    printing() {
+        
+    }
+  },
+  data() {
+    return {
+      error: false,
+      errorMsg: "",
+      success: false,
+      successMsg: "",
+      jobs: [],
+      apiToken: this.$store.getters.getApiToken,
+    };
+  },
+  async mounted() {
+    const response = await fetch(`${config.apiRoot}/companyjobs`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": this.apiToken,
+      },
+    });
+
+    const returnedRequest = response as Response;
+    if (returnedRequest.ok) {
+      const msg = await returnedRequest.json();
+      console.log(msg)
+      this.jobs = msg.companyJobs.map((job: any) => {
+        return {
+          id: job.id,
+          role: job.role,
+          status: `Status: ${job.status}`,
+          description: job.description,
+          applicationLink: job.applicationLink,
+          pay: job.isPaid,
+          expiry: job.expiry,
+        };
+      })
+    } else {
+      this.error = true;
+      window.scrollTo(0, 10);
+      if (response.status == 401) {
+        this.errorMsg = "Login expired. Redirecting to login page.";
+        setTimeout(() => {
+          this.$router.push("/login/company");
+        }, 3000);
+      } else {
+        this.errorMsg = "Failed to get pending jobs.";
+      }
+    }
   },
 });
 </script>
@@ -78,7 +136,6 @@ export default Vue.extend({
 ::-webkit-scrollbar-button {
   height: 40px; //for vertical scrollbar
 }
-
 
 ::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
