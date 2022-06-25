@@ -15,7 +15,6 @@
         >
         Log In
         </button>
-      <!-- <StudentLoginModal :show="showModal" @close="showModal=false"> </StudentLoginModal> -->
       </div>
       <div v-else-if="loggedIn">
         <button 
@@ -35,13 +34,9 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import logo from "@/assets/logos/csesocwhite.png";
 import moon from "@/assets/misc/moon.svg";
-import StudentLoginModal from "./StudentLoginModal.vue";
 
 export default Vue.extend({
   name: "Header",
-  components: {
-    StudentLoginModal
-},
   data() {
     return {
       logo: logo,
