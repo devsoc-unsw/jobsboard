@@ -6,18 +6,18 @@
     <img class="w-[40%] cursor-pointer sm:w-[20%] md:w-[17%] lg:w-[20%] xl:w-[15%]" :src="logo" alt="CSESoc" @click="toLandingPage"/>
     <div class="flex justify-evenly items-center">
       <img class="rotate-220 fill-black cursor-pointer w-[20%] mr-2.5 sm:mr-5" :src="moon" alt="Toggle Theme" />
-      <!-- <div v-if="!loggedIn"> -->
+      <div v-if="!loggedIn">
         <button 
           class="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg sm:text-md" 
-          @click="showModal = true"
+          @click="toStudentLogin()"
         >
         Log In
         </button>
-      <StudentLoginModal :show="showModal"  @close="showModal=false"> </StudentLoginModal>
+      <!-- <StudentLoginModal :show="showModal" @close="showModal=false"> </StudentLoginModal> -->
       </div>
-      <!-- <div v-else-if="loggedIn">
+      <div v-else-if="loggedIn">
         <button 
           class="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
@@ -26,9 +26,9 @@
         >
         Logout
         </button>
-      </div> -->
+      </div>
     </div>
-  </div>
+    </div>
 </template>
 
 <script lang="ts">

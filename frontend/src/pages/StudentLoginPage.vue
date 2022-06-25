@@ -1,9 +1,10 @@
 <template>
   <StudentViewTemplate notLoggedIn>
-    <div>
-      <h1>Student Login</h1>
-      Welcome back! Please log in to your account.
-      <br/>
+    <div class="h-full flex flex-col justify-center items-center py-16">
+      <h1 class="font-bold text-3xl text-jb-headings pb-4">Student Login</h1>
+      <p class="text-lg text-jb-subheadings pb-4">
+        Please enter your zID in the format zXXXXXXX and your zPass.
+      </p>
       <div v-if="error">
         <br/>
         <ErrorBox>
@@ -11,18 +12,30 @@
         </ErrorBox>
       </div>
       <br/>
-      <input name="zID" v-model="zID" type="text" placeholder="zID" @keyup.enter="performLogin()"/>
+      <div class="text-left">
+        <label for="zID" class="font-bold text-lg text-jb-subheadings px-3">zID {""}</label>
+        <input type="text" placeholder="zXXXXXXX" v-model="zID" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full" @keyup.enter="performLogin()" required>
+        <p class="invisible peer-invalid:visible text-jb-warning text-sm font-bold text-left pl-2 pt-3">Please provide a valid zID. </p>
+      </div>
+      <div class="text-left">
+        <label for="password" class="font-bold text-lg text-jb-subheadings">Password</label>
+        <input type="password" placeholder="zPass" v-model="password" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full" @keyup.enter="performLogin()" required>
+        <p class="invisible peer-invalid:visible text-jb-warning text-sm font-bold text-left pl-2 pt-3">Please provide a valid password.</p>
+      </div>
       <br/>
-      <input name="password" v-model="password" type="password" placeholder="zPass" @keyup.enter="performLogin()"/>
-      <br/>
-      <StandardButton>
-        <Button @callback="performLogin">
-          Login
-        </Button>
-      </StandardButton>
-      <br/>
-      Not a student? <router-link to="/login/company">Company Login</router-link>
-    </div>
+      <p class="text-lg text-jb-subheadings text-center py-4">
+          Not a student? <span 
+          class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
+                      cursor-pointer hover:text-jb-textlink-hovered"
+          @click="toCompanyLoginPage()"
+          >
+          Company Login
+          </span>
+      </p>
+      <button type="submit" class="bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered">
+          <span class="p-2 text-white" @click="performLogin()">Log In</span>
+      </button>
+      </div>
   </StudentViewTemplate>
 </template>
 
@@ -31,16 +44,12 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
 
 export default Vue.extend({
   name: "StudentLoginPage",
   components: {
     StudentViewTemplate,
     ErrorBox,
-    Button,
-    StandardButton,
   },
   data() {
     return {
@@ -66,8 +75,6 @@ export default Vue.extend({
           password: this.password,
         }),
       });
-
-
       if (response.ok) {
         const msg = await response.json();
         this.error = false;
@@ -79,6 +86,9 @@ export default Vue.extend({
         this.errorMsg = "Invalid credentials. Please try again.";
       }
     },
+    async toCompanyLoginPage() {
+      this.$router.push("/login/company");
+    }
   },
 });
 </script>
