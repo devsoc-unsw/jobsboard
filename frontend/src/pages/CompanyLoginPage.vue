@@ -9,14 +9,12 @@
         :isOpen="isAlertOpen"
         :handleClose="() => { this.isAlertOpen = false }"
       />
-      <div class="text-left">
+      <div class="text-left w-[30%]">
         <label for="email" class="font-bold text-lg text-jb-subheadings pl-2">Company Email</label>
         <input type="text" placeholder="example@company.com" v-model="email" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink" @keyup.enter="performCompanyLogin()" required>
         <p class="invisible peer-invalid:visible text-jb-warning text-sm font-bold text-left pl-2 pt-3">Please provide a valid company email.</p>
-      </div>
-      <div class="text-left">
         <label for="password" class="font-bold text-lg text-jb-subheadings pl-2">Password &nbsp;</label>
-        <input type="password" placeholder="••••••••" v-model="password" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink" @keyup.enter="performCompanyLogin()" required>
+        <input type="password" placeholder="••••••••••••••••••••" v-model="password" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink" @keyup.enter="performCompanyLogin()" required>
         <p class="invisible peer-invalid:visible text-jb-warning text-sm font-bold text-left pl-2 pt-3">Please provide a valid password.</p>
       </div>
       <br/>
