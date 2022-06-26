@@ -2,34 +2,79 @@
   <StudentViewTemplate notLoggedIn>
     <div class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="font-bold text-3xl text-jb-headings">Student Login</h1>
-      <br/>
+      <p class="text-lg text-jb-subheadings my-4 mx-8 sm:mx-[18%]">
+        Enter your zID in the format zXXXXXXX and your zPassword.
+      </p>
+      
+      <!-- Error Alert -->
       <Alert
         alertType="error"
         alertMsg="Invalid credentials. Please try again."
         :isOpen="isAlertOpen"
         :handleClose="() => { this.isAlertOpen = false }"
       />
-      <div class="text-left w-[50%]">
-        <label for="zID" class="font-bold text-lg text-jb-subheadings pl-2">zID</label>
-        <input type="text" placeholder="zXXXXXXX" v-model="zID" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink" @keyup.enter="performLogin()" required>
-        <p class="invisible peer-invalid:visible text-jb-warning text-sm font-bold text-left pl-2 pt-3">Please provide a valid zID. </p>
-        <label for="password" class="font-bold text-lg text-jb-subheadings pl-2">Password</label>
-        <input type="password" placeholder="••••••••••••••••••••" v-model="password" class="peer border-l-4 p-4 border-jb-textlink rounded-md shadow-btn w-full text-lg focus:outline-jb-textlink" @keyup.enter="performLogin()" required>
-        <p class="invisible peer-invalid:visible text-jb-warning text-sm font-bold text-left pl-2 pt-3">Please provide a valid password.</p>
+      
+      <!-- zId Input -->
+      <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+        <input 
+          name="zID"
+          id="zID"
+          v-model="zID"
+          type="text"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          @keyup.enter="performLogin()"
+          required
+        />
+        <label 
+          for="zID" 
+          class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
+        >
+          zID
+        </label>
       </div>
-      <br/>
+      
+      <!-- Password Input -->
+      <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+        <input 
+          name="password"
+          id="password"
+          v-model="password"
+          type="password"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          @keyup.enter="performLogin()"
+          required
+        />
+        <label 
+          for="password" 
+          class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
+        >
+          Password
+        </label>
+      </div>
+
       <p class="text-lg text-jb-subheadings text-center">
-          Not a student? <span 
-          class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
-                      cursor-pointer hover:text-jb-textlink-hovered"
-          @click="toCompanyLoginPage()"
+          Not a student? 
+          <span 
+            class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
+                    cursor-pointer hover:text-jb-textlink-hovered"
+            @click="toCompanyLoginPage()"
           >
-          Company Login
+            Company Login
           </span>
       </p>
       <br/>
-      <button type="submit" class="bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered">
-          <span class="p-2 text-white" @click="performLogin()">Log In</span>
+      <button 
+        type="submit" 
+        class="bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base 
+               border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
+      >
+        <span class="p-2 text-white" @click="performLogin()">Log In</span>
       </button>
       </div>
   </StudentViewTemplate>
@@ -91,10 +136,4 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.error {
-  border: 1px solid $red;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  background: rgb(247, 131, 131);
-}
 </style>
