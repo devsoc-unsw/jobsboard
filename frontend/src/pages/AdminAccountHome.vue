@@ -7,16 +7,16 @@
     
     <!-- Error Alert -->
     <Alert
-      :alertType="this.alertType"
+      alertType="error"
       :alertMsg="this.alertMsg"
       :isOpen="this.isAlertOpen"
-      :handleClose="this.closeAlert"
+      :handleClose="() => { this.isAlertOpen = false }"
       class="mx-[25%] my-5 lg:mx-96"
     />
     
     <!-- Notification Alert -->
     <div 
-      v-if="displayAlert && !isAlertOpen" 
+      v-if="infoAlert && !isAlertOpen" 
       class="flex justify-evenly items-start my-10 mx-[25%] bg-white rounded-md py-5 px-2 border-2 border-blue-300 lg:mx-[30%]"
     >
       <div class="mx-3 my-auto">
@@ -27,17 +27,17 @@
         <p class="text-base text-jb-headings">
           There are 
           <span class="text-jb-textlink font-bold hover:text-jb-textlink-hovered">
-            {{ companies.length }} companies 
+            {{ nPendingCompanies }} companies 
           </span>
           waiting for verification and 
           <span class="text-jb-textlink font-bold hover:text-jb-textlink-hovered">
-            {{ jobs.length }} job posts 
+            {{ nPendingJobs }} job posts 
           </span>
           awaiting approval.
         </p>
       </div>
       <div class="flex items-start mx-2"> 
-        <font-awesome-icon @click="closeAlert" icon="xmark" class="text-xl ml-2 text-jb-headings cursor-pointer" />
+        <font-awesome-icon @click="() => { this.infoAlert = false }" icon="xmark" class="text-xl ml-2 text-jb-headings cursor-pointer" />
       </div>
     </div>
     
@@ -110,15 +110,14 @@ export default Vue.extend({
       alertType: "",
       alertMsg: "",
       isAlertOpen: false,
-      displayAlert: true,
-      companies: [],
-      jobs: [],
+      infoAlert: true,
+      nPendingCompanies: "",
+      nPendingJobs: "",
       apiToken: this.$store.getters.getApiToken,
     };
   },
   methods: {
     goToAdminJobsPending() {
-      console.log('hi')
       this.$router.push("/admin/jobs/pending");
     },
     goToAdminCompanyPendingVerification() {
@@ -126,10 +125,7 @@ export default Vue.extend({
     },
     goToAdminCreateJobPostAsCompany() {
       this.$router.push("/company/jobs/add");
-    },
-    closeAlert() {
-      this.displayAlert = false;
-    },
+    }
   },
   async mounted() {
     // Get the number of companies pending verification 
@@ -144,11 +140,8 @@ export default Vue.extend({
     if (response.ok) {
       const msg = await response.json();
       this.$store.dispatch("setApiToken", msg.token);
-      this.success = true;
-      console.log(msg.pendingCompanyVerifications)
-      this.companies = msg.pendingCompanyVerifications;
+      this.nPendingCompanies = msg.pendingCompanyVerifications.length;
     } else {
-      this.alertType = "error";
       this.isAlertOpen = true;
       window.scrollTo(0, 10);
       if (response.status === 401) {
@@ -157,12 +150,12 @@ export default Vue.extend({
           this.$router.push("/login");
         }, 5000);
       } else {
-        this.alertMsg = "Failed to get pending companies.";
+        this.alertMsg = "Failed to get pending companies. You might want to check what's happening in the console.";
       }
     }
     
     // Get the number of jobs pending verification 
-    const response2 = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
+    const pendingJobsResponse = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -170,22 +163,20 @@ export default Vue.extend({
       },
     });
 
-    if (response2.ok) {
-      const msg = await response2.json();
+    if (pendingJobsResponse.ok) {
+      const msg = await pendingJobsResponse.json();
       this.$store.dispatch("setApiToken", msg.token);
       this.success = true;
-      this.jobs = msg.pendingJobs;
+      this.nPendingJobs = msg.pendingJobs.length;
     } else {
-      this.alertType = "error";
-      this.isAlertOpen = true;
       window.scrollTo(0, 10);
-      if (response2.status == 401) {
+      if (pendingJobsResponse.status == 401) {
         this.alertMsg = "You are not authorized to perform this action. Redirecting to login page...";
         setTimeout(() => {
           this.$router.push("/login");
         }, 5000);
       } else {
-        this.alertMsg = "Failed to get pending jobs. You might want to check what's happening in the console";
+        this.alertMsg = "Failed to get pending jobs. You might want to check what's happening in the console.";
       }
     }
   },
@@ -193,32 +184,6 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.buttonBox {
-  padding: 2%;
-}
-
-.button {
-  min-width: 70%;
-  max-width: 70%;
-  border-radius: 0.5rem;
-  padding-top: 2%;
-  padding-bottom: 2%;
-  padding-left: 5%;
-  padding-right: 5%;
-  margin: 1%;
-}
-
-.editButton {
-  background: $white;
-  color: $blue;
-}
-
-.postButton {
-  border: 1px solid $blue;
-  background: $blue;
-  color: $white;
-}
-
 .bell {
 	animation: ring 8s 1s ease-in-out infinite;
 	transform-origin: 50% 4px;
