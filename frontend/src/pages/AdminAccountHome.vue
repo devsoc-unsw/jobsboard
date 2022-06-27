@@ -49,7 +49,7 @@
         <span class="text-jb-textlink font-bold"> company is legitimate </span>
         before verifying.
       </p>
-      <Button @callback="goToAdminCompanyPendingVerification">
+      <Button @callback="() => { this.$router.push(`/admin/companies/pending`) }">
         <font-awesome-icon icon="user-shield" class="text-white"/>
         <p class="p-4 text-white">Verify Company</p>
         <font-awesome-icon icon="angle-right" class="text-white"/>
@@ -63,7 +63,7 @@
         Please ensure that all job posts complies with the
         <span class="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>.
       </p>
-      <Button @callback="goToAdminJobsPending">
+      <Button @callback="() => { this.$router.push(`/admin/jobs/pending`) }">
         <font-awesome-icon icon="briefcase" class="text-white"/>
         <p class="p-4 text-white">Verify Job Post</p>
         <font-awesome-icon icon="angle-right" class="text-white"/>
@@ -78,7 +78,7 @@
         <span class="text-jb-textlink font-bold"> post on behalf of a company</span>.
         Ensure that you have their explicit permission before doing so.
       </p>
-      <Button @callback="goToAdminCreateJobPostAsCompany">
+      <Button @callback="() => { this.$router.push(`/company/jobs/add`) }">
         <font-awesome-icon icon="briefcase" class="text-white"/>
         <p class="p-4 text-white">Post Job</p>
         <font-awesome-icon icon="angle-right" class="text-white"/>
@@ -107,25 +107,13 @@ export default Vue.extend({
   },
   data() {
     return {
-      alertType: "",
       alertMsg: "",
       isAlertOpen: false,
       infoAlert: true,
-      nPendingCompanies: "",
-      nPendingJobs: "",
+      nPendingCompanies: 0,
+      nPendingJobs: 0,
       apiToken: this.$store.getters.getApiToken,
     };
-  },
-  methods: {
-    goToAdminJobsPending() {
-      this.$router.push("/admin/jobs/pending");
-    },
-    goToAdminCompanyPendingVerification() {
-      this.$router.push("/admin/companies/pending");
-    },
-    goToAdminCreateJobPostAsCompany() {
-      this.$router.push("/company/jobs/add");
-    }
   },
   async mounted() {
     // Get the number of companies pending verification 
@@ -170,7 +158,7 @@ export default Vue.extend({
       this.nPendingJobs = msg.pendingJobs.length;
     } else {
       window.scrollTo(0, 10);
-      if (pendingJobsResponse.status == 401) {
+      if (pendingJobsResponse.status === 401) {
         this.alertMsg = "You are not authorized to perform this action. Redirecting to login page...";
         setTimeout(() => {
           this.$router.push("/login");
