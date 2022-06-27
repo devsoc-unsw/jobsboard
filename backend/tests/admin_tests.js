@@ -1242,4 +1242,97 @@ describe("admin", () => {
       }
     ); 
   })
+  
+  describe("retrive the number of approved jobs in a year", () => {
+    
+    before( async function() {
+      // login as a student
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+      
+      // login as a verified company 
+      this.companyToken1 = await server
+      .post("/authenticate/company")
+      .send({ username: "test", password: "test" })
+      .then(response => response.body.token);
+      
+      // login as a non verified company 
+      this.companyToken2 = await server
+      .post("/authenticate/company")
+      .send({ username: "test2", password: "test2" })
+      .then(response => response.body.token);
+      
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+      
+      // remove job 8
+      await server
+      .delete("/company/job/:8")
+      .set("Authorization", this.companyToken1)
+      .expect(200)
+      .end( function(_, res) {
+        expect(res.status).to.equal(200);
+        done();
+      });
+      
+    });
+    
+    it("result cannot be retrieved using a student account", 
+      function (done) {
+        server
+        .get("/company/stats/approvedJobPosts/2022")
+        .set("Authorization", this.studentToken)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+    
+    it("result cannot be retrieved using a verfied company account", 
+      function (done) {
+        server
+        .get("/company/stats/approvedJobPosts/2022")
+        .set("Authorization", this.companyToken1)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+    
+    it("result cannot be retrieved using an unverified company account", 
+      function (done) {
+        server
+        .get("/company/stats/approvedJobPosts/2022")
+        .set("Authorization", this.companyToken2)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+    
+    it("successfully retrives the one remaining verified job from 1999", 
+      function (done) {
+        server
+        .get("/company/stats/approvedJob/1999")
+        .set("Authorization", this.adminToken)
+        .expecte(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+          expect(res.body.year).to.equal(1);
+          done();
+        });
+      }
+    );
+  }) 
 });

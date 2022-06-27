@@ -126,7 +126,39 @@ export async function seedDB(activeEntities: any[]) {
   job6.wamRequirements = WamRequirements.HD;
   job6.additionalInfo = "";
   job6.isPaid = true;
-
+  
+  // following two jobs are used for testing retrieving number of verified job posts
+  const job7 = new Job();
+  job7.role = "verified job 1";
+  job7.description = "Java is not poggers";
+  job7.applicationLink = "https://sampleapplicationlink.net";
+  job7.company = company;
+  job7.approved = true;
+  job7.expiry = new Date('2030-01-10');
+  job7.mode = JobMode.Remote;
+  job7.studentDemographic = [StudentDemographic.All];
+  job7.jobType = JobType.Intern;
+  job7.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job7.wamRequirements = WamRequirements.HD;
+  job7.additionalInfo = "";
+  job7.isPaid = true;
+  job7.createdAt = new Date('1999-5-10')
+  
+  const job8 = new Job();
+  job8.role = "verified job 1";
+  job8.description = "Java is not poggers";
+  job8.applicationLink = "https://sampleapplicationlink.net";
+  job8.company = company;
+  job8.approved = true;
+  job8.expiry = new Date('2030-01-10');
+  job8.mode = JobMode.Remote;
+  job8.studentDemographic = [StudentDemographic.All];
+  job8.jobType = JobType.Intern;
+  job8.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job8.wamRequirements = WamRequirements.HD;
+  job8.additionalInfo = "";
+  job8.isPaid = true;
+  job8.createdAt = new Date('1999-10-10')
 
   companyAccount.company.jobs = [
     job1,
@@ -135,6 +167,8 @@ export async function seedDB(activeEntities: any[]) {
     job4,
     job5,
     job6,
+    job7,
+    job8
   ];
 
   await AppDataSource.manager.save(companyAccount);
