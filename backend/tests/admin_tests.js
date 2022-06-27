@@ -1272,20 +1272,15 @@ describe("admin", () => {
       
       // remove job 8
       await server
-      .delete("/company/job/:8")
+      .delete("/company/job/8")
       .set("Authorization", this.companyToken1)
-      .expect(200)
-      .end( function(_, res) {
-        expect(res.status).to.equal(200);
-        done();
-      });
-      
+      .expect(200);     
     });
     
     it("result cannot be retrieved using a student account", 
       function (done) {
         server
-        .get("/company/stats/approvedJobPosts/2022")
+        .get("/job/stats/approvedJobPosts/2022")
         .set("Authorization", this.studentToken)
         .expect(401)
         .end( function(_, res) {
@@ -1298,7 +1293,7 @@ describe("admin", () => {
     it("result cannot be retrieved using a verfied company account", 
       function (done) {
         server
-        .get("/company/stats/approvedJobPosts/2022")
+        .get("/job/stats/approvedJobPosts/2022")
         .set("Authorization", this.companyToken1)
         .expect(401)
         .end( function(_, res) {
@@ -1311,7 +1306,7 @@ describe("admin", () => {
     it("result cannot be retrieved using an unverified company account", 
       function (done) {
         server
-        .get("/company/stats/approvedJobPosts/2022")
+        .get("/job/stats/approvedJobPosts/2022")
         .set("Authorization", this.companyToken2)
         .expect(401)
         .end( function(_, res) {
@@ -1324,15 +1319,29 @@ describe("admin", () => {
     it("successfully retrives the one remaining verified job from 1999", 
       function (done) {
         server
-        .get("/company/stats/approvedJob/1999")
+        .get("/job/stats/approvedJobPosts/1999")
         .set("Authorization", this.adminToken)
-        .expecte(200)
+        .expect(200)
         .end( function(_, res) {
           expect(res.status).to.equal(200);
-          expect(res.body.year).to.equal(1);
+          expect(res.body.numJobPosts).to.equal(1);
           done();
         });
       }
     );
+    
+    it ("successfully retrives the number of approved jobs from dev.ts", {
+      function (done) {
+        server
+        .get("/job/stats/approvedJobPosts/2000")
+        .set("Authorization", this.adminToken)
+        .expect(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+          expect(res.body.numJobPosts).to.equal(7);
+          done();
+        });
+      }
+    });
   }) 
 });

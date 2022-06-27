@@ -734,7 +734,7 @@ app.get(
  *          schema:
  *            type: object
  *            properties:
- *              year: 
+ *              numJobsPosts: 
  *                type: integer
  *              value:
  *                type: integer
@@ -742,7 +742,7 @@ app.get(
  *        description: Unable to query the database
 */
 app.get(
-  "/job/stats/approvedJobPosts",
+  "/job/stats/approvedJobPosts/:year",
   cors(corsOptions),
   Middleware.authenticateAdminMiddleware,
   AdminFunctions.getNumVerifiedJobPosts,

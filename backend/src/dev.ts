@@ -6,6 +6,7 @@ import { AdminAccount } from "./entity/admin_account";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
 import { Job } from "./entity/job";
+import { Statistics } from "./entity/statistics";
 import Secrets from "./secrets";
 import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from "./types/job-field";
 
@@ -184,6 +185,11 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount2.company = company2;
 
   await AppDataSource.manager.save(companyAccount2);
-
+  
+  // create a testing statistic 
+  const stats1 = new Statistics();
+  stats1.year = 2000;
+  stats1.numJobPosts = 7;
+  
   Logger.Info("FINISHED SEEDING");
 }
