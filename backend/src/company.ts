@@ -14,6 +14,7 @@ import MailFunctions from "./mail";
 import Logger from "./logging";
 import { AccountType, IToken } from "./auth";
 import JWT from "./jwt";
+import { Statistics } from "./entity/statistics";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
@@ -502,7 +503,26 @@ export default class CompanyFunctions {
         .where("id = :id", { id: jobToDelete.id })
         .execute();
       Logger.Info(`COMPANY=${req.companyAccountID} marked JOB=${req.params.jobID} as deleted`);
-
+      
+      // decrement the number of verified jobs for that year
+      // const jobCreatedYear = jobToDelete.createdAt.getFullYear();
+      // const numApprovedJobs = await Helpers.doSuccessfullyOrFail(async () => {
+      //   return AppDataSource
+      //     .getRepository(Statistics)
+      //     .createQueryBuilder("s")
+      //     .select(["s.numJobPosts"])
+      //     .where("s.year = :year", { year: jobCreatedYear })
+      //     .getOne()
+      // },  
+      // `Failed to retrive the number of approved job posts for YEAR=${jobCreatedYear}`);
+      
+      // await AppDataSource
+      //   .createQueryBuilder()
+      //   .update(Statistics)
+      //   .set({ numJobPosts: numApprovedJobs - 1})
+      //   .where("year = :year", { year: jobCreatedYear })
+      //   .execute();
+      
       return {
         status: 200,
         msg: {

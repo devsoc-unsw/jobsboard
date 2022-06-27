@@ -30,9 +30,11 @@ import { Job } from "./entity/job";
 import { Student } from "./entity/student";
 import { MailRequest } from "./entity/mail_request";
 import { Logs } from "./entity/logs";
+import { Statistics } from "./entity/statistics";
 
 // custom middleware
 import Middleware from "./middleware";
+// import { Statistics } from "./entity/statistics";
 
 // dotenv.config({ path: '../.env' });
 dotenv.config();
@@ -71,6 +73,7 @@ const activeEntities = [
   AdminAccount,
   MailRequest,
   Logs,
+  Statistics
 ];
 
 // swagger api generator based on jsdoc
@@ -745,7 +748,7 @@ app.get(
   "/job/stats/approvedJobPosts/:year",
   cors(corsOptions),
   Middleware.authenticateAdminMiddleware,
-  AdminFunctions.getNumVerifiedJobPosts,
+  AdminFunctions.getNumApprovedJobPosts,
   Middleware.genericLoggingMiddleware
 );
   

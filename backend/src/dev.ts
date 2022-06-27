@@ -190,6 +190,7 @@ export async function seedDB(activeEntities: any[]) {
   const stats1 = new Statistics();
   stats1.year = 2000;
   stats1.numJobPosts = 7;
+  await AppDataSource.manager.save(stats1);
   
   Logger.Info("FINISHED SEEDING");
 }

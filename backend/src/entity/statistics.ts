@@ -5,7 +5,9 @@ export class Statistics {
     @PrimaryColumn()
     public year: number
     
-    @Column()
+    @Column({
+        default: 0
+    })
     public numJobPosts: number
     
     @CreateDateColumn()
