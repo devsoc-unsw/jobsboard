@@ -404,29 +404,4 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 
-.ql-container {
-  font-size: 1rem;
-}
-
-.ql-editor .ql-size-small {
-  /* font-size: 0.75em; */
-  font-size: 25px;
-}
-
-.ql-editor .ql-size-large {
-  /* font-size: 1.5em; */
-  font-size: 35px;
-}
-
-.ql-editor .ql-size-huge {
-  /* font-size: 2.5em; */
-  font-size: 40px;
-}
-
-.ql-snow .ql-picker.ql-size .ql-picker-label::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item::before {
-    /* content: 'Normal'; */
-    content: '10rem';
-}
-
 </style>
