@@ -495,4 +495,25 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       } as IResponseWithStatus;
     }, next)
   }
+  
+  public static async getNumVerifiedJobPosts(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async() => {
+      
+      Logger.Info(`Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`);
+
+     
+      
+      return {
+        status: 200,
+        msg: {
+          num: 0
+        }
+      } as IResponseWithStatus
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next)
+  }
 }

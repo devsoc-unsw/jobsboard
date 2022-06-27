@@ -723,6 +723,35 @@ app.get(
 
 /**
  *  @swagger
+ *  /job/stats/approvedJobPosts/:year:
+ *  get:
+ *    description: Retrieve the number of approved job posts in the given year
+ *    responses:
+ *      200: 
+ *        description: Success
+ *        content: 
+ *          application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              year: 
+ *                type: integer
+ *              value:
+ *                type: integer
+ *      400:
+ *        description: Unable to query the database
+*/
+app.get(
+  "/job/stats/approvedJobPosts",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.getNumVerifiedJobPosts,
+  Middleware.genericLoggingMiddleware
+);
+  
+  
+/**
+ *  @swagger
  *  /admin/companies:
  *    get:
  *      description: Get a list of all onboarded companies as an admin
@@ -739,6 +768,7 @@ app.get(
   AdminFunctions.ListAllCompaniesAsAdmin,
   Middleware.genericLoggingMiddleware
 );
+
 /**
  *  @swagger
  *  /admin/company/:companyID/jobs:
