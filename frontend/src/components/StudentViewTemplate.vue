@@ -1,7 +1,8 @@
 <template>
   <div class="viewport">
     <div class="stretchyPage">
-      <div class="navbar">
+      <Header />
+      <!-- <div class="navbar">
         <div class="leftBox">
           <div v-if="!disableBack">
             <BackButton />
@@ -11,19 +12,19 @@
         <div class="rightBox" @click="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" v-if="!notLoggedIn"/>
         </div>
-        <!--
+        
         <div>
           <input class="searchBar" type="text" placeholder="Search all jobs..."/>
         </div>
-        -->
-      </div>
-      <h1 class="tagline">Discover student jobs and internships</h1>
-      <!-- <br /> -->
+        
+      </div> -->
       <div class="content">
         <div class="contentWidth">
           <slot />
         </div>
-        <Footer />
+        <div class="footer">
+          <NewFooter />
+        </div>
       </div>
     </div>
   </div>
@@ -35,14 +36,16 @@ import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import BackButton from "@/components/buttons/back.vue";
 import logo from "@/assets/logos/csesocwhite.png";
-import Footer from "@/components/Footer.vue";
+import Header from "@/components/Header.vue";
+import NewFooter from "@/components/NewFooter.vue";
 
 export default Vue.extend({
   name: "StudentViewTemplate",
   components: {
+    Header,
     Button,
     DarkBlueStandardButton,
-    Footer,
+    NewFooter,
     BackButton,
   },
   props: {
@@ -82,46 +85,18 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-.navbar {
-  background: $blue;
-  color: $white;
-  width: 80%;
-  margin-top: 0px;
-  margin-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-}
 @media screen and (min-width: 900px) {
-  .navbar {
-    width: 50%;
-    padding: 2.5rem;
-  }
-  .searchBar {
-    margin-bottom: 0;
-  }
   .content {
-    padding: 2rem;
+    padding: 2rem 0 0 0;
   }
   .contentWidth {
-    width: 70%;
+    width: 100%;
     margin: auto;
   }
 }
 
-.searchBar {
-  padding: 1.25%;
-  /* border-radius: 0.2rem; */
-  text-align: center;
-  width: 95%;
-  margin: 0;
-  margin-bottom: 1.5rem;
-}
-
 .content {
-  background: $grey;
+  background: #f6f9fc;
   color: $black;
   /* padding: 0.5rem; */
   min-height: 100%;
@@ -129,7 +104,7 @@ export default Vue.extend({
 }
 
 .contentWidth {
-  width: 70%;
+  width: 100%;
   margin: auto;
 }
 
@@ -144,41 +119,35 @@ export default Vue.extend({
   padding: 0.5rem;
 }
 
-.rightBox {
-  color: $white;
-  margin-top: auto;
-  margin-bottom: auto;
-  flex-basis: 0;
-  flex-grow: 1;
-  font-size: 2.0rem;
-  text-align: right;
-  cursor: pointer;
+.footer {
+  margin-top: 40px;
+  float: below;
 }
 
-.main-logo-student {
-  height: auto;
-  width: 10%;
-  margin-top: auto;
-  margin-bottom: auto;
-  flex-grow: 1;
+@media screen
+and (min-width: 320px) 
+and (max-width: 768.98px) {
+  .footer {
+    margin-top: 100px;
+  }
 }
 
-.leftBox {
-  color: $white;
-  margin-top: auto;
-  margin-bottom: auto;
-  flex-basis: 0;
-  flex-grow: 1;
+.footer {
+  margin-top: 40px;
+  float: below;
 }
 
-.tagline {
-  color: $white;
+@media screen
+and (min-width: 320px) 
+and (max-width: 768.98px) {
+  .footer {
+    margin-top: 100px;
+  }
 }
-
+/* 
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
-  /* border-radius: 0.2rem; */
   margin: 0.5rem;
   font-size: 1rem;
   padding: 1rem;
@@ -191,8 +160,7 @@ input, textarea {
   background: $white;
   color: $blue;
   padding: 1rem;
-  /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
   margin: 1rem;
-}
+} */
 </style>

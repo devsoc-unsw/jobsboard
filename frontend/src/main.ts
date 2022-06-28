@@ -8,6 +8,15 @@ import {
   faSignOutAlt,
   faSuitcase,
   faHeart,
+  faChevronCircleUp,
+  faCalendar,
+  faGraduationCap,
+  faCircleDollarToSlot,
+  faLink,
+  faAddressCard,
+  faUser,
+  faCircleInfo,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -17,6 +26,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import store from "./store/store";
+import './style/tailwind.scss';
 
 library.add(faBuilding as IconDefinition);
 library.add(faChevronLeft as IconDefinition);
@@ -25,6 +35,15 @@ library.add(faSuitcase as IconDefinition);
 library.add(faHeart as IconDefinition);
 library.add(faGithub as IconDefinition);
 library.add(faLinkedin as IconDefinition);
+library.add(faChevronCircleUp as IconDefinition);
+library.add(faCalendar as IconDefinition);
+library.add(faGraduationCap as IconDefinition);
+library.add(faCircleDollarToSlot as IconDefinition);
+library.add(faLink as IconDefinition);
+library.add(faAddressCard as IconDefinition);
+library.add(faUser as IconDefinition);
+library.add(faCircleInfo as IconDefinition);
+library.add(faXmark as IconDefinition);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

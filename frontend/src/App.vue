@@ -24,10 +24,9 @@ export default {
   min-height: 100%;
 }
 
-html, body {
-  margin: 0;
+html {
   height: 100%;
-  background: $blue;
+  overflow: overlay;
   a {
     text-decoration: none;
   }
@@ -39,7 +38,6 @@ html, body {
   h2 {
     font-weight: 100;
   }
-  overflow-y: overlay;
 }
 
 .viewport {
@@ -48,8 +46,5 @@ html, body {
   top: 0;
   right: 0;
   bottom: 0;
-
-  /* align-items: center; */
-  /* justify-content: center; */
 }
 </style>

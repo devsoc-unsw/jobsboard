@@ -83,6 +83,13 @@ export default class StudentFunctions {
         newJob.description = job.description;
         newJob.role = job.role;
         newJob.id = job.id;
+        newJob.mode = job.mode;
+        newJob.studentDemographic = job.studentDemographic;
+        newJob.jobType = job.jobType;
+        newJob.workingRights = job.workingRights;
+        newJob.additionalInfo = job.additionalInfo;
+        newJob.wamRequirements = job.wamRequirements;
+        newJob.isPaid = job.isPaid;
         return newJob;
       });
       return {
@@ -108,7 +115,22 @@ export default class StudentFunctions {
       const jobInfo = await Helpers.doSuccessfullyOrFail(async () => {
         return await AppDataSource.getRepository(Job)
           .createQueryBuilder()
-          .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .select([
+            "company.name",
+            "company.location",
+            "company.description",
+            "Job.id",
+            "Job.role",
+            "Job.description",
+            "Job.applicationLink",
+            "Job.mode",
+            "Job.studentDemographic",
+            "Job.jobType",
+            "Job.workingRights",
+            "Job.additionalInfo",
+            "Job.wamRequirements",
+            "Job.isPaid"
+          ])
           .leftJoinAndSelect("Job.company", "company")
           .where("Job.approved = :approved", { approved: true })
           .andWhere("Job.id = :id", { id: parseInt(req.params.jobID, 10) })

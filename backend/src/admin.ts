@@ -380,11 +380,27 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         description: req.body.description.trim(),
         role: req.body.role.trim(),
         expiry: req.body.expiry,
+        jobMode: req.body.jobMode,
+        studentDemographic: req.body.studentDemographic,
+        jobType: req.body.jobType,
+        workingRights: req.body.workingRights,
+        wamRequirements: req.body.wamRequirements,
+        additionalInfo: req.body.additionalInfo.trim(),
+        isPaid: req.body.isPaid,
       };
+
       Helpers.requireParameters(msg.role);
       Helpers.requireParameters(msg.description);
       Helpers.requireParameters(msg.applicationLink);
       Helpers.requireParameters(msg.expiry);
+      Helpers.requireParameters(msg.isPaid);
+
+      Helpers.isValidJobMode(msg.jobMode);
+      Helpers.isValidStudentDemographic(msg.studentDemographic);
+      Helpers.isValidJobType(msg.jobType);
+      Helpers.isValidWorkingRights(msg.workingRights);
+      Helpers.isValidWamRequirement(msg.wamRequirements);
+      
       Helpers.isDateInTheFuture(msg.expiry);
       Helpers.validApplicationLink(msg.applicationLink);
       Logger.Info(`Attempting to create job for COMPANY=${companyID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`);
@@ -394,6 +410,13 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       newJob.description = msg.description;
       newJob.applicationLink = msg.applicationLink;
       newJob.expiry = new Date(msg.expiry);
+      newJob.mode = msg.jobMode;
+      newJob.studentDemographic = msg.studentDemographic;
+      newJob.jobType = msg.jobType;
+      newJob.workingRights = msg.workingRights;
+      newJob.additionalInfo = msg.additionalInfo;
+      newJob.isPaid = msg.isPaid;
+      newJob.wamRequirements = msg.wamRequirements;
       // jobs created by admin are implicitly approved
       newJob.approved = true;
       // mark this job as one that the admin has created
@@ -440,5 +463,36 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         }
       } as IResponseWithStatus;
     }, next);
+  }
+  
+  public static async GetNumVerifiedCompanies(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async() => {
+      
+      Logger.Info(`Retrieving the number of verified companies as ADMIN=${req.adminID}`);
+
+      const verifiedCompanies = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource
+          .getRepository(CompanyAccount)
+          .createQueryBuilder("ca")
+          .where("ca.verified = :verified", { verified: true })
+          .getMany();
+      }, 'Failed to retrive the number of verified comapnies')
+      
+      const numVerifiedCompanies = verifiedCompanies.length;
+      
+      Logger.Info(`Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`);
+      
+      return {
+        status: 200,
+        msg: {
+          num: numVerifiedCompanies
+        }
+      } as IResponseWithStatus
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next)
   }
 }
