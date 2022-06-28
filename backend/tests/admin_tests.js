@@ -379,23 +379,6 @@ describe("admin", () => {
     });
   });
 
-  describe("listing featured jobs", () => {
-  
-    it(
-      "Succeeded in getting featured Jobs while unauthenticated",
-      function (done) {
-        server
-        .get(`/admin/jobs/featuredJobs`)
-        .expect(200)
-        .end( function(_, res) {
-          expect(res.status).to.equal(200);
-          done();
-        });
-      }
-    );
-   
-  });
-
   describe("managing job requests with verified company", () => {
     before( async function() {
       // login as a sutdent

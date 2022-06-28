@@ -662,7 +662,7 @@ app.put(
 
 /**
  *  @swagger
- *  /jobs/getFeaturedJobs:
+ *  /getFeaturedJobs:
  *    get:
  *      description: List top 4 jobs in database
  *    responses:
@@ -678,9 +678,9 @@ app.put(
  *        description: failed to get Jobs
  */
  app.get(
-  "/admin/jobs/featuredJobs",
+  "/getFeaturedJobs",
   cors(corsOptions),
-  AdminFunctions.GetFeaturedJobs,
+  StudentFunctions.GetFeaturedJobs,
   Middleware.genericLoggingMiddleware
 );
 

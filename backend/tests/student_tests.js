@@ -71,6 +71,24 @@ describe("job", () => {
           });
       });
 
+      describe("listing featured jobs", () => {
+  
+        it(
+          "Succeeded in getting featured Jobs while unauthenticated",
+          function (done) {
+            server
+            .get(`/getFeaturedJobs`)
+            .expect(200)
+            .end( function(_, res) {
+              expect(res.status).to.equal(200);
+              done();
+            });
+          }
+        );
+       
+      });
+    
+
     it("user can't access list of jobs with invalid token",
       function (done) {
         server
