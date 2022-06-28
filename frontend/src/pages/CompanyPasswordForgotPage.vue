@@ -39,14 +39,17 @@
       <Button @callback="performCompanyPasswordForgot">
         <p class="p-4 text-white">Forgot Password</p>
       </Button>
-      <p class="text-jb-subheadings pt-6 pb-4">
-        Not a company? 
-        <router-link to="/login/student" class="text-jb-textlink font-bold">Student Login</router-link>
-      </p>
-      <p class="text-jb-subheadings pb-4">
-        Don't have an account? 
-        <router-link to="/signup/company" class="text-jb-textlink font-bold">Create One</router-link>
-      </p>
+
+      <div class="flex flex-col justify-evenly items-center pt-12 w-4/5 sm:w-1/2 sm:flex-row md:w-2/5 xl:w-1/4">
+        <p class="flex flex-col text-jb-subheadings pb-4 sm:pb-0">
+          Not a company? 
+          <router-link to="/login/student" class="text-jb-textlink font-bold">Student Login</router-link>
+        </p>
+        <p class="flex flex-col text-jb-subheadings">
+          Don't have an account? 
+          <router-link to="/signup/company" class="text-jb-textlink font-bold">Create One</router-link>
+        </p>
+      </div>
     </main>
   </StudentViewTemplate>
 </template>
