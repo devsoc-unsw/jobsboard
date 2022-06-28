@@ -44,6 +44,13 @@ export default Vue.extend({
       apiToken: this.$store.getters.getApiToken,
     };
   },
+  async mounted() {
+    setTimeout(() => {
+      if (!this.$store.getters.getApiToken) {
+        this.apiToken = undefined;
+      }
+    }, 100);
+  },
   methods: {
     toStudentLogin() {
       this.$router.push("/login/student");
