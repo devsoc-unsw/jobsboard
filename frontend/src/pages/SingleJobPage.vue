@@ -1,19 +1,47 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplateCompact>
-  <div v-if="error">
-    <br/>
-    <ErrorBox>
-    {{ errorMsg }}
-    </ErrorBox>
+  <!-- TODO: add alert here -->
+  <Alert
+    alertType="error"
+    :alertMsg="this.alertMsg"
+    :isOpen="this.isAlertOpen"
+    :handleClose="() => { this.isAlertOpen = false }"
+  />
+  <div style="display: flex; flex-direction: row; justify-content: center;">
+    <div style="padding: 1rem; border: 1px solid black; background-color: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); height: 100%; margin-right: 50px">
+      Other jobs from company x
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 1rem 43px 23px 34px; border: 1px solid black; background-color: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25)">
+        <div style="display: flex; flex-direction: column; margin-right: 36px;">
+          <font-awesome-icon :icon="['fab', 'linkedin']" style="height: 155px;" />
+          <button
+            class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
+              shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
+            @click="() => window.open(this.applicationLink)"
+          >
+            Apply
+          </button>
+        </div>
+        <div style="display: flex; flex-direction: column; text-align: left">
+          <h1 style="font-weight: bold; font-size: 24px">{{ role || "role" }}</h1>
+          <span>
+            <font-awesome-icon icon="building" class="mr-1" />
+            Company e.g LinkedIn
+          </span>
+          <div>JobMode e.g. Onsite</div>
+          <div>StudentDemographic e.g. Penultimate Students</div>
+          <div>JobType e.g. Interns | Graduates</div>
+          <div>ApplicationLink e.g. www.linkedIn.com</div>
+          <div>Expiry Date e.g. 01/01/2023</div>
+        </div>
+      </div>
+      <div style="border: 1px solid black; background-color: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25)">main info alert student requirements e.g. working rights, wamRequirements, is paid</div>
+      <div style="border: 1px solid black; background-color: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25)">description / info</div>
+    </div>
   </div>
-  <div v-else>
-    <JobStandout
-      :role="role"
-      :company="company"
-      :companyID="companyID"
-      :location="location"
-      />
+    <!-- 
     <div class="jobInformation">
       <h1>
         Job Description
@@ -23,13 +51,6 @@
       <br/>
     </div>
     <div>
-      <DarkBlueStandardButton>
-      <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
-        <Button @click="applyNowButton">
-          Apply now
-        </Button>
-      </a>
-      </DarkBlueStandardButton>
     </div>
     <div class="companyInformation">
       <br/>
@@ -55,7 +76,7 @@
           />
       </div>
     </div>
-  </div>
+  </div> -->
   </StudentViewTemplateCompact>
   </LoggedInTemplate>
 </template>
@@ -63,26 +84,18 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import StudentViewTemplateCompact from "@/components/StudentViewTemplateCompact.vue";
-import JobStandout from "@/components/JobStandout.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
-import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import Alert from "@/components/Alert.vue";
 
 export default Vue.extend({
   name: "JobsListPage",
   components: {
     StudentViewTemplateCompact,
-    JobStandout,
-    ErrorBox,
     JobListingMinimal,
     LoggedInTemplate,
-    Button,
-    DarkBlueStandardButton,
-    JobDescriptionView,
+    Alert,
   },
   data() {
     return {
@@ -95,15 +108,12 @@ export default Vue.extend({
       jobs: [],
       location: "",
       applicationLink: "",
-      error: false,
-      errorMsg: "",
+      alertMsg: "",
+      isAlertOpen: false,
       jobInfoReady: false,
     };
   },
   methods: {
-    applyNowButton() {
-      window.open(this.applicationLink);
-    },
     async fetchJob() {
       // determine whether there is an API key present and redirect if not present
       if (this.$store.getters.getApiToken === undefined) {
@@ -137,15 +147,15 @@ export default Vue.extend({
         this.companyID = msg.job.company.id;
         this.applicationLink = msg.job.applicationLink;
       } else {
-        this.error = true;
+        this.isAlertOpen = true;
         window.scrollTo(0, 10);
         if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
+          this.alertMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);
         } else {
-          this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+          this.alertMsg = "Unable to load jobs at this time. Please try again later.";
         }
       }
 
@@ -171,65 +181,23 @@ export default Vue.extend({
           return jobResultID !== currentJobID;
         });
       } else {
-        this.error = true;
-        this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
+        this.isAlertOpen = true;
+        this.alertMsg = "Unable to load company jobs at this time. Please try again later.";
       }
 
       this.jobInfoReady = true;
     }
   },
   watch: {
-    '$route.params.jobID': function(id) {
-      this.fetchJob()
-    },
+    // '$route.params.jobID': function(id) {
+    //   this.fetchJob()
+    // },
   },
   async mounted() {
-    this.fetchJob();
+    // this.fetchJob();
   },
 });
 </script>
 
 <style scoped lang="scss">
-@media screen and (min-width: 900px) {
-  .jobInformation {
-    font-weight: 100;
-    text-align: left;
-    padding: 0rem;
-  }
-
-  .companyInformation {
-    font-weight: 100;
-    text-align: left;
-    padding: 0rem;
-  }
-}
-
-.jobInformation {
-  font-weight: 100;
-  text-align: left;
-  padding: 1rem;
-}
-
-.jobContainer {
-  display: grid;
-  align-items: stretch;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 1fr;
-  grid-gap: 3%;
-  text-align: center;
-}
-
-.companyInformation {
-  font-weight: 100;
-  text-align: left;
-  padding: 1rem;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  cursor: default;
-}
 </style>
