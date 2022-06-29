@@ -158,7 +158,7 @@ export default class StudentFunctions {
 
 public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
   Helpers.catchAndLogError(res, async () => {
-    Logger.Info(`Attempting to get feaured jobs`);
+    Logger.Info(`Attempting to get featured jobs`);
     let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
       return await AppDataSource
         .getRepository(Job)
@@ -167,7 +167,7 @@ public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction)
         .where("Job.approved = :approved", { approved: true })
         .andWhere("Job.hidden = :hidden", { hidden: false })
         .getMany();
-    }, `Coudn't query for jobs`);
+    }, `Couldn't query for featured jobs`);
 
     for (let jobIndex = 0; jobIndex < featuredJobs.length; jobIndex++) {
       featuredJobs[jobIndex].company = await AppDataSource

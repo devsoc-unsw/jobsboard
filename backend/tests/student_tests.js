@@ -72,7 +72,6 @@ describe("job", () => {
       });
 
       describe("listing featured jobs", () => {
-  
         it(
           "Succeeded in getting featured Jobs while unauthenticated",
           function (done) {
