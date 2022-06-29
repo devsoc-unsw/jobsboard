@@ -78,7 +78,7 @@
         <span class="text-jb-textlink font-bold"> post on behalf of a company</span>.
         Ensure that you have their explicit permission before doing so.
       </p>
-      <Button @callback="() => { this.$router.push(`/company/jobs/add`) }">
+      <Button @callback="() => { this.$router.push(`/admin/jobs/post`) }">
         <font-awesome-icon icon="briefcase" class="text-white"/>
         <p class="p-4 text-white">Post Job</p>
         <font-awesome-icon icon="angle-right" class="text-white"/>
@@ -135,7 +135,7 @@ export default Vue.extend({
       if (response.status === 401) {
         this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
         setTimeout(() => {
-          this.$router.push("/login");
+          this.$router.push("/");
         }, 5000);
       } else {
         this.alertMsg = "Failed to get pending companies. You might want to check what's happening in the console.";
@@ -161,7 +161,7 @@ export default Vue.extend({
       if (pendingJobsResponse.status === 401) {
         this.alertMsg = "You are not authorized to perform this action. Redirecting to login page...";
         setTimeout(() => {
-          this.$router.push("/login");
+          this.$router.push("/");
         }, 5000);
       } else {
         this.alertMsg = "Failed to get pending jobs. You might want to check what's happening in the console.";
