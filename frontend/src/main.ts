@@ -24,8 +24,6 @@ import {
   faHouse
 } from "@fortawesome/free-solid-svg-icons";
 
-import {  } from "@fortawesome/free-regular-svg-icons";
-
 import {
   faGithub,
   faLinkedin,
