@@ -69,13 +69,20 @@ export default new Router({
   }, {
     path: "/admin/home",
     component: AdminAccountHome,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard'}
+      ]
+    }
   }, {
     path: "/admin/jobs/pending",
     component: AdminListPendingJobs,
     meta: {
       breadcrumb: [
+        { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
-        { name: 'Pending Jobs' }
+        { name: 'Jobs' }
       ]
     }
   }, {
@@ -83,8 +90,9 @@ export default new Router({
     component: AdminListCompanyPendingVerification,
     meta: {
       breadcrumb: [
+        { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
-        { name: 'Pending Companies' }
+        { name: 'Companies' }
       ]
     }
   }, {
@@ -92,8 +100,9 @@ export default new Router({
     component: AdminCreateJobAsCompany,
     meta: {
       breadcrumb: [
+        { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
-        { name: 'Post Job' }
+        { name: 'Post' }
       ]
     }
   }, {
