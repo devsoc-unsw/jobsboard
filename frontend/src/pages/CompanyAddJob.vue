@@ -108,8 +108,8 @@
           class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white"
         >
           <option value="" disabled selected>Please select an option</option>
-          <option value="intern">Intern</option>
-          <option value="grad">Grad</option>
+          <option value="intern">Internship</option>
+          <option value="grad">Graduate Position</option>
         </select>
       </div>
       <div class="flex flex-col items-start text-left w-full lg:w-2/5">
