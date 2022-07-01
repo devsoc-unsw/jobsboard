@@ -66,6 +66,12 @@ export default new Router({
   }, {
     path: "/company/home",
     component: CompanyAccountHome,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard' }
+      ]
+    }
   }, {
     path: "/admin/home",
     component: AdminAccountHome,
@@ -110,6 +116,7 @@ export default new Router({
     component: CompanyAddJob,
     meta: {
       breadcrumb: [
+        { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/company/home' },
         { name: 'Post Job' }
       ]
@@ -149,6 +156,7 @@ export default new Router({
     component: CompanyManageJobs,
     meta: {
       breadcrumb: [
+        { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/company/home' },
         { name: 'Manage Jobs' }
       ]

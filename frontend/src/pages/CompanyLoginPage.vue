@@ -1,5 +1,6 @@
 <template>
   <StudentViewTemplate notLoggedIn>
+    <Breadcrumbs />
     <div>
       <h1>Company Login</h1>
       Welcome back! Please log in to your account.
@@ -53,6 +54,7 @@ import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
 import config from "@/config/config";
@@ -64,6 +66,7 @@ export default Vue.extend({
     ErrorBox,
     Button,
     StandardButton,
+    Breadcrumbs
   },
   data() {
     return {
