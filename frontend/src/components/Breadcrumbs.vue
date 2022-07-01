@@ -1,14 +1,15 @@
 <template>
   <div>
-    <ul class="flex justify-start mx-[25%] p-0 list-none font-bold">
+    <ul class="flex justify-start mx-[28%] mt-10 mb-4 p-0 list-none font-bold">
       <li
         class="flex float-left h-5 w-auto items-center"
         v-for="(breadcrumb, idx) in breadcrumbList"
         :key="idx"
         @click="routeTo(idx)"
-        :class="{'active-link': breadcrumb.link}"
+        :class="{'cursor-pointer text-lg duration-200 ease-linear hover:text-jb-textlink-hovered': breadcrumb.link}"
       >
-        {{ breadcrumb.name }}
+        <font-awesome-icon v-if="breadcrumb.name === 'Home'" icon="home" size="xs" />
+        <p v-else class="text-jb-headings text-base">{{ breadcrumb.name }}</p>
       </li>
     </ul>
   </div>
@@ -44,14 +45,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  ul > li:not(:last-child)::after {
+  li:not(:last-child)::after {
     content: '/';
     margin: 0 .5em;
-  }
-
-  .active-link {
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: normal;
+    color: black;
   }
 </style>
