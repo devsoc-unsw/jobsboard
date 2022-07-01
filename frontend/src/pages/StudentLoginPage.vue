@@ -1,6 +1,7 @@
 <template>
   <StudentViewTemplate notLoggedIn>
     <div>
+      <Breadcrumbs />
       <h1>Student Login</h1>
       Welcome back! Please log in to your account.
       <br/>
@@ -33,6 +34,7 @@ import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "StudentLoginPage",
@@ -41,6 +43,7 @@ export default Vue.extend({
     ErrorBox,
     Button,
     StandardButton,
+    Breadcrumbs
   },
   data() {
     return {

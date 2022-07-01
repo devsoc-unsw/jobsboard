@@ -126,6 +126,12 @@ export default new Router({
   }, {
     path: "/jobs",
     component: JobsListPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Job List' }
+      ]
+    }
   }, {
     path: "/job/:jobID",
     component: SingleJobPage,
@@ -133,6 +139,8 @@ export default new Router({
     name: "job",
     meta: {
       breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Job List' , link: '/jobs' },
         { name: 'Job' }
       ]
     }

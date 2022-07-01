@@ -1,62 +1,63 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplateCompact>
-  <div v-if="error">
-    <br/>
-    <ErrorBox>
-    {{ errorMsg }}
-    </ErrorBox>
-  </div>
-  <div v-else>
-    <JobStandout
-      :role="role"
-      :company="company"
-      :companyID="companyID"
-      :location="location"
-      />
-    <div class="jobInformation">
-      <h1>
-        Job Description
-      </h1>
-      <p v-if="jobInfoReady" v-html="description"> </p>
-      <br/>
-      <br/>
-    </div>
-    <div>
-      <DarkBlueStandardButton>
-      <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
-        <Button @click="applyNowButton">
-          Apply now
-        </Button>
-      </a>
-      </DarkBlueStandardButton>
-    </div>
-    <div class="companyInformation">
-      <br/>
-      <h2>
-        About {{ company }}
-      </h2>
-      {{ companyDescription }}
-      <br/>
-      <br/>
-      <h2 v-if="jobs.length !== 0">
-        More jobs at {{ company }}
-      </h2>
-      <div class="jobContainer">
-        <JobListingMinimal
-          class="jobItems"
-          v-for="job in jobs"
-          :key="job.key"
-          :jobID="job.id"
-          :role="job.role"
-          :company="company"
-          :description="job.description"
-          :location="job.location"
-          />
+    <StudentViewTemplateCompact>
+      <Breadcrumbs class="w-1/2"/>
+      <div v-if="error">
+        <br/>
+        <ErrorBox>
+        {{ errorMsg }}
+        </ErrorBox>
       </div>
-    </div>
-  </div>
-  </StudentViewTemplateCompact>
+      <div v-else>
+        <JobStandout
+          :role="role"
+          :company="company"
+          :companyID="companyID"
+          :location="location"
+          />
+        <div class="jobInformation">
+          <h1>
+            Job Description
+          </h1>
+          <p v-if="jobInfoReady" v-html="description"> </p>
+          <br/>
+          <br/>
+        </div>
+        <div>
+          <DarkBlueStandardButton>
+          <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
+            <Button @click="applyNowButton">
+              Apply now
+            </Button>
+          </a>
+          </DarkBlueStandardButton>
+        </div>
+        <div class="companyInformation">
+          <br/>
+          <h2>
+            About {{ company }}
+          </h2>
+          {{ companyDescription }}
+          <br/>
+          <br/>
+          <h2 v-if="jobs.length !== 0">
+            More jobs at {{ company }}
+          </h2>
+          <div class="jobContainer">
+            <JobListingMinimal
+              class="jobItems"
+              v-for="job in jobs"
+              :key="job.key"
+              :jobID="job.id"
+              :role="job.role"
+              :company="company"
+              :description="job.description"
+              :location="job.location"
+              />
+          </div>
+        </div>
+      </div>
+    </StudentViewTemplateCompact>
   </LoggedInTemplate>
 </template>
 
@@ -71,6 +72,7 @@ import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "JobsListPage",
@@ -83,6 +85,7 @@ export default Vue.extend({
     Button,
     DarkBlueStandardButton,
     JobDescriptionView,
+    Breadcrumbs
   },
   data() {
     return {
