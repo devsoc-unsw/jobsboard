@@ -60,21 +60,21 @@
 
       <p class="text-lg text-jb-subheadings text-center">
           Not a student? 
-          <span 
+          <router-link
             class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
                     cursor-pointer hover:text-jb-textlink-hovered"
-            @click="toCompanyLoginPage()"
+            to="/login/company"
           >
             Company Login
-          </span>
+          </router-link>
       </p>
-      <br/>
       <button 
         type="submit" 
-        class="bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base 
+        class="bg-jb-textlink rounded-md w-40 h-11 my-4 p-2 text-white font-bold text-base 
                border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
+        @click="performLogin()"
       >
-        <span class="p-2 text-white" @click="performLogin()">Log In</span>
+        Log In
       </button>
       </div>
   </StudentViewTemplate>
@@ -128,9 +128,6 @@ export default Vue.extend({
         this.isAlertOpen = true;
       }
     },
-    async toCompanyLoginPage() {
-      this.$router.push("/login/company");
-    }
   },
 });
 </script>

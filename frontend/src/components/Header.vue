@@ -27,7 +27,7 @@
         </button>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -41,7 +41,6 @@ export default Vue.extend({
     return {
       logo: logo,
       moon: moon,
-      showModal: false
     };
   },
   props: {
