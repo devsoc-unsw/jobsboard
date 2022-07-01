@@ -17,6 +17,7 @@ import {
   faUser,
   faCircleInfo,
   faXmark,
+  faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -44,6 +45,7 @@ library.add(faAddressCard as IconDefinition);
 library.add(faUser as IconDefinition);
 library.add(faCircleInfo as IconDefinition);
 library.add(faXmark as IconDefinition);
+library.add(faLocationDot as IconDefinition);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
