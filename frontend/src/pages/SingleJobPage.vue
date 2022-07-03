@@ -8,17 +8,35 @@
     :handleClose="() => { this.isAlertOpen = false }"
   />
   <!-- TODO replace current 'filled' icons with 'thin' icons -->
-  <div style="display: flex; flex-direction: row; justify-content: center; height: 100vh; padding: 0 2rem;">
-    <div style="padding: 1rem; background-color: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); margin-right: 50px; width: 25%; overflow: scroll">
-      <h2 style="font-weight: bold; font-size: 18px; line-height: 27px;">
+  <div class="flex flex-row justify-center h-screen px-8">
+    <div class="p-4 bg-white rounded-xl mr-12 w-1/4 overflow-scroll shadow-card">
+      <h2 class="font-bold text-lg">
         <!-- TODO: alternate behaviour when company has no other job postings -->
         Other Jobs from this company
         <!-- TODO: create job listing minimla cards with 'jobDescription', 'companyName', 'companyLocation', 'workingRights' and maybe 'studentDemo'-->
+        <!-- <div class="companyInformation">
+          <h2 v-if="jobs.length !== 0">
+            More jobs at {{ company }}
+          </h2>
+          <div class="jobContainer">
+            <JobListingMinimal
+              class="jobItems"
+              v-for="job in jobs"
+              :key="job.key"
+              :jobID="job.id"
+              :role="job.role"
+              :company="company"
+              :description="job.description"
+              :location="job.location"
+            />
+          </div>
+        </div>
+        </div> -->
       </h2>
     </div>
-    <div style="display: flex; flex-direction: column; align-items: center; width: 75%; height: 100%;">
-      <div style="display: flex; flex-direction: row; padding: 1rem; background-color: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); margin-bottom: 1rem; width: 100%;">
-        <div style="display: flex; flex-direction: column; margin-right: 36px; align-self: center">
+    <div class="flex flex-col items-center w-3/4 h-full">
+      <div class="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card">
+        <div class="flex flex-col mr-8 self-center">
           <font-awesome-icon :icon="['fab', 'linkedin']" style="height: 155px; color: #0077B5" />
           <button
             class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
@@ -28,87 +46,98 @@
             Apply
           </button>
         </div>
-        <div style="display: flex; flex-direction: column; text-align: left;">
-          <h1 style="font-weight: bold; font-size: 24px; margin-bottom: 26px">{{ role || "Software Engineering Internship 2022/2023" }}</h1>
-          <span style="margin-bottom: 0.25rem;">
+        <div class="flex flex-col text-left">
+          <h1 class="font-bold text-3xl my-4">{{ role }}</h1>
+          <span class="mb-1">
             <font-awesome-icon icon="building" class="mr-5 w-7" />
             <b>Company:</b> {{ company }}
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="location-dot" class="mr-5 w-7" />
             <b>Location:</b> {{ location }}
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
             <b>Job Mode:</b> {{ jobModeObject[jobMode] }}
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
             <b>Job Type:</b> {{ JobTypeObject[jobType] }}
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="calendar" class="mr-5 w-7" />
-            <!-- TODO: check if expiry date is needed to be shown -->
             <b>Expiry Date:</b> {{ expiryDate }}
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="circle-dollar-to-slot" class="mr-5 w-7" />
             <b>Is this a paid position?</b> {{ isPaid ? "Yes" : "No" }}
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="graduation-cap" class="mr-5 w-7" />
             <b>Required WAM:</b> {{ WamObject[wamRequirements] }}
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="address-card" class="mr-5 w-7" />
-            <b>{{ ["all"].every((val, idx) => val === this.workingRights[idx]) ? "No required working rights specified for this job listing." : "Must have one of the following working rights in Australia:" }}</b>
-            <ul v-if="!['all'].every((val, idx) => val === this.workingRights[idx])" class="list-disc list-inside ml-12">
+            <b>
+              {{
+                ["all"].every((val, idx) => val === this.workingRights[idx])
+                  ? "No required working rights specified for this job listing."
+                  : "Must have one of the following working rights in Australia:"
+              }}
+            </b>
+            <ul
+              v-if="!['all'].every((val, idx) => val === this.workingRights[idx])"
+              class="list-disc list-inside ml-12"
+            >
               <li v-for="workingRight in workingRights" :key="workingRight">{{ WrObject[workingRight] }}</li>
             </ul>
           </span>
-          <span style="margin-bottom: 0.25rem;">
+          <span class="mb-1">
             <font-awesome-icon icon="user" class="mr-5 w-7" />
-            <b>{{ ["all"].every((val, idx) => val === this.studentDemographic[idx]) ? "This job listing is open to students at any stage of their degree." : "This job listing is open to only the following students:" }}</b>
-            <ul v-if="!['all'].every((val, idx) => val === this.studentDemographic[idx])" class="list-disc list-inside ml-12">
+            <b>
+              {{
+                ["all"].every((val, idx) => val === this.studentDemographic[idx])
+                  ? "This job listing is open to students at any stage of their degree."
+                  : "This job listing is open to only the following students:"
+              }}
+              </b>
+            <ul
+              v-if="!['all'].every((val, idx) => val === this.studentDemographic[idx])"
+              class="list-disc list-inside ml-12"
+            >
               <li v-for="studentType in studentDemographic" :key="studentType">{{ StuDemoObject[studentType] }}</li>
             </ul>
           </span>
         </div>
       </div>
-      <div style="width: 100%">
-        <ul class="flex -mb-px justify-start" style="list-style-position: inside; list-style-type: none">
+      <div class="w-full">
+        <ul class="flex -mb-px justify-start list-inside list-none">
           <li class="mr-2">
-            <button class="inline-block p-4" v-bind:class="[ isJobDescriptionShown ? 'text-blue-600 font-black' : 'text-gray-500 hover:text-gray-700']" @click="() => { isJobDescriptionShown = true }">Description</button>
+            <button
+              class="inline-block p-4"
+              v-bind:class="[ isJobDescriptionShown ? 'text-blue-600 font-black' : 'text-gray-500 hover:text-gray-700']"
+              @click="() => { isJobDescriptionShown = true }"
+            >
+              Description
+            </button>
           </li>
           <li class="mr-2">
-            <button class="inline-block p-4" v-bind:class="[ !isJobDescriptionShown ? 'text-blue-600 font-black' : 'text-gray-500 hover:text-gray-700']" @click="() => { isJobDescriptionShown = false }">Additional Information</button>
+            <button
+              class="inline-block p-4"
+              v-bind:class="[ !isJobDescriptionShown ? 'text-blue-600 font-black' : 'text-gray-500 hover:text-gray-700']"
+              @click="() => { isJobDescriptionShown = false }"
+            >
+              Additional Information
+            </button>
           </li>
         </ul>
       </div>
-      <div class="text-left" style="height: 100%; padding: 1rem; background-color: white; border-radius: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); width: 100%; overflow: scroll">
+      <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-scroll shadow-card">
         <p v-if="isJobDescriptionShown" v-html="this.description"></p>
         <p v-else v-html="this.additionalInfo"></p>
       </div>
     </div>
   </div>
-    <!-- <div class="companyInformation">
-      <h2 v-if="jobs.length !== 0">
-        More jobs at {{ company }}
-      </h2>
-      <div class="jobContainer">
-        <JobListingMinimal
-          class="jobItems"
-          v-for="job in jobs"
-          :key="job.key"
-          :jobID="job.id"
-          :role="job.role"
-          :company="company"
-          :description="job.description"
-          :location="job.location"
-          />
-      </div>
-    </div>
-  </div> -->
   </StudentViewTemplateCompact>
   </LoggedInTemplate>
 </template>
