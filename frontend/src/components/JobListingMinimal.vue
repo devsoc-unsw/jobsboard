@@ -1,22 +1,16 @@
 <template>
-  <div>
-    <div class="jobsBox" @click="seeJob">
-      <div class="companyLogo">
-        <font-awesome-icon icon="building" />
-      </div>
-      <br>
-      <div class="jobDescriptionBox">
-        <div class="roleHeading">
-          {{ role }}
-        </div>
-        <br>
-        <div class="companyHeading">
-          {{ company }}
-        </div>
-      </div>
-      <slot />
+  <button
+    class="shadow-card"
+    style="display: flex; flex-direction: row; margin-bottom: 1rem; align-items: center; padding: 1rem; border-radius: 1rem"
+    @click="() => { this.$router.push(`/job/${this.jobId}`) }"
+  >
+    <font-awesome-icon :icon="['fab', 'linkedin']" style="color: #0077B5; margin-right: 1rem; height: 3rem" />
+    <div style="display: flex; flex-direction: column; text-align: left">
+      <h2 style="font-weight: bold; color: #2C8BF4">{{ role }}</h2>
+      <p>{{ company }}</p>
+      <p>{{ location }}</p>
     </div>
-  </div>
+  </button>
 </template>
 
 <script lang="ts">
@@ -26,67 +20,14 @@ export default Vue.extend({
   name: "JobsList",
   components: {},
   props: {
+    jobId: Number,
     role: String,
     company: String,
-    description: String,
-    jobID: Number,
-    actAsLink: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  methods: {
-    seeJob() {
-      if (this.actAsLink) {
-        this.$router.push({ name: "job", params: { jobID: String(this.jobID) } });
-      }
-    },
+    location: String,
   },
 });
 
 </script>
 
 <style scoped lang="scss">
-.jobsBox {
-  // width: 75%;
-  background: $white;
-  /* padding: 10%; */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: left;
-  /* border-radius: 0.2rem; */
-  /* offset-x | offset-y | blur-radius | spread-radius | color */
-  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
-    cursor: pointer;
-  }
-  min-height: 100%;
-}
-
-.companyLogo {
-  width: 100%;
-  font-size: 3em;
-  color: $grey;
-  text-decoration: none;
-    margin-top: 10%;
-}
-
-.jobDescriptionBox {
-  text-align: center;
-  width: 80%;
-  margin-left: 10%;
-  margin-right: 10%;
-  margin-bottom: 10%;
-}
-
-.roleHeading {
-  font-weight: 500;
-}
-
-.companyHeading {
-  font-weight: 100;
-}
-
 </style>
