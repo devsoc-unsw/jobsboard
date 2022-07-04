@@ -9,30 +9,27 @@
   />
   <!-- TODO replace current 'filled' icons with 'thin' icons -->
   <div class="flex flex-row justify-center h-screen px-8">
-    <div class="p-4 bg-white rounded-xl mr-12 w-1/4 overflow-scroll shadow-card">
-      <h2 class="font-bold text-lg">
-        <!-- TODO: alternate behaviour when company has no other job postings -->
-        Other Jobs from this company
-        <!-- TODO: create job listing minimla cards with 'jobDescription', 'companyName', 'companyLocation', 'workingRights' and maybe 'studentDemo'-->
-        <!-- <div class="companyInformation">
-          <h2 v-if="jobs.length !== 0">
-            More jobs at {{ company }}
-          </h2>
-          <div class="jobContainer">
-            <JobListingMinimal
-              class="jobItems"
-              v-for="job in jobs"
-              :key="job.key"
-              :jobID="job.id"
-              :role="job.role"
-              :company="company"
-              :description="job.description"
-              :location="job.location"
-            />
-          </div>
-        </div>
-        </div> -->
+    <div class="flex flex-col py-4 px-2 h-full bg-white rounded-xl mr-12 w-1/4 overflow-scroll shadow-card">
+      <h2
+        class="font-bold text-xl" 
+        v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
+      >
+        {{
+          this.jobs.length === 0
+            ? "There are no other jobs from this company."
+            : "Other jobs from this company"
+        }}
       </h2>
+      <div>
+        <JobListingMinimal
+          v-for="job in this.jobs"
+          :key="job.key"
+          :jobId="job.id"
+          :role="job.role"
+          :company="company"
+          :location="job.location"
+        />
+      </div>
     </div>
     <div class="flex flex-col items-center w-3/4 h-full">
       <div class="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card">
@@ -100,7 +97,7 @@
                   ? "This job listing is open to students at any stage of their degree."
                   : "This job listing is open to only the following students:"
               }}
-              </b>
+            </b>
             <ul
               v-if="!['all'].every((val, idx) => val === this.studentDemographic[idx])"
               class="list-disc list-inside ml-12"
@@ -167,8 +164,52 @@ export default Vue.extend({
       role: "Software Engineering Internship",
       company: "LinkedIn",
       companyDescription: "We are a company.",
-      description: "",
-      jobs: [],
+      description: "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed finibus mi velit, sed cursus nunc malesuada et. Aenean ut condimentum elit. Etiam at ultricies diam, sodales vulputate augue. Nullam maximus et magna vitae aliquam. Etiam eu sem non elit ultrices molestie ut suscipit sem. Donec sit amet ante quis ipsum egestas dignissim. Aliquam in enim pellentesque, dignissim mi eget, porta arcu. Nunc sed arcu purus. Morbi at metus nulla. Sed non lectus et nunc volutpat rhoncus et non lacus. Sed sit amet ullamcorper lorem. In varius tincidunt augue, et consectetur ipsum lacinia vitae. Vivamus cursus urna id urna sollicitudin luctus. Suspendisse a consectetur felis, id sollicitudin purus.</p><p>Aliquam feugiat, est et ornare bibendum, nunc lacus malesuada arcu, vitae aliquet elit magna nec quam. Fusce ut sem nec arcu imperdiet venenatis vel eu ligula. In faucibus urna ligula, et scelerisque nibh imperdiet nec. Etiam at suscipit nulla, ac posuere enim. Nulla suscipit neque tellus, sit amet tristique ipsum congue non. Ut lobortis nisl dolor, finibus ullamcorper urna aliquam eget. Etiam in felis posuere, egestas urna a, accumsan metus. Pellentesque vitae accumsan ipsum, interdum volutpat nulla. Ut ut varius orci. Pellentesque imperdiet finibus tellus sed hendrerit. Aenean varius pulvinar nisl convallis pharetra. Ut urna neque, vestibulum a elit eu, maximus vestibulum augue. Donec fermentum pulvinar massa, pulvinar congue turpis ultricies non.</p><p>Fusce dictum, orci pellentesque fringilla feugiat, leo leo facilisis nisi, commodo sodales justo nunc id turpis. Nulla aliquet enim sed risus fermentum, tincidunt dapibus elit lobortis. Ut facilisis odio tortor, vitae dignissim magna ultricies in. Nullam interdum, leo eu vulputate sollicitudin, metus tortor tincidunt lacus, sed vehicula tortor nibh non nibh. Cras vel magna ac sem laoreet bibendum. Aliquam vel lorem sit amet sapien congue blandit eget id orci. Ut vestibulum mauris nisi, non rutrum erat lacinia eu. Donec vulputate urna sed ipsum auctor, sit amet bibendum eros sodales. Maecenas egestas, neque eget euismod congue, est leo condimentum dolor, eu iaculis orci nibh id nunc.</p><p>Vivamus volutpat est ac hendrerit consectetur. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Phasellus ac vestibulum diam. Cras cursus nunc nibh, sit amet bibendum dolor vestibulum nec. Nam magna ipsum, convallis vitae pellentesque eget, dignissim eu velit. Mauris ultrices dictum nisi, eget dapibus ligula volutpat vitae. Aliquam commodo nulla nibh, non scelerisque leo rhoncus eget. Pellentesque vel venenatis felis. Proin accumsan fringilla purus, ut mattis quam commodo nec. Phasellus id urna rutrum, efficitur velit vel, cursus tortor. Sed sagittis purus et porttitor pharetra. Proin cursus ut urna sit amet molestie. Phasellus quis turpis eleifend, tincidunt est ultricies, tincidunt mi. Pellentesque convallis eget mauris in feugiat. Donec et leo nulla.</p><p>Aenean consectetur leo et tellus vehicula tristique. Vivamus eleifend auctor quam et lobortis. Donec convallis nibh varius sem aliquam semper. Nulla quis rutrum nunc. Aliquam accumsan non velit sed convallis. Aenean a magna neque. Etiam quis sodales sapien. Aenean maximus fermentum quam id sodales. Cras non velit non justo dictum viverra vel nec nulla. Morbi scelerisque rhoncus sapien non lobortis. Nulla facilisi. Integer ut augue sem. Maecenas ut fermentum mi. In hac habitasse platea dictumst.&nbsp;</p>",
+      // other jobs from this company - mock data
+      jobs: [
+        {
+          id: 1,
+          role: "Software Engineering Internship, 2080",
+          company: "LinkedIn",
+          location: "Sydney, New South Wales, Australia",
+          workingRights: ["all"]
+        },
+        {
+          id: 2,
+          role: "Software Engineering Graduate Position, 2080",
+          company: "LinkedIn",
+          location: "Sydney, New South Wales, Australia",
+          workingRights: ["aus_ctz", "aus_perm_res"]
+        },
+        {
+          id: 2,
+          role: "Software Engineering Graduate Position, 2080",
+          company: "LinkedIn",
+          location: "Sydney, New South Wales, Australia",
+          workingRights: ["aus_ctz", "aus_perm_res"]
+        },
+        {
+          id: 2,
+          role: "Software Engineering Graduate Position, 2080",
+          company: "LinkedIn",
+          location: "Sydney, New South Wales, Australia",
+          workingRights: ["aus_ctz", "aus_perm_res"]
+        },
+        {
+          id: 2,
+          role: "Software Engineering Graduate Position, 2080",
+          company: "LinkedIn",
+          location: "Sydney, New South Wales, Australia",
+          workingRights: ["aus_ctz", "aus_perm_res"]
+        },
+        {
+          id: 2,
+          role: "Software Engineering Graduate Position, 2080",
+          company: "LinkedIn",
+          location: "Sydney, New South Wales, Australia",
+          workingRights: ["aus_ctz", "aus_perm_res"]
+        },
+      ],
       location: "Sydney, New South Wales, Australia",
       applicationLink: "www.linkedin.com",
       jobMode: "onsite",
