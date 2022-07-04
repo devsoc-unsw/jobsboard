@@ -1,15 +1,14 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplateCompact>
+  <StudentViewTemplate>
   <Alert
     alertType="error"
     :alertMsg="this.alertMsg"
     :isOpen="this.isAlertOpen"
     :handleClose="() => { this.isAlertOpen = false }"
   />
-  <!-- TODO replace current 'filled' icons with 'thin' icons -->
   <div class="flex flex-row justify-center h-screen px-8">
-    <div class="flex flex-col py-4 px-2 h-full bg-white rounded-xl mr-12 w-1/4 overflow-scroll shadow-card">
+    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-xl mr-12 w-1/4 overflow-scroll shadow-card sm:flex">
       <h2
         class="font-bold text-xl" 
         v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
@@ -31,10 +30,11 @@
         />
       </div>
     </div>
-    <div class="flex flex-col items-center w-3/4 h-full">
-      <div class="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card">
+    <div class="flex flex-col items-center w-full h-full sm:w-3/4">
+      <div class="flex flex-col p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-row">
         <div class="flex flex-col mr-8 self-center">
-          <font-awesome-icon :icon="['fab', 'linkedin']" style="height: 155px; color: #0077B5" />
+          <!-- TODO: to be replaced with company logo -->
+          <font-awesome-icon icon="building" class="h-36" />
           <button
             class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
               shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
@@ -135,13 +135,13 @@
       </div>
     </div>
   </div>
-  </StudentViewTemplateCompact>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import StudentViewTemplateCompact from "@/components/StudentViewTemplateCompact.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
@@ -151,7 +151,7 @@ import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } 
 export default Vue.extend({
   name: "JobsListPage",
   components: {
-    StudentViewTemplateCompact,
+    StudentViewTemplate,
     JobListingMinimal,
     LoggedInTemplate,
     Alert,

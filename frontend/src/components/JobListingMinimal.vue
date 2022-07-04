@@ -1,12 +1,12 @@
 <template>
   <button
-    class="shadow-card"
-    style="display: flex; flex-direction: row; margin-bottom: 1rem; align-items: center; padding: 1rem; border-radius: 1rem"
+    class="flex flex-col mb-4 items-center p-4 shadow-card rounded-2xl md:flex-row"
     @click="() => { this.$router.push(`/job/${this.jobId}`) }"
   >
-    <font-awesome-icon :icon="['fab', 'linkedin']" style="color: #0077B5; margin-right: 1rem; height: 3rem" />
-    <div style="display: flex; flex-direction: column; text-align: left">
-      <h2 style="font-weight: bold; color: #2C8BF4">{{ role }}</h2>
+    <!-- TODO: to be replaced with company logo -->
+    <font-awesome-icon icon="building" class="mr-4 h-12" />
+    <div class="flex flex-col">
+      <h2 class="font-bold text-jb-textlink">{{ role }}</h2>
       <p>{{ company }}</p>
       <p>{{ location }}</p>
     </div>
@@ -24,6 +24,7 @@ export default Vue.extend({
     role: String,
     company: String,
     location: String,
+    // TODO: add company logo
   },
 });
 
