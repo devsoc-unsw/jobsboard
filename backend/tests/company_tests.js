@@ -568,4 +568,135 @@ describe("company", () => {
       }
     );
   })
+  
+  describe("test company editing a job", () => {
+    before(async function() {
+      this.companyToken = await server
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+    });
+    
+    it("fails without job id", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            applicationLink: "www.google.com",
+            description: "hello world", 
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    );
+    
+    it("fails without job application link", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            description: "hello world", 
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it("fails without job description", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            applicationLink: "www.google.com",
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it("fails without job role", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            description: "hello world", 
+            applicationLink: "www.google.com",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it("fails without job expiry", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            description: "hello world", 
+            applicationLink: "www.google.com",
+            role: "pooper",
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it ("succeeds in editing a job's info", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({
+            id: 1,
+            description: "hello world", 
+            applicationLink: "www.google.com",
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z",
+            jobMode: "onsite",
+            studentDemographic: ["penultimate", "final_year"],
+            jobType: "intern",
+            workingRights: ["aus_ctz", "aus_stud_visa"],
+            wamRequirements: "D",
+            additionalInfo: "hello world",
+            isPaid: true
+          })
+          .expect(200)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            done();
+          })
+      }
+    )
+  }) 
 });
