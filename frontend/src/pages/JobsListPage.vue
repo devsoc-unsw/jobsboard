@@ -21,12 +21,11 @@
           class="jobItems"
           v-for="job in jobs"
           :key="job.key"
-          :jobID="job.id"
+          :jobId="job.id"
           :role="job.role"
           :company="job.company.name"
-          :description="job.description"
           :location="job.company.location"
-          />
+        />
       </div>
     </div>
     <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>

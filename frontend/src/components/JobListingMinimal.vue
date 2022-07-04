@@ -1,10 +1,10 @@
 <template>
   <button
-    class="flex flex-col mb-4 items-center p-4 shadow-card rounded-2xl md:flex-row"
-    @click="() => { this.$router.push(`/job/${this.jobId}`) }"
+    class="flex flex-col mb-4 items-center p-4 shadow-card rounded-2xl w-full md:flex-row"
+    @click="() => { this.$router.push({ name: 'job', params: { jobID: this.jobId } }) }"
   >
     <!-- TODO: to be replaced with company logo -->
-    <font-awesome-icon icon="building" class="mr-4 h-12" />
+    <font-awesome-icon icon="building" class="h-12 md:mr-4" />
     <div class="flex flex-col">
       <h2 class="font-bold text-jb-textlink">{{ role }}</h2>
       <p>{{ company }}</p>
