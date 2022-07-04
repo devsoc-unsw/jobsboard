@@ -11,7 +11,7 @@
           class="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg sm:text-md" 
-          @click="toStudentLogin"
+          @click="toStudentLogin()"
         >
         Log In
         </button>
