@@ -698,5 +698,88 @@ describe("company", () => {
           })
       }
     )
-  }) 
+  });
+  
+  describe("retrieve the number of hidden jobs of a company", () => {
+    
+    before( async function() {
+      // login as a student
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+      
+      // login as a verified company 
+      this.companyToken1 = await server
+      .post("/authenticate/company")
+      .send({ username: "test", password: "test" })
+      .then(response => response.body.token);
+      
+      // login as a non verified company 
+      this.companyToken2 = await server
+      .post("/authenticate/company")
+      .send({ username: "test2", password: "test2" })
+      .then(response => response.body.token);
+      
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+      
+    });
+    
+    it("fails to retrieve the number of hidden jobs using a student token",
+      function(done) {
+        server
+          .get("/job/company/hidden")
+          .set("Authorization", this.studentToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+    
+    it("fails to retrieve the number of hidden jobs using an unverified company token",
+      function(done) {
+        server
+          .get("/job/company/hidden")
+          .set("Authorization", this.companyToken2)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+    
+    it("fails to retrieve the number of hidden jobs using an admin token",
+      function(done) {
+        server
+          .get("/job/company/hidden")
+          .set("Authorization", this.adminToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+    
+    it("successfully retrieves the number of hidden jobs using a verified company token",
+      function(done) {
+        server
+          .get("/job/company/hidden")
+          .set("Authorization", this.adminToken)
+          .expect(20)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            expect(res.body.hiddenJobs.length).to.equal(3);
+            done();
+          });
+      }
+    );
+  });
 });
