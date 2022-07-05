@@ -8,9 +8,9 @@
     :handleClose="() => { this.isAlertOpen = false }"
   />
   <div class="flex flex-row justify-center h-screen px-8">
-    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-xl mr-12 w-1/4 overflow-scroll shadow-card sm:flex">
+    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-scroll shadow-card sm:flex">
       <h2
-        class="font-bold text-xl" 
+        class="font-bold text-xl text-jb-headings" 
         v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
       >
         {{
@@ -26,7 +26,7 @@
           :jobId="job.id"
           :role="job.role"
           :company="company"
-          :location="job.location"
+          :location="location"
         />
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="flex flex-col p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-row">
         <div class="flex flex-col mr-8 self-center">
           <!-- TODO: to be replaced with company logo -->
-          <font-awesome-icon icon="building" class="h-36" />
+          <font-awesome-icon icon="building" size="10x" class="mb-2" />
           <button
             class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
               shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
@@ -44,7 +44,7 @@
           </button>
         </div>
         <div class="flex flex-col text-left">
-          <h1 class="font-bold text-3xl my-4">{{ role }}</h1>
+          <h1 class="font-bold text-3xl my-4 text-jb-headings">{{ role }}</h1>
           <span class="mb-1">
             <font-awesome-icon icon="building" class="mr-5 w-7" />
             <b>Company:</b> {{ company }}
@@ -112,7 +112,7 @@
           <li class="mr-2">
             <button
               class="inline-block p-4"
-              v-bind:class="[ isJobDescriptionShown ? 'text-blue-600 font-black' : 'text-gray-500 hover:text-gray-700']"
+              v-bind:class="[ isJobDescriptionShown ? 'text-jb-textlink font-black' : 'text-gray-500 hover:text-gray-700']"
               @click="() => { isJobDescriptionShown = true }"
             >
               Description
@@ -121,7 +121,7 @@
           <li class="mr-2">
             <button
               class="inline-block p-4"
-              v-bind:class="[ !isJobDescriptionShown ? 'text-blue-600 font-black' : 'text-gray-500 hover:text-gray-700']"
+              v-bind:class="[ !isJobDescriptionShown ? 'text-jb-textlink font-black' : 'text-gray-500 hover:text-gray-700']"
               @click="() => { isJobDescriptionShown = false }"
             >
               Additional Information
@@ -171,7 +171,7 @@ export default Vue.extend({
       studentDemographic: [],
       jobType: "",
       workingRights: [],
-      additionalInfo: "N/A",
+      additionalInfo: "",
       wamRequirements: "",
       isPaid: true,
       expiryDate: "",
@@ -223,14 +223,18 @@ export default Vue.extend({
         this.studentDemographic = msg.job.studentDemographic;
         this.jobType = msg.job.jobType;
         this.workingRights = msg.job.workingRights;
-        this.additionalInfo = msg.job.additionalInfo === "" ? "<p>N/A</p>" : msg.job.additionalInfo;
+        this.additionalInfo = msg.job.additionalInfo === ""
+          ? "<p>This company has not provided any additional information.</p>" : msg.job.additionalInfo;
         this.wamRequirements = msg.job.wamRequirements;
         this.isPaid = msg.job.isPaid;
         this.expiryDate = msg.job.expiry;
       } else {
         this.isAlertOpen = true;
-        window.scrollTo(0, 10);
-        if (response.status == 401) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
+        if (response.status === 401) {
           this.alertMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
