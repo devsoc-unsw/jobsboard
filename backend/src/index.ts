@@ -225,6 +225,25 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
+/**
+ *  @swagger
+ *  /job/company/hidden:
+ *    get:
+ *      description: 
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              key: hiddenJobs
+ *                type: string
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ *      400:
+ *        description: failed to find job
+ */
 
 app.get(
   "/job/company/hidden",
