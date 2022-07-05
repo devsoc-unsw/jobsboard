@@ -225,6 +225,15 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
+
+app.get(
+  "/job/company/hidden",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.GetCompanyHiddenJobs,
+  Middleware.genericLoggingMiddleware
+)
+
 /**
  *  @swagger
  *  /company/{companyID}:
