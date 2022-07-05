@@ -712,13 +712,7 @@ describe("company", () => {
       // login as a verified company 
       this.companyToken1 = await server
       .post("/authenticate/company")
-      .send({ username: "test", password: "test" })
-      .then(response => response.body.token);
-      
-      // login as a non verified company 
-      this.companyToken2 = await server
-      .post("/authenticate/company")
-      .send({ username: "test2", password: "test2" })
+      .send({ username: "test3", password: "test3" })
       .then(response => response.body.token);
       
       // login as an admin
@@ -741,20 +735,7 @@ describe("company", () => {
           });
       }
     );
-    
-    it("fails to retrieve the number of hidden jobs using an unverified company token",
-      function(done) {
-        server
-          .get("/job/company/hidden")
-          .set("Authorization", this.companyToken2)
-          .expect(401)
-          .end( function(_, res) {
-            expect(res.status).to.equal(401);
-            done();
-          });
-      }
-    );
-    
+        
     it("fails to retrieve the number of hidden jobs using an admin token",
       function(done) {
         server
@@ -772,7 +753,7 @@ describe("company", () => {
       function(done) {
         server
           .get("/job/company/hidden")
-          .set("Authorization", this.adminToken)
+          .set("Authorization", this.companyToken1)
           .expect(20)
           .end( function(_, res) {
             expect(res.status).to.equal(200);
