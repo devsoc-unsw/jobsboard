@@ -34,7 +34,6 @@ import { Statistics } from "./entity/statistics";
 
 // custom middleware
 import Middleware from "./middleware";
-// import { Statistics } from "./entity/statistics";
 
 // dotenv.config({ path: '../.env' });
 dotenv.config();

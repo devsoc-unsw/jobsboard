@@ -367,17 +367,3 @@ export default Vue.extend({
 });
 
 </script>
-
-
-<style>
-  .ql-snow .ql-picker.ql-size .ql-picker-label::before,
-  .ql-snow .ql-picker.ql-size .ql-picker-item::before {
-    content: '16px';
-  }
-  
-  .ql-editor .ql-size-small {
-    font-size: 25px;
-  }
-
-  
-</style>

@@ -532,10 +532,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .where("s.year = :year", { year: yearToSearch })
           .getOne()
       },  
-      `Failed to retrive the number of approved job posts for YEAR=${yearToSearch}`);
+      `Failed to retrieve the number of approved job posts for YEAR=${yearToSearch}`);
       
       // number of job posts for the provided year hasn't been recorded yet
-      if (numApprovedJobs == null) {
+      if (numApprovedJobs === null) {
         // query all jobs => update statistics table => return value 
         const allApprovedJobs = await Helpers.doSuccessfullyOrFail(async () => {
           return AppDataSource
@@ -559,7 +559,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         ])
         .execute()
         
-        Logger.Info(`Sucessfully retriveved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`);
+        Logger.Info(`Sucessfully retrieved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`);
         return {
           status: 200,
           msg: {
