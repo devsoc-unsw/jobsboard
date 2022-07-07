@@ -7,7 +7,7 @@
           <font-awesome-icon icon="heart" />
         </span>
         by Adam
-        <a href="https://www.github.com/ad-t"i
+        <a href="https://www.github.com/ad-t"
            target="_blank"
            rel="noopener noreferrer"
           >
@@ -24,7 +24,7 @@
           </span>
         </a>
         on behalf of
-        <a href="https://www.csesoc.unsw.edu.au/teams/software-projects/"
+        <a href="https://www.csesoc.unsw.edu.au/"
            target="_blank"
            rel="noopener noreferrer"
           >
