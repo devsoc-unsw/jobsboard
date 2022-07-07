@@ -250,7 +250,7 @@ export async function seedDB(activeEntities: any[]) {
   
   // approved by deleted job 
   const ca3Job4 = new Job();
-  ca3Job4.role = "hidden job";
+  ca3Job4.role = "deleted job";
   ca3Job4.description = "Java is not poggers";
   ca3Job4.applicationLink = "https://sampleapplicationlink.net";
   ca3Job4.company = company3;

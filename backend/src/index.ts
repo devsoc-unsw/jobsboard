@@ -228,23 +228,25 @@ app.get(
 /**
  *  @swagger
  *  /job/company/hidden:
- *    get:
- *      description: 
+ *  get:
+ *    description: retrieve all the hidden jobs in the system 
  *    responses:
- *      200:
- *        description: success
- *        content:
+ *      200: 
+ *        description: Success
+ *        content: 
  *          application/json:
- *            schema:
- *              type: array
- *              key: hiddenJobs
+ *          schema:
+ *            type: object
+ *            properties:
+ *              hiddenJobs: 
  *                type: string
- *              items:
- *                $ref: '#/components/schemas/Job'
+ *              value:
+ *                type: array 
  *      400:
- *        description: failed to find job
+ *        description: unable to query the database
+ *      401:
+ *        description: invalid parameters
  */
-
 app.get(
   "/job/company/hidden",
   cors(corsOptions),
@@ -678,6 +680,15 @@ app.patch(
   AdminFunctions.VerifyCompanyAccount,
   Middleware.genericLoggingMiddleware
 );
+
+
+app.get(
+  "/job/admin/hidden",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.GetAllHiddenJobs,
+  Middleware.genericLoggingMiddleware
+)
 
 /**
  *  @swagger

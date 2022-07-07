@@ -720,10 +720,9 @@ describe("company", () => {
       .post("/authenticate/admin")
       .send({ username: "admin", password: "incorrect pony plug paperclip" })
       .then(response => response.body.token);
-      
     });
     
-    it("fails to retrieve the number of hidden jobs using a student token",
+    it("fails to retrieve hidden jobs using a student token",
       function(done) {
         server
           .get("/job/company/hidden")
@@ -736,7 +735,7 @@ describe("company", () => {
       }
     );
         
-    it("fails to retrieve the number of hidden jobs using an admin token",
+    it("fails to retrieve hidden jobs using an admin token",
       function(done) {
         server
           .get("/job/company/hidden")
@@ -749,12 +748,12 @@ describe("company", () => {
       }
     );
     
-    it("successfully retrieves the number of hidden jobs using a verified company token",
+    it("successfully retrieves hidden jobs using a verified company token",
       function(done) {
         server
           .get("/job/company/hidden")
           .set("Authorization", this.companyToken1)
-          .expect(20)
+          .expect(200)
           .end( function(_, res) {
             expect(res.status).to.equal(200);
             expect(res.body.hiddenJobs.length).to.equal(3);
