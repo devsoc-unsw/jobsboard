@@ -393,6 +393,76 @@ app.put(
 
 /**
 *  @swagger
+*  /company/job/edit:
+*    put:
+*      description: allow companies to update the information of their jobs
+*      parameters:
+*        - name: id
+*          description: id of the job post
+*          type: number
+*          required: true
+*        - name: role
+*          description: role of the job (seems like this property is stale)
+*          type: string
+*          required: true
+*        - name: mode
+*          description: remote, hybrid, onsite
+*          type: string
+*          required: true
+*        - name: studentDemographic 
+*          description: grads, penultimates or all students 
+*          type: array of strings 
+*          required: true 
+*        - name: jobType
+*          description: intern / grad 
+*          type: String
+*          required: true
+*        - name: workingRights
+*          description: aus citizen, pr, etc 
+*          type: array of strings
+*          required: true 
+*        - name: wamRequirements
+*          description: wam requirements HD or above, etc 
+*          type: string 
+*          required: true
+*        - name: additionalInfo
+*          description: additional information
+*          type: string
+*          required: true
+*        - name: description
+*          description: description about the job 
+*          type: string 
+*          required: true 
+*        - name: applicationLink
+*          description: application link
+*          type: string
+*          required: true
+*        - name: isPaid
+*          description: will the job be paid 
+*          type: boolean
+*          required: true 
+*        - name: expiry 
+*          description: expiry date of the job opening 
+*          type: Date 
+*          required: true  
+*    responses:
+*      200:
+*        description: success
+*      400:
+*        description: failed to find company account
+*      403:
+*        description: database failed to update
+*/
+app.put(
+  "/company/job/edit",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.EditJob,
+  Middleware.genericLoggingMiddleware
+)
+
+/**
+*  @swagger
 *  /company/forgot:
 *    post:
 *      description: Send mail to company account to reset password

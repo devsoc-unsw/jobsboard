@@ -3,27 +3,27 @@
     class="flex justify-evenly items-center py-11 px-[5%] 
            bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]"
   >
-    <img class="w-[40%] cursor-pointer sm:w-[20%] md:w-[17%] lg:w-[20%] xl:w-[15%]" :src="logo" alt="CSESoc" @click="toLandingPage"/>
+    <img class="w-[40%] cursor-pointer sm:w-[20%] md:w-[17%] lg:w-[20%] xl:w-[15%]" :src="logo" alt="CSESoc" @click="() => { this.$router.push(`/`) }"/>
     <div class="flex justify-evenly items-center">
       <img class="rotate-220 fill-black cursor-pointer w-[20%] mr-2.5 sm:mr-5" :src="moon" alt="Toggle Theme" />
-      <div v-if="!loggedIn">
+      <div v-if="!apiToken">
         <button 
           class="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg sm:text-md" 
-          @click="toStudentLogin"
+          @click="() => { this.$router.push(`/login/student`) }"
         >
-        Log In
+          Log In
         </button>
       </div>
-      <div v-else-if="loggedIn">
+      <div v-else-if="apiToken">
         <button 
           class="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg sm:text-md" 
           @click="logOut"
         >
-        Logout
+          Logout
         </button>
       </div>
     </div>
@@ -41,21 +41,17 @@ export default Vue.extend({
     return {
       logo: logo,
       moon: moon,
+      apiToken: this.$store.getters.getApiToken,
     };
   },
-  props: {
-    loggedIn: {
-      type: Boolean,
-      default: false,
-    },
+  async mounted() {
+    setTimeout(() => {
+      if (!this.$store.getters.getApiToken) {
+        this.apiToken = undefined;
+      }
+    }, 100);
   },
   methods: {
-    toStudentLogin() {
-      this.$router.push("/login/student");
-    },
-    toLandingPage() {
-      this.$router.push("/");
-    },
     logOut() {
       this.$store.dispatch("clearApiToken");
       this.$router.push("/login/student");
