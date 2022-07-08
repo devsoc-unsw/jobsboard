@@ -1,5 +1,6 @@
 <template>
   <StudentViewTemplate notLoggedIn>
+    <Breadcrumbs />
     <div>
       <h1>Create a company account</h1>
       <div v-if="success">
@@ -67,6 +68,7 @@ import SuccessBox from "@/components/SuccessBox.vue";
 import config from "@/config/config";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import Button from "@/components/buttons/button.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "CompanySignupPage",
@@ -76,6 +78,7 @@ export default Vue.extend({
     SuccessBox,
     Button,
     StandardButton,
+    Breadcrumbs
   },
   data() {
     return {

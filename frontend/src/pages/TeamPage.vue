@@ -1,5 +1,6 @@
 <template>
   <GeneralPageTemplate>
+    <Breadcrumbs class="w-1/4"/>
     <h2 class="font-bold text-4xl drop-shadow-xl mb-10 text-jb-headings mt-4">
       Interested about the people behind <br />
       Jobs Board?
@@ -37,11 +38,14 @@
 import { Vue } from "vue-property-decorator";
 import ProfileCard from "@/components/ProfileCard.vue";
 import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
+
 export default Vue.extend({
   name: "TeamPage",
   components: {
     ProfileCard,
     GeneralPageTemplate,
+    Breadcrumbs
   },
   data() {
     return {

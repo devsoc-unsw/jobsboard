@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
+  <Breadcrumbs />
   <Modal
     v-if="modalVisible"
     :jobTitle="this.role"
@@ -255,6 +256,7 @@ import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
 import RichTextEditor from "@/components/RichTextEditor.vue";
 import Alert from "@/components/Alert.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
 import config from "@/config/config";
@@ -269,7 +271,8 @@ export default Vue.extend({
     JobDescriptionView,
     RichTextEditor,
     quillEditor,
-    Alert
+    Alert,
+    Breadcrumbs
   },
   data() {
     return {
