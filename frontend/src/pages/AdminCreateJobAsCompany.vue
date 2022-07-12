@@ -273,7 +273,7 @@ export default Vue.extend({
         theme: "snow",
         modules: {
           toolbar: [
-            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+            [{ 'font': [] }, {'size': ['large', 'small', 'huge'] }],
             ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
           ]

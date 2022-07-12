@@ -30,6 +30,7 @@ import { Job } from "./entity/job";
 import { Student } from "./entity/student";
 import { MailRequest } from "./entity/mail_request";
 import { Logs } from "./entity/logs";
+import { Statistics } from "./entity/statistics";
 
 // custom middleware
 import Middleware from "./middleware";
@@ -71,6 +72,7 @@ const activeEntities = [
   AdminAccount,
   MailRequest,
   Logs,
+  Statistics
 ];
 
 // swagger api generator based on jsdoc
@@ -723,6 +725,35 @@ app.get(
 
 /**
  *  @swagger
+ *  /job/stats/approvedJobPosts/:year:
+ *  get:
+ *    description: Retrieve the number of approved job posts in the given year
+ *    responses:
+ *      200: 
+ *        description: Success
+ *        content: 
+ *          application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              numJobsPosts: 
+ *                type: integer
+ *              value:
+ *                type: integer
+ *      400:
+ *        description: Unable to query the database
+*/
+app.get(
+  "/job/stats/approvedJobPosts/:year",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.getNumApprovedJobPosts,
+  Middleware.genericLoggingMiddleware
+);
+  
+  
+/**
+ *  @swagger
  *  /admin/companies:
  *    get:
  *      description: Get a list of all onboarded companies as an admin
@@ -739,6 +770,7 @@ app.get(
   AdminFunctions.ListAllCompaniesAsAdmin,
   Middleware.genericLoggingMiddleware
 );
+
 /**
  *  @swagger
  *  /admin/company/:companyID/jobs:
