@@ -1,5 +1,6 @@
 <template>
   <StudentViewTemplate notLoggedIn>
+    <Breadcrumbs />
     <div class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="font-bold text-3xl text-jb-headings">Student Login</h1>
       <p class="text-lg text-jb-subheadings my-4 mx-8 sm:mx-[18%]">
@@ -85,11 +86,17 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Alert from "@/components/Alert.vue";
 import config from "@/config/config";
+import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "StudentLoginPage",
   components: {
     StudentViewTemplate,
+    Button,
+    StandardButton,
+    Breadcrumbs,
     Alert
   },
   data() {

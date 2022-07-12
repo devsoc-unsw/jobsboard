@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
+  <Breadcrumbs class="w-4/5 mx-0"/>
   <Modal
     v-if="modalVisible"
     :jobTitle="this.role"
@@ -247,6 +248,7 @@ import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Modal from "@/components/Modal.vue";
 import RichTextEditor from "@/components/RichTextEditor.vue";
 import Alert from "@/components/Alert.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
 import config from "@/config/config";
@@ -259,7 +261,8 @@ export default Vue.extend({
     Modal,
     quillEditor,
     RichTextEditor,
-    Alert
+    Alert,
+    Breadcrumbs
   },
   data() {
     return {
@@ -270,7 +273,7 @@ export default Vue.extend({
         theme: "snow",
         modules: {
           toolbar: [
-            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+            [{ 'font': [] }, {'size': ['large', 'small', 'huge'] }],
             ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
           ]
