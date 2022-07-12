@@ -4,28 +4,27 @@
     <main class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="text-jb-headings font-bold text-3xl">Reset Your Password</h1>
       <p class="text-jb-subheadings text-base my-4 mx-8 sm:mx-[18%]">Please enter your new password. </p>
-      
+
       <!-- Success/Error Alert -->
-      <Alert
-        :alertType="this.alertType"
-        :alertMsg="this.alertMsg"
+      <Alert 
+        :alertType="this.alertType" 
+        :alertMsg="this.alertMsg" 
         :isOpen="isAlertOpen"
-        :handleClose="() => { this.isAlertOpen = false }"
+        :handleClose="() => { this.isAlertOpen = false }" 
       />
 
       <!-- New Password Input -->
-      <!-- TODO: add input and confirm password input?? -->
       <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
         <input 
-          name="newPassword"
-          v-model="newPassword"
+          name="newPassword" 
+          v-model="newPassword" 
           type="password"
           class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
-          @keyup.enter="performCompanyPasswordReset()"
-          required
+          @keyup.enter="checkPasswordMatch()" 
+          required 
         />
         <label 
-          for="newPassword" 
+          for="newPassword"
           class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
@@ -35,7 +34,28 @@
         </label>
       </div>
 
-      <Button @callback="performCompanyPasswordReset">
+      <!-- Confirm Password Input -->
+      <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+        <input 
+          name="confirmPassword" 
+          v-model="confirmPassword" 
+          type="password"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          @keyup.enter="checkPasswordMatch()" 
+          required 
+        />
+        <label 
+          for="confirmPassword"
+          class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
+        >
+          Confirm Password
+        </label>
+      </div>
+
+      <Button class="mt-3" @callback="checkPasswordMatch()">
         <p class="p-4 text-white">Reset Password</p>
       </Button>
     </main>
@@ -64,12 +84,23 @@ export default Vue.extend({
   data() {
     return {
       newPassword: "",
+      confirmPassword: "",
       alertType: "",
       alertMsg: "",
       isAlertOpen: false,
     };
   },
   methods: {
+    async checkPasswordMatch() {
+      if (this.newPassword !== this.confirmPassword) {
+        this.alertType = "error";
+        this.alertMsg = "Passwords do not match. Please try again.";
+        this.isAlertOpen = true;
+      } else {
+        this.performCompanyPasswordReset();
+      }
+    },
+
     async performCompanyPasswordReset() {
       const response = await fetch(`${config.apiRoot}/company/password-reset`, {
         method: "PUT",
@@ -82,7 +113,7 @@ export default Vue.extend({
           "newPassword": this.newPassword,
         }),
       });
-      
+
       if (response.ok) {
         window.scrollTo(0, 10);
         this.alertType = "success";
