@@ -94,7 +94,7 @@ export default Vue.extend({
   },
   methods: {
     async performCompanyPasswordReset() {
-      if (this.password !== this.confirmPassword) {
+      if (this.newPassword !== this.confirmPassword) {
         this.alertType = "error";
         this.alertMsg = "Passwords do not match. Please try again.";
         this.isAlertOpen = true;
