@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate>
+  <Breadcrumbs />
   <div>
     <h1 class="text-3xl text-jb-headings font-bold mt-10 mb-3 md:mt-0">Welcome Back 👋</h1>
     <h3 class="text-base text-jb-subheadings">Hey there! It's great to see you again.</h3>
@@ -96,6 +97,7 @@ import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import Alert from "@/components/Alert.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "AdminAccountHome",
@@ -103,7 +105,8 @@ export default Vue.extend({
     StudentViewTemplate,
     LoggedInTemplate,
     Alert,
-    Button
+    Button,
+    Breadcrumbs
   },
   data() {
     return {

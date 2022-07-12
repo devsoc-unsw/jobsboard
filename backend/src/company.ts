@@ -14,6 +14,7 @@ import MailFunctions from "./mail";
 import Logger from "./logging";
 import { AccountType, IToken } from "./auth";
 import JWT from "./jwt";
+import { Statistics } from "./entity/statistics";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
@@ -501,8 +502,9 @@ export default class CompanyFunctions {
         .set({ deleted: true })
         .where("id = :id", { id: jobToDelete.id })
         .execute();
+      
       Logger.Info(`COMPANY=${req.companyAccountID} marked JOB=${req.params.jobID} as deleted`);
-
+      
       return {
         status: 200,
         msg: {

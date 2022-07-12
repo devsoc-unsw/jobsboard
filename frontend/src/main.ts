@@ -21,7 +21,8 @@ import {
   faLocationDot,
   faUserShield,
   faAngleRight,
-  faBriefcase
+  faBriefcase,
+  faHouse
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -54,6 +55,7 @@ library.add(faLocationDot as IconDefinition);
 library.add(faUserShield as IconDefinition);
 library.add(faAngleRight as IconDefinition);
 library.add(faBriefcase as IconDefinition);
+library.add(faHouse as IconDefinition);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
