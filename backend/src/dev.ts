@@ -160,7 +160,7 @@ export async function seedDB(activeEntities: any[]) {
   job8.additionalInfo = "";
   job8.isPaid = true;
   job8.createdAt = new Date('1999-10-10')
-  
+
   companyAccount.company.jobs = [
     job1,
     job2,

@@ -86,9 +86,6 @@ export default Vue.extend({
 
 <style lang="scss">
 @media screen and (min-width: 900px) {
-  .content {
-    padding: 2rem 0 0 0;
-  }
   .contentWidth {
     width: 100%;
     margin: auto;

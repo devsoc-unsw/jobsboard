@@ -1,5 +1,6 @@
 <template>
   <StudentViewTemplate notLoggedIn>
+    <Breadcrumbs />
     <main class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="text-jb-headings font-bold text-3xl">Forgot Your Password?</h1>
       <p class="text-jb-subheadings text-base my-4 mx-8 sm:mx-[18%]">
@@ -62,6 +63,8 @@ import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Alert from "@/components/Alert.vue";
 import Button from "@/components/buttons/button.vue";
+import StandardButton from "@/components/buttons/StandardButton.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
 import config from "@/config/config";
@@ -70,8 +73,10 @@ export default Vue.extend({
   name: "PasswordForgotPage",
   components: {
     StudentViewTemplate,
-    Alert,
-    Button
+    Button,
+    StandardButton,
+    Breadcrumbs,
+    Alert
   },
   data() {
     return {
