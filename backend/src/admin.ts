@@ -12,6 +12,7 @@ import { Statistics } from "./entity/statistics";
 import Helpers, { IResponseWithStatus } from "./helpers";
 import MailFunctions from "./mail";
 import Logger from "./logging";
+import { Brackets } from "typeorm";
 
 export default class AdminFunctions {
   public static async ApproveJobRequest(req: any, res: Response, next: NextFunction) {
@@ -583,5 +584,74 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         msg: undefined
       } as IResponseWithStatus;
     }, next)
+  }
+  
+  public static async GetAllHiddenJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      
+      const adminID = req.adminID;
+      Helpers.requireParameters(adminID);
+      
+      Logger.Info(`ADMIN=${adminID} attempting to list all hidden jobs in the database`);
+            
+      const hiddenJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect("Job.company", "company")
+          .where(new Brackets(q => {
+            q.where("Job.deleted = :deleted", { deleted: true })
+              .orWhere("Job.expiry <= :expiry", { expiry: new Date() })
+              .orWhere("Job.hidden = :hidden", {  hidden: true })
+          }))
+          .select([
+            "company.name",
+            "Job.id",
+            "Job.role",
+            "Job.description",
+            "Job.applicationLink",
+            "Job.approved",
+            "Job.hidden",
+            "Job.mode",
+            "Job.studentDemographic",
+            "Job.jobType",
+            "Job.workingRights",
+            "Job.wamRequirements",
+            "Job.additionalInfo",
+            "Job.isPaid",
+            "Job.expiry",
+            "Job.deleted"
+          ])
+          .orderBy("company.name", "ASC")
+          .orderBy("Job.createdAt", "DESC")
+          .getMany();
+      }, `Failed to find jobs`);
+      
+      // group jobs by company name 
+      let resMap = new Map();
+      hiddenJobs.forEach((job: any) => {
+        const key: string = String(job.company.name);
+        if (!resMap.has(key)) {
+          resMap.set(key, new Array());
+        }
+        resMap.get(key).push(job);
+      });
+
+      Logger.Info(`ADMIN=${adminID} successfully to retrieved all the hidden jobs`);
+      
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          hiddenJobs: resMap
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next);
   }
 }

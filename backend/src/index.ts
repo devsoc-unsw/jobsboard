@@ -227,6 +227,36 @@ app.get(
 
 /**
  *  @swagger
+ *  /job/company/hidden:
+ *  get:
+ *    description: retrieve all the hidden jobs in the system 
+ *    responses:
+ *      200: 
+ *        description: Success
+ *        content: 
+ *          application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              hiddenJobs: 
+ *                type: string
+ *              value:
+ *                type: array 
+ *      400:
+ *        description: unable to query the database
+ *      401:
+ *        description: invalid parameters
+ */
+app.get(
+  "/job/company/hidden",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.GetCompanyHiddenJobs,
+  Middleware.genericLoggingMiddleware
+)
+
+/**
+ *  @swagger
  *  /company/{companyID}:
  *    get:
  *      description: Get the information for a specific company
@@ -650,6 +680,15 @@ app.patch(
   AdminFunctions.VerifyCompanyAccount,
   Middleware.genericLoggingMiddleware
 );
+
+
+app.get(
+  "/job/admin/hidden",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.GetAllHiddenJobs,
+  Middleware.genericLoggingMiddleware
+)
 
 /**
  *  @swagger

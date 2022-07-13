@@ -1344,6 +1344,68 @@ describe("admin", () => {
       }
     );
   }); 
+  
+  describe("test retrieving all hidden jobs in the system as an admini", () => {
+    
+    before( async function() {
+      // login as a student
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+      
+      // login as a verified company 
+      this.companyToken1 = await server
+      .post("/authenticate/company")
+      .send({ username: "test3", password: "test3" })
+      .then(response => response.body.token);
+      
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+    });
+    
+    it("fails to retrieve hidden jobs using a student token",
+      function(done) {
+        server
+          .get("/job/admin/hidden")
+          .set("Authorization", this.studentToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+    
+    it("fails to retrive hidden jobs using a company token", 
+      function(done) {
+        server
+          .get("/job/admin/hidden")
+          .set("Authorization", this.companyToken1)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          })
+      }
+    );
+    
+    it("successfully retrieves hidden jobs using an admin token", 
+      function(done) {
+        server
+          .get("/job/admin/hidden")
+          .set("Authorization", this.adminToken)
+          .expect(200)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            done();
+          })
+      }    
+    )
+  });
 });
 
 
