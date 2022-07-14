@@ -303,7 +303,8 @@ export default class CompanyFunctions {
             "Job.workingRights",
             "Job.wamRequirements",
             "Job.additionalInfo",
-            "Job.isPaid"
+            "Job.isPaid",
+            "Job.expiry"
           ])
           .getMany();
       }, `Failed to find jobs for COMPANY=${req.companyAccountID}`);
@@ -331,6 +332,7 @@ export default class CompanyFunctions {
           wamRequirements: job.wamRequirements,
           additionalInfo: job.additionalInfo,
           pay: job.isPaid,
+          expiry: job.expiry,
         };
       })
 

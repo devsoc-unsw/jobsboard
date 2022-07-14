@@ -31,10 +31,13 @@
               :jobID="job.id"
               :role="job.role"
               :pay="job.pay"
+              :jobType="job.jobType"
+              :mode="job.mode"
+              :expiry="job.expiry"
+              :studentDemographic="job.studentDemographic"
               :successCallback="internalSuccessCallback"
               :errorCallback="internalErrorCallback"
               />
-              {{ printing() }}
             <!-- v-for="member in members" :member="member" :key="member.name" -->
           </div>
         </div>
@@ -69,8 +72,17 @@ export default Vue.extend({
     goToCompanyManageJobs() {
       this.$router.push("/company/jobs/manage");
     },
-    printing() {
-        
+    internalErrorCallback(msg: string) {
+      console.log('yuh');
+      this.error = true;
+      this.success = false;
+      this.errorMsg = msg;
+    },
+    internalSuccessCallback(msg: string) {
+      console.log('bruh');
+      this.error = false;
+      this.success = true;
+      this.successMsg = msg;
     }
   },
   data() {
@@ -96,6 +108,7 @@ export default Vue.extend({
     if (returnedRequest.ok) {
       const msg = await returnedRequest.json();
       console.log(msg)
+      console.log('asdasdasd')
       this.jobs = msg.companyJobs.map((job: any) => {
         return {
           id: job.id,
@@ -103,8 +116,11 @@ export default Vue.extend({
           status: `Status: ${job.status}`,
           description: job.description,
           applicationLink: job.applicationLink,
-          pay: job.isPaid,
+          pay: job.pay,
           expiry: job.expiry,
+          jobType: job.jobType,
+          mode: job.mode,
+          studentDemographic: job.studentDemographic,
         };
       })
     } else {
