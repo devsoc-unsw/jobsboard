@@ -15,6 +15,7 @@ import Logger from "./logging";
 import { AccountType, IToken } from "./auth";
 import JWT from "./jwt";
 import { Statistics } from "./entity/statistics";
+import { Brackets } from "typeorm";
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
@@ -268,6 +269,65 @@ export default class CompanyFunctions {
         msg: {
           token: req.newJbToken,
           id: newJobID
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
+  
+  public static GetCompanyHiddenJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      
+      const companyID = req.companyAccountID;
+      Helpers.requireParameters(companyID);
+      
+      Logger.Info(`COMPANY_ACCOUNT=${req.companyID} attempting to list all of its hidden jobs`);
+            
+      const hiddenJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect("Job.company", "company")
+          .where("company.id = :id", { id: parseInt(req.companyAccountID, 10) })
+          .andWhere(new Brackets(q => {
+            q.where("Job.deleted = :deleted", { deleted: true })
+              .orWhere("Job.expiry <= :expiry", { expiry: new Date() })
+              .orWhere("Job.hidden = :hidden", {  hidden: true })
+          }))
+          .orderBy("Job.createdAt", "DESC")
+          .select([
+            "Job.id",
+            "Job.role",
+            "Job.description",
+            "Job.applicationLink",
+            "Job.approved",
+            "Job.hidden",
+            "Job.mode",
+            "Job.studentDemographic",
+            "Job.jobType",
+            "Job.workingRights",
+            "Job.wamRequirements",
+            "Job.additionalInfo",
+            "Job.isPaid",
+            "Job.expiry",
+            "Job.deleted"
+          ])
+          .getMany();
+      }, `Failed to find jobs for COMPANY=${req.companyAccountID}`);
+      
+      
+      Logger.Info(`COMPANY_ACCOUNT=${req.companyID} successfully to retrieved all of its hidden jobs`);
+      
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          hiddenJobs: hiddenJobs,
         }
       } as IResponseWithStatus;
     }, () => {
