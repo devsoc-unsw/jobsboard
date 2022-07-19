@@ -477,7 +477,7 @@
   dependencies:
     mongodb "*"
 
-"@types/node@*", "@types/node@16.11.41", "@types/node@>=12.13":
+"@types/node@*", "@types/node@16.11.41", "@types/node@>=14":
   version "16.11.41"
   resolved "https://registry.npmjs.org/@types/node/-/node-16.11.41.tgz"
   integrity sha512-mqoYK2TnVjdkGk8qXAVGc/x9nSaTpSrFaGFm43BUH3IdoBV0nta6hYaGmdOvIMlbHJbUEVen3gvwpwovAZKNdQ==
@@ -2273,13 +2273,13 @@ kuler@^2.0.0:
   resolved "https://registry.npmjs.org/kuler/-/kuler-2.0.0.tgz"
   integrity sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==
 
-ldapts@^3.0.0:
-  version "3.2.4"
-  resolved "https://registry.npmjs.org/ldapts/-/ldapts-3.2.4.tgz"
-  integrity sha512-33QJQglDdAdwOWMy7E8T4BQYizAAsH+jalAVg+9xUE4SQhenezRa2mSgH5s9jRfz0fxw3GP6f8GeqX0+tfqMeQ==
+ldapts@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/ldapts/-/ldapts-4.0.0.tgz"
+  integrity sha512-iayG/+laJcC9GGJ9eAeJO5UHoOm/5BqL41kyknI95Y1usmm4JeXT8k+Ie86pyGpQNSyWeuPkHR0bJB/Fm+XV9Q==
   dependencies:
     "@types/asn1" ">=0.2.0"
-    "@types/node" ">=12.13"
+    "@types/node" ">=14"
     "@types/uuid" ">=8"
     asn1 "~0.2.6"
     debug "~4.3.4"
