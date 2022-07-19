@@ -23,7 +23,7 @@
     "iview": "3.5.4",
     "terser-webpack-plugin": "5.3.3",
     "typescript": "4.7.4",
-    "vue": "2.6.14",
+    "vue": "2.7.7",
     "vue-class-component": "7.2.6",
     "vue-fontawesome": "0.0.2",
     "vue-property-decorator": "9.1.2",
@@ -34,12 +34,12 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
-    "@vue/cli-plugin-babel": "4.5.17",
-    "@vue/cli-plugin-typescript": "4.5.17",
-    "@vue/cli-service": "4.5.17",
+    "@vue/cli-plugin-babel": "4.5.19",
+    "@vue/cli-plugin-typescript": "4.5.19",
+    "@vue/cli-service": "4.5.19",
     "eslint": "8.20.0",
     "sass": "1.52.3",
     "sass-loader": "8.0.2",
-    "vue-template-compiler": "2.6.14"
+    "vue-template-compiler": "2.7.7"
   }
 }
