@@ -11,8 +11,8 @@ export const StudentDemographic = {
 };
 
 export const JobType = {
-  intern: "Intern",
-  grad: "Grad"
+  intern: "Internship",
+  grad: "Graduate Position"
 }
 
 export const WorkingRights = {
