@@ -149,6 +149,9 @@ export default Vue.extend({
       Logo: CsesocLogoSmall,
     };
   },
+  mounted() {
+    this.$store.dispatch("clearApiToken");
+  },
   methods: {
     scrollToTop() {
       window.scrollTo({ 

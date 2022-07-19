@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate disableBack>
+    <Breadcrumbs />
     <div v-if="error">
       <br/>
       <ErrorBox>
@@ -42,6 +43,7 @@ import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
@@ -52,6 +54,7 @@ export default Vue.extend({
     ErrorBox,
     LoggedInTemplate,
     InfiniteScrollTrigger,
+    Breadcrumbs
   },
   data() {
     return {

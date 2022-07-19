@@ -1,6 +1,7 @@
 <template>
   <StudentViewTemplate notLoggedIn>
-    <main class="h-full flex flex-col justify-center items-center my-16">
+    <Breadcrumbs />
+    <main class="h-full flex flex-col justify-center items-center mb-16">
       <h1 class="font-bold text-3xl mb-0 text-jb-headings">Admin Login</h1>
       <p class="text-lg text-jb-subheadings my-4 mx-8 sm:mx-[18%]">
         Enter your username and password. If there are any problems, please get in touch with a project lead.
@@ -77,6 +78,7 @@ import { Component, Vue } from "vue-property-decorator";
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Alert from "@/components/Alert.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
 import config from "@/config/config";
@@ -86,6 +88,7 @@ export default Vue.extend({
   components: {
     StudentViewTemplate,
     Alert,
+    Breadcrumbs
   },
   data() {
     return {

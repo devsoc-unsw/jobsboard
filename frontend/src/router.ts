@@ -30,58 +30,166 @@ export default new Router({
   routes: [{
     path: "/login/student",
     component: StudentLoginPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Login' }
+      ]
+    }
   }, {
     path: "/login/company",
     component: CompanyLoginPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Login' }
+      ]
+    }
   }, {
     path: "/login/admin",
     component: AdminLoginPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Login' }
+      ]
+    }
   }, {
     path: "/signup/company",
     component: CompanySignupPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Sign Up' }
+      ]
+    }
   }, {
     path: "/company/home",
     component: CompanyAccountHome,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard' }
+      ]
+    }
   }, {
     path: "/admin/home",
     component: AdminAccountHome,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard'}
+      ]
+    }
   }, {
     path: "/admin/jobs/pending",
     component: AdminListPendingJobs,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/admin/home' },
+        { name: 'Jobs' }
+      ]
+    }
   }, {
     path: "/admin/companies/pending",
     component: AdminListCompanyPendingVerification,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/admin/home' },
+        { name: 'Companies' }
+      ]
+    }
   }, {
     path: "/admin/jobs/post",
     component: AdminCreateJobAsCompany,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/admin/home' },
+        { name: 'Post' }
+      ]
+    }
   }, {
     path: "/company/jobs/add",
     component: CompanyAddJob,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/company/home' },
+        { name: 'Post Job' }
+      ]
+    }
   }, {
     path: "/login",
     component: LoginPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Login' }
+      ]
+    }
   }, {
     path: "/jobs",
     component: JobsListPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Job List' }
+      ]
+    }
   }, {
     path: "/job/:jobID",
     component: SingleJobPage,
     props: true,
     name: "job",
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Job List' , link: '/jobs' },
+        { name: 'Job' }
+      ]
+    }
   }, {
     path: "/company/jobs/manage",
     component: CompanyManageJobs,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/company/home' },
+        { name: 'Manage Jobs' }
+      ]
+    }
   }, {
     path: "/company/password-forgot",
     component: CompanyPasswordForgotPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Forgot Password' }
+      ]
+    }
   }, {
     path: "/company/password-reset/:token",
     component: CompanyPasswordResetPage,
     props: true,
     name: "token",
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Reset Password' }
+      ]
+    }
   }, {
     path: "/team",
     component: TeamPage,
+    meta: {
+      breadcrumb: [
+        { name: 'Home', link: '/' },
+        { name: 'Team' }
+      ]
+    }
   }, {
     path: "/",
     component: LandingPage,

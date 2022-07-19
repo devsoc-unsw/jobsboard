@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
+  <Breadcrumbs />
   <Modal
     v-if="modalVisible"
     :jobTitle="this.role"
@@ -14,14 +15,13 @@
     :studentDemographic="this.studentDemographic"
     :wamRequirements="this.wamRequirements"
     :additionalInfo="this.additionalInfo"
-    @closeCallback="closeJobModal()"
+    @closeCallback="() => { this.modalVisible = false }"
   />
   <div class="flex flex-col items-center w-4/5 mx-auto">
     <h1 class="text-jb-headings font-bold text-3xl mt-10 lg:mt-0">Post a Job</h1>
     <p class="text-jb-subheadings mb-12">
       Reach out to a talented pool of over 10,000 Computer Science and Engineering students
     </p>
-
     <!-- disclaimer box -->
     <div v-if="!isAlertOpen" class="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md lg:mx-[15%] mb-10">
       <div class="flex">
@@ -49,9 +49,8 @@
       :alertType="this.alertType"
       :alertMsg="this.alertMsg"
       :isOpen="this.isAlertOpen"
-      :handleClose="this.closeAlert"
+      :handleClose="() => { this.isAlertOpen = false }"
     />
-
     <!-- input fields -->
     <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Title</h2>
     <input 
@@ -223,7 +222,7 @@
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
     <button 
-      @click="showJobModal" 
+      @click="() => { this.modalVisible = true }" 
       class="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
     >
       Preview
@@ -257,6 +256,7 @@ import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
 import RichTextEditor from "@/components/RichTextEditor.vue";
 import Alert from "@/components/Alert.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
 import config from "@/config/config";
@@ -271,7 +271,8 @@ export default Vue.extend({
     JobDescriptionView,
     RichTextEditor,
     quillEditor,
-    Alert
+    Alert,
+    Breadcrumbs
   },
   data() {
     return {
@@ -347,10 +348,7 @@ export default Vue.extend({
           this.$router.push("/company/home");
         }, 5000);
       } else {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
+        this.alertType = "error";
         if (response.status === 403) {
           this.alertMsg = "Failed to post job request as your account has not yet been verified.";
         } else if (response.status === 401) {
@@ -361,22 +359,14 @@ export default Vue.extend({
         } else {
           this.alertMsg = "Missing one or more fields. Please ensure that all fields are filled.";
         }
-        this.alertType = "error";
         this.isAlertOpen = true;
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
       }
     },
-    async showJobModal() {
-      this.modalVisible = true;
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-    },
-    async closeAlert() {
-      this.isAlertOpen = false;
-    }
   },
 });
-</script>
 
-<style scoped lang="scss">
-</style>
+</script>
