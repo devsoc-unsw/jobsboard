@@ -23,7 +23,7 @@
         </div>
         
         <!-- Board -->
-        <JobBoard :jobList="getBoardList()"/>
+        <JobBoard :jobList="getBoardList()" :listName="board_status"/>
       </div>
 
       <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">How do you fit into Jobs Board?</h1>

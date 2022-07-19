@@ -1,6 +1,6 @@
 <template>
   <div class="w-[700px] bg-[#75B2F5] h-[600px] m-auto rounded-xl grid place-items-center mt-4">
-    <div class="w-[98%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-3 overflow-y-scroll">
+    <div v-if="jobList.length" :key="listName" class="w-[98%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-3 overflow-y-scroll">
       <JobProfileCard 
         v-for="job in jobList"  
         :key="job.key"
@@ -29,7 +29,8 @@ export default Vue.extend({
     JobProfileCard
   },
   props: {
-    jobList: Object
+    jobList: Object,
+    listName: String
   },
   methods: {
     getBoardState() {
@@ -64,5 +65,4 @@ export default Vue.extend({
     box-shadow: inset 0 0 10px 10px #E0DFDF;
     border: solid 6px transparent;
 }
-
 </style>
