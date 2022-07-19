@@ -17,7 +17,7 @@
     "@fortawesome/free-brands-svg-icons": "5.15.4",
     "@fortawesome/free-solid-svg-icons": "6.1.1",
     "@fortawesome/vue-fontawesome": "0.1.10",
-    "core-js": "3.23.1",
+    "core-js": "3.23.5",
     "envify": "4.1.0",
     "eslint-plugin-node": "11.1.0",
     "iview": "3.5.4",
