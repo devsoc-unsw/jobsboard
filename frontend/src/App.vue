@@ -7,11 +7,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-export default {
+export default Vue.extend({
   name: "App",
   components: {
   },
-};
+});
 </script>
 
 <style lang="scss">
