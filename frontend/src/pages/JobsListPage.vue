@@ -106,6 +106,10 @@ export default Vue.extend({
       this.loadMoreJobsLock = false;
     }
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 

@@ -52,6 +52,9 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+
     const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
       method: "GET",
       headers: {
