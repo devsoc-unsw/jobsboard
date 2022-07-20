@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer z-0" @click="goToCompanyManageJobs">
+    <div class="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer" @click="goToCompanyManageJobs">
       <div class="text-left">
-        <h1 class="font-bold text-xl text-[#1a324e] text-center leading-[60px] mb-[-6px]"> {{ role }} </h1>
+        <h1 class="font-bold text-xl text-[#1a324e] text-center leading-[60px] mb-[-6px]"> {{ jobRole() }} </h1>
         <!-- Description -->
         <div class="flex">
           <div class="ml-6">
@@ -23,15 +23,19 @@
         <p class="text-[#1a324e] text-sm text-center mt-4">Expiry Date: {{ expiryDate() }}</p>
       </div>
     </div>
-
-    <div class="w-[100px] h-[25px] bg-[#FF7060] mt-2 rounded-lg flex justify-center relative z-1 left-[70px] bottom-[65px] cursor-pointer" @click="deleteJob"> 
+    <div class="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center relative left-[70px] bottom-[65px] cursor-pointer" @click="deleteJob"
+      @mouseenter="isHovering = true"
+      @mouseleave="isHovering = false"
+      :class="{ main_hover: isHovering }"
+      > 
       <div>
-        <font-awesome-icon icon="trash-alt" class="text-white" size="sm" />
+        <font-awesome-icon icon="trash-alt" class="text-[#FF7060]" size="md" :class="{ hover: isHovering }"/>
       </div>
       <div>
-        <p class="font-bold text-[#fefefe] text-[13px] ml-1 mt-0.5">Remove Job</p>
+        <p class="font-bold text-[#FF7060] text-[15px] ml-1 mb-0.5" :class="{ hover: isHovering }">Remove Job</p>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -48,20 +52,31 @@ export default Vue.extend({
     successCallback: Function,
     errorCallback: Function,
     pay: Boolean,
-    expiryDate: Date,
     jobType: String,
     mode: String,
     expiry: Date,
-    studentDemographic: Array
+    studentDemographic: Array,
+    jobList: Object,
+    expiredList: Object,
+    listName: String
   },
   data() {
     return {
       successMsg: "",
       errorMsg: "",
       apiToken: this.$store.getters.getApiToken,
+      isHovering: false,
     };
   },
   methods: {
+    jobRole() {
+      // Maximum output 16:
+      if (this.$props.role.length > 20) {
+        const truncated = this.$props.role.slice(0, 15)
+        return truncated + "..."
+      }
+      return this.$props.role
+    },
     goToCompanyManageJobs() {
       this.$router.push("/company/jobs/manage");
     },
@@ -103,10 +118,17 @@ export default Vue.extend({
       });
 
       const receivedResponse = response as Response;
-
-      if (receivedResponse.ok) {
-        this.$props.successCallback("Job successfully deleted!");
+      if (receivedResponse.ok && this.listName === "posted_jobs") {
         // Here remove the job profile card
+        this.successCallback("Job successfully deleted!");
+        console.log(this.jobList)
+        // Remove the job from the list:
+        for (var i = 0; i < this.jobList.length; i++) {
+          if (this.jobList[i]['id'] == this.jobID) {
+            this.expiredList.push(this.jobList[i])
+            this.jobList.splice(i, 1)
+          }
+        }
         this.close();
       } else {
         if (response.status == 401) {
@@ -123,7 +145,7 @@ export default Vue.extend({
       setTimeout(() => {
         this.$destroy();
         this.$el.parentNode!.removeChild(this.$el);
-      }, 5000);
+      }, 500);
     }
   },
 });
@@ -133,5 +155,11 @@ export default Vue.extend({
 .box {
   background: linear-gradient(146deg, rgba(111, 179, 252, 0.4) 0%, rgba(254, 254, 254) 100%);
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
+}
+.hover {
+  color: white
+}
+.main_hover {
+  background-color: #FF7060;
 }
 </style>

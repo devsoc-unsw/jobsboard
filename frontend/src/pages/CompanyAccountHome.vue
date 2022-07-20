@@ -23,7 +23,7 @@
         </div>
         
         <!-- Board -->
-        <JobBoard :jobList="getBoardList()" :listName="board_status"/>
+        <JobBoard :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status"/>
       </div>
 
       <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">How do you fit into Jobs Board?</h1>
@@ -61,24 +61,11 @@ export default Vue.extend({
     goToCompanyManageJobs() {
       this.$router.push("/company/jobs/manage");
     },
-    internalErrorCallback(msg: string) {
-      console.log('yuh');
-      this.error = true;
-      this.success = false;
-      this.errorMsg = msg;
-    },
-    internalSuccessCallback(msg: string) {
-      console.log('bruh');
-      this.error = false;
-      this.success = true;
-      this.successMsg = msg;
-    },
     onChange(e) {
       var id = e.target.value;
       // var name = e.target.options[e.target.options.selectedIndex].text;
       // Update the board status in data
       this.board_status = e.target.value
-      console.log(this.board_status)
       return id
     },
     getBoardList() {
@@ -122,7 +109,6 @@ export default Vue.extend({
     const returnedRequest = response as Response;
     if (returnedRequest.ok) {
       const msg = await returnedRequest.json();
-      console.log(msg)
       this.jobs = msg.companyJobs.map((job: any) => {
         return {
           id: job.id,
@@ -153,7 +139,6 @@ export default Vue.extend({
     const returnedExpiredReponse = responseExpired as Response;
     if (returnedExpiredReponse.ok) {
       const msg = await returnedExpiredReponse.json();
-      console.log(msg)
         this.expired_jobs = msg.hiddenJobs.map((job: any) => {
         return {
           id: job.id,

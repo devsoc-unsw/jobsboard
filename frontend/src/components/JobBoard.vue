@@ -1,6 +1,6 @@
 <template>
   <div class="w-[700px] bg-[#75B2F5] h-[600px] m-auto rounded-xl grid place-items-center mt-4">
-    <div v-if="jobList.length" :key="listName" class="w-[98%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-3 overflow-y-scroll">
+    <div :key="listName" class="w-[98%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-3 overflow-y-scroll">
       <JobProfileCard 
         v-for="job in jobList"  
         :key="job.key"
@@ -13,6 +13,9 @@
         :studentDemographic="job.studentDemographic"
         :successCallback="internalSuccessCallback"
         :errorCallback="internalErrorCallback"
+        :expiredList="expiredList"
+        :listName="listName"
+        :jobList="jobList"
         />
     </div>
   </div>
@@ -30,17 +33,25 @@ export default Vue.extend({
   },
   props: {
     jobList: Object,
-    listName: String
+    listName: String,
+    expiredList: Object
   },
   methods: {
     getBoardState() {
       return this.board_status
-    }
-  },
-  data() {
-    return {
-
-    };
+    },
+    internalErrorCallback(msg: string) {
+      console.log('yuh');
+      this.error = true;
+      this.success = false;
+      this.errorMsg = msg;
+    },
+    internalSuccessCallback(msg: string) {
+      console.log('bruh');
+      this.error = false;
+      this.success = true;
+      this.successMsg = msg;
+    },
   },
 });
 </script>
