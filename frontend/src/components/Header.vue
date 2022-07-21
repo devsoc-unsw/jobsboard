@@ -5,7 +5,13 @@
   >
     <img class="w-[40%] cursor-pointer sm:w-[20%] md:w-[17%] lg:w-[20%] xl:w-[15%]" :src="logo" alt="CSESoc" @click="() => { this.$router.push(`/`) }"/>
     <div class="flex justify-evenly items-center">
-      <img class="rotate-220 fill-black cursor-pointer w-[20%] mr-2.5 sm:mr-5" :src="moon" alt="Toggle Theme" />
+      <div class="group fill-black cursor-pointer w-[20%] mr-2.5 sm:mr-5 relative inline-block" >
+        <img class="rotate-220" :src="moon" alt="Toggle Theme" />
+        <!-- tool tip -->
+        <span class="invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 tooltiptext">
+          Coming soon
+        </span>
+      </div>
       <div v-if="!apiToken">
         <button 
           class="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
@@ -61,4 +67,20 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+// tooltip positioning
+.tooltiptext {
+  top: 150%;
+  transform: translate(-50%, 0);
+}
+// tooltip
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
 </style>
