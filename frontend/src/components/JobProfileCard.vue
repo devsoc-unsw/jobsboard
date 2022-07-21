@@ -1,13 +1,16 @@
 <template>
   <div>
-    <div class="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer" @click="goToCompanyManageJobs">
+    <div class="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer" @click="goToCompanyManageJobs" 
+      @mouseenter="isHovering = true"
+      @mouseleave="isHovering = false"
+      :class="{ boxHover: isHovering }">
       <div class="text-left">
         <h1 class="font-bold text-xl text-[#1a324e] text-center leading-[60px] mb-[-6px]"> {{ jobRole() }} </h1>
         <!-- Description -->
         <div class="flex">
           <div class="ml-6">
             <div> <font-awesome-icon icon="suitcase" class="text-black" size="lg" /> </div>
-            <div> <font-awesome-icon icon="location-dot" class="text-black" size="lg" /> </div>
+            <div> <font-awesome-icon icon="location-dot" class="text-black ml-0.5" size="lg" /> </div>
             <div> <font-awesome-icon icon="user-group" class="text-black" size="lg" /> </div>
             <div> <font-awesome-icon icon="circle-dollar-to-slot" class="text-black" size="lg" /> </div>
           </div>
@@ -161,5 +164,9 @@ export default Vue.extend({
 }
 .main_hover {
   background-color: #FF7060;
+}
+.boxHover {
+  background: linear-gradient(146.05deg, #79B9FF 0%, rgba(255, 255, 255, 0) 100%);
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
 }
 </style>

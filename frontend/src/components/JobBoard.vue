@@ -1,6 +1,9 @@
 <template>
-  <div class="w-[700px] bg-[#75B2F5] h-[600px] m-auto rounded-xl grid place-items-center mt-4">
-    <div :key="listName" class="w-[98%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-3 overflow-y-scroll">
+  <div class="w-[250px] bg-[#75B2F5] h-[600px] m-auto rounded-xl grid place-items-center mt-4 md:w-[700px] lg:w-[700px]">
+    <div :key="listName" class="w-[95.5%] md:w-[98%] lg:w-[98.5%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-1 overflow-y-scroll md:grid-cols-3 lg:grid-cols-3">
+      <div v-if="listName==='posted_jobs'">
+      <NewJobProfileCard />
+      </div>
       <JobProfileCard 
         v-for="job in jobList"  
         :key="job.key"
@@ -24,12 +27,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import JobProfileCard from "@/components/JobProfileCard.vue"
-
+import NewJobProfileCard from "@/components/NewJobProfileCard.vue"
 
 export default Vue.extend({
   name: "JobBoard",
   components: {
-    JobProfileCard
+    JobProfileCard,
+    NewJobProfileCard
   },
   props: {
     jobList: Object,

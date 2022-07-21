@@ -21,14 +21,19 @@
             </select>
           </div>
         </div>
-        
-        <!-- Board -->
-        <JobBoard :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status"/>
       </div>
+      <!-- Board -->
+      <JobBoard class="" :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status"/>
 
       <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">How do you fit into Jobs Board?</h1>
       <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px]">Curious about our other Partners?</h1>
-      <p class="text-xl text-jb-subheadings my-4 text-left mb-16 text-center">Check out our other sponsors.</p>
+      <div class="flex justify-center">
+        <p class="font-semibold text-xl text-jb-subheadings my-4 text-left mb-8 text-center">Check out our other</p>
+        <a href="https://www.csesoc.unsw.edu.au/sponsors" target="__blank" >
+          <p class="font-semibold text-xl text-[#2C8BF4] text-jb-subheadings my-4 text-left mb-16 text-center">&nbsp;sponsors</p>
+        </a>
+        <p class="font-semibold text-xl text-jb-subheadings my-4 text-left mb-16 text-center">.</p>
+      </div>
     </div>
   </StudentViewTemplate>
   </LoggedInTemplate>
