@@ -157,7 +157,7 @@ export default new Router({
     props: true,
     name: "job",
     meta: {
-      title: "Job | Jobs Board",
+      title: " | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Job List' , link: '/jobs' },
