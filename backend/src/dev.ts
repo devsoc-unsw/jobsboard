@@ -197,80 +197,80 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount3.company = company3;
   
   // normal approved job
-  const ca3Job1 = new Job();
-  ca3Job1.role = "approved job";
-  ca3Job1.description = "Java is not poggers";
-  ca3Job1.applicationLink = "https://sampleapplicationlink.net";
-  ca3Job1.company = company3;
-  ca3Job1.approved = true;
-  ca3Job1.expiry = new Date('2030-01-10');
-  ca3Job1.mode = JobMode.Remote;
-  ca3Job1.studentDemographic = [StudentDemographic.All];
-  ca3Job1.jobType = JobType.Intern;
-  ca3Job1.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  ca3Job1.wamRequirements = WamRequirements.HD;
-  ca3Job1.additionalInfo = "";
-  ca3Job1.isPaid = true;
-  ca3Job1.createdAt = new Date('2020-10-10')
+  const companyAccount3_job1 = new Job();
+  companyAccount3_job1.role = "approved job";
+  companyAccount3_job1.description = "Java is not poggers";
+  companyAccount3_job1.applicationLink = "https://sampleapplicationlink.net";
+  companyAccount3_job1.company = company3;
+  companyAccount3_job1.approved = true;
+  companyAccount3_job1.expiry = new Date('2030-01-10');
+  companyAccount3_job1.mode = JobMode.Remote;
+  companyAccount3_job1.studentDemographic = [StudentDemographic.All];
+  companyAccount3_job1.jobType = JobType.Intern;
+  companyAccount3_job1.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  companyAccount3_job1.wamRequirements = WamRequirements.HD;
+  companyAccount3_job1.additionalInfo = "";
+  companyAccount3_job1.isPaid = true;
+  companyAccount3_job1.createdAt = new Date('2020-10-10')
   
   // approved but expired job
-  const ca3Job2 = new Job();
-  ca3Job2.role = "expired job";
-  ca3Job2.description = "Java is not poggers";
-  ca3Job2.applicationLink = "https://sampleapplicationlink.net";
-  ca3Job2.company = company3;
-  ca3Job2.approved = true;
-  ca3Job2.expiry = new Date('2003-01-28');
-  ca3Job2.mode = JobMode.Remote;
-  ca3Job2.studentDemographic = [StudentDemographic.All];
-  ca3Job2.jobType = JobType.Intern;
-  ca3Job2.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  ca3Job2.wamRequirements = WamRequirements.HD;
-  ca3Job2.additionalInfo = "";
-  ca3Job2.isPaid = true;
-  ca3Job2.createdAt = new Date('2020-10-10')
+  const companyAccount3_job2 = new Job();
+  companyAccount3_job2.role = "expired job";
+  companyAccount3_job2.description = "Java is not poggers";
+  companyAccount3_job2.applicationLink = "https://sampleapplicationlink.net";
+  companyAccount3_job2.company = company3;
+  companyAccount3_job2.approved = true;
+  companyAccount3_job2.expiry = new Date('2003-01-28');
+  companyAccount3_job2.mode = JobMode.Remote;
+  companyAccount3_job2.studentDemographic = [StudentDemographic.All];
+  companyAccount3_job2.jobType = JobType.Intern;
+  companyAccount3_job2.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  companyAccount3_job2.wamRequirements = WamRequirements.HD;
+  companyAccount3_job2.additionalInfo = "";
+  companyAccount3_job2.isPaid = true;
+  companyAccount3_job2.createdAt = new Date('2020-10-10')
   
   // approved but hidden job
-  const ca3Job3 = new Job();
-  ca3Job3.role = "hidden job";
-  ca3Job3.description = "Java is not poggers";
-  ca3Job3.applicationLink = "https://sampleapplicationlink.net";
-  ca3Job3.company = company3;
-  ca3Job3.approved = true;
-  ca3Job3.expiry = new Date('2003-01-28');
-  ca3Job3.mode = JobMode.Remote;
-  ca3Job3.studentDemographic = [StudentDemographic.All];
-  ca3Job3.jobType = JobType.Intern;
-  ca3Job3.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  ca3Job3.wamRequirements = WamRequirements.HD;
-  ca3Job3.additionalInfo = "";
-  ca3Job3.isPaid = true;
-  ca3Job3.hidden = true;
-  ca3Job3.createdAt = new Date('2020-10-10')
+  const companyAccount3_job3 = new Job();
+  companyAccount3_job3.role = "hidden job";
+  companyAccount3_job3.description = "Java is not poggers";
+  companyAccount3_job3.applicationLink = "https://sampleapplicationlink.net";
+  companyAccount3_job3.company = company3;
+  companyAccount3_job3.approved = true;
+  companyAccount3_job3.expiry = new Date('2003-01-28');
+  companyAccount3_job3.mode = JobMode.Remote;
+  companyAccount3_job3.studentDemographic = [StudentDemographic.All];
+  companyAccount3_job3.jobType = JobType.Intern;
+  companyAccount3_job3.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  companyAccount3_job3.wamRequirements = WamRequirements.HD;
+  companyAccount3_job3.additionalInfo = "";
+  companyAccount3_job3.isPaid = true;
+  companyAccount3_job3.hidden = true;
+  companyAccount3_job3.createdAt = new Date('2020-10-10')
   
   // approved by deleted job 
-  const ca3Job4 = new Job();
-  ca3Job4.role = "deleted job";
-  ca3Job4.description = "Java is not poggers";
-  ca3Job4.applicationLink = "https://sampleapplicationlink.net";
-  ca3Job4.company = company3;
-  ca3Job4.approved = true;
-  ca3Job4.expiry = new Date('2003-01-28');
-  ca3Job4.mode = JobMode.Remote;
-  ca3Job4.studentDemographic = [StudentDemographic.All];
-  ca3Job4.jobType = JobType.Intern;
-  ca3Job4.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  ca3Job4.wamRequirements = WamRequirements.HD;
-  ca3Job4.additionalInfo = "";
-  ca3Job4.isPaid = true;
-  ca3Job4.deleted = true;
-  ca3Job4.createdAt = new Date('2020-10-10')
+  const companyAccount3_job4 = new Job();
+  companyAccount3_job4.role = "deleted job";
+  companyAccount3_job4.description = "Java is not poggers";
+  companyAccount3_job4.applicationLink = "https://sampleapplicationlink.net";
+  companyAccount3_job4.company = company3;
+  companyAccount3_job4.approved = true;
+  companyAccount3_job4.expiry = new Date('2003-01-28');
+  companyAccount3_job4.mode = JobMode.Remote;
+  companyAccount3_job4.studentDemographic = [StudentDemographic.All];
+  companyAccount3_job4.jobType = JobType.Intern;
+  companyAccount3_job4.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  companyAccount3_job4.wamRequirements = WamRequirements.HD;
+  companyAccount3_job4.additionalInfo = "";
+  companyAccount3_job4.isPaid = true;
+  companyAccount3_job4.deleted = true;
+  companyAccount3_job4.createdAt = new Date('2020-10-10')
   
   companyAccount3.company.jobs = [
-    ca3Job1,
-    ca3Job2,
-    ca3Job3,
-    ca3Job4
+    companyAccount3_job1,
+    companyAccount3_job2,
+    companyAccount3_job3,
+    companyAccount3_job4
   ];
   
   await AppDataSource.manager.save(companyAccount3);

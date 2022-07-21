@@ -681,7 +681,26 @@ app.patch(
   Middleware.genericLoggingMiddleware
 );
 
-
+/**
+ *  @swagger
+ *  /job/admin/hidden:
+ *  get:
+ *    description: retrieve all the hidden jobs in the system
+ *    responses:
+ *      200: 
+ *        description: Success
+ *        content: 
+ *          application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              hiddenJobs: 
+ *                type: string
+ *              value:
+ *                type: object
+ *      400:
+ *        description: invalid credentials or unable to query the database
+ */
 app.get(
   "/job/admin/hidden",
   cors(corsOptions),
