@@ -2,7 +2,7 @@
   <div class="rich-text-editor">
     <quill-editor
       ref="quillRichTextEditor"
-      v-model:content="description"
+      :content="description"
       :value="description"
       :options="editorOptions"
     />
@@ -22,12 +22,11 @@ export default Vue.extend({
 });
 </script>
 
-<style>
-.ql-toolbar,
+<style lang="scss">
+/* Using css instead of tailwind to override the div from quill */
 .ql-editor {
-  background-color: white;
-}
-.ql-editor {
+  background-color: $white;
   height: 40vh;
+  font-size: 12pt;
 }
 </style>
