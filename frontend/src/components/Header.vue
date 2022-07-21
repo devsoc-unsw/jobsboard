@@ -7,8 +7,8 @@
     <div class="flex justify-evenly items-center">
       <div class="group fill-black cursor-pointer w-[20%] mr-2.5 sm:mr-5 relative inline-block" >
         <img class="rotate-220" :src="moon" alt="Toggle Theme" />
-        <!-- tool tip -->
-        <span class="invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 tooltiptext">
+        <!-- tooltip -->
+        <span class="invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 tooltipText">
           Coming soon
         </span>
       </div>
@@ -68,12 +68,12 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 // tooltip positioning
-.tooltiptext {
+.tooltipText {
   top: 150%;
   transform: translate(-50%, 0);
 }
 // tooltip
-.tooltiptext::after {
+.tooltipText::after {
   content: "";
   position: absolute;
   bottom: 100%;
