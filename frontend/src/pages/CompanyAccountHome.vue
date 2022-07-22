@@ -2,11 +2,18 @@
   <LoggedInTemplate>
   <StudentViewTemplate>
     <div class="px-[10%]">
-      <h1 class="font-bold text-5xl text-[#1a324e] text-left leading-[72px] drop-shadow-md m-0 mt-4">Welcome Back!👋</h1>
-      <p class="text-xl text-jb-subheadings my-4 text-left">Accelerate your search for talented job applicants today with us!</p>
-      <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px]">Board</h1>
-      <p class="text-xl text-jb-subheadings my-4 text-left">Add a new job post with our “Post Job” profile card to your board 
-        or manage your existing jobs by double clicking on the profile card of any active jobs listed.</p>
+      <h1 class="font-bold text-5xl text-jb-headings text-left leading-[72px] m-0 mt-4">
+        Welcome Back! &nbsp;👋
+      </h1>
+      <p class="text-lg text-jb-subheadings text-left">
+        Accelerate your search for talented job applicants today with us!
+      </p>
+      <h1 class="font-bold text-4xl text-[#1a324e] mt-4 text-center leading-[72px]">
+        Manage your Jobs
+      </h1>
+      <p class="text-lg text-jb-subheadings text-center">
+        Add a new job post with our “Post Job” profile card to your board or manage your existing jobs by double clicking on the profile card of any active jobs listed.
+      </p>
       
       <div class="w-[700px] m-auto mt-8">
         <!-- Board select dropdown -->
@@ -15,7 +22,7 @@
             <font-awesome-icon icon="bars" class="text-2xl" />
           </div>
           <div>
-            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-[#1A5D89] text-lg" @change="onChange($event)">
+            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-lg" @change="onChange($event)">
               <option value="posted_jobs">Posted Jobs</option>
               <option value="expired_jobs ">Expired Jobs</option>
             </select>
@@ -25,15 +32,19 @@
       <!-- Board -->
       <JobBoard class="" :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status"/>
 
-      <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">How do you fit into Jobs Board?</h1>
-      <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px]">Curious about our other Partners?</h1>
-      <div class="flex justify-center">
-        <p class="font-semibold text-xl text-jb-subheadings my-4 text-left mb-8 text-center">Check out our other</p>
-        <a href="https://www.csesoc.unsw.edu.au/sponsors" target="__blank" >
-          <p class="font-semibold text-xl text-[#2C8BF4] text-jb-subheadings my-4 text-left mb-16 text-center">&nbsp;sponsors</p>
-        </a>
-        <p class="font-semibold text-xl text-jb-subheadings my-4 text-left mb-16 text-center">.</p>
-      </div>
+      <!-- <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">
+        How do you fit into Jobs Board?
+      </h1> -->
+      <h1 class="font-bold text-4xl text-jb-headings text-center leading-[72px]">Curious about our other Partners?</h1>
+        <p class="text-lg text-jb-subheadings mb-8 text-center">
+          Check out our other
+          <a href="https://www.csesoc.unsw.edu.au/sponsors" target="__blank" >
+            <span class="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered">
+              sponsors
+            </span>
+            .
+          </a>
+        </p>
     </div>
   </StudentViewTemplate>
   </LoggedInTemplate>
@@ -162,8 +173,11 @@ export default Vue.extend({
       })
     } else {
       this.error = true;
-      window.scrollTo(0, 10);
-      if (response.status == 401) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      if (response.status === 401) {
         this.errorMsg = "Login expired. Redirecting to login page.";
         setTimeout(() => {
           this.$router.push("/login/company");
