@@ -16,6 +16,10 @@ import {
   faAddressCard,
   faUser,
   faCircleInfo,
+  faBars,
+  faUserGroup,
+  faLocationDot,
+  faTrashAlt,
   faBell,
   faXmark,
   faLocationDot,
@@ -49,6 +53,10 @@ library.add(faLink as IconDefinition);
 library.add(faAddressCard as IconDefinition);
 library.add(faUser as IconDefinition);
 library.add(faCircleInfo as IconDefinition);
+library.add(faBars as IconDefinition);
+library.add(faUserGroup as IconDefinition);
+library.add(faLocationDot as IconDefinition);
+library.add(faTrashAlt as IconDefinition);
 library.add(faBell as IconDefinition);
 library.add(faXmark as IconDefinition);
 library.add(faLocationDot as IconDefinition);

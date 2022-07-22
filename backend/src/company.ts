@@ -503,7 +503,8 @@ export default class CompanyFunctions {
             "Job.workingRights",
             "Job.wamRequirements",
             "Job.additionalInfo",
-            "Job.isPaid"
+            "Job.isPaid",
+            "Job.expiry"
           ])
           .getMany();
       }, `Failed to find jobs for COMPANY=${req.companyAccountID}`);
@@ -523,6 +524,15 @@ export default class CompanyFunctions {
           description: job.description,
           applicationLink: job.applicationLink,
           status: jobStatus,
+          mode: job.mode,
+          hidden: job.hidden,
+          studentDemographic: job.studentDemographic,
+          jobType: job.jobType,
+          workingRights: job.workingRights,
+          wamRequirements: job.wamRequirements,
+          additionalInfo: job.additionalInfo,
+          pay: job.isPaid,
+          expiry: job.expiry,
         };
       })
 

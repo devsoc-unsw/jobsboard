@@ -1,20 +1,38 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate>
-    <Breadcrumbs />
-    <div>
-      <h1>Welcome!</h1>
-      <div class="buttonBox">
-        <StandardButton>
-          <Button @callback="goToCompanyJobAdd">
-            Post Jobs
-          </Button>
-        </StandardButton>
-        <StandardButton>
-          <Button @callback="goToCompanyManageJobs">
-            Manage Jobs
-          </Button>
-        </StandardButton>
+    <div class="px-[10%]">
+      <h1 class="font-bold text-5xl text-[#1a324e] text-left leading-[72px] drop-shadow-md m-0 mt-4">Welcome Back!👋</h1>
+      <p class="text-xl text-jb-subheadings my-4 text-left">Accelerate your search for talented job applicants today with us!</p>
+      <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px]">Board</h1>
+      <p class="text-xl text-jb-subheadings my-4 text-left">Add a new job post with our “Post Job” profile card to your board 
+        or manage your existing jobs by double clicking on the profile card of any active jobs listed.</p>
+      
+      <div class="w-[700px] m-auto mt-8">
+        <!-- Board select dropdown -->
+        <div class="text-left flex ml-2">
+          <div>
+            <font-awesome-icon icon="bars" class="text-2xl" />
+          </div>
+          <div>
+            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-[#1A5D89] text-lg" @change="onChange($event)">
+              <option value="posted_jobs">Posted Jobs</option>
+              <option value="expired_jobs ">Expired Jobs</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Board -->
+      <JobBoard class="" :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status"/>
+
+      <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">How do you fit into Jobs Board?</h1>
+      <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px]">Curious about our other Partners?</h1>
+      <div class="flex justify-center">
+        <p class="font-semibold text-xl text-jb-subheadings my-4 text-left mb-8 text-center">Check out our other</p>
+        <a href="https://www.csesoc.unsw.edu.au/sponsors" target="__blank" >
+          <p class="font-semibold text-xl text-[#2C8BF4] text-jb-subheadings my-4 text-left mb-16 text-center">&nbsp;sponsors</p>
+        </a>
+        <p class="font-semibold text-xl text-jb-subheadings my-4 text-left mb-16 text-center">.</p>
       </div>
     </div>
   </StudentViewTemplate>
@@ -27,7 +45,9 @@ import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
+import config from "@/config/config";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import JobBoard from "@/components/JobBoard.vue"
 
 export default Vue.extend({
   name: "CompanyAccountHome",
@@ -37,6 +57,7 @@ export default Vue.extend({
     Button,
     StandardButton,
     Breadcrumbs,
+    JobBoard
   },
   methods: {
     goToCompanyJobAdd() {
@@ -45,38 +66,114 @@ export default Vue.extend({
     goToCompanyManageJobs() {
       this.$router.push("/company/jobs/manage");
     },
+    onChange(e) {
+      var id = e.target.value;
+      // var name = e.target.options[e.target.options.selectedIndex].text;
+      // Update the board status in data
+      this.board_status = e.target.value
+      return id
+    },
+    getBoardList() {
+      if (this.board_status === 'posted_jobs') {
+        return this.jobs
+      } else {
+        return this.expired_jobs
+      }
+    }
   },
-  mounted() {
+  data() {
+    return {
+      error: false,
+      errorMsg: "",
+      success: false,
+      successMsg: "",
+      jobs: [],
+      expired_jobs: [],
+      board_status: "posted_jobs",
+      apiToken: this.$store.getters.getApiToken,
+    };
+  },
+  async mounted() {
     // Change the page title
     document.title = this.$route.meta.title;
-  }
+
+    const response = await fetch(`${config.apiRoot}/companyjobs`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": this.apiToken,
+      },
+    });
+
+    // For expired jobs:
+    const responseExpired = await fetch(`${config.apiRoot}/job/company/hidden`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": this.apiToken,
+      },
+    });
+
+    const returnedRequest = response as Response;
+    if (returnedRequest.ok) {
+      const msg = await returnedRequest.json();
+      this.jobs = msg.companyJobs.map((job: any) => {
+        return {
+          id: job.id,
+          role: job.role,
+          status: `Status: ${job.status}`,
+          description: job.description,
+          applicationLink: job.applicationLink,
+          pay: job.pay,
+          expiry: job.expiry,
+          jobType: job.jobType,
+          mode: job.mode,
+          studentDemographic: job.studentDemographic,
+        };
+      })
+    } else {
+      this.error = true;
+      window.scrollTo(0, 10);
+      if (response.status == 401) {
+        this.errorMsg = "Login expired. Redirecting to login page.";
+        setTimeout(() => {
+          this.$router.push("/login/company");
+        }, 1000);
+      } else {
+        this.errorMsg = "Failed to get pending jobs.";
+      }
+    }
+
+    const returnedExpiredReponse = responseExpired as Response;
+    if (returnedExpiredReponse.ok) {
+      const msg = await returnedExpiredReponse.json();
+        this.expired_jobs = msg.hiddenJobs.map((job: any) => {
+        return {
+          id: job.id,
+          role: job.role,
+          description: job.description,
+          applicationLink: job.applicationLink,
+          pay: job.isPaid,
+          expiry: job.expiry,
+          jobType: job.jobType,
+          mode: job.mode,
+          studentDemographic: job.studentDemographic,
+        };
+      })
+    } else {
+      this.error = true;
+      window.scrollTo(0, 10);
+      if (response.status == 401) {
+        this.errorMsg = "Login expired. Redirecting to login page.";
+        setTimeout(() => {
+          this.$router.push("/login/company");
+        }, 1000);
+      } else {
+        this.errorMsg = "Failed to get expired jobs.";
+      }
+    }
+  },
+
 });
 </script>
 
-<style scoped lang="scss">
-.buttonBox {
-  padding: 2%;
-}
-
-.button {
-  min-width: 70%;
-  max-width: 70%;
-  border-radius: 0.5rem;
-  /* padding-top: 2%; */
-  /* padding-bottom: 2%; */
-  /* padding-left: 5%; */
-  /* padding-right: 5%; */
-  /* margin: 1%; */
-}
-
-.editButton {
-  background: $white;
-  color: $blue;
-}
-
-.postButton {
-  border: 1px solid $blue;
-  background: $blue;
-  color: $white;
-}
-</style>
