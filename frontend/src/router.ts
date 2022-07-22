@@ -31,6 +31,7 @@ export default new Router({
     path: "/login/student",
     component: StudentLoginPage,
     meta: {
+      title:  "Login | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Login' }
@@ -40,6 +41,7 @@ export default new Router({
     path: "/login/company",
     component: CompanyLoginPage,
     meta: {
+      title:  "Login | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Login' }
@@ -49,6 +51,7 @@ export default new Router({
     path: "/login/admin",
     component: AdminLoginPage,
     meta: {
+      title:  "Login | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Login' }
@@ -58,6 +61,7 @@ export default new Router({
     path: "/signup/company",
     component: CompanySignupPage,
     meta: {
+      title: "Sign Up | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Sign Up' }
@@ -67,6 +71,7 @@ export default new Router({
     path: "/company/home",
     component: CompanyAccountHome,
     meta: {
+      title: "Home | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard' }
@@ -76,6 +81,7 @@ export default new Router({
     path: "/admin/home",
     component: AdminAccountHome,
     meta: {
+      title: "Home | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard'}
@@ -85,6 +91,7 @@ export default new Router({
     path: "/admin/jobs/pending",
     component: AdminListPendingJobs,
     meta: {
+      title: "Pending Jobs | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
@@ -95,6 +102,7 @@ export default new Router({
     path: "/admin/companies/pending",
     component: AdminListCompanyPendingVerification,
     meta: {
+      title: "Pending Companies | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
@@ -105,6 +113,7 @@ export default new Router({
     path: "/admin/jobs/post",
     component: AdminCreateJobAsCompany,
     meta: {
+      title: "Post Job | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
@@ -115,6 +124,7 @@ export default new Router({
     path: "/company/jobs/add",
     component: CompanyAddJob,
     meta: {
+      title: "Post Job | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/company/home' },
@@ -125,6 +135,7 @@ export default new Router({
     path: "/login",
     component: LoginPage,
     meta: {
+      title: "Login | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Login' }
@@ -134,6 +145,7 @@ export default new Router({
     path: "/jobs",
     component: JobsListPage,
     meta: {
+      title: "Jobs List | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Job List' }
@@ -155,6 +167,7 @@ export default new Router({
     path: "/company/jobs/manage",
     component: CompanyManageJobs,
     meta: {
+      title: "Manage Jobs | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/company/home' },
@@ -165,6 +178,7 @@ export default new Router({
     path: "/company/password-forgot",
     component: CompanyPasswordForgotPage,
     meta: {
+      title: "Forgot Password | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Forgot Password' }
@@ -176,6 +190,7 @@ export default new Router({
     props: true,
     name: "token",
     meta: {
+      title: "Reset Password | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Reset Password' }
@@ -185,6 +200,7 @@ export default new Router({
     path: "/team",
     component: TeamPage,
     meta: {
+      title: "Team | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Team' }
@@ -193,8 +209,14 @@ export default new Router({
   }, {
     path: "/",
     component: LandingPage,
+    meta: {
+      title: "Home | Jobs Board",
+    }
   }, {
     path: "*",
     component: PageNotFoundPage,
+    meta: {
+      title: "Page Not Found | Jobs Board",
+    }
   }],
 } as any);

@@ -298,6 +298,9 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+    
     // make the call to get a list of verified companies to select from
     const response = await fetch(`${config.apiRoot}/admin/companies`, {
       method: "GET",

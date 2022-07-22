@@ -119,6 +119,9 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+
     // Get the number of companies pending verification 
     const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
       method: "GET",
