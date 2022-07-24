@@ -30,7 +30,7 @@
         </div>
       </div>
       <!-- Board -->
-      <JobBoard class="" :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status"/>
+      <JobBoard :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status" :updateBoard="updateBoard"/>
 
       <!-- <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">
         How do you fit into Jobs Board?
@@ -71,12 +71,6 @@ export default Vue.extend({
     JobBoard
   },
   methods: {
-    goToCompanyJobAdd() {
-      this.$router.push("/company/jobs/add");
-    },
-    goToCompanyManageJobs() {
-      this.$router.push("/company/jobs/manage");
-    },
     onChange(e) {
       var id = e.target.value;
       // var name = e.target.options[e.target.options.selectedIndex].text;
@@ -85,11 +79,15 @@ export default Vue.extend({
       return id
     },
     getBoardList() {
+      console.log(this.jobs)
       if (this.board_status === 'posted_jobs') {
         return this.jobs
       } else {
         return this.expired_jobs
       }
+    },
+    updateBoard(newJobList) {
+      this.jobs = newJobList
     }
   },
   data() {

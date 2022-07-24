@@ -26,7 +26,8 @@
         <p class="text-[#1a324e] text-sm text-center mt-4">Expiry Date: {{ expiryDate() }}</p>
       </div>
     </div>
-    <div class="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center relative left-[70px] bottom-[65px] cursor-pointer" @click="deleteJob"
+
+    <div v-if="listName === 'posted_jobs'" class="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center relative left-[70px] bottom-[65px] cursor-pointer" @click="deleteJob"
       @mouseenter="isHovering = true"
       @mouseleave="isHovering = false"
       :class="{ main_hover: isHovering }"
@@ -61,7 +62,8 @@ export default Vue.extend({
     studentDemographic: Array,
     jobList: Object,
     expiredList: Object,
-    listName: String
+    listName: String,
+    updateBoard: Function
   },
   data() {
     return {
@@ -125,13 +127,16 @@ export default Vue.extend({
         // Here remove the job profile card
         this.successCallback("Job successfully deleted!");
         // Remove the job from the list:
+        const new_list = []
         for (var i = 0; i < this.jobList.length; i++) {
           if (this.jobList[i]['id'] === this.jobID) {
+            // Add the job to the removed list
             this.expiredList.push(this.jobList[i])
-            
-            this.jobList.splice(i, 1)
+          } else {
+            new_list.push(this.jobList[i])
           }
         }
+        this.updateBoard(new_list)
         this.close();
       } else {
         if (response.status === 401) {
@@ -145,10 +150,11 @@ export default Vue.extend({
       }
     },
     close() {
+      location.reload()
       setTimeout(() => {
         this.$destroy();
         this.$el.parentNode!.removeChild(this.$el);
-      }, 500);
+      }, 100);
     }
   },
 });

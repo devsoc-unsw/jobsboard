@@ -19,6 +19,7 @@
         :expiredList="expiredList"
         :listName="listName"
         :jobList="jobList"
+        :updateBoard="updateBoard"
         />
     </div>
   </div>
@@ -38,7 +39,8 @@ export default Vue.extend({
   props: {
     jobList: Object,
     listName: String,
-    expiredList: Object
+    expiredList: Object,
+    updateBoard: Function
   },
   methods: {
     getBoardState() {
