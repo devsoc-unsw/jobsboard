@@ -124,17 +124,17 @@ export default Vue.extend({
       if (receivedResponse.ok && this.listName === "posted_jobs") {
         // Here remove the job profile card
         this.successCallback("Job successfully deleted!");
-        console.log(this.jobList)
         // Remove the job from the list:
         for (var i = 0; i < this.jobList.length; i++) {
-          if (this.jobList[i]['id'] == this.jobID) {
+          if (this.jobList[i]['id'] === this.jobID) {
             this.expiredList.push(this.jobList[i])
+            
             this.jobList.splice(i, 1)
           }
         }
         this.close();
       } else {
-        if (response.status == 401) {
+        if (response.status === 401) {
           this.errorMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
