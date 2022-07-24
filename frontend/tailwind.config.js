@@ -7,12 +7,12 @@ module.exports = {
     screens: {
       // The following screen sizes are converted into css like so
       // @media (min-width: ...px) { ... }
-      'xs': '480px',
-      'sm': '640px', 
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
+      '2xl': { 'max': '1536px'},
+      'xl': { 'max': '1280px'},
+      'lg': { 'max': '1024px'},
+      'md': { 'max': '768px'},
+      'sm': { 'max': '640px'}, 
+      'xs': { 'max': '480px'},
     },
     extend: {
       backgroundColor: {
