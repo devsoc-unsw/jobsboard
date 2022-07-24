@@ -107,6 +107,8 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    // Change the page title 
+    document.title = this.$route.meta.title;
     this.$store.dispatch("clearApiToken");
   },
   methods: {

@@ -1,8 +1,8 @@
 <template>
-  <div class="w-[250px] bg-[#75B2F5] h-[600px] m-auto rounded-xl grid place-items-center mt-4 md:w-[700px] lg:w-[700px]">
-    <div :key="listName" class="w-[95.5%] md:w-[98%] lg:w-[98.5%] bg-[#ffffff] h-[588px] m-auto rounded-xl grid grid-cols-1 overflow-y-scroll md:grid-cols-3 lg:grid-cols-3">
-      <div v-if="listName==='posted_jobs'">
-      <NewJobProfileCard />
+  <div class="w-64 border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-[700px]">
+    <div :key="listName" class="bg-white h-full grid grid-cols-1 rounded-xl overflow-y-scroll md:grid-cols-3">
+      <div v-if="listName === 'posted_jobs'">
+        <NewJobProfileCard />
       </div>
       <JobProfileCard 
         v-for="job in jobList"  

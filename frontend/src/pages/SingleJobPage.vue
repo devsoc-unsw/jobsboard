@@ -212,6 +212,10 @@ export default Vue.extend({
       */
       if (response.ok) {
         const msg = await response.json();
+
+        // Change the page title
+        document.title = `${msg.job.role} | ${msg.job.company.name} | Jobs Board`;
+
         this.role = msg.job.role;
         this.company = msg.job.company.name;
         this.description = msg.job.description;

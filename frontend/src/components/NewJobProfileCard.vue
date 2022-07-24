@@ -1,13 +1,12 @@
 <template>
   <div>
-    <div class="mt-6 ml-6 mb-8 bg-[#ECECEC] rounded-xl w-[190px] h-[230px]">
+    <div class="mt-6 ml-6 mb-8 bg-[#ECECEC] rounded-lg w-48 h-56">
       <div class="grid">
-        <p class="font-extrabold text-2xl text-[#1a324e] text-center mt-10 mb-4">Post Job</p>
-
-        <div class="bg-white w-[70px] h-[70px] rounded-full cursor-pointer justify-self-center bottom-[80px] relative" @click="goToCompanyJobAdd">
-          <div class="absolute text-[80px] text-[#1a324e] ">
-            +
-          </div>
+        <p class="font-extrabold text-2xl text-jb-headings text-center mt-10 mb-4">
+          Post Job
+        </p>
+        <div class="flex justify-center items-center bg-white w-16 h-16 rounded-full cursor-pointer justify-self-center" @click="() => this.$router.push('/company/jobs/add')">
+          <font-awesome-icon icon="plus" size="2x" class="text-jb-headings" />
         </div>
       </div>
     </div>
@@ -18,20 +17,13 @@
 import { Vue } from "vue-property-decorator";
 
 export default Vue.extend({
-  components: {  },
+  components: {},
   name: "NewJobProfileCard",
-  props: {
-  },
-
+  props: {},
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-    goToCompanyJobAdd() {
-      this.$router.push("/company/jobs/add");
-    },
-  },
+  methods: {},
 });
 </script>
 

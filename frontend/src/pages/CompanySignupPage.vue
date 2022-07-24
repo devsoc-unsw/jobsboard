@@ -156,6 +156,10 @@ export default Vue.extend({
         setTimeout(() => {
           this.$router.push("/login/company");
         }, 5000);
+      } else if (response.status === 409) {
+        this.error = true;
+        window.scrollTo(0, 10);
+        this.errorMsg = "There already exists a company with this email. Please try again.";
       } else {
         this.error = true;
         window.scrollTo(0, 10);
@@ -163,6 +167,10 @@ export default Vue.extend({
       }
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 
