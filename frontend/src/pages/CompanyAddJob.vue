@@ -313,7 +313,7 @@ export default Vue.extend({
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          "Authorization": `${this.apiToken}`
         },
         // mode: "no-cors",
         body: JSON.stringify({
@@ -332,8 +332,6 @@ export default Vue.extend({
       });
 
       if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
         this.alertType = "success";
         this.alertMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
         this.isAlertOpen = true;
