@@ -8,7 +8,7 @@
     :handleClose="() => { this.isAlertOpen = false }"
   />
   <div class="flex flex-row justify-center h-screen px-8">
-    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-scroll shadow-card sm:flex">
+    <div class="flex flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-scroll shadow-card sm:hidden">
       <h2
         class="font-bold text-xl text-jb-headings" 
         v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
@@ -30,8 +30,8 @@
         />
       </div>
     </div>
-    <div class="flex flex-col items-center w-full h-full sm:w-3/4">
-      <div class="flex flex-col p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-row">
+    <div class="flex flex-col items-center w-3/4 h-full sm:w-full">
+      <div class="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
         <div class="flex flex-col mr-8 self-center">
           <!-- TODO: to be replaced with company logo -->
           <font-awesome-icon icon="building" size="10x" class="mb-2" />
