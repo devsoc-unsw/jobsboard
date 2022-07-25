@@ -174,7 +174,19 @@ export default class StudentFunctions {
 
       
       try{
-      featuredJobs = featuredJobs.slice(0, 4);
+      //if there are no featured jobs, return an empty array
+      if(featuredJobs.length === 0){
+        return {
+          status: 200,
+          msg: {
+            token: req.newJbToken,
+            featuredJobs: []
+          }
+        } as IResponseWithStatus;
+      }
+      //if more than 4 featured jobs, return the first 4
+      if(featuredJobs.length >= 4){
+        featuredJobs = featuredJobs.slice(0, 4);}
       //left join and select company.name
       featuredJobs = featuredJobs.map((job: Job) => {
         const newJob: any = {};
