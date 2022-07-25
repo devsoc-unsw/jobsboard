@@ -706,7 +706,7 @@ app.put(
  *        description: failed to get Jobs
  */
  app.get(
-  "/getFeaturedJobs",
+  "/featured-jobs",
   cors(corsOptions),
   StudentFunctions.GetFeaturedJobs,
   Middleware.genericLoggingMiddleware

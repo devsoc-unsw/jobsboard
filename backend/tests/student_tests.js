@@ -39,6 +39,20 @@ describe("job", () => {
             done();
           });
       });
+      it(
+        "permits viewing of featured jobs when not logged in",
+        function (done) {
+          server
+          .get(`/featured-jobs`)
+          .expect(200)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            done();
+          });
+        }
+      );
+     
+    });
   });
 
   describe("accessing while authenticated", () => {
@@ -70,22 +84,7 @@ describe("job", () => {
             done();
           });
       });
-
-      describe("listing featured jobs", () => {
-        it(
-          "Succeeded in getting featured Jobs while unauthenticated",
-          function (done) {
-            server
-            .get(`/getFeaturedJobs`)
-            .expect(200)
-            .end( function(_, res) {
-              expect(res.status).to.equal(200);
-              done();
-            });
-          }
-        );
-       
-      });
+        
     
 
     it("user can't access list of jobs with invalid token",
@@ -100,4 +99,3 @@ describe("job", () => {
           });
       });
   });
-});

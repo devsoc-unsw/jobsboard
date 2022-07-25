@@ -156,42 +156,58 @@ export default class StudentFunctions {
   }
 
 
-public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
-  Helpers.catchAndLogError(res, async () => {
-    Logger.Info(`Attempting to get featured jobs`);
-    let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
-      return await AppDataSource
-        .getRepository(Job)
-        .createQueryBuilder()
-        .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
-        .where("Job.approved = :approved", { approved: true })
-        .andWhere("Job.hidden = :hidden", { hidden: false })
-        .getMany();
-    }, `Couldn't query for featured jobs`);
+  public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`Attempting to get featured jobs`);
+      let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        
+        return await AppDataSource
+          .getRepository(Job)
+          .createQueryBuilder()
+          .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .where("Job.approved = :approved", { approved: true })
+          .where("Job.expiry > :expiry", { expiry: new Date() })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .leftJoinAndSelect("Job.company", "company")
+          .getMany();
+      }, `Couldn't query for featured jobs`);
 
-    for (let jobIndex = 0; jobIndex < featuredJobs.length; jobIndex++) {
-      featuredJobs[jobIndex].company = await AppDataSource
-        .createQueryBuilder()
-        .relation(Job, "company")
-        .of(featuredJobs[jobIndex])
-        .loadOne();
-    }
-    featuredJobs = featuredJobs.slice(0, 4);
+      
+      try{
+      featuredJobs = featuredJobs.slice(0, 4);
+      //left join and select company.name
+      featuredJobs = featuredJobs.map((job: Job) => {
+        const newJob: any = {};
+        newJob.id = job.id;
+        newJob.role = job.role;
+        newJob.description = job.description;
+        newJob.applicationLink = job.applicationLink;
+        newJob.company = job.company.name;
+        return newJob;
+      }
+      );}
+      catch(e){
+        Logger.Error(`Couldn't slice featured jobs`);
+      }
     
-    return {
-      status: 200, 
-      msg: {
-        token: req.newJbToken,
-        featuredJobs: featuredJobs
-      }
-    } as IResponseWithStatus;
-  }, () => {
-    return {
-      status: 400,
-      msg: {
-        token: req.newJbToken,
-      }
-    } as IResponseWithStatus;
-  }, next);
-}
+      
+      // console log the featured jobs
+      Logger.Info(`Featured jobs: ${JSON.stringify(featuredJobs)}`);
+      
+      return {
+        status: 200, 
+        msg: {
+          token: req.newJbToken,
+          featuredJobs: featuredJobs
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
 }
