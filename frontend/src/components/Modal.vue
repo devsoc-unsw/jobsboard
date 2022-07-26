@@ -4,7 +4,7 @@
     <div class="opacity-25 fixed inset-0 z-40 bg-black"></div>
     <!-- Modal -->
     <div tabindex="-1" class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-      <div class="relative p-4 w-full max-w-full h-full md:h-auto">
+      <div class="relative p-4 w-full max-w-full h-auto md:h-full">
         <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <!-- Modal header -->
