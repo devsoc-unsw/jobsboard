@@ -3,7 +3,7 @@
     <Breadcrumbs />
     <main class="h-full flex flex-col justify-center items-center mb-16">
       <h1 class="font-bold text-3xl mb-0 text-jb-headings">Admin Login</h1>
-      <p class="text-lg text-jb-subheadings my-4 mx-8 sm:mx-[18%]">
+      <p class="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
         Enter your username and password. If there are any problems, please get in touch with a project lead.
       </p>
       <Alert
@@ -12,13 +12,13 @@
         :isOpen="isAlertOpen"
         :handleClose="() => { this.isAlertOpen = false }"
       />
-      <div class="w-full relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
           name="username"
           id="username"
           v-model="username"
           type="text"
-          class="font-bold  border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
           @keyup.enter="performAdminLogin()"
           required
         />
@@ -33,7 +33,7 @@
         </label>
       </div>
 
-      <div class="w-full relative group mt-4 mb-4 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
           name="password"
           id="password"
@@ -61,7 +61,7 @@
       >
         Log In
       </button>
-      <p class="text-lg text-jb-subheadings mt-6 mb-4 mx-8 sm:mx-[18%]">
+      <p class="text-lg text-jb-subheadings mt-6 mb-4 mx-[18%] sm:mx-8">
         Or return to
         <span class="font-bold cursor-pointer text-jb-textlink hover:text-jb-textlink-hovered" @click="toLandingPage">
           Home

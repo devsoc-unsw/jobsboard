@@ -30,8 +30,8 @@
         />
       </div>
     </div>
-    <div class="flex flex-col items-center w-full h-full sm:w-3/4">
-      <div class="flex flex-col p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-row">
+    <div class="flex flex-col items-center w-3/4 h-full sm:w-full">
+      <div class="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
         <div class="flex flex-col mr-8 self-center">
           <!-- TODO: to be replaced with company logo -->
           <font-awesome-icon icon="building" size="10x" class="mb-2" />
