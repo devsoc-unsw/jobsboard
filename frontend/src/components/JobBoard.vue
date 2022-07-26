@@ -1,8 +1,8 @@
 <template>
   <div class="w-64 border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-[700px]">
     <div :key="listName" class="bg-white h-full grid grid-cols-1 rounded-xl overflow-y-scroll md:grid-cols-3">
-      <div v-if="listName === 'posted_jobs'">
-        <NewJobProfileCard />
+      <div v-if="listName === 'postedJobs'">
+        <PostJobCard />
       </div>
       <JobProfileCard 
         v-for="job in jobList"  
@@ -16,10 +16,7 @@
         :studentDemographic="job.studentDemographic"
         :successCallback="internalSuccessCallback"
         :errorCallback="internalErrorCallback"
-        :expiredList="expiredList"
         :listName="listName"
-        :jobList="jobList"
-        :updateBoard="updateBoard"
         />
     </div>
   </div>
@@ -28,32 +25,25 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import JobProfileCard from "@/components/JobProfileCard.vue"
-import NewJobProfileCard from "@/components/NewJobProfileCard.vue"
+import PostJobCard from "@/components/PostJobCard.vue"
 
 export default Vue.extend({
   name: "JobBoard",
   components: {
     JobProfileCard,
-    NewJobProfileCard
+    PostJobCard
   },
   props: {
     jobList: Object,
     listName: String,
-    expiredList: Object,
-    updateBoard: Function
   },
   methods: {
-    getBoardState() {
-      return this.board_status
-    },
     internalErrorCallback(msg: string) {
-      console.log('yuh');
       this.error = true;
       this.success = false;
       this.errorMsg = msg;
     },
     internalSuccessCallback(msg: string) {
-      console.log('bruh');
       this.error = false;
       this.success = true;
       this.successMsg = msg;

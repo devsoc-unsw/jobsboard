@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer" @click="goToCompanyManageJobs" 
+    <div class="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer" @click="() => {this.$router.push('/company/jobs/manage')}" 
       @mouseenter="isHovering = true"
       @mouseleave="isHovering = false"
       :class="{ boxHover: isHovering }">
@@ -19,7 +19,7 @@
             <p class="ml-3 text-jb-subheadings">{{ jobCommit() }}</p>
             <p class="ml-3 text-jb-subheadings">{{ location() }}</p>
             <p class="ml-3 text-jb-subheadings"> {{ target() }} </p>
-            <p class="ml-3 text-jb-subheadings"> {{ checkPay() }} </p>
+            <p class="ml-3 text-jb-subheadings"> {{this.$props.pay === true ?  'Paid' : 'Not Paid'}} </p>
           </div>
         </div>
 
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div v-if="listName === 'posted_jobs'" class="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center relative left-[70px] bottom-[65px] cursor-pointer" @click="deleteJob"
+    <div v-if="listName === 'postedJobs'" class="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center relative left-[70px] bottom-[65px] cursor-pointer" @click="deleteJob"
       @mouseenter="isHovering = true"
       @mouseleave="isHovering = false"
       :class="{ main_hover: isHovering }"
@@ -63,54 +63,37 @@ export default Vue.extend({
     jobList: Object,
     expiredList: Object,
     listName: String,
-    updateBoard: Function
   },
   data() {
     return {
-      successMsg: "",
-      errorMsg: "",
       apiToken: this.$store.getters.getApiToken,
       isHovering: false,
     };
   },
   methods: {
     jobRole() {
-      // Maximum output 16:
-      if (this.$props.role.length > 20) {
-        const truncated = this.$props.role.slice(0, 15)
-        return truncated + "..."
-      }
-      return this.$props.role
-    },
-    goToCompanyManageJobs() {
-      this.$router.push("/company/jobs/manage");
-    },
-    checkPay() {
-      if (this.$props.pay === true) {
-        return 'Paid'
-      } 
-      return 'Not Paid'
+      return this.$props.role.length > 20 ? this.$props.role.slice(0, 15) + "..." : this.$props.role;
     },
     jobCommit() {
-      const firstLetter = this.$props.jobType.slice(0, 1)
-      const strRest = this.$props.jobType.slice(1)
-      return firstLetter.toUpperCase() + strRest + " " + "Role"
+      const firstLetter = this.$props.jobType.slice(0, 1);
+      const strRest = this.$props.jobType.slice(1);
+      return firstLetter.toUpperCase() + strRest + " " + "Role";
     },
     location() {
-      const firstLetter = this.$props.mode.slice(0, 1)
-      const strRest = this.$props.mode.slice(1)
-      return firstLetter.toUpperCase() + strRest
+      const firstLetter = this.$props.mode.slice(0, 1);
+      const strRest = this.$props.mode.slice(1);
+      return firstLetter.toUpperCase() + strRest;
     },
     expiryDate() {
-      return this.$props.expiry.slice(0, 10).replace(/-/gi, "/")
+      return this.$props.expiry.slice(0, 10).replace(/-/gi, "/");
     },
     target() {
       if (this.$props.studentDemographic.length === 2) {
-        return "Penult & Final"
+        return "Penult & Final";
       }
-      const firstLetter = this.$props.studentDemographic[0].slice(0, 1)
-      const strRest = this.$props.studentDemographic[0].slice(1)
-      return firstLetter.toUpperCase() + strRest
+      const firstLetter = this.$props.studentDemographic[0].slice(0, 1);
+      const strRest = this.$props.studentDemographic[0].slice(1);
+      return firstLetter.toUpperCase() + strRest;
     },
     async deleteJob() {
       const uri = `${config.apiRoot}/company/job/${this.jobID}`;
@@ -121,22 +104,9 @@ export default Vue.extend({
           "Authorization": this.apiToken,
         },
       });
-
       const receivedResponse = response as Response;
-      if (receivedResponse.ok && this.listName === "posted_jobs") {
-        // Here remove the job profile card
+      if (receivedResponse.ok && this.listName === "postedJobs") {
         this.successCallback("Job successfully deleted!");
-        // Remove the job from the list:
-        const new_list = []
-        for (var i = 0; i < this.jobList.length; i++) {
-          if (this.jobList[i]['id'] === this.jobID) {
-            // Add the job to the removed list
-            this.expiredList.push(this.jobList[i])
-          } else {
-            new_list.push(this.jobList[i])
-          }
-        }
-        this.updateBoard(new_list)
         this.close();
       } else {
         if (response.status === 401) {

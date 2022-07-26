@@ -18,23 +18,18 @@
       <div class="w-[700px] m-auto mt-8">
         <!-- Board select dropdown -->
         <div class="text-left flex ml-2">
+          <font-awesome-icon icon="bars" class="text-2xl" />
           <div>
-            <font-awesome-icon icon="bars" class="text-2xl" />
-          </div>
-          <div>
-            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-lg" @change="onChange($event)">
-              <option value="posted_jobs">Posted Jobs</option>
-              <option value="expired_jobs ">Expired Jobs</option>
+            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-lg" v-model="board_status">
+              <option value="postedJobs">Posted Jobs</option>
+              <option value="expiredJobs ">Expired Jobs</option>
             </select>
           </div>
         </div>
       </div>
       <!-- Board -->
-      <JobBoard :jobList="getBoardList()" :expiredList="expired_jobs" :listName="board_status" :updateBoard="updateBoard"/>
+      <JobBoard :jobList="this.board_status === 'postedJobs' ? this.jobs : this.expiredJobs" :listName="board_status" />
 
-      <!-- <h1 class="font-bold text-4xl text-[#1a324e] text-center leading-[72px] mb-16 mt-16">
-        How do you fit into Jobs Board?
-      </h1> -->
       <h1 class="font-bold text-4xl text-jb-headings text-center leading-[72px]">Curious about our other Partners?</h1>
         <p class="text-lg text-jb-subheadings mb-8 text-center">
           Check out our other
@@ -70,26 +65,6 @@ export default Vue.extend({
     Breadcrumbs,
     JobBoard
   },
-  methods: {
-    onChange(e) {
-      var id = e.target.value;
-      // var name = e.target.options[e.target.options.selectedIndex].text;
-      // Update the board status in data
-      this.board_status = e.target.value
-      return id
-    },
-    getBoardList() {
-      console.log(this.jobs)
-      if (this.board_status === 'posted_jobs') {
-        return this.jobs
-      } else {
-        return this.expired_jobs
-      }
-    },
-    updateBoard(newJobList) {
-      this.jobs = newJobList
-    }
-  },
   data() {
     return {
       error: false,
@@ -97,8 +72,8 @@ export default Vue.extend({
       success: false,
       successMsg: "",
       jobs: [],
-      expired_jobs: [],
-      board_status: "posted_jobs",
+      expiredJobs: [],
+      board_status: "postedJobs",
       apiToken: this.$store.getters.getApiToken,
     };
   },
@@ -156,7 +131,7 @@ export default Vue.extend({
     const returnedExpiredReponse = responseExpired as Response;
     if (returnedExpiredReponse.ok) {
       const msg = await returnedExpiredReponse.json();
-        this.expired_jobs = msg.hiddenJobs.map((job: any) => {
+        this.expiredJobs = msg.hiddenJobs.map((job: any) => {
         return {
           id: job.id,
           role: job.role,
