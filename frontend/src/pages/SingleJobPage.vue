@@ -8,7 +8,7 @@
     :handleClose="() => { this.isAlertOpen = false }"
   />
   <div class="flex flex-row justify-center h-screen px-8">
-    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-scroll shadow-card sm:flex">
+    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:flex">
       <h2
         class="font-bold text-xl text-jb-headings" 
         v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
@@ -129,7 +129,7 @@
           </li>
         </ul>
       </div>
-      <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-scroll shadow-card">
+      <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-y-auto shadow-card">
         <p v-if="this.isJobDescriptionShown" v-html="this.description"></p>
         <p v-else v-html="this.additionalInfo"></p>
       </div>
