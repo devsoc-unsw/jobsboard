@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     screens: {
       // The following screen sizes are converted into css like so
-      // @media (min-width: ...px) { ... }
+      // @media (max-width: ...px) { ... }
       '2xl': { 'max': '1536px'},
       'xl': { 'max': '1280px'},
       'lg': { 'max': '1024px'},
