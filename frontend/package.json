@@ -34,9 +34,9 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
-    "@vue/cli-plugin-babel": "4.5.17",
-    "@vue/cli-plugin-typescript": "4.5.17",
-    "@vue/cli-service": "4.5.17",
+    "@vue/cli-plugin-babel": "4.5.19",
+    "@vue/cli-plugin-typescript": "4.5.19",
+    "@vue/cli-service": "4.5.19",
     "eslint": "8.20.0",
     "sass": "1.52.3",
     "sass-loader": "8.0.2",
