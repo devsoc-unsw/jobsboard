@@ -1,6 +1,6 @@
 <template>
-  <div class="w-64 border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-[700px]">
-    <div :key="listName" class="bg-white h-full grid grid-cols-1 rounded-xl overflow-y-scroll md:grid-cols-3">
+  <div class="w-[700px] border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-64">
+    <div :key="listName" class="bg-white h-full grid grid-cols-3 rounded-xl overflow-y-scroll md:grid-cols-1">
       <div v-if="listName === 'postedJobs'">
         <PostJobCard />
       </div>

@@ -87,7 +87,7 @@ export default Vue.extend({
         "Content-Type": "application/json",
         "Authorization": this.apiToken,
       },
-    });
+    }) as Response;
 
     // For expired jobs:
     const responseExpired = await fetch(`${config.apiRoot}/job/company/hidden`, {
@@ -96,11 +96,10 @@ export default Vue.extend({
         "Content-Type": "application/json",
         "Authorization": this.apiToken,
       },
-    });
+    }) as Response;
 
-    const returnedRequest = response as Response;
-    if (returnedRequest.ok) {
-      const msg = await returnedRequest.json();
+    if (response.ok) {
+      const msg = await response.json();
       this.jobs = msg.companyJobs.map((job: any) => {
         return {
           id: job.id,
@@ -118,7 +117,7 @@ export default Vue.extend({
     } else {
       this.error = true;
       window.scrollTo(0, 10);
-      if (response.status == 401) {
+      if (response.status === 401) {
         this.errorMsg = "Login expired. Redirecting to login page.";
         setTimeout(() => {
           this.$router.push("/login/company");
@@ -128,9 +127,8 @@ export default Vue.extend({
       }
     }
 
-    const returnedExpiredReponse = responseExpired as Response;
-    if (returnedExpiredReponse.ok) {
-      const msg = await returnedExpiredReponse.json();
+    if (responseExpired.ok) {
+      const msg = await responseExpired.json();
         this.expiredJobs = msg.hiddenJobs.map((job: any) => {
         return {
           id: job.id,
