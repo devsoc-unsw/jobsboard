@@ -17,13 +17,7 @@
 import { Vue } from "vue-property-decorator";
 
 export default Vue.extend({
-  components: {},
   name: "PostJobCard",
-  props: {},
-  data() {
-    return {};
-  },
-  methods: {},
 });
 </script>
 
