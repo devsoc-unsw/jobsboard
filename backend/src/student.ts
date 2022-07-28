@@ -160,7 +160,7 @@ export default class StudentFunctions {
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`Attempting to get featured jobs`);
       let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
-        
+        // TODO(ad-t): doesnt check fields of company, but that's ok for now
         return await AppDataSource
           .getRepository(Job)
           .createQueryBuilder()
@@ -172,23 +172,19 @@ export default class StudentFunctions {
           .getMany();
       }, `Couldn't query for featured jobs`);
 
-      
-      try{
-      //if there are no featured jobs, return an empty array
-      if(featuredJobs.length === 0){
-        return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            featuredJobs: []
-          }
-        } as IResponseWithStatus;
-      }
-      //if more than 4 featured jobs, return the first 4
+      // If more than 4 featured jobs, return the first 4 else return all
       if(featuredJobs.length >= 4){
         featuredJobs = featuredJobs.slice(0, 4);}
-      //left join and select company.name
+      else{
+        featuredJobs = featuredJobs.slice(0, featuredJobs.length);
+      }
+      
+      // Select and Join company.name
       featuredJobs = featuredJobs.map((job: Job) => {
+        // If no jobs are found, return null
+        if(job === null){
+          return null;
+        }
         const newJob: any = {};
         newJob.id = job.id;
         newJob.role = job.role;
@@ -197,14 +193,7 @@ export default class StudentFunctions {
         newJob.company = job.company.name;
         return newJob;
       }
-      );}
-      catch(e){
-        Logger.Error(`Couldn't slice featured jobs`);
-      }
-    
-      
-      // console log the featured jobs
-      Logger.Info(`Featured jobs: ${JSON.stringify(featuredJobs)}`);
+      );
       
       return {
         status: 200, 
