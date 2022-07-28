@@ -397,6 +397,71 @@ app.post(
 
 /**
  *  @swagger
+ *  /company/update/details:
+ *    put:
+ *      description: change the details of a company
+ *      parameters:
+ *        - name: name 
+ *          description: name of the company
+ *          type: string
+ *          required: true 
+ *        - name: location 
+ *          description: location of the company
+ *          type: string
+ *          required: true 
+ *        - name: description 
+ *          description: description about the company
+ *          type: string
+ *          required: true 
+ *        - name: sponsor 
+ *          description: is the company a sponsor
+ *          type: boolean
+ *          required: true 
+ *        - name: logo
+ *          description: logo of company
+ *          type: base64 string
+ *          required: true
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: Missing parameters or unauthorized
+ */
+app.put(
+  "/company/update/details",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.UpdateCompanyDetails,
+  Middleware.genericLoggingMiddleware
+);
+
+/**
+ *  @swagger
+ *  /company/upload/logo:
+ *    put:
+ *      description: change the details of a company
+ *      parameters:
+ *        - name: logo
+ *          description: logo of company
+ *          type: base64 string
+ *          required: true
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: Missing parameters or unauthorized
+ */
+app.put(
+  "/company/update/logo",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.UploadLogo,
+  Middleware.genericLoggingMiddleware
+);
+
+
+/**
+ *  @swagger
  *  /jobs:
  *    put:
  *      description: Create a job as the logged in company
