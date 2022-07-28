@@ -20,7 +20,7 @@
         <div class="text-left flex ml-2">
           <font-awesome-icon icon="bars" class="text-2xl" />
           <div>
-            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-lg" v-model="board_status">
+            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-lg" v-model="boardStatus">
               <option value="postedJobs">Posted Jobs</option>
               <option value="expiredJobs ">Expired Jobs</option>
             </select>
@@ -28,7 +28,7 @@
         </div>
       </div>
       <!-- Board -->
-      <JobBoard :jobList="this.board_status === 'postedJobs' ? this.jobs : this.expiredJobs" :listName="board_status" />
+      <JobBoard :jobList="this.boardStatus === 'postedJobs' ? this.jobs : this.expiredJobs" :listName="boardStatus" />
 
       <h1 class="font-bold text-4xl text-jb-headings text-center leading-[72px]">Curious about our other Partners?</h1>
         <p class="text-lg text-jb-subheadings mb-8 text-center">
@@ -67,13 +67,9 @@ export default Vue.extend({
   },
   data() {
     return {
-      error: false,
-      errorMsg: "",
-      success: false,
-      successMsg: "",
       jobs: [],
       expiredJobs: [],
-      board_status: "postedJobs",
+      boardStatus: "postedJobs",
       apiToken: this.$store.getters.getApiToken,
     };
   },
