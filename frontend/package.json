@@ -23,7 +23,7 @@
     "iview": "3.5.4",
     "terser-webpack-plugin": "5.3.3",
     "typescript": "4.7.4",
-    "vue": "2.6.14",
+    "vue": "2.7.8",
     "vue-class-component": "7.2.6",
     "vue-fontawesome": "0.0.2",
     "vue-property-decorator": "9.1.2",
@@ -40,6 +40,6 @@
     "eslint": "8.20.0",
     "sass": "1.54.0",
     "sass-loader": "8.0.2",
-    "vue-template-compiler": "2.6.14"
+    "vue-template-compiler": "2.7.8"
   }
 }
