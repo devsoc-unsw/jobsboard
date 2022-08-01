@@ -39,7 +39,7 @@
     "@vue/cli-service": "4.5.19",
     "eslint": "8.21.0",
     "sass": "1.54.0",
-    "sass-loader": "8.0.2",
+    "sass-loader": "13.0.2",
     "vue-template-compiler": "2.7.8"
   }
 }
