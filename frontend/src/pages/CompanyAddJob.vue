@@ -188,8 +188,6 @@ export default Vue.extend({
       });
 
       if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
         this.success = true;
         this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
         setTimeout(() => {
