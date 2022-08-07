@@ -692,7 +692,7 @@ app.put(
  *  @swagger
  *  /getFeaturedJobs:
  *    get:
- *      description: List top 4 jobs in database
+ *      description: List the 4 latest jobs in the database
  *    responses:
  *      200:
  *        description: success
@@ -705,7 +705,7 @@ app.put(
  *      400:
  *        description: failed to get Jobs
  */
- app.get(
+app.get(
   "/featured-jobs",
   cors(corsOptions),
   StudentFunctions.GetFeaturedJobs,

@@ -155,7 +155,6 @@ export default class StudentFunctions {
     }, next);
   }
 
-
   public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(res, async () => {
       Logger.Info(`Attempting to get featured jobs`);
@@ -173,16 +172,16 @@ export default class StudentFunctions {
       }, `Couldn't query for featured jobs`);
 
       // If more than 4 featured jobs, return the first 4 else return all
-      if(featuredJobs.length >= 4){
-        featuredJobs = featuredJobs.slice(0, 4);}
-      else{
+      if (featuredJobs.length >= 4) {
+        featuredJobs = featuredJobs.slice(0, 4);
+      } else {
         featuredJobs = featuredJobs.slice(0, featuredJobs.length);
       }
       
       // Select and Join company.name
       featuredJobs = featuredJobs.map((job: Job) => {
         // If no jobs are found, return null
-        if(job === null){
+        if (job === null) {
           return null;
         }
         const newJob: any = {};
@@ -192,8 +191,7 @@ export default class StudentFunctions {
         newJob.applicationLink = job.applicationLink;
         newJob.company = job.company.name;
         return newJob;
-      }
-      );
+      });
       
       return {
         status: 200, 
