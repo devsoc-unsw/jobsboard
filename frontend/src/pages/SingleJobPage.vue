@@ -1,88 +1,160 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplateCompact>
-  <div v-if="error">
-    <br/>
-    <ErrorBox>
-    {{ errorMsg }}
-    </ErrorBox>
-  </div>
-  <div v-else>
-    <JobStandout
-      :role="role"
-      :company="company"
-      :companyID="companyID"
-      :location="location"
-      />
-    <div class="jobInformation">
-      <h1>
-        Job Description
-      </h1>
-      <p v-if="jobInfoReady" v-html="description"> </p>
-      <br/>
-      <br/>
-    </div>
-    <div>
-      <DarkBlueStandardButton>
-      <a target="_blank" rel="noopener noreferrer" :href="applicationLink">
-        <Button @click="applyNowButton">
-          Apply now
-        </Button>
-      </a>
-      </DarkBlueStandardButton>
-    </div>
-    <div class="companyInformation">
-      <br/>
-      <h2>
-        About {{ company }}
+  <StudentViewTemplate>
+  <Alert
+    alertType="error"
+    :alertMsg="this.alertMsg"
+    :isOpen="this.isAlertOpen"
+    :handleClose="() => { this.isAlertOpen = false }"
+  />
+  <div class="flex flex-row justify-center h-screen px-8">
+    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:flex">
+      <h2
+        class="font-bold text-xl text-jb-headings" 
+        v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
+      >
+        {{
+          this.jobs.length === 0
+            ? "There are no other jobs from this company."
+            : "Other jobs from this company"
+        }}
       </h2>
-      {{ companyDescription }}
-      <br/>
-      <br/>
-      <h2 v-if="jobs.length !== 0">
-        More jobs at {{ company }}
-      </h2>
-      <div class="jobContainer">
+      <div>
         <JobListingMinimal
-          class="jobItems"
-          v-for="job in jobs"
+          v-for="job in this.jobs"
           :key="job.key"
-          :jobID="job.id"
+          :jobId="job.id"
           :role="job.role"
           :company="company"
-          :description="job.description"
-          :location="job.location"
-          />
+          :location="location"
+        />
+      </div>
+    </div>
+    <div class="flex flex-col items-center w-3/4 h-full sm:w-full">
+      <div class="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
+        <div class="flex flex-col mr-8 self-center">
+          <!-- TODO: to be replaced with company logo -->
+          <font-awesome-icon icon="building" size="10x" class="mb-2" />
+          <button
+            class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
+              shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
+            @click="() => window.open(this.applicationLink)"
+          >
+            Apply
+          </button>
+        </div>
+        <div class="flex flex-col text-left">
+          <h1 class="font-bold text-3xl my-4 text-jb-headings">{{ role }}</h1>
+          <span class="mb-1">
+            <font-awesome-icon icon="building" class="mr-5 w-7" />
+            <b>Company:</b> {{ company }}
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="location-dot" class="mr-5 w-7" />
+            <b>Location:</b> {{ location }}
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
+            <b>Job Mode:</b> {{ jobModeObject[jobMode] }}
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
+            <b>Job Type:</b> {{ JobTypeObject[jobType] }}
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="calendar" class="mr-5 w-7" />
+            <b>Expiry Date:</b> {{ new Date(expiryDate).toLocaleString().split(',')[0] }}
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="circle-dollar-to-slot" class="mr-5 w-7" />
+            <b>Is this a paid position?</b> {{ isPaid ? "Yes" : "No" }}
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="graduation-cap" class="mr-5 w-7" />
+            <b>Required WAM:</b> {{ WamObject[wamRequirements] }}
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="address-card" class="mr-5 w-7" />
+            <b>
+              {{
+                ["all"].every((val, idx) => val === this.workingRights[idx])
+                  ? "No required working rights specified for this job listing."
+                  : "Must have one of the following working rights in Australia:"
+              }}
+            </b>
+            <ul
+              v-if="!['all'].every((val, idx) => val === this.workingRights[idx])"
+              class="list-disc list-inside ml-12"
+            >
+              <li v-for="workingRight in workingRights" :key="workingRight">{{ WrObject[workingRight] }}</li>
+            </ul>
+          </span>
+          <span class="mb-1">
+            <font-awesome-icon icon="user" class="mr-5 w-7" />
+            <b>
+              {{
+                ["all"].every((val, idx) => val === this.studentDemographic[idx])
+                  ? "This job listing is open to students at any stage of their degree."
+                  : "This job listing is open to only the following students:"
+              }}
+            </b>
+            <ul
+              v-if="!['all'].every((val, idx) => val === this.studentDemographic[idx])"
+              class="list-disc list-inside ml-12"
+            >
+              <li v-for="studentType in studentDemographic" :key="studentType">{{ StuDemoObject[studentType] }}</li>
+            </ul>
+          </span>
+        </div>
+      </div>
+      <div class="w-full">
+        <ul class="flex -mb-px justify-start list-inside list-none">
+          <li class="mr-2">
+            <button
+              class="inline-block p-4"
+              v-bind:class="[ isJobDescriptionShown ? 'text-jb-textlink font-black' : 'text-gray-500 hover:text-gray-700']"
+              @click="() => { isJobDescriptionShown = true }"
+            >
+              Description
+            </button>
+          </li>
+          <li class="mr-2">
+            <button
+              class="inline-block p-4"
+              v-bind:class="[ !isJobDescriptionShown ? 'text-jb-textlink font-black' : 'text-gray-500 hover:text-gray-700']"
+              @click="() => { isJobDescriptionShown = false }"
+            >
+              Additional Information
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-y-auto shadow-card">
+        <p v-if="this.isJobDescriptionShown" v-html="this.description"></p>
+        <p v-else v-html="this.additionalInfo"></p>
       </div>
     </div>
   </div>
-  </StudentViewTemplateCompact>
+  </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import StudentViewTemplateCompact from "@/components/StudentViewTemplateCompact.vue";
-import JobStandout from "@/components/JobStandout.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
+import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
-import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import Alert from "@/components/Alert.vue";
+import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from "@/constants/job-fields";
 
 export default Vue.extend({
   name: "JobsListPage",
   components: {
-    StudentViewTemplateCompact,
-    JobStandout,
-    ErrorBox,
+    StudentViewTemplate,
     JobListingMinimal,
     LoggedInTemplate,
-    Button,
-    DarkBlueStandardButton,
-    JobDescriptionView,
+    Alert,
   },
   data() {
     return {
@@ -95,15 +167,26 @@ export default Vue.extend({
       jobs: [],
       location: "",
       applicationLink: "",
-      error: false,
-      errorMsg: "",
+      jobMode: "",
+      studentDemographic: [],
+      jobType: "",
+      workingRights: [],
+      additionalInfo: "",
+      wamRequirements: "",
+      isPaid: true,
+      expiryDate: "",
+      alertMsg: "",
+      isAlertOpen: false,
       jobInfoReady: false,
+      jobModeObject: JobMode,
+      StuDemoObject: StudentDemographic,
+      JobTypeObject: JobType,
+      WamObject: WamRequirements,
+      WrObject: WorkingRights,
+      isJobDescriptionShown: true,
     };
   },
   methods: {
-    applyNowButton() {
-      window.open(this.applicationLink);
-    },
     async fetchJob() {
       // determine whether there is an API key present and redirect if not present
       if (this.$store.getters.getApiToken === undefined) {
@@ -129,6 +212,10 @@ export default Vue.extend({
       */
       if (response.ok) {
         const msg = await response.json();
+
+        // Change the page title
+        document.title = `${msg.job.role} | ${msg.job.company.name} | Jobs Board`;
+
         this.role = msg.job.role;
         this.company = msg.job.company.name;
         this.description = msg.job.description;
@@ -136,16 +223,28 @@ export default Vue.extend({
         this.location = msg.job.company.location;
         this.companyID = msg.job.company.id;
         this.applicationLink = msg.job.applicationLink;
+        this.jobMode = msg.job.mode;
+        this.studentDemographic = msg.job.studentDemographic;
+        this.jobType = msg.job.jobType;
+        this.workingRights = msg.job.workingRights;
+        this.additionalInfo = msg.job.additionalInfo === ""
+          ? "<p>This company has not provided any additional information.</p>" : msg.job.additionalInfo;
+        this.wamRequirements = msg.job.wamRequirements;
+        this.isPaid = msg.job.isPaid;
+        this.expiryDate = msg.job.expiry;
       } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
+        this.isAlertOpen = true;
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        })
+        if (response.status === 401) {
+          this.alertMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);
         } else {
-          this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+          this.alertMsg = "Unable to load jobs at this time. Please try again later.";
         }
       }
 
@@ -171,8 +270,8 @@ export default Vue.extend({
           return jobResultID !== currentJobID;
         });
       } else {
-        this.error = true;
-        this.errorMsg = "Unable to load company jobs at this time. Please try again later.";
+        this.isAlertOpen = true;
+        this.alertMsg = "Unable to load company jobs at this time. Please try again later.";
       }
 
       this.jobInfoReady = true;
@@ -190,46 +289,4 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-@media screen and (min-width: 900px) {
-  .jobInformation {
-    font-weight: 100;
-    text-align: left;
-    padding: 0rem;
-  }
-
-  .companyInformation {
-    font-weight: 100;
-    text-align: left;
-    padding: 0rem;
-  }
-}
-
-.jobInformation {
-  font-weight: 100;
-  text-align: left;
-  padding: 1rem;
-}
-
-.jobContainer {
-  display: grid;
-  align-items: stretch;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 1fr;
-  grid-gap: 3%;
-  text-align: center;
-}
-
-.companyInformation {
-  font-weight: 100;
-  text-align: left;
-  padding: 1rem;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  cursor: default;
-}
 </style>

@@ -568,4 +568,198 @@ describe("company", () => {
       }
     );
   })
+  
+  describe("test company editing a job", () => {
+    before(async function() {
+      this.companyToken = await server
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+    });
+    
+    it("fails without job id", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            applicationLink: "www.google.com",
+            description: "hello world", 
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    );
+    
+    it("fails without job application link", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            description: "hello world", 
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it("fails without job description", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            applicationLink: "www.google.com",
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it("fails without job role", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            description: "hello world", 
+            applicationLink: "www.google.com",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it("fails without job expiry", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({ 
+            id: 1,
+            description: "hello world", 
+            applicationLink: "www.google.com",
+            role: "pooper",
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+    
+    it ("succeeds in editing a job's info", 
+      function(done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({
+            id: 1,
+            description: "hello world", 
+            applicationLink: "www.google.com",
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z",
+            jobMode: "onsite",
+            studentDemographic: ["penultimate", "final_year"],
+            jobType: "intern",
+            workingRights: ["aus_ctz", "aus_stud_visa"],
+            wamRequirements: "D",
+            additionalInfo: "hello world",
+            isPaid: true
+          })
+          .expect(200)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            done();
+          })
+      }
+    )
+  });
+  
+  describe("retrieve the number of hidden jobs of a company", () => {
+    
+    before( async function() {
+      // login as a student
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+      
+      // login as a verified company 
+      this.companyToken1 = await server
+      .post("/authenticate/company")
+      .send({ username: "test3", password: "test3" })
+      .then(response => response.body.token);
+      
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+    });
+    
+    it("fails to retrieve hidden jobs using a student token",
+      function(done) {
+        server
+          .get("/job/company/hidden")
+          .set("Authorization", this.studentToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+        
+    it("fails to retrieve hidden jobs using an admin token",
+      function(done) {
+        server
+          .get("/job/company/hidden")
+          .set("Authorization", this.adminToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+    
+    it("successfully retrieves hidden jobs using a verified company token",
+      function(done) {
+        server
+          .get("/job/company/hidden")
+          .set("Authorization", this.companyToken1)
+          .expect(200)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            expect(res.body.hiddenJobs.length).to.equal(3);
+            done();
+          });
+      }
+    );
+  });
 });

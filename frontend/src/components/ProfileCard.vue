@@ -14,10 +14,10 @@
     </div>
     <!-- Right View -->
     <div class="pl-5 text-left w-80 h-72">
-      <div class="font-bold text-3xl text-jb-headings sm:mx-4 mb-2">{{ member["name"] }}</div>
-      <div class="font-bold text-jb-headings sm:mx-4">{{ member["title"] }}</div>
-      <p class="font-bold text-jb-headings sm:mx-4 mb-4">{{ member["involvement"] }}</p>
-      <p class="text-lg text-jb-subheadings sm:mx-4">{{ member["funFact"] }}</p>
+      <div class="font-bold text-3xl text-jb-headings mx-4 sm:mx-0 mb-2">{{ member["name"] }}</div>
+      <div class="font-bold text-jb-headings mx-4 sm:mx-0">{{ member["title"] }}</div>
+      <p class="font-bold text-jb-headings mx-4 sm:mx-0 mb-4">{{ member["involvement"] }}</p>
+      <p class="text-lg text-jb-subheadings mx-4 sm:mx-0">{{ member["funFact"] }}</p>
     </div>
   </div>
 </template>

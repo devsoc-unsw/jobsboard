@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate loggedIn>
+    <Breadcrumbs />
     <div class="contentBox">
       <h1>Manage Jobs</h1>
       <div v-if="success">
@@ -47,6 +48,7 @@ import CompanyJobManage from "@/components/CompanyJobManage.vue";
 import config from "@/config/config";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "CompanyManageJobs",
@@ -59,6 +61,7 @@ export default Vue.extend({
     CompanyJobManage,
     SuccessBox,
     ErrorBox,
+    Breadcrumbs
   },
   data() {
     return {
@@ -85,6 +88,9 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+    
     const response = await fetch(`${config.apiRoot}/companyjobs`, {
       method: "GET",
       headers: {

@@ -129,7 +129,8 @@ export default class StudentFunctions {
             "Job.workingRights",
             "Job.additionalInfo",
             "Job.wamRequirements",
-            "Job.isPaid"
+            "Job.isPaid",
+            "Job.expiry",
           ])
           .leftJoinAndSelect("Job.company", "company")
           .where("Job.approved = :approved", { approved: true })

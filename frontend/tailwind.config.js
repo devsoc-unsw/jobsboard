@@ -6,13 +6,13 @@ module.exports = {
   theme: {
     screens: {
       // The following screen sizes are converted into css like so
-      // @media (min-width: ...px) { ... }
-      'xs': '480px',
-      'sm': '640px', 
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
+      // @media (max-width: ...px) { ... }
+      '2xl': { 'max': '1536px'},
+      'xl': { 'max': '1280px'},
+      'lg': { 'max': '1024px'},
+      'md': { 'max': '768px'},
+      'sm': { 'max': '640px'}, 
+      'xs': { 'max': '480px'},
     },
     extend: {
       backgroundColor: {
@@ -35,7 +35,7 @@ module.exports = {
       boxShadow: {
         'btn': '-0.313rem 0.313rem 0.625rem -0.063rem rgb(0 0 0 / 15%)',
         'btn-hovered': '0 0.125rem 0.625rem 0 rgb(0 0 0 / 50%)',
-        'card': '-0.125rem 0.25rem 0.625rem rgba(0, 0, 0, 0.12)',
+        'card': '-0.125rem 0.25rem 0.625rem rgba(0, 0, 0, 0.15)',
         'input': '0 0 0.5rem 0.063rem rgba(0, 0, 0, 0.1);'
       },
     },

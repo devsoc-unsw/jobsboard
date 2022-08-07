@@ -30,6 +30,7 @@ import { Job } from "./entity/job";
 import { Student } from "./entity/student";
 import { MailRequest } from "./entity/mail_request";
 import { Logs } from "./entity/logs";
+import { Statistics } from "./entity/statistics";
 
 // custom middleware
 import Middleware from "./middleware";
@@ -71,6 +72,7 @@ const activeEntities = [
   AdminAccount,
   MailRequest,
   Logs,
+  Statistics
 ];
 
 // swagger api generator based on jsdoc
@@ -222,6 +224,36 @@ app.get(
   StudentFunctions.GetJob,
   Middleware.genericLoggingMiddleware
 );
+
+/**
+ *  @swagger
+ *  /job/company/hidden:
+ *  get:
+ *    description: retrieve all the hidden jobs in the system 
+ *    responses:
+ *      200: 
+ *        description: Success
+ *        content: 
+ *          application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              hiddenJobs: 
+ *                type: string
+ *              value:
+ *                type: array 
+ *      400:
+ *        description: unable to query the database
+ *      401:
+ *        description: invalid parameters
+ */
+app.get(
+  "/job/company/hidden",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.GetCompanyHiddenJobs,
+  Middleware.genericLoggingMiddleware
+)
 
 /**
  *  @swagger
@@ -390,6 +422,76 @@ app.put(
   CompanyFunctions.CreateJob,
   Middleware.genericLoggingMiddleware
 );
+
+/**
+*  @swagger
+*  /company/job/edit:
+*    put:
+*      description: allow companies to update the information of their jobs
+*      parameters:
+*        - name: id
+*          description: id of the job post
+*          type: number
+*          required: true
+*        - name: role
+*          description: role of the job (seems like this property is stale)
+*          type: string
+*          required: true
+*        - name: mode
+*          description: remote, hybrid, onsite
+*          type: string
+*          required: true
+*        - name: studentDemographic 
+*          description: grads, penultimates or all students 
+*          type: array of strings 
+*          required: true 
+*        - name: jobType
+*          description: intern / grad 
+*          type: String
+*          required: true
+*        - name: workingRights
+*          description: aus citizen, pr, etc 
+*          type: array of strings
+*          required: true 
+*        - name: wamRequirements
+*          description: wam requirements HD or above, etc 
+*          type: string 
+*          required: true
+*        - name: additionalInfo
+*          description: additional information
+*          type: string
+*          required: true
+*        - name: description
+*          description: description about the job 
+*          type: string 
+*          required: true 
+*        - name: applicationLink
+*          description: application link
+*          type: string
+*          required: true
+*        - name: isPaid
+*          description: will the job be paid 
+*          type: boolean
+*          required: true 
+*        - name: expiry 
+*          description: expiry date of the job opening 
+*          type: Date 
+*          required: true  
+*    responses:
+*      200:
+*        description: success
+*      400:
+*        description: failed to find company account
+*      403:
+*        description: database failed to update
+*/
+app.put(
+  "/company/job/edit",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.EditJob,
+  Middleware.genericLoggingMiddleware
+)
 
 /**
 *  @swagger
@@ -581,6 +683,34 @@ app.patch(
 
 /**
  *  @swagger
+ *  /job/admin/hidden:
+ *  get:
+ *    description: retrieve all the hidden jobs in the system
+ *    responses:
+ *      200: 
+ *        description: Success
+ *        content: 
+ *          application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              hiddenJobs: 
+ *                type: string
+ *              value:
+ *                type: object
+ *      400:
+ *        description: invalid credentials or unable to query the database
+ */
+app.get(
+  "/job/admin/hidden",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.GetAllHiddenJobs,
+  Middleware.genericLoggingMiddleware
+)
+
+/**
+ *  @swagger
  *  /companyjobs:
  *    get:
  *      description: Get all submitted from a specific company
@@ -653,6 +783,35 @@ app.get(
 
 /**
  *  @swagger
+ *  /job/stats/approvedJobPosts/:year:
+ *  get:
+ *    description: Retrieve the number of approved job posts in the given year
+ *    responses:
+ *      200: 
+ *        description: Success
+ *        content: 
+ *          application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              numJobsPosts: 
+ *                type: integer
+ *              value:
+ *                type: integer
+ *      400:
+ *        description: Unable to query the database
+*/
+app.get(
+  "/job/stats/approvedJobPosts/:year",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.getNumApprovedJobPosts,
+  Middleware.genericLoggingMiddleware
+);
+  
+  
+/**
+ *  @swagger
  *  /admin/companies:
  *    get:
  *      description: Get a list of all onboarded companies as an admin
@@ -669,6 +828,7 @@ app.get(
   AdminFunctions.ListAllCompaniesAsAdmin,
   Middleware.genericLoggingMiddleware
 );
+
 /**
  *  @swagger
  *  /admin/company/:companyID/jobs:

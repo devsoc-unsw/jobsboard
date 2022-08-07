@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate disableBack>
+    <Breadcrumbs />
     <div v-if="error">
       <br/>
       <ErrorBox>
@@ -21,12 +22,11 @@
           class="jobItems"
           v-for="job in jobs"
           :key="job.key"
-          :jobID="job.id"
+          :jobId="job.id"
           :role="job.role"
           :company="job.company.name"
-          :description="job.description"
           :location="job.company.location"
-          />
+        />
       </div>
     </div>
     <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>
@@ -42,6 +42,7 @@ import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import config from "@/config/config";
 
 export default Vue.extend({
@@ -52,6 +53,7 @@ export default Vue.extend({
     ErrorBox,
     LoggedInTemplate,
     InfiniteScrollTrigger,
+    Breadcrumbs
   },
   data() {
     return {
@@ -104,6 +106,10 @@ export default Vue.extend({
       this.loadMoreJobsLock = false;
     }
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 

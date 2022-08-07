@@ -1,7 +1,14 @@
+<!-- Route: /signup/company -->
 <template>
   <StudentViewTemplate notLoggedIn>
-    <div>
-      <h1>Create a company account</h1>
+    <Breadcrumbs />
+    <main class="h-full flex flex-col justify-center items-center py-16">
+      <h1 class="text-jb-headings font-bold text-3xl">Company Sign Up</h1>
+      <p class="text-jb-subheadings text-base my-4 mx-[18%] sm:mx-8">
+        Enter your email address in the format recruiting@company.com and 
+      </p>
+
+      <!-- Success/Error Alert -->
       <div v-if="success">
         <SuccessBox>
           {{ successMsg }}
@@ -13,8 +20,9 @@
         </ErrorBox>
       </div>
       <br/>
-      We recommend not using an individualised company email but rather a generic email alias, e.g. recruiting@company.com.au rather than firstname.lastname@company.com.au
       <br/>
+
+      <!-- Email Input -->
       <input
         name="username"
         v-model="username"
@@ -23,6 +31,8 @@
         @keyup.enter="performSignup()"
       />
       <br/>
+
+      <!-- Password Input -->
       <input
         name="password"
         v-model="password"
@@ -31,6 +41,10 @@
         @keyup.enter="performSignup()"
       />
       <br/>
+
+      <!-- TODO: confirm password input -->
+
+      <!-- Company Name Input -->
       <input
         name="name"
         v-model="name"
@@ -39,6 +53,8 @@
         @keyup.enter="performSignup()"
       />
       <br/>
+
+      <!-- Company Location Input -->
       <input
         name="location"
         v-model="location"
@@ -47,15 +63,18 @@
         @keyup.enter="performSignup()"
       />
       <br/>
+
+      <!-- Company Logo Upload -->
+      <!-- TODO: figure out logic for this  -->
       <StandardButton>
         <Button @callback="performSignup">
-          Create
+          Sign Up
         </Button>
       </StandardButton>
       <br/>
       <br/>
       Already have an account? <router-link to="/login/company">Company Login</router-link>
-    </div>
+    </main>
   </StudentViewTemplate>
 </template>
 
@@ -67,6 +86,7 @@ import SuccessBox from "@/components/SuccessBox.vue";
 import config from "@/config/config";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import Button from "@/components/buttons/button.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "CompanySignupPage",
@@ -76,6 +96,7 @@ export default Vue.extend({
     SuccessBox,
     Button,
     StandardButton,
+    Breadcrumbs
   },
   data() {
     return {
@@ -135,6 +156,10 @@ export default Vue.extend({
         setTimeout(() => {
           this.$router.push("/login/company");
         }, 5000);
+      } else if (response.status === 409) {
+        this.error = true;
+        window.scrollTo(0, 10);
+        this.errorMsg = "There already exists a company with this email. Please try again.";
       } else {
         this.error = true;
         window.scrollTo(0, 10);
@@ -142,6 +167,10 @@ export default Vue.extend({
       }
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 

@@ -1,5 +1,6 @@
 <template>
   <GeneralPageTemplate>
+    <Breadcrumbs class="w-1/4"/>
     <h2 class="font-bold text-4xl drop-shadow-xl mb-10 text-jb-headings mt-4">
       Interested about the people behind <br />
       Jobs Board?
@@ -9,9 +10,9 @@
       to help you find your dream student job!
     </h4>
     
-    <div class="lineSeparator w-80 h-1 bg-gray-300 m-auto mt-10 mb-20" />
+    <div class="w-80 h-1 bg-gray-300 m-auto mt-10 mb-20" />
     <!-- items-center -->
-    <div class="justify-items-center grid grid-cols-1 grid-flow-row lg:grid-cols-2">
+    <div class="justify-items-center grid grid-cols-2 grid-flow-row lg:grid-cols-1">
       <ProfileCard v-for="member in members" :member="member" :key="member.name" />
     </div>
 
@@ -37,11 +38,14 @@
 import { Vue } from "vue-property-decorator";
 import ProfileCard from "@/components/ProfileCard.vue";
 import GeneralPageTemplate from "@/components/GeneralPageTemplate.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
+
 export default Vue.extend({
   name: "TeamPage",
   components: {
     ProfileCard,
     GeneralPageTemplate,
+    Breadcrumbs
   },
   data() {
     return {
@@ -112,6 +116,10 @@ export default Vue.extend({
       ],
     }
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 
 </script>

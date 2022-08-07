@@ -85,22 +85,13 @@ export default Vue.extend({
 </script>
 
 <style lang="scss">
-@media screen and (min-width: 900px) {
-  .content {
-    padding: 2rem 0 0 0;
-  }
-  .contentWidth {
-    width: 100%;
-    margin: auto;
-  }
-}
-
 .content {
   background: #f6f9fc;
   color: $black;
   /* padding: 0.5rem; */
   min-height: 100%;
   flex: 1 1 auto;
+  padding: 2rem 0 0 0;
 }
 
 .contentWidth {

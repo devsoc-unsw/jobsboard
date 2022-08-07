@@ -1,25 +1,26 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate>
-  <div class="contentBox">
-    <h1>Pending Job Requests</h1>
-    <div v-if="jobs.length === 1">
-      {{ jobs.length }} Pending Job Found
-    </div>
-    <div v-else>
-      {{ jobs.length }} Pending Jobs Found
-    </div>
-    <SingleJobManage
-      v-for="job in jobs"
-      :key="job.key"
-      :jobID="job.id"
-      :role="job.role"
-      :company="job.company.name"
-      :description="job.description"
-      :applicationLink="job.applicationLink"
-      />
-  </div>
-  </StudentViewTemplate>
+    <StudentViewTemplate>
+      <Breadcrumbs />
+      <div class="contentBox">
+        <h1>Pending Job Requests</h1>
+        <div v-if="jobs.length === 1">
+          {{ jobs.length }} Pending Job Found
+        </div>
+        <div v-else>
+          {{ jobs.length }} Pending Jobs Found
+        </div>
+        <SingleJobManage
+          v-for="job in jobs"
+          :key="job.key"
+          :jobID="job.id"
+          :role="job.role"
+          :company="job.company.name"
+          :description="job.description"
+          :applicationLink="job.applicationLink"
+          />
+      </div>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
@@ -29,7 +30,7 @@ import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleJobManage from "@/components/SingleJobManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import BackButton from "@/components/buttons/back.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "AdminListPendingJobs",
@@ -37,7 +38,7 @@ export default Vue.extend({
     StudentViewTemplate,
     SingleJobManage,
     LoggedInTemplate,
-    BackButton,
+    Breadcrumbs
   },
   data() {
     return {
@@ -49,6 +50,9 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+
     const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
       method: "GET",
       headers: {

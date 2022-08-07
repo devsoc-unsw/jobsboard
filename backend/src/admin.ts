@@ -8,9 +8,11 @@ import { AppDataSource } from "./index";
 import { Job } from "./entity/job";
 import { Company } from "./entity/company";
 import { CompanyAccount } from "./entity/company_account";
+import { Statistics } from "./entity/statistics";
 import Helpers, { IResponseWithStatus } from "./helpers";
 import MailFunctions from "./mail";
 import Logger from "./logging";
+import { Brackets } from "typeorm";
 
 export default class AdminFunctions {
   public static async ApproveJobRequest(req: any, res: Response, next: NextFunction) {
@@ -35,7 +37,7 @@ export default class AdminFunctions {
           .andWhere("Job.id = :id", { id: jobID })
           .getOne();
       }, `Failed to find job ID=${jobID}`);
-
+      
       jobToApprove.company = await Helpers.doSuccessfullyOrFail(async () => {
         return await AppDataSource
           .createQueryBuilder()
@@ -58,7 +60,26 @@ export default class AdminFunctions {
         .set({ approved: true })
         .where("id = :id", { id: jobToApprove.id })
         .execute();
-
+      
+      // increment number of jobs approved for that year
+      const jobCreatedYear = jobToApprove.createdAt.getFullYear();
+      const numApprovedJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return AppDataSource
+          .getRepository(Statistics)
+          .createQueryBuilder("s")
+          .select(["s.numJobPosts"])
+          .where("s.year = :year", { year: jobCreatedYear })
+          .getOne()
+      },  
+      `Failed to retrive the number of approved job posts for YEAR=${jobCreatedYear}`);
+      
+      await AppDataSource
+        .createQueryBuilder()
+        .update(Statistics)
+        .set({ numJobPosts: numApprovedJobs + 1})
+        .where("year = :year", { year: jobCreatedYear })
+        .execute();
+      
       MailFunctions.AddMailToQueue(
         jobToApprove.company.companyAccount.username,
         "CSESoc Jobs Board - Job Post request approved",
@@ -494,5 +515,143 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         msg: undefined
       } as IResponseWithStatus;
     }, next)
+  }
+  
+  public static async getNumApprovedJobPosts(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async() => {
+      
+      Logger.Info(`Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`);
+      
+      const yearToSearch = req.params.year;
+      Helpers.requireParameters(yearToSearch);
+      
+      const numApprovedJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return AppDataSource
+          .getRepository(Statistics)
+          .createQueryBuilder("s")
+          .select(["s.numJobPosts"])
+          .where("s.year = :year", { year: yearToSearch })
+          .getOne()
+      },  
+      `Failed to retrieve the number of approved job posts for YEAR=${yearToSearch}`);
+      
+      // number of job posts for the provided year hasn't been recorded yet
+      if (numApprovedJobs === null) {
+        // query all jobs => update statistics table => return value 
+        const allApprovedJobs = await Helpers.doSuccessfullyOrFail(async () => {
+          return AppDataSource
+            .getRepository(Job)
+            .createQueryBuilder("j")
+            .select(["j.id", "j.createdAt"])
+            .where("j.approved = :approved", { approved: true })
+            .andWhere("j.deleted = :deleted", { deleted: false })
+            .getMany();
+        }, "Failed to retrive the number of approved posts in the db");
+        
+        const allApprovedJobsThatYear = allApprovedJobs.filter((job:any) => job.createdAt.getFullYear() == yearToSearch);
+        const numJobsPostsinYear = allApprovedJobsThatYear.length;
+        
+        await AppDataSource
+        .createQueryBuilder()
+        .insert()
+        .into(Statistics)
+        .values([
+          { year: yearToSearch, numJobPosts: numJobsPostsinYear }
+        ])
+        .execute()
+        
+        Logger.Info(`Sucessfully retrieved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`);
+        return {
+          status: 200,
+          msg: {
+            numJobPosts: numJobsPostsinYear
+          }
+        } as IResponseWithStatus;        
+      }
+      else {
+        Logger.Info(`Sucessfully retriveved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`);
+        return {
+          status: 200,
+          msg: {
+            numJobPosts: numApprovedJobs.numJobPosts
+          }
+        } as IResponseWithStatus;
+      }
+      
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next)
+  }
+  
+  public static async GetAllHiddenJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      
+      const adminID = req.adminID;
+      Helpers.requireParameters(adminID);
+      
+      Logger.Info(`ADMIN=${adminID} attempting to list all hidden jobs in the database`);
+            
+      const hiddenJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect("Job.company", "company")
+          .where(new Brackets(q => {
+            q.where("Job.deleted = :deleted", { deleted: true })
+              .orWhere("Job.expiry <= :expiry", { expiry: new Date() })
+              .orWhere("Job.hidden = :hidden", {  hidden: true })
+          }))
+          .select([
+            "company.name",
+            "Job.id",
+            "Job.role",
+            "Job.description",
+            "Job.applicationLink",
+            "Job.approved",
+            "Job.hidden",
+            "Job.mode",
+            "Job.studentDemographic",
+            "Job.jobType",
+            "Job.workingRights",
+            "Job.wamRequirements",
+            "Job.additionalInfo",
+            "Job.isPaid",
+            "Job.expiry",
+            "Job.deleted"
+          ])
+          .orderBy("company.name", "ASC")
+          .orderBy("Job.createdAt", "DESC")
+          .getMany();
+      }, `Failed to find jobs`);
+      
+      // group jobs by company name 
+      let resMap = new Map();
+      hiddenJobs.forEach((job: any) => {
+        const key: string = String(job.company.name);
+        if (!resMap.has(key)) {
+          resMap.set(key, new Array());
+        }
+        resMap.get(key).push(job);
+      });
+
+      Logger.Info(`ADMIN=${adminID} successfully to retrieved all the hidden jobs`);
+      
+      return {
+        status: 200,
+        msg: {
+          token: req.newJbToken,
+          hiddenJobs: resMap
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken
+        }
+      } as IResponseWithStatus;
+    }, next);
   }
 }

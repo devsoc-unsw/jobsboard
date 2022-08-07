@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate>
+    <Breadcrumbs />
     <div>
       <h1>Welcome!</h1>
       <div class="buttonBox">
@@ -26,6 +27,7 @@ import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
   name: "CompanyAccountHome",
@@ -34,6 +36,7 @@ export default Vue.extend({
     LoggedInTemplate,
     Button,
     StandardButton,
+    Breadcrumbs,
   },
   methods: {
     goToCompanyJobAdd() {
@@ -43,6 +46,10 @@ export default Vue.extend({
       this.$router.push("/company/jobs/manage");
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 
