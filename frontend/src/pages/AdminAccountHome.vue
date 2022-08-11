@@ -25,33 +25,27 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
+<script setup lang="ts">
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 
-export default Vue.extend({
-  name: "AdminAccountHome",
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Button,
-    StandardButton,
-  },
-  methods: {
-    goToAdminJobsPending() {
-      this.$router.push("/admin/jobs/pending");
-    },
-    goToAdminCompanyPendingVerification() {
-      this.$router.push("/admin/companies/pending");
-    },
-    goToAdminCreateJobPostAsCompany() {
-      this.$router.push("/admin/jobs/post");
-    }
-  },
-})
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function goToAdminJobsPending() {
+  router.push("/admin/jobs/pending");
+}
+
+function goToAdminCompanyPendingVerification() {
+  router.push("/admin/companies/pending");
+}
+
+function goToAdminCreateJobPostAsCompany() {
+  router.push("/admin/jobs/post");
+}
 </script>
 
 <style scoped lang="scss">

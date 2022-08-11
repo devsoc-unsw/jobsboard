@@ -15,6 +15,7 @@ export default {
 </script>
 
 <style lang="scss">
+// @import '@/style/_variables.scss';
 @import url('https://fonts.googleapis.com/css?family=Assistant&display=swap');
 #app {
   font-family: 'Assistant', Helvetica, Arial, sans-serif;

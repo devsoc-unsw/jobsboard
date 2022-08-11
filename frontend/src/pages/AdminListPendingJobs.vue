@@ -23,59 +23,55 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleJobManage from "@/components/SingleJobManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import BackButton from "@/components/buttons/back.vue";
 
-export default Vue.extend({
-  name: "AdminListPendingJobs",
-  components: {
-    StudentViewTemplate,
-    SingleJobManage,
-    LoggedInTemplate,
-    BackButton,
-  },
-  data() {
-    return {
-      error: false,
-      errorMsg: "",
-      jobs: [],
-      success: false,
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  async mounted() {
-    const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
-      },
-    });
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 
-    if (response.ok) {
-      const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
-      this.success = true;
-      this.jobs = msg.pendingJobs;
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
+
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+// TODO: associate a type with this!
+const jobs = ref([]);
+const success = ref<boolean>(false);
+
+onMounted(async () => {
+  const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiTokenStore.getApiToken(),
+    },
+  });
+
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    success.value = true;
+    jobs.value = msg.pendingJobs;
+    console.log(jobs.value.length);
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status == 401) {
+      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
     } else {
-      this.error = true;
-      window.scrollTo(0, 10);
-      if (response.status == 401) {
-        this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 3000);
-      } else {
-        this.errorMsg = "Failed to get pending jobs.";
-      }
+      errorMsg.value = "Failed to get pending jobs.";
     }
-  },
+  }
 });
+
 </script>
 
 <style scoped lang="scss">

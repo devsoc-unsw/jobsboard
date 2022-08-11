@@ -1,45 +1,29 @@
 {
-  "name": "jobs-board-frontend",
-  "version": "0.1.0",
+  "name": "frontend",
   "private": true,
-  "engines": {
-    "node": "16.16.0"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@fortawesome/fontawesome": "1.1.8",
-    "@fortawesome/fontawesome-common-types": "0.2.36",
-    "@fortawesome/fontawesome-svg-core": "6.1.2",
-    "@fortawesome/free-brands-svg-icons": "5.15.4",
-    "@fortawesome/free-solid-svg-icons": "6.1.2",
-    "@fortawesome/vue-fontawesome": "0.1.10",
-    "core-js": "3.24.1",
-    "envify": "4.1.0",
-    "eslint-plugin-node": "11.1.0",
-    "iview": "3.5.4",
-    "terser-webpack-plugin": "5.3.3",
-    "typescript": "4.7.4",
-    "vue": "2.6.14",
-    "vue-class-component": "7.2.6",
-    "vue-fontawesome": "0.0.2",
-    "vue-property-decorator": "9.1.2",
-    "vue-quill-editor": "3.0.6",
-    "vue-router": "3.5.4",
-    "vuex": "3.6.2"
+    "@fortawesome/fontawesome-svg-core": "^6.1.2",
+    "@fortawesome/free-brands-svg-icons": "^6.1.2",
+    "@fortawesome/free-regular-svg-icons": "^6.1.2",
+    "@fortawesome/free-solid-svg-icons": "^6.1.2",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
+    "pinia": "^2.0.18",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.3",
+    "webpack": "^5.74.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "5.31.0",
-    "@typescript-eslint/parser": "5.31.0",
-    "@vue/cli-plugin-babel": "4.5.19",
-    "@vue/cli-plugin-typescript": "4.5.19",
-    "@vue/cli-service": "4.5.19",
-    "eslint": "8.21.0",
-    "sass": "1.54.0",
-    "sass-loader": "8.0.2",
-    "vue-template-compiler": "2.6.14"
+    "@vitejs/plugin-vue": "^3.0.0",
+    "sass": "^1.54.4",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.0",
+    "vue-tsc": "^0.38.4"
   }
 }

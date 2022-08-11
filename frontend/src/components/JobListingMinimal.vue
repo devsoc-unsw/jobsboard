@@ -19,30 +19,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default Vue.extend({
-  name: "JobsList",
-  components: {},
-  props: {
-    role: String,
-    company: String,
-    description: String,
-    jobID: Number,
-    actAsLink: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  methods: {
-    seeJob() {
-      if (this.actAsLink) {
-        this.$router.push({ name: "job", params: { jobID: String(this.jobID) } });
-      }
-    },
+const router = useRouter();
+
+const props = defineProps({
+  role: String,
+  company: String,
+  description: String,
+  jobID: Number,
+  actAsLink: {
+    type: Boolean,
+    default: true,
   },
 });
+
+function seeJob() {
+  if (props.actAsLink) {
+    router.push({ name: "job", params: { jobID: String(props.jobID) } });
+  }
+}
 
 </script>
 

@@ -34,65 +34,59 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-// libs
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+// lib 
+import { ref, onMounted } from 'vue';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
+import { useRouter } from 'vue-router';
+
+import { useApiTokenStore } from '@/store/apiToken';
+
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
 // config
 import config from "@/config/config";
 
-export default Vue.extend({
-  name: "AdminLoginPage",
-  components: {
-    StudentViewTemplate,
-    ErrorBox,
-    Button,
-    StandardButton,
-  },
-  data() {
-    return {
-      username: "",
-      password: "",
-      error: false,
-      errorMsg: "",
-    };
-  },
-  async mounted() {
-    this.$store.dispatch("clearApiToken");
-  },
-  methods: {
-    async performAdminLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/admin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-      });
-
-      const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
-      if (response.ok) {
-        this.error = false;
-        this.$router.push("/admin/home");
-      } else {
-        window.scrollTo(0, 10);
-        this.error = true;
-        this.errorMsg = "Invalid credentials. Please try again.";
-      }
-    },
-  },
+onMounted(() => {
+  apiTokenStore.clearApiToken();
 });
+
+// set up component variables
+const username = ref<string>("");
+const password = ref<string>("");
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+
+async function performAdminLogin() {
+  const response = await fetch(`${config.apiRoot}/authenticate/admin`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // mode: "no-cors",
+    body: JSON.stringify({
+      username: username.value,
+      password: password.value,
+    }),
+  });
+
+  const msg = await response.json();
+  apiTokenStore.setApiToken(msg.token);
+  if (response.ok) {
+    error.value = false;
+    router.push("/admin/home");
+  } else {
+    window.scrollTo(0, 10);
+    error.value = true;
+    errorMsg.value = "Invalid credentials. Please try again.";
+  }
+}
 </script>
 
 <style scoped lang="scss">

@@ -6,59 +6,52 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { defineProps, ref, onMounted} from 'vue';
 import config from "@/config/config";
 
-export default Vue.extend({
-  name: "JobDescriptionView",
-  components: {
-  },
-  props: {
-    description: String,
-  },
-  data() {
-    return {
-      finalDescription: [""],
-    };
-  },
-  methods: {
-    parseText() {
-      let splitDescription = this.$props.description.split("\n");
-
-      let listFlag = false;
-      for (let lineIndex in splitDescription) {
-        let line = splitDescription[lineIndex];
-        // apply italics
-        line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
-        if (line.startsWith("- ")) {
-          // remove that hyphen when rendering
-          line = line.replace(/^- ?/, "");
-          if (!listFlag) {
-            listFlag = true;
-            this.finalDescription.push(`<ul>`);
-          }
-          this.finalDescription.push(`<li>${line}</li>`);
-        } else if (/^#/.test(line)) {
-          this.finalDescription.push(`<h3>${line}</h3>`);
-        } else {
-          if (listFlag) {
-            listFlag = false;
-            this.finalDescription.push(`</ul>`);
-          }
-          this.finalDescription.push(line);
-        }
-      }
-    },
-  },
-  updated() {
-    // TODO this is causing problems
-    // this.parseText();
-  },
-  mounted() {
-    this.parseText();
-  },
+onMounted(() => {
+  parseText();
 });
+
+const props = defineProps({
+  description: String,
+});
+
+const finalDescription = ref<string[]>([""]);
+
+function parseText() {
+  let splitDescription = props.description?.split("\n");
+
+  let listFlag = false;
+  for (let lineIndex in splitDescription) {
+    let line = splitDescription[lineIndex];
+    // apply italics
+    line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
+    if (line.startsWith("- ")) {
+      // remove that hyphen when rendering
+      line = line.replace(/^- ?/, "");
+      if (!listFlag) {
+        listFlag = true;
+        finalDescription.value.push(`<ul>`);
+      }
+      finalDescription.value.push(`<li>${line}</li>`);
+    } else if (/^#/.test(line)) {
+      finalDescription.value.push(`<h3>${line}</h3>`);
+    } else {
+      if (listFlag) {
+        listFlag = false;
+        finalDescription.value.push(`</ul>`);
+      }
+      finalDescription.value.push(line);
+    }
+  }
+}
+
+function updated() {
+  // TODO this is causing problems
+  // this.parseText();
+}
 </script>
 
 <style scoped lang="scss">

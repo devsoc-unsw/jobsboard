@@ -11,23 +11,18 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { onMounted } from 'vue';
 import StudentViewTemplate from "../components/StudentViewTemplate.vue";
+import { useRouter } from 'vue-router';
 
-@Component({
-  components: {
-    StudentViewTemplate,
-  },
-})
+const router = useRouter();
 
-export default class PageNotFoundPage extends Vue {
-  public mounted() {
-    setTimeout(() => {
-      this.$router.push("/login");
-    }, 3000);
-  }
-}
+onMounted(() => {
+  setTimeout(() => {
+    router.push("/login");
+  }, 3000);
+});
 </script>
 
 <style lang="scss">

@@ -4,7 +4,7 @@
       <slot />
       <div class="alignCenter">
         <dark-blue-standard-button>
-          <Button @click="modalClose">
+          <Button @click="$emit('closeCallback')">
             Close
           </Button>
         </dark-blue-standard-button>
@@ -15,24 +15,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { defineProps } from 'vue';
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 
-export default Vue.extend({
-  name: "Modal",
-  components: {
-    DarkBlueStandardButton,
-  },
-  props: {
-    closeCallback: Function, 
-  },
-  methods: {
-    modalClose() {
-      this.$emit("closeCallback");
-    },
-  }
+const props = defineProps({
+  closeCallback: Function, 
 });
+
+function modalClose() {
+  this.$emit("closeCallback");
+}
 </script>
 
 <style scoped lang="scss">

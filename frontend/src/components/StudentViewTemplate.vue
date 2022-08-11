@@ -29,56 +29,48 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { defineProps, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 import BackButton from "@/components/buttons/back.vue";
 import logo from "@/assets/logos/csesocwhite.png";
 import Footer from "@/components/Footer.vue";
 
-export default Vue.extend({
-  name: "StudentViewTemplate",
-  components: {
-    Button,
-    DarkBlueStandardButton,
-    Footer,
-    BackButton,
+import { useApiTokenStore } from '@/store/apiToken';
+
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
+
+const props = defineProps({
+  notLoggedIn: {
+    type: Boolean,
+    default: false
   },
-  props: {
-    notLoggedIn: {
-      type: Boolean,
-      default: false
-    },
-    disableBack: {
-      type: Boolean,
-      default: false
-    }
-  },
-  methods: {
-    logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/student");
-    },
-    goToJobs() {
-      this.$router.push("/jobs");
-    }
-  },
-  data() {
-    return {
-      apiToken: this.$store.getters.getApiToken,
-      logo: logo,
-    };
-  },
-  async mounted() {
-    if (this.notLoggedIn === true) {
-      return;
-    }
-    else if (this.apiToken === undefined) {
-      this.$router.push("/login");
-    }
-  },
+  disableBack: {
+    type: Boolean,
+    default: false
+  }
 });
+
+onMounted(() => {
+  if (props.notLoggedIn === true) {
+    return;
+  }
+  else if (apiTokenStore.getApiToken() === undefined) {
+    router.push("/login");
+  }
+});
+
+function logOut() {
+  apiTokenStore.clearApiToken();
+  router.push("/login/student");
+}
+
+function goToJobs() {
+  router.push("/jobs");
+}
 </script>
 
 <style lang="scss">

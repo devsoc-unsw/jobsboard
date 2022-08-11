@@ -27,14 +27,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 
-export default Vue.extend({
+export default {
   name: "StudentLoginPage",
   components: {
     StudentViewTemplate,
@@ -80,7 +79,7 @@ export default Vue.extend({
       }
     },
   },
-});
+}
 </script>
 
 <style scoped lang="scss">
