@@ -16,16 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import Button from "@/components/buttons/button.vue";
 import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
 
 const props = defineProps({
   closeCallback: Function, 
 });
-
-function modalClose() {
-  this.$emit("closeCallback");
-}
 </script>
 
 <style scoped lang="scss">

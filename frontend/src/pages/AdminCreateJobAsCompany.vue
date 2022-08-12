@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate loggedIn>
+  <StudentViewTemplate>
   <div class="modalWrapper">
     <Modal 
       v-if="modalVisible"
@@ -10,7 +10,7 @@
         <div class="modalHeading">
           Role: 
         </div>
-        {{ this.role }}
+        {{ role }}
       </div>
 
       <div class="modalGroup">
@@ -27,15 +27,15 @@
         <a
           target="_blank"
           rel="noopener noreferrer"
-          :href="this.applicationLink"
+          :href="applicationLink"
         >
-          {{ this.applicationLink }}
+          {{ applicationLink }}
         </a>
       </div>
     </Modal>
   </div>
   <div class="contentBox">
-    <h1>Add a job</h1>
+    <h1>Add a Job</h1>
     <div v-if="success">
       <br/>
       <SuccessBox>
@@ -62,7 +62,7 @@
       name="role"
       v-model="role"
       type="text"
-      placeholder="Role"
+      placeholder="role"
       />
     <h2>Job Description</h2>
     <h4>Text only (for now!)</h4>
@@ -70,23 +70,25 @@
       name="description"
       v-model="description"
       type="text"
-      placeholder="Job Description"
+      placeholder="job Description"
       rows="6"
       /> -->
       
-    <quill-editor 
+    <!--
+    <quill-editor
       v-model:content="description"
       :value="description"
       :options="editorOptions"
       v-bind:style="{ 'background-color': 'white' }"
     />
+    -->
     
     <h2>Application Link</h2>
     <input 
       name="applicationLink"
       v-model="applicationLink"
       type="text"
-      placeholder="Application Link"
+      placeholder="application Link"
       />
     <br />
     <h2>Expiry Date</h2>
@@ -113,9 +115,9 @@
 
 <script setup lang="ts">
 // libraries
-import { Component, Vue } from "vue-property-decorator";
+import { ref, onMounted } from 'vue';
 
-// QuillJs related 
+// quilljs related 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor';
@@ -132,145 +134,135 @@ import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
 import RichTextEditor from "@/components/RichTextEditor.vue";
-
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 // config
 import config from "@/config/config";
 
-export default Vue.extend({
-  name: "AdminCreateJobAsCompany",
-  components: {
-    StudentViewTemplate,
-    SuccessBox,
-    ErrorBox,
-    LoggedInTemplate,
-    BackButton,
-    Button,
-    StandardButton,
-    GreenStandardButton,
-    Modal,
-    JobDescriptionView,
-    quillEditor,
-    RichTextEditor
-  },
-  data() {
-    return {
-      role: "",
-      description: "",
-      editorOptions: {
-        placeholder: 'Enter the job description...',
-        theme: "snow",
-        modules: {
-          toolbar: [
-            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
-          ]
-        }
-      },
-      applicationLink: "",
-      error: false,
-      errorMsg: "",
-      success: false,
-      successMsg: "",
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-      modalContent: "",
-      verifiedCompanies: {},
-      selectedCompanyID: "",
-      selectedDate: "",
-    };
-  },
-  async mounted() {
-    // make the call to get a list of verified companies to select from
-    const response = await fetch(`${config.apiRoot}/admin/companies`, {
-      method: "GET",
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const editorOptions = {
+  placeholder: 'enter the job description...',
+  theme: "snow",
+  modules: {
+    toolbar: [
+      [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
+    ]
+  }
+};
+
+const role = ref<string>("");
+const description = ref<string>("");
+const applicationLink = ref<string>("");
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+const success = ref<boolean>(false);
+const successMsg = ref<string>("");
+const modalVisible= ref<boolean>(false);
+const modalContent = ref<string>("");
+const verifiedCompanies = ref({});
+const selectedCompanyID = ref<string>("");
+const selectedDate = ref<string>("");
+
+onMounted(async () => {
+  // make the call to get a list of verified companies to select from
+  const response = await fetch(
+    `${config.apiRoot}/admin/companies`, {
+      method: "get",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        "content-type": "application/json",
+        "authorization": apiTokenStore.getApiToken(),
       },
       // mode: "no-cors",
-    });
+    },
+  );
 
-    if (response.ok) {
-      const msg = await response.json();
-      // alphabetically sort them
-      this.verifiedCompanies = msg.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name);
+  if (response.ok) {
+    const msg = await response.json();
+    // alphabetically sort them
+    verifiedCompanies.value = msg.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name);
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status === 401) {
+      errorMsg.value= "You are not authorized to perform this action. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
     } else {
-      this.error = true;
-      window.scrollTo(0, 10);
-      if (response.status === 401) {
-        this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 3000);
-      } else {
-        this.errorMsg = "Malformed request. Please contact the admin.";
-      }
+      errorMsg.value = "Malformed request. Please contact the admin.";
     }
-  },
-  methods: {
-    async submitJobPost() {
-      // create a date object using this value
-      let jobDate = new Date(this.selectedDate);
-      // set to the end of the set day
-      jobDate.setHours(23);
-      jobDate.setMinutes(59);
-      // ensure that there is a selected company
-      if (parseInt(this.selectedCompanyID, 10) < 0) {
-        // error message
-        this.error = true;
-        this.errorMsg = "Please select a valid company.";
-      } else {
-        this.error = false;
-        this.errorMsg = "";
-      }
-      const response = await fetch(`${config.apiRoot}/admin/company/${this.selectedCompanyID}/jobs`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          role: this.role,
-          description: this.description,
-          applicationLink: this.applicationLink,
-          expiry: jobDate.valueOf(),
-        }),
-      });
-
-      const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
-      if (response.ok) {
-        this.success = true;
-        this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to the admin account home...";
-        setTimeout(() => {
-          this.$router.push("/admin/home");
-        }, 5000);
-      } else {
-        this.error = true;
-        if (response.status === 403) {
-          this.errorMsg = "Failed to post job request as this company has not been verified.";
-        } else if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login");
-          }, 3000);
-        } else {
-          this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
-        }
-      }
-    },
-    async showJobModal() {
-      this.modalVisible = true;
-      this.modalContent = "Test.";
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-      this.modalContent = "";
-    },
-  },
+  }
 });
+
+async function submitJobPost() {
+  // create a date object using this value
+  let jobDate = new Date(selectedDate.value);
+  // set to the end of the set day
+  jobDate.setHours(23);
+  jobDate.setMinutes(59);
+  // ensure that there is a selected company
+  if (parseInt(selectedCompanyID.value, 10) < 0) {
+    // error message
+    error.value = true;
+    errorMsg.value = "Please select a valid company.";
+  } else {
+    error.value = false;
+    errorMsg.value = "";
+  }
+  const response = await fetch(
+    `${config.apiRoot}/admin/company/${selectedCompanyID.value}/jobs`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiTokenStore.getApiToken(),
+      },
+      // mode: "no-cors",
+      body: JSON.stringify({
+        role: role.value,
+        description: description.value,
+        applicationLink: applicationLink.value,
+        expiry: jobDate.valueOf(),
+      }),
+    }
+  );
+
+  const msg = await response.json();
+  apiTokenStore.setApiToken(msg.token);
+  if (response.ok) {
+    success.value = true;
+    successMsg.value = "Job posted! This job will be made available to students shortly. Redirecting to the admin account home...";
+    setTimeout(() => {
+      router.push("/admin/home");
+    }, 5000);
+  } else {
+    error.value = true;
+    if (response.status === 403) {
+      errorMsg.value = "Failed to post job request as this company has not been verified.";
+    } else if (response.status === 401) {
+      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+    } else {
+      errorMsg.value = "Missing one or more fields. Please ensure that all fields are filled.";
+    }
+  }
+}
+
+async function showJobModal() {
+  modalVisible.value = true;
+  modalContent.value = "Test.";
+}
+
+async function closeJobModal() {
+  modalVisible.value = false;
+  modalContent.value = "";
+}
 </script>
 
 <style scoped lang="scss">

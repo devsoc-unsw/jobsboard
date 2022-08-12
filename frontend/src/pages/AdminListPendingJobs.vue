@@ -57,7 +57,6 @@ onMounted(async () => {
     apiTokenStore.setApiToken(msg.token);
     success.value = true;
     jobs.value = msg.pendingJobs;
-    console.log(jobs.value.length);
   } else {
     error.value = true;
     window.scrollTo(0, 10);

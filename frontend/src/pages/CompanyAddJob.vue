@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate loggedIn>
+  <StudentViewTemplate>
   <div class="modalWrapper">
     <Modal 
       v-if="modalVisible"

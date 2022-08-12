@@ -44,7 +44,6 @@ import ErrorBox from "@/components/ErrorBox.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import { useRouter } from 'vue-router';
-
 import { useApiTokenStore } from '@/store/apiToken';
 
 const apiTokenStore = useApiTokenStore();

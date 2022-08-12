@@ -4,14 +4,13 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: "BackButton",
-  methods: {
-    back() {
-      this.$router.go(-1);
-    },
-  },
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+function back() {
+  router.go(-1);
 }
 </script>
 
