@@ -44,7 +44,9 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
@@ -53,52 +55,45 @@ import StandardButton from "@/components/buttons/StandardButton.vue";
 
 // config
 import config from "@/config/config";
+import { useApiTokenStore } from '@/store/apiToken';
 
-export default {
-  name: "LoginPage",
-  components: {
-    StudentViewTemplate,
-    ErrorBox,
-    Button,
-    StandardButton,
-  },
-  data() {
-    return {
-      username: "",
-      password: "",
-      error: false,
-      errorMsg: "",
-    };
-  },
-  async mounted() {
-    this.$store.dispatch("clearApiToken");
-  },
-  methods: {
-    async performCompanyLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-      });
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      if (response.ok) {
-        const msg = await response.json();
-        this.error = false;
-        this.$store.dispatch("setApiToken", msg.token);
-        this.$router.push("/company/home");
-      } else {
-        window.scrollTo(0, 10);
-        this.error = true;
-        this.errorMsg = "Invalid credentials. Please try again.";
-      }
-    },
-  },
+const username = ref<string>("");
+const password = ref<string>("");
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+
+onMounted(async () => {
+  apiTokenStore.clearApiToken();
+});
+
+async function performCompanyLogin() {
+  const response = await fetch(
+    `${config.apiRoot}/authenticate/company`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // mode: "no-cors",
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value,
+      }),
+    });
+
+  if (response.ok) {
+    const msg = await response.json();
+    error.value = false;
+    apiTokenStore.setApiToken(msg.token);
+    router.push("/company/home");
+  } else {
+    window.scrollTo(0, 10);
+    error.value = true;
+    errorMsg.value = "Invalid credentials. Please try again.";
+  }
 }
 </script>
 

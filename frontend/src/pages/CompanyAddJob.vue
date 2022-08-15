@@ -58,12 +58,14 @@
     <h2>Job Description (Text only - for now!)</h2>
     <h4>Please ensure that you specify whether this is a paid position, and please understand that we will be cross checking this with the <a href="https://www.fairwork.gov.au/pay/unpaid-work/student-placements">Australian Fair Work Act 2009</a> to determine whether the job post follows all guidelines and prioritises the safety of our members.</h4>
     
+    <!--
     <quill-editor 
       v-model:content="description"
       :value="description"
       :options="editorOptions"
       v-bind:style="{ 'background-color': 'white' }"
     />
+    -->
 
     <h2>Application Link</h2>
 
@@ -96,15 +98,15 @@
   </LoggedInTemplate>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 // libraries
-import { Component, Vue } from "vue-property-decorator";
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 
-// QuillJs Related
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import { quillEditor } from 'vue-quill-editor';
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
@@ -121,105 +123,83 @@ import RichTextEditor from "@/components/RichTextEditor.vue";
 
 // config
 import config from "@/config/config";
+const editorOptions = {
+  placeholder: 'Enter the job description...',
+  theme: "snow",
+  modules: {
+    toolbar: [
+      [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
+    ]
+  }
+};
 
+const role = ref<string>("");
+const description = ref<string>("");
+const applicationLink = ref<string>("");
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+const success = ref<boolean>(false);
+const successMsg = ref<string>("");
+const modalVisible = ref<boolean>(false);
+const modalContent = ref<string>("");
+const selectedDate = ref<string>("");
 
-export default Vue.extend({
-  name: "CompanyAddJob",
-  components: {
-    StudentViewTemplate,
-    SuccessBox,
-    ErrorBox,
-    LoggedInTemplate,
-    BackButton,
-    Button,
-    StandardButton,
-    GreenStandardButton,
-    Modal,
-    JobDescriptionView,
-    RichTextEditor,
-    quillEditor
-  },
-  data() {
-    return {
-      role: "",
-      description: "",
-      editorOptions: {
-        placeholder: 'Enter the job description...',
-        theme: "snow",
-        modules: {
-          toolbar: [
-            [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
-          ]
-        }
-      },
-      applicationLink: "",
-      error: false,
-      errorMsg: "",
-      success: false,
-      successMsg: "",
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-      modalContent: "",
-      selectedDate: "",
-    };
-  },
-  methods: {
-    async submitJobPost() {
-      // create a date object using this value
-      let jobDate = new Date(this.selectedDate);
-      // set to the end of the set day
-      jobDate.setHours(23);
-      jobDate.setMinutes(59);
-      const response = await fetch(`${config.apiRoot}/jobs`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          role: this.role,
-          description: this.description,
-          applicationLink: this.applicationLink,
-          expiry: jobDate.valueOf(),
-        }),
-      });
+async function submitJobPost() {
+  // create a date object using this value
+  let jobDate = new Date(selectedDate.value);
+  // set to the end of the set day
+  jobDate.setHours(23);
+  jobDate.setMinutes(59);
+  const response = await fetch(`${config.apiRoot}/jobs`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiTokenStore.getApiToken(),
+    },
+    // mode: "no-cors",
+    body: JSON.stringify({
+      role: role.value,
+      description: description.value,
+      applicationLink: applicationLink.value,
+      expiry: jobDate.valueOf(),
+    }),
+  });
 
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
-        this.success = true;
-        this.successMsg = "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
-        setTimeout(() => {
-          this.$router.push("/company/home");
-        }, 5000);
-      } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        if (response.status === 403) {
-          this.errorMsg = "Failed to post job request as your account has not yet been verified.";
-        } else if (response.status === 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login/company");
-          }, 3000);
-        } else {
-          this.errorMsg = "Missing one or more fields. Please ensure that all fields are filled.";
-        }
-      }
-    },
-    async showJobModal() {
-      this.modalVisible = true;
-      this.modalContent = "Test.";
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-      this.modalContent = "";
-    },
-  },
-});
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    success.value = true;
+    successMsg.value= "Job posted! This job will be made available to students shortly. Redirecting to your dashboard...";
+    setTimeout(() => {
+      router.push("/company/home");
+    }, 5000);
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status === 403) {
+      errorMsg.value = "Failed to post job request as your account has not yet been verified.";
+    } else if (response.status === 401) {
+      errorMsg.value = "Login expired. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login/company");
+      }, 3000);
+    } else {
+      errorMsg.value = "Missing one or more fields. Please ensure that all fields are filled.";
+    }
+  }
+}
+
+async function showJobModal() {
+  modalVisible.value = true;
+  modalContent.value = "Test.";
+}
+
+async function closeJobModal() {
+  modalVisible.value = false;
+  modalContent.value = "";
+}
 </script>
 
 <style scoped lang="scss">

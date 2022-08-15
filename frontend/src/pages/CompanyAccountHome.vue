@@ -20,30 +20,22 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 
-export default Vue.extend({
-  name: "CompanyAccountHome",
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Button,
-    StandardButton,
-  },
-  methods: {
-    goToCompanyJobAdd() {
-      this.$router.push("/company/jobs/add");
-    },
-    goToCompanyManageJobs() {
-      this.$router.push("/company/jobs/manage");
-    },
-  },
-});
+const router = useRouter();
+
+function goToCompanyJobAdd() {
+  router.push("/company/jobs/add");
+}
+
+function goToCompanyManageJobs() {
+  router.push("/company/jobs/manage");
+}
 </script>
 
 <style scoped lang="scss">
