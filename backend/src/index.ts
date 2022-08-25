@@ -80,6 +80,7 @@ const swaggerjsdocOptions: any = {
   apis: ["./dist/**/*.js"],
   swaggerDefinition: {
     info: {
+      openapi: "3.0.0",
       description: "API for the CSESoc Jobs Board site",
       title: "Jobs Board API",
       version: "2.0.0",
@@ -907,9 +908,7 @@ app.put(
  * Currently only works in development mode.
  */
 if (process.env.NODE_ENV === "development") {
-  // Logger.Info('Test email sending enabled');
   // app.post("/email", MailFunctions.SendTestEmail);
-  Logger.Info('Swagger docs are enabled');
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 }
 
