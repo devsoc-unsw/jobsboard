@@ -14,17 +14,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-export default Vue.extend({
-  name: "FeaturedJobCard",
-  data() {
-    return {
-
-    };
-  },
-  props: {
+<script setup lang="ts">
+  const props = defineProps({
     jobTitle: {
       type: String,
       required: true,
@@ -41,11 +32,7 @@ export default Vue.extend({
       type: String,
       required: true,
     }
-  },
-  methods: {
-
-  }
-});
+  });
 </script>
 
 <style scoped lang="scss">

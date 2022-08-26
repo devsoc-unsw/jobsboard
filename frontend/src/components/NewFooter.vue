@@ -10,7 +10,7 @@
         >
         Got a Question?
         </a>
-        <a @click="toTeamPage" class="cursor-pointer">Meet the Team</a>
+        <a @click="() => { router.push('/team') }" class="cursor-pointer">Meet the Team</a>
       </div>
       <p class="m-0">&#169; CSESoc UNSW - 2022</p>
       <div class="flex justify-center py-[15px]">
@@ -54,8 +54,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { useRouter } from "vue-router";
 import logo from "@/assets/logos/csesocwhite.png";
 import facebookLogo from "@/assets/SocialMedia/facebook.svg";
 import instagramLogo from "@/assets/SocialMedia/instagram.svg";
@@ -64,25 +64,7 @@ import youtubeLogo from "@/assets/SocialMedia/youtube.svg";
 import discordLogo from "@/assets/SocialMedia/discord.svg";
 import githubLogo from "@/assets/SocialMedia/github.svg";
 
-export default Vue.extend({
-  name: "NewFooter",
-  data() {
-    return {
-      logo: logo,
-      facebookLogo: facebookLogo,
-      instagramLogo: instagramLogo,
-      discordLogo: discordLogo,
-      youtubeLogo: youtubeLogo,
-      linkedinLogo: linkedinLogo,
-      githubLogo: githubLogo,
-    };
-  },
-  methods: {
-    toTeamPage() {
-      this.$router.push("/team");
-    }
-  },
-});
+const router = useRouter();
 </script>
 
 <style scoped lang="scss">

@@ -2,7 +2,7 @@
   <main>
     <div class="flex flex-col min-h-full">
       <div class="relative">
-        <!-- <Header class="header" /> -->
+        <Header class="header" />
       </div>
       <div class="relative overflow-x-clip">
         <img 
@@ -20,7 +20,7 @@
           </p>
         </div>
         <div class="w-2/4 justify-center items-center content-center justify-items-center col-span-1">
-          <img class="w-full ml-11 sm:w-[100px]" :src="Logo" />
+          <img class="w-full ml-11 sm:w-[100px]" :src="CsesocLogoSmall" />
         </div>
         <div class="flex flex-row mt-8 col-span-2 self-start justify-self-start">
           <button 
@@ -43,7 +43,7 @@
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           We aim to give you a pleasant student working experience by partnering up with only the best.
         </p>
-        <!-- <SponsorCarousel /> -->
+        <SponsorCarousel />
         <h3 class="font-bold text-3xl mb-0 text-jb-headings">Discover Featured Student Jobs and Internships</h3>
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           Spent hours trying to find something that suited you? Look no further, we've got you covered with some amazing opportunities.
@@ -64,7 +64,7 @@
             jobDescription="The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship."
             :jobTag="['AU/NZ Citizens', 'Internationals']"
             :imagePath="GoogleLogo"
-           />
+          />
         </div>
 
         <h3 class="font-bold text-3xl mb-0 text-jb-headings">Want to Post a Job?</h3>
@@ -126,10 +126,10 @@ import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Blob from "@/assets/misc/Blob.svg";
 import CsesocLogoSmall from "@/assets/logos/CsesocLogoSmall.svg";
-// import Header from "@/components/Header.vue";
-// import NewFooter from "@/components/NewFooter.vue";
-// import FeaturedJobCard from "@/components/FeaturedJobCard.vue";
-// import SponsorCarousel from "@/components/SponsorCarousel.vue";
+import Header from "@/components/Header.vue";
+import NewFooter from "@/components/NewFooter.vue";
+import FeaturedJobCard from "@/components/FeaturedJobCard.vue";
+import SponsorCarousel from "@/components/SponsorCarousel.vue";
 
 import GoogleLogo from "@/assets/companies/googleLogo.png";
 
