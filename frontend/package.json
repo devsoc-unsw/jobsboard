@@ -28,7 +28,7 @@
     "vue-fontawesome": "0.0.2",
     "vue-property-decorator": "9.1.2",
     "vue-quill-editor": "3.0.6",
-    "vue-router": "3.5.4",
+    "vue-router": "4.1.5",
     "vuex": "3.6.2"
   },
   "devDependencies": {
