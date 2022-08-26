@@ -117,7 +117,7 @@ export default createRouter({
     path: "/admin/jobs/post",
     component: AdminCreateJobAsCompany,
     meta: {
-      title<string>: "Post Job | Jobs Board",
+      title: "Post Job | Jobs Board",
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },

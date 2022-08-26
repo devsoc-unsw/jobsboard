@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
+import './style/tailwind.scss';
 
 // set up fontawesome
 import { library, IconDefinition } from '@fortawesome/fontawesome-svg-core'
