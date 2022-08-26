@@ -21,36 +21,29 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
-export default Vue.extend({
-  name: "CompanyAccountHome",
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Button,
-    StandardButton,
-    Breadcrumbs,
-  },
-  methods: {
-    goToCompanyJobAdd() {
-      this.$router.push("/company/jobs/add");
-    },
-    goToCompanyManageJobs() {
-      this.$router.push("/company/jobs/manage");
-    },
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  }
+const router = useRouter();
+
+onMounted(() => {
+  // Change the page title
+  document.title = this.$route.meta.title;
 });
+
+function goToCompanyJobAdd() {
+  router.push("/company/jobs/add");
+}
+
+function goToCompanyManageJobs() {
+  router.push("/company/jobs/manage");
+}
 </script>
 
 <style scoped lang="scss">
@@ -62,11 +55,6 @@ export default Vue.extend({
   min-width: 70%;
   max-width: 70%;
   border-radius: 0.5rem;
-  /* padding-top: 2%; */
-  /* padding-bottom: 2%; */
-  /* padding-left: 5%; */
-  /* padding-right: 5%; */
-  /* margin: 1%; */
 }
 
 .editButton {

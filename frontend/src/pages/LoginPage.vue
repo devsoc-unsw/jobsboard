@@ -12,46 +12,39 @@
   <h1>Jobs for UNSW CSE Students</h1>
   <div class="buttonBox">
     <StandardButton>
-    <Button @callback="toStudentLogin" disabled>
-      Student
-    </Button>
+      <Button @callback="toStudentLogin">
+        Student
+      </Button>
     </StandardButton>
     <StandardButton>
-    <Button @callback="toCompanyLogin" disabled>
-      Company
-    </Button>
+      <Button @callback="toCompanyLogin">
+        Company
+      </Button>
     </StandardButton>
   </div>
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
+<script setup lang="ts">
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
+import { onMounted } from "vue";
+import { useRouter } from 'vue-router';
 
-export default Vue.extend({
-  name: "LoginPage",
-  components: {
-    StudentViewTemplate,
-    Button,
-    StandardButton,
-    ErrorBox,
-  },
-  methods: {
-    toStudentLogin() {
-      this.$router.push("/login/student");
-    },
-    toCompanyLogin() {
-      this.$router.push("/login/company");
-    }
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  }
+const router = useRouter();
+
+function toStudentLogin() {
+  router.push("/login/student");
+}
+function toCompanyLogin() {
+  router.push("/login/company");
+}
+
+onMounted(() => {
+  // Change the page title
+  document.title = this.$route.meta.title;
 });
 </script>
 

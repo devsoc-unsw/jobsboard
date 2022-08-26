@@ -54,83 +54,80 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import config from "@/config/config";
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
-export default Vue.extend({
-  name: "CompanyJobManage",
-  components: {
-    GreenStandardButton,
-    RedStandardButton,
-    Modal,
-  },
-  props: {
-    role: String,
-    description: String,
-    jobID: Number,
-    successCallback: Function,
-    errorCallback: Function,
-    applicationLink: String,
-  },
-  data() {
-    return {
-      success: false,
-      error: false,
-      successMsg: "",
-      errorMsg: "",
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-      modalContent: "",
-    };
-  },
-  methods: {
-    async showJobModal() {
-      this.modalVisible = true;
-      this.modalContent = "Test.";
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-      this.modalContent = "";
-    },
-    async deleteJob() {
-      const uri = `${config.apiRoot}/company/job/${this.jobID}`;
-      const response = await fetch(uri, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-      });
-
-      const receivedResponse = response as Response;
-
-      if (receivedResponse.ok) {
-        this.successCallback("Job successfully deleted!");
-        this.close();
-      } else {
-        if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login/company");
-          }, 3000);
-        } else {
-          this.errorCallback("Error in processing rejection. Please try again later.");
-        }
-      }
-    },
-    close() {
-      setTimeout(() => {
-        this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
-      }, 5000);
-    }
-  },
+const props = defineProps({
+  role: String,
+  description: String,
+  jobID: Number,
+  successCallback: Function,
+  errorCallback: Function,
+  applicationLink: String,
 });
 
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+const success = ref<boolean>(false);
+const successMsg = ref<string>("");
+const modalVisible = ref<boolean>(false);
+const modalContent = ref<string>("");
+
+async function showJobModal() {
+  modalVisible.value = true;
+  modalContent.value = "Test.";
+}
+
+async function closeJobModal() {
+  modalVisible.value = false;
+  modalContent.value = "";
+}
+
+async function deleteJob() {
+  const uri = `${config.apiRoot}/company/job/${props.jobID}`;
+  const response = await fetch(uri, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiTokenStore.getApiToken(),
+    },
+  });
+
+  const receivedResponse = response as Response;
+
+  if (receivedResponse.ok && props.successCallback) {
+    props.successCallback("Job successfully deleted!");
+    close();
+  } else {
+    if (response.status == 401) {
+      errorMsg.value = "Login expired. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login/company");
+      }, 3000);
+    } else {
+      if (props.errorCallback) {
+        props.errorCallback(
+          "Error in processing rejection. Please try again later."
+        );
+      }
+    }
+  }
+}
+
+function close() {
+  setTimeout(() => {
+    this.$destroy();
+    this.$el.parentNode!.removeChild(this.$el);
+  }, 5000);
+}
 </script>
 
 <style scoped lang="scss">

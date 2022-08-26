@@ -37,98 +37,76 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import BackButton from "@/components/buttons/back.vue";
 import CompanyJobManage from "@/components/CompanyJobManage.vue";
 import config from "@/config/config";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
-export default Vue.extend({
-  name: "CompanyManageJobs",
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Button,
-    StandardButton,
-    BackButton,
-    CompanyJobManage,
-    SuccessBox,
-    ErrorBox,
-    Breadcrumbs
-  },
-  data() {
-    return {
-      error: false,
-      errorMsg: "",
-      success: false,
-      successMsg: "",
-      jobs: [],
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  methods: {
-    internalErrorCallback(msg: string) {
-      console.log('yuh');
-      this.error = true;
-      this.success = false;
-      this.errorMsg = msg;
-    },
-    internalSuccessCallback(msg: string) {
-      console.log('bruh');
-      this.error = false;
-      this.success = true;
-      this.successMsg = msg;
-    }
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    
-    const response = await fetch(`${config.apiRoot}/companyjobs`, {
+
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+const success = ref<boolean>(false);
+const successMsg = ref<string>("");
+const jobs = ref([]);
+
+function internalErrorCallback(msg: string) {
+  error.value = true;
+  success.value = false;
+  errorMsg.value = msg;
+}
+
+function internalSuccessCallback(msg: string) {
+  error.value = false;
+  success.value = true;
+  successMsg.value = msg;
+}
+
+onMounted(async () => {
+  const response = await fetch(
+    `${config.apiRoot}/companyjobs`,
+    {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        "Authorization": apiTokenStore.getApiToken(),
       },
-    });
+    }
+  );
 
-    /*
-    if (msg.token) {
-      this.$store.dispatch("setApiToken", msg.token);
-    }
-    */
-    const returnedRequest = response as Response;
-    if (returnedRequest.ok) {
-      const msg = await returnedRequest.json();
-      this.jobs = msg.companyJobs.map((job: any) => {
-        return {
-          id: job.id,
-          role: job.role,
-          status: `Status: ${job.status}`,
-          description: job.description,
-          applicationLink: job.applicationLink,
-        };
-      })
+  const returnedRequest = response as Response;
+  if (returnedRequest.ok) {
+    const msg = await returnedRequest.json();
+    jobs.value = msg.companyJobs.map((job: any) => {
+      return {
+        id: job.id,
+        role: job.role,
+        status: `Status: ${job.status}`,
+        description: job.description,
+        applicationLink: job.applicationLink,
+      };
+    })
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status == 401) {
+      errorMsg.value = "Login expired. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login/company");
+      }, 3000);
     } else {
-      this.error = true;
-      window.scrollTo(0, 10);
-      if (response.status == 401) {
-        this.errorMsg = "Login expired. Redirecting to login page.";
-        setTimeout(() => {
-          this.$router.push("/login/company");
-        }, 3000);
-      } else {
-        this.errorMsg = "Failed to get pending jobs.";
-      }
+      errorMsg.value = "Failed to get pending jobs.";
     }
-  },
+  }
 });
 </script>
 

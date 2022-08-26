@@ -14,21 +14,19 @@
   </button>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { defineProps } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default Vue.extend({
-  name: "JobsList",
-  components: {},
-  props: {
-    jobId: Number,
-    role: String,
-    company: String,
-    location: String,
-    // TODO: add company logo
-  },
+const router = useRouter();
+
+const props = defineProps({
+  jobId: Number,
+  role: String,
+  company: String,
+  location: String,
+  // TODO: add company logo
 });
-
 </script>
 
 <style scoped lang="scss">

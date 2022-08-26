@@ -29,8 +29,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref } from 'vue';
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
@@ -38,66 +38,59 @@ import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 
-export default Vue.extend({
-  name: "SingleJobManage",
-  components: {
-    SuccessBox,
-    ErrorBox,
-    Button,
-    GreenStandardButton,
-  },
-  data() {
-    return {
-      success: false,
-      successMsg: "",
-      error: false,
-      errorMsg: "",
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  props: {
-    name: String,
-    location: String,
-    description: String,
-    companyAccountID: Number,
-  },
-  methods: {
-    async verifyCompany() {
-      const response = await fetch(`${config.apiRoot}/admin/company/${this.companyAccountID}/verify`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-      });
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 
-      // this.$store.dispatch("setApiToken", msg.token);
-      if (response.ok) {
-        const msg = await response.json();
-        this.success = true;
-        this.successMsg = "Company successfully verified!";
-        this.close();
-      } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login");
-          }, 3000);
-        } else {
-          this.errorMsg = "Error in processing verification. Please try again later.";
-        }
-      }
-    },
-    close() {
-      setTimeout(() => {
-        this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
-      }, 5000);
-    }
-  },
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const props = defineProps({
+  name: String,
+  location: String,
+  description: String,
+  companyAccountID: Number,
 });
+
+const success = ref<boolean>(false);
+const successMsg = ref<string>("");
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+
+async function verifyCompany() {
+  const response = await fetch(`${config.apiRoot}/admin/company/${this.companyAccountID}/verify`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiTokenStore.getApiToken(),
+    },
+  });
+
+  // this.$store.dispatch("setApiToken", msg.token);
+  if (response.ok) {
+    const msg = await response.json();
+    success.value = true;
+    successMsg.value = "Company successfully verified!";
+    close();
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status === 401) {
+      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+    } else {
+      errorMsg.value = "Error in processing verification. Please try again later.";
+    }
+  }
+}
+
+function close() {
+  setTimeout(() => {
+    this.$destroy();
+    this.$el.parentNode!.removeChild(this.$el);
+  }, 5000);
+}
 </script>
 
 <style scoped lang="scss">

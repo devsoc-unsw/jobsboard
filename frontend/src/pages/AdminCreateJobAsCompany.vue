@@ -4,18 +4,18 @@
   <Breadcrumbs class="w-4/5 mx-0"/>
   <Modal
     v-if="modalVisible"
-    :jobTitle="this.role"
-    :jobDescription="this.description"
-    :applicationLink="this.applicationLink"
-    :expiryDate="this.expiryDate"
-    :isPaidPosition="this.isPaidPosition"
-    :jobType="this.jobType"
-    :jobMode="this.jobMode"
-    :workingRights="this.workingRights"
-    :studentDemographic="this.studentDemographic"
-    :wamRequirements="this.wamRequirements"
-    :additionalInfo="this.additionalInfo"
-    @closeCallback="() => { this.modalVisible = false }"
+    :jobTitle="role"
+    :jobDescription="description"
+    :applicationLink="applicationLink"
+    :expiryDate="expiryDate"
+    :isPaidPosition="isPaidPosition"
+    :jobType="jobType"
+    :jobMode="jobMode"
+    :workingRights="workingRights"
+    :studentDemographic="studentDemographic"
+    :wamRequirements="wamRequirements"
+    :additionalInfo="additionalInfo"
+    @closeCallback="() => { modalVisible = false }"
   />
   <div class="flex flex-col items-center w-4/5 mx-auto">
     <!-- select company -->
@@ -24,10 +24,10 @@
       Reach out to a talented pool of over 10,000 Computer Science and Engineering students
     </p>
     <Alert
-      :alertType="this.alertType"
-      :alertMsg="this.alertMsg"
-      :isOpen="this.isAlertOpen"
-      :handleClose="() => { this.isAlertOpen = false }"
+      :alertType="alertType"
+      :alertMsg="alertMsg"
+      :isOpen="isAlertOpen"
+      :handleClose="() => { isAlertOpen = false }"
     />
     <!-- input fields -->
     <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Select Company</h2>
@@ -216,7 +216,7 @@
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
     <button 
-      @click="() => { this.modalVisible = true }" 
+      @click="() => { modalVisible = true }" 
       class="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
     >
       Preview
@@ -235,12 +235,12 @@
 
 <script setup lang="ts">
 // libraries
-import { Component, Vue } from "vue-property-decorator";
+import { ref, onMounted } from 'vue';
 
-// QuillJs related 
+// quilljs related 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
-import { quillEditor } from 'vue-quill-editor';
+// import { quillEditor } from 'vue-quill-editor';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
@@ -252,160 +252,154 @@ import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
 import config from "@/config/config";
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 
-export default Vue.extend({
-  name: "AdminCreateJobAsCompany",
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Modal,
-    quillEditor,
-    RichTextEditor,
-    Alert,
-    Breadcrumbs
-  },
-  data() {
-    return {
-      role: "",
-      description: "",
-      editorOptions: {
-        placeholder: 'Enter the job description...',
-        theme: "snow",
-        modules: {
-          toolbar: [
-            [{ 'font': [] }, {'size': ['large', 'small', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
-          ]
-        }
-      },
-      applicationLink: "",
-      expiryDate: "",
-      isPaidPosition: "",
-      jobType: "",
-      jobMode: "",
-      workingRights: [],
-      studentDemographic:[],
-      wamRequirements: "",
-      additionalInfo: "",
-      alertType: "",
-      alertMsg: "",
-      isAlertOpen: false,
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-      verifiedCompanies: {},
-      selectedCompanyID: "",
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    
-    // make the call to get a list of verified companies to select from
-    const response = await fetch(`${config.apiRoot}/admin/companies`, {
-      method: "GET",
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const editorOptions = {
+  placeholder: 'Enter the job description...',
+  theme: "snow",
+  modules: {
+    toolbar: [
+      [{ 'font': [] }, {'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }]
+    ]
+  }
+};
+
+const role = ref<string>("");
+const description = ref<string>("");
+const applicationLink = ref<string>("");
+const expiryDate = ref<string>("");
+const isPaidPosition = ref<string>("");
+const jobType = ref<string>("");
+const jobMode = ref<string>("");
+const workingRights = ref<string[]>([]);
+const studentDemographic = ref<string[]>([]);
+const wamRequirements = ref<string>("");
+const additionalInfo = ref<string>("");
+const alertType = ref<string>("");
+const alertMsg = ref<string>("");
+const isAlertOpen = ref<boolean>(false);
+const modalVisible= ref<boolean>(false);
+const verifiedCompanies = ref<any>({});
+const selectedCompanyID = ref<string>("");
+
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+
+  // make the call to get a list of verified companies to select from
+  const response = await fetch(
+    `${config.apiRoot}/admin/companies`, {
+      method: "get",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        "content-type": "application/json",
+        "authorization": apiTokenStore.getApiToken(),
       },
       // mode: "no-cors",
-    });
-    if (response.ok) {
-      const msg = await response.json();
-      // alphabetically sort them
-      this.verifiedCompanies = msg.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name);
+    },
+  );
+
+  if (response.ok) {
+    const msg = await response.json();
+    // alphabetically sort them
+    verifiedCompanies.value = msg.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name);
+  } else {
+    alertType.value = "error";
+    if (response.status === 401) {
+      alertMsg.value= "You are not authorized to perform this action. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
     } else {
-      this.alertType = "error";
-      if (response.status === 401) {
-        this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
-        setTimeout(() => {
-          this.$router.push("/login");
-        }, 3000);
-      } else {
-        this.alertMsg = "Malformed request. Please contact the admin.";
-      }
-      this.isAlertOpen = true;
+      alertMsg.value = "Malformed request. Please contact the admin.";
+    }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
+});
+
+async function submitJobPost() {
+  // create a date object using this value
+  let jobDate = new Date(expiryDate.value);
+  // set to the end of the set day
+  jobDate.setHours(23);
+  jobDate.setMinutes(59);
+  // ensure that there is a selected company
+  if (parseInt(selectedCompanyID.value, 10) < 0 || isNaN(parseInt(selectedCompanyID.value, 10))) {
+    // error message
+    alertType.value = "error";
+    alertMsg.value = "Please select a valid company.";
+    isAlertOpen.value = true;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+    return;
+  }
+
+  const response = await fetch(
+    `${config.apiRoot}/admin/company/${selectedCompanyID.value}/jobs`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiTokenStore.getApiToken(),
+      },
+      // mode: "no-cors",
+      body: JSON.stringify({
+        role: role.value,
+        description: description.value,
+        applicationLink: applicationLink.value,
+        expiry: jobDate.valueOf(),
+        jobMode: jobMode.value,
+        studentDemographic: studentDemographic.value,
+        jobType: jobType.value,
+        workingRights: workingRights.value,
+        wamRequirements: wamRequirements.value,
+        additionalInfo: additionalInfo.value,
+        isPaid: isPaidPosition.value,
+      }),
+    });
+
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    if (response.ok) {
+      alertType.value = "success";
+      alertMsg.value = "Job posted! This job will be made available to students shortly. Redirecting to the admin account home...";
+      isAlertOpen.value = true;
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       })
-    }
-  },
-  methods: {
-    async submitJobPost() {
-      // create a date object using this value
-      let jobDate = new Date(this.expiryDate);
-      // set to the end of the set day
-      jobDate.setHours(23);
-      jobDate.setMinutes(59);
-      // ensure that there is a selected company
-      if (isNaN(parseInt(this.selectedCompanyID, 10)) || parseInt(this.selectedCompanyID, 10) < 0) {
-        this.alertType = "error";
-        this.alertMsg = "Please select a valid company";
-        this.isAlertOpen = true;
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
-        return;
-      }
-
-      const response = await fetch(`${config.apiRoot}/admin/company/${this.selectedCompanyID}/jobs`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          role: this.role,
-          description: this.description,
-          applicationLink: this.applicationLink,
-          expiry: jobDate.valueOf(),
-          jobMode: this.jobMode,
-          studentDemographic: this.studentDemographic,
-          jobType: this.jobType,
-          workingRights: this.workingRights,
-          wamRequirements: this.wamRequirements,
-          additionalInfo: this.additionalInfo,
-          isPaid: this.isPaidPosition,
-        }),
-      });
-
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
-        this.alertType = "success";
-        this.alertMsg = "Job posted! This job will be made available to students shortly. Redirecting to the admin account home...";
-        this.isAlertOpen = true;
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
+      setTimeout(() => {
+        router.push("/admin/home");
+      }, 5000);
+    } else {
+      alertType.value = "error";
+      if (response.status === 403) {
+        alertMsg.value = "Failed to post job request as this company has not been verified.";
+      } else if (response.status === 401) {
+        alertMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
         setTimeout(() => {
-          this.$router.push("/admin/home");
-        }, 5000);
+          router.push("/login");
+        }, 3000);
       } else {
-        this.alertType = "error";
-        if (response.status === 403) {
-          this.alertMsg = "Failed to post job request as this company has not been verified.";
-        } else if (response.status === 401) {
-          this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login");
-          }, 3000);
-        } else {
-          this.alertMsg = "Missing one or more fields. Please ensure that all fields are filled.";
-        }
-        this.isAlertOpen = true;
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
+        alertMsg.value = "Missing one or more fields. Please ensure that all fields are filled.";
       }
-    },
-  },
-});
+      isAlertOpen.value = true;
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  }
 </script>
 
 <style scoped lang="scss">

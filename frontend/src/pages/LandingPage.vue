@@ -2,7 +2,7 @@
   <main>
     <div class="flex flex-col min-h-full">
       <div class="relative">
-        <Header class="header" />
+        <!-- <Header class="header" /> -->
       </div>
       <div class="relative overflow-x-clip">
         <img 
@@ -43,7 +43,7 @@
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           We aim to give you a pleasant student working experience by partnering up with only the best.
         </p>
-        <SponsorCarousel />
+        <!-- <SponsorCarousel /> -->
         <h3 class="font-bold text-3xl mb-0 text-jb-headings">Discover Featured Student Jobs and Internships</h3>
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           Spent hours trying to find something that suited you? Look no further, we've got you covered with some amazing opportunities.
@@ -119,56 +119,44 @@
   </main>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Blob from "@/assets/misc/Blob.svg";
 import CsesocLogoSmall from "@/assets/logos/CsesocLogoSmall.svg";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
-import FeaturedJobCard from "@/components/FeaturedJobCard.vue";
-import SponsorCarousel from "@/components/SponsorCarousel.vue";
+// import Header from "@/components/Header.vue";
+// import NewFooter from "@/components/NewFooter.vue";
+// import FeaturedJobCard from "@/components/FeaturedJobCard.vue";
+// import SponsorCarousel from "@/components/SponsorCarousel.vue";
 
 import GoogleLogo from "@/assets/companies/googleLogo.png";
 
-export default Vue.extend({
-  name: "StudentLoginPage",
-  components: {
-    Header,
-    NewFooter,
-    StudentViewTemplate,
-    FeaturedJobCard,
-    SponsorCarousel
-  },
-  data() {
-    return {
-      GoogleLogo: GoogleLogo,
-      Blob: Blob,
-      Logo: CsesocLogoSmall,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    
-    this.$store.dispatch("clearApiToken");
-  },
-  methods: {
-    scrollToTop() {
-      window.scrollTo({ 
-        left: 0,
-        top: 0, 
-        behavior: "smooth" 
-      });
-    },
-    companyRegister() {
-      this.$router.push("/signup/company");
-    },
-    toGithubRepo() {
-      window.open("https://github.com/csesoc/jobs-board");
-    }
-  },
-});
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
+})
+
+function scrollToTop() {
+  window.scrollTo({ 
+    left: 0,
+    top: 0, 
+    behavior: "smooth" 
+  });
+}
+
+function companyRegister() {
+  router.push("/signup/company");
+}
+
+function toGithubRepo() {
+  window.open("https://github.com/csesoc/jobs-board");
+}
 </script>
 
 <style scoped lang="scss">

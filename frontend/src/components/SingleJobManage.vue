@@ -72,8 +72,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { defineProps, ref } from 'vue';
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
@@ -84,113 +84,109 @@ import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import { useApiTokenStore } from '@/store/apiToken';
+import { useRouter } from 'vue-router';
 
-export default Vue.extend({
-  name: "SingleJobManage",
-  components: {
-    JobListingMinimal,
-    SuccessBox,
-    ErrorBox,
-    Button,
-    StandardButton,
-    GreenStandardButton,
-    RedStandardButton,
-    Modal,
-    JobDescriptionView,
-  },
-  data() {
-    return {
-      success: false,
-      successMsg: "",
-      error: false,
-      errorMsg: "",
-      actAsLink: false,
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-      modalContent: "",
-    };
-  },
-  props: {
-    role: String,
-    company: String,
-    description: String,
-    jobID: Number,
-    applicationLink: String,
-  },
-  methods: {
-    async approveJob() {
-      const response = await fetch(`${config.apiRoot}/job/${this.jobID}/approve`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-      });
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      // this.$store.dispatch("setApiToken", msg.token);
-      if (response.ok) {
-        const msg = await response.json();
-        this.success = true;
-        this.successMsg = "Job successfully approved!";
-        this.error = false;
-        this.close();
-      } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login");
-          }, 3000);
-        } else {
-          this.errorMsg = "Error in processing approval. Please try again later.";
-        }
-      }
-    },
-    async rejectJob() {
-      const response = await fetch(`${config.apiRoot}/job/${this.jobID}/reject`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-      });
-
-      // this.$store.dispatch("setApiToken", msg.token);
-      if (response.ok) {
-        const msg = await response.json();
-        this.success = true;
-        this.successMsg = "Job successfully rejected!";
-        this.error = false;
-        this.close();
-      } else {
-        this.error = true;
-        if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login");
-          }, 3000);
-        } else {
-          this.errorMsg = "Error in processing rejection. Please try again later.";
-        }
-      }
-    },
-    close() {
-      setTimeout(() => {
-        this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
-      }, 5000);
-    },
-    async showJobModal() {
-      this.modalVisible = true;
-      this.modalContent = "Test.";
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-      this.modalContent = "";
-    },
-  },
+const props = defineProps({
+  role: String,
+  company: String,
+  description: String,
+  jobID: Number,
+  applicationLink: String,
 });
+
+const success = ref<boolean>(false);
+const successMsg = ref<string>("");
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+const actAsLink = ref<boolean>(false);
+const modalVisible = ref<boolean>(false);
+const modalContent = ref<string>("");
+
+async function approveJob() {
+  const response = await fetch(
+    `${config.apiRoot}/job/${props.jobID}/approve`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiTokenStore.getApiToken(),
+      },
+    },
+  );
+
+  // this.$store.dispatch("setApiToken", msg.token);
+  if (response.ok) {
+    const msg = await response.json();
+    success.value = true;
+    successMsg.value = "Job successfully approved!";
+    error.value = false;
+    close();
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status === 401) {
+      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+    } else {
+      errorMsg.value = "Error in processing approval. Please try again later.";
+    }
+  }
+}
+
+async function rejectJob() {
+  const response = await fetch(
+    `${config.apiRoot}/job/${props.jobID}/reject`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": apiTokenStore.getApiToken(),
+      },
+    },
+  );
+
+  // this.$store.dispatch("setApiToken", msg.token);
+  if (response.ok) {
+    const msg = await response.json();
+    success.value = true;
+    successMsg.value = "Job successfully rejected!";
+    error.value = false;
+    close();
+  } else {
+    error.value = true;
+    if (response.status === 401) {
+      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
+    } else {
+      errorMsg.value = "Error in processing rejection. Please try again later.";
+    }
+  }
+}
+
+function close() {
+  setTimeout(() => {
+    this.$destroy();
+    this.$el.parentNode!.removeChild(this.$el);
+  }, 5000);
+}
+
+async function showJobModal() {
+  modalVisible.value = true;
+  modalContent.value = "Test.";
+}
+
+async function closeJobModal() {
+  modalVisible.value = false;
+  modalContent.value = "";
+}
 </script>
 
 <style scoped lang="scss">

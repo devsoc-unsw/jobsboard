@@ -4,17 +4,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
 
-export default Vue.extend({
-  name: "BackButton",
-  methods: {
-    back() {
-      this.$router.go(-1);
-    },
-  },
-});
+const router = useRouter();
+
+function back() {
+  router.go(-1);
+}
 </script>
 
 <style scoped lang="scss">

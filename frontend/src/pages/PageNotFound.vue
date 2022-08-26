@@ -19,31 +19,21 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import StudentViewTemplate from "../components/StudentViewTemplate.vue";
-import Logo from "@/assets/logos/csesocgreyblue.png";
 import Robot from "@/assets/misc/404_Robot.png";
 
-export default Vue.extend({
-  name: "PageNotFound",
-  components: {
-    StudentViewTemplate,
-  },
-  data() {
-    return {
-      Logo: Logo,
-      Robot: Robot,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    
-    setTimeout(() => {
-      this.$router.push("/");
-    }, 5000);
-  }
+const router = useRouter();
+
+onMounted(() => {
+  // Change the page title
+  document.title = this.$route.meta.title;
+  
+  setTimeout(() => {
+    router.push("/");
+  }, 5000);
 });
 </script>
 
