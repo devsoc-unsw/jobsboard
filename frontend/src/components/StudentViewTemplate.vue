@@ -28,19 +28,15 @@ const props = defineProps({
   notLoggedIn: {
     type: Boolean,
     default: false
-  },
-  disableBack: {
-    type: Boolean,
-    default: false
   }
 });
 
-onMounted(() => {
+onMounted(async () => {
+  // console.log(props.notLoggedIn)
   if (props.notLoggedIn === true) {
     return;
-  }
-  else if (apiTokenStore.getApiToken() === undefined) {
-    router.push("/login");
+  } else if (apiTokenStore.getApiToken() === undefined) {
+    router.push("/");
   }
 });
 </script>
@@ -49,7 +45,6 @@ onMounted(() => {
 .content {
   background: #f6f9fc;
   color: $black;
-  /* padding: 0.5rem; */
   min-height: 100%;
   flex: 1 1 auto;
   padding: 2rem 0 0 0;

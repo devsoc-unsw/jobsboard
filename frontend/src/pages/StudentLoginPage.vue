@@ -12,7 +12,7 @@
         alertType="error"
         alertMsg="Invalid credentials. Please try again."
         :isOpen="isAlertOpen"
-        :handleClose="() => { this.isAlertOpen = false }"
+        :handleClose="() => { isAlertOpen = false }"
       />
       
       <!-- zId Input -->
@@ -81,62 +81,56 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useApiTokenStore } from "@/store/apiToken";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Alert from "@/components/Alert.vue";
 import config from "@/config/config";
 import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
-export default {
-  name: "StudentLoginPage",
-  components: {
-    StudentViewTemplate,
-    Button,
-    StandardButton,
-    Breadcrumbs,
-    Alert
-  },
-  data() {
-    return {
-      zID: "",
-      password: "",
-      isAlertOpen: false,
-    };
-  },
-  async mounted() {
-    // Change the page title 
-    document.title = this.$route.meta.title;
-    this.$store.dispatch("clearApiToken");
-  },
-  methods: {
-    async performLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/student`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          zID: this.zID,
-          password: this.password,
-        }),
-      });
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
-        this.isAlertOpen = false;
-        this.$router.push("/jobs");
-      } else {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
-        this.isAlertOpen = true;
-      }
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const zID = ref<string>("");
+const password = ref<string>("");
+const isAlertOpen = ref<boolean>(false);
+
+onMounted(async () => {
+  // Change the page title 
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
+});
+
+async function performLogin() {
+  const response = await fetch(
+    `${config.apiRoot}/authenticate/student`, 
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  },
+    // mode: "no-cors",
+    body: JSON.stringify({
+      zID: zID.value,
+      password: password.value,
+    }),
+  });
+
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    isAlertOpen.value = false;
+    router.push("/jobs");
+  } else { 
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+    isAlertOpen.value = true;
+  }
 }
 </script>
 

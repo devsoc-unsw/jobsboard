@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center p-4 mb-8 mt-2 rounded-lg" :class="getContainerStyles" role="alert" v-if="isOpen">
+  <div class="flex items-center p-4 mb-8 mt-2 rounded-lg" :class="getContainerStyles()" role="alert" v-if="isOpen">
     <font-awesome-icon icon="circle-info" :class="getTextStyles"/>
     <div class="ml-3 text-md" :class="getTextStyles">
       {{ alertMsg }}
@@ -11,29 +11,38 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+<script setup lang="ts">
 
-export default Vue.extend({
-  name: "Alert",
-  props: {
-    alertType: String, // "error" | "success"
-    alertMsg: String,
-    isOpen: Boolean,
-    handleClose: Function
+const props = defineProps({
+  alertType: {
+    type: String, // "error" | "success"
+    required: true
   },
-  computed: {
-    getContainerStyles() {
-      return this.alertType === "error" ? "errorContainer" : "successContainer";
-    },
-    getTextStyles() {
-      return this.alertType === "error" ? "errorText" : "successText";
-    },
-    getButtonStyles() {
-      return this.alertType === "error" ? "errorButton" : "successButton";
-    }
+  alertMsg: {
+    type: String,
+    required: false
+  },
+  isOpen: {
+    type: Boolean,
+    required: true,
+  },
+  handleClose: {
+    // TODO: create an actual type for this
+    type: Function,
+    required: true
   }
 });
+
+function getContainerStyles() {
+  return props.alertType === "error" ? "errorContainer" : "successContainer";
+}
+function getTextStyles() {
+  return props.alertType === "error" ? "errorText" : "successText";
+}
+function getButtonStyles() {
+  return props.alertType === "error" ? "errorButton" : "successButton";
+}
+
 </script>
 
 <style scoped lang="scss">
