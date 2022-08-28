@@ -172,16 +172,16 @@ export default class StudentFunctions {
           .getMany();
       }, `Couldn't query for featured jobs`);
 
-      // If more than 4 featured jobs, return the first 4 else return all
+      // check if there are enough jobs to feature 
       if (featuredJobs.length >= 4) {
         featuredJobs = featuredJobs.slice(0, 4);
       } else {
         featuredJobs = featuredJobs.slice(0, featuredJobs.length);
       }
       
-      // Select and Join company.name
+      // select and join company.name
       featuredJobs = featuredJobs.map((job: Job) => {
-        // If no jobs are found, return null
+        // if no jobs are found, return null
         if (job === null) {
           return null;
         }
