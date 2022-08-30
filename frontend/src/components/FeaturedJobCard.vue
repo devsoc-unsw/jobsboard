@@ -4,7 +4,7 @@
       <img :src="imagePath" class="select-none pointer-events-none object-contain w-full" alt="sponsor logo"/>
     </div>
     <h3 class="text-xl font-bold mx-4 mb-4">{{ jobTitle }}</h3>
-    <div class="flex flex-col m-0 justify-evenly items-center mx-5 my-2 xs:flex-row">
+    <div class="flex flex-row m-0 justify-evenly items-center mx-5 my-2 xs:flex-col">
       <div v-for="(tag, idx) in jobTag" class="flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base" :key="idx">{{ tag }}</div>
     </div>
     <p class="text-base m-0 py-4 px-5 text-left text-jb-placeholder">{{ jobDescription }}</p>

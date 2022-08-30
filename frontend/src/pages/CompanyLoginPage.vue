@@ -3,7 +3,7 @@
     <Breadcrumbs />
     <div class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="font-bold text-3xl text-jb-headings">Company Login</h1>
-      <p class="text-lg text-jb-subheadings my-4 mx-8 sm:mx-[18%]">
+      <p class="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
         Enter your email in the format example@company.com and your password.
       </p>
 
@@ -16,7 +16,7 @@
       />
 
       <!-- Email Input -->
-      <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
           name="email"
           id="email"
@@ -38,13 +38,13 @@
       </div>
 
       <!-- Password Input -->
-      <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
           name="password" 
           id="password" 
           v-model="password" 
           type="password"
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
           @keyup.enter="performCompanyLogin()" 
           required 
         />
@@ -132,6 +132,8 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
     this.$store.dispatch("clearApiToken");
   },
   methods: {

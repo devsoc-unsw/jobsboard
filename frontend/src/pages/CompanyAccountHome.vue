@@ -46,6 +46,10 @@ export default Vue.extend({
       this.$router.push("/company/jobs/manage");
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 

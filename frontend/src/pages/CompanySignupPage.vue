@@ -4,7 +4,7 @@
     <Breadcrumbs />
     <main class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="text-jb-headings font-bold text-3xl">Company Sign Up</h1>
-      <p class="text-jb-subheadings text-base my-4 mx-8 sm:mx-[18%]">
+      <p class="text-jb-subheadings text-base my-4 mx-[18%] sm:mx-8">
         Enter your email address in the format recruiting@company.com and 
       </p>
 
@@ -167,6 +167,10 @@ export default Vue.extend({
       }
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 

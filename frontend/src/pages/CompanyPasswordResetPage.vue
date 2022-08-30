@@ -3,7 +3,7 @@
     <Breadcrumbs />
     <main class="h-full flex flex-col justify-center items-center py-16">
       <h1 class="text-jb-headings font-bold text-3xl">Reset Your Password</h1>
-      <p class="text-jb-subheadings text-base my-4 mx-8 sm:mx-[18%]">Please enter your new password. </p>
+      <p class="text-jb-subheadings text-base my-4 mx-[18%] sm:mx-8">Please enter your new password. </p>
 
       <!-- Success/Error Alert -->
       <Alert 
@@ -14,13 +14,13 @@
       />
 
       <!-- New Password Input -->
-      <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
           name="newPassword" 
           id="newPassword"
           v-model="newPassword" 
           type="password"
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
           @keyup.enter="performCompanyPasswordReset()" 
           required 
         />
@@ -36,13 +36,13 @@
       </div>
 
       <!-- Confirm Password Input -->
-      <div class="w-4/5 relative group mt-4 mb-6 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
           name="confirmPassword" 
           id="confirmPassword"
           v-model="confirmPassword" 
           type="password"
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
           @keyup.enter="performCompanyPasswordReset()" 
           required 
         />
@@ -141,6 +141,10 @@ export default Vue.extend({
       }
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 

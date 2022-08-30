@@ -8,7 +8,7 @@
     :handleClose="() => { this.isAlertOpen = false }"
   />
   <div class="flex flex-row justify-center h-screen px-8">
-    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-scroll shadow-card sm:flex">
+    <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:flex">
       <h2
         class="font-bold text-xl text-jb-headings" 
         v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
@@ -30,8 +30,8 @@
         />
       </div>
     </div>
-    <div class="flex flex-col items-center w-full h-full sm:w-3/4">
-      <div class="flex flex-col p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-row">
+    <div class="flex flex-col items-center w-3/4 h-full sm:w-full">
+      <div class="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
         <div class="flex flex-col mr-8 self-center">
           <!-- TODO: to be replaced with company logo -->
           <font-awesome-icon icon="building" size="10x" class="mb-2" />
@@ -129,7 +129,7 @@
           </li>
         </ul>
       </div>
-      <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-scroll shadow-card">
+      <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-y-auto shadow-card">
         <p v-if="this.isJobDescriptionShown" v-html="this.description"></p>
         <p v-else v-html="this.additionalInfo"></p>
       </div>
@@ -212,6 +212,10 @@ export default Vue.extend({
       */
       if (response.ok) {
         const msg = await response.json();
+
+        // Change the page title
+        document.title = `${msg.job.role} | ${msg.job.company.name} | Jobs Board`;
+
         this.role = msg.job.role;
         this.company = msg.job.company.name;
         this.description = msg.job.description;

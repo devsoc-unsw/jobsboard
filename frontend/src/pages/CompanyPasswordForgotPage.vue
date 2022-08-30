@@ -16,13 +16,13 @@
       />
 
       <!-- Email Input -->
-      <div class="w-4/5 relative group mt-4 mb-8 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <div class="w-1/4 relative group mt-4 mb-8 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
           name="email"
           id="email"
           v-model="email"
           type="text"
-          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
+          class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
           @keyup.enter="performCompanyPasswordForgot()"
           required
         />
@@ -41,8 +41,8 @@
         <p class="p-4 text-white">Forgot Password</p>
       </Button>
 
-      <div class="flex flex-col justify-evenly items-center pt-12 w-4/5 sm:w-1/2 sm:flex-row md:w-2/5 xl:w-1/4">
-        <p class="flex flex-col text-jb-subheadings pb-4 sm:pb-0">
+      <div class="flex flex-row justify-evenly items-center pt-12 w-1/4 sm:flex-col xl:w-2/5 md:w-1/2">
+        <p class="flex flex-col text-jb-subheadings pb-0 sm:pb-4">
           Not a company? 
           <router-link to="/login/student" class="text-jb-textlink font-bold">Student Login</router-link>
         </p>
@@ -122,6 +122,10 @@ export default Vue.extend({
       }
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 </script>
 
