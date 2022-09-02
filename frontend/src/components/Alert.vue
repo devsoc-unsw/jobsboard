@@ -4,7 +4,7 @@
     <div class="ml-3 text-md" :class="getTextStyles">
       {{ alertMsg }}
     </div>
-    <button @click="handleClose" type="button" class="ml-2 -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex justify-center items-center h-8 w-8" :class="getButtonStyles" aria-label="Close">
+    <button @click="handleClose()" type="button" class="ml-2 -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex justify-center items-center h-8 w-8" :class="getButtonStyles" aria-label="Close">
       <span class="sr-only">Close</span>
       <font-awesome-icon icon="xmark" :class="getTextStyles"/>
     </button>
@@ -27,7 +27,6 @@ const props = defineProps({
     required: true,
   },
   handleClose: {
-    // TODO: create an actual type for this
     type: Function,
     required: true
   }

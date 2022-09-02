@@ -38,7 +38,7 @@
           <button
             class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
               shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
-            @click="() => window.open(applicationLink)"
+            @click="() => openLink"
           >
             Apply
           </button>
@@ -71,19 +71,20 @@
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="graduation-cap" class="mr-5 w-7" />
-            <b>Required WAM:</b> {{ wamRequirements }}
+            <b>Required WAM:</b> 
+            {{ wamRequirements }}
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="address-card" class="mr-5 w-7" />
             <b>
               {{
-                ["all"].every((val, idx) => val === workingRights[idx])
+                ["all"].every((val, idx) => val === workingRights)
                   ? "No required working rights specified for this job listing."
                   : "Must have one of the following working rights in Australia:"
               }}
             </b>
             <ul
-              v-if="!['all'].every((val, idx) => val === workingRights[idx])"
+              v-if="!['all'].every((val, idx) => val === workingRights)"
               class="list-disc list-inside ml-12"
             >
               <li v-for="workingRight in workingRights" :key="workingRight">{{ workingRight }}</li>
@@ -93,13 +94,13 @@
             <font-awesome-icon icon="user" class="mr-5 w-7" />
             <b>
               {{
-                ["all"].every((val, idx) => val === studentDemographic[idx])
+                ["all"].every((val, idx) => val === studentDemographic)
                   ? "This job listing is open to students at any stage of their degree."
                   : "This job listing is open to only the following students:"
               }}
             </b>
             <ul
-              v-if="!['all'].every((val, idx) => val === studentDemographic[idx])"
+              v-if="!['all'].every((val, idx) => val === studentDemographic)"
               class="list-disc list-inside ml-12"
             >
               <li v-for="studentType in studentDemographic" :key="studentType">{{ studentType }}</li>
@@ -153,6 +154,7 @@ import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } 
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
+let currentRoute = ref<any>('');
 
 const companyID = ref<string>('');
 const role = ref<string>('');
@@ -163,9 +165,9 @@ const jobs = ref<any[]>([]);
 const location = ref<string>('');
 const applicationLink = ref<string>('');
 const jobMode = ref<keyof typeof JobMode>();
-const studentDemographic = ref<typeof StudentDemographic>();
+const studentDemographic = ref<keyof typeof StudentDemographic>();
 const jobType = ref<keyof typeof JobType>();
-const workingRights = ref<typeof WorkingRights>();
+const workingRights = ref<keyof typeof WorkingRights>();
 const additionalInfo = ref<string>('');
 const wamRequirements = ref<keyof typeof WamRequirements>();
 const isPaid = ref<boolean>(true);
@@ -256,16 +258,14 @@ async function fetchJob() {
 }
 
 onMounted(() => {
+  // Not sure how to replace this with the watch() method for Vue 3
+  currentRoute = useRoute().params.jobID as string;
   fetchJob();
 });
 
-export default Vue.extend({
-  watch: {
-    '$route.params.jobID': function(id) {
-      this.fetchJob()
-    },
-  },
-});
+function openLink() {
+  window.open(applicationLink.value, "_blank");
+}
 </script>
 
 <style scoped lang="scss">
