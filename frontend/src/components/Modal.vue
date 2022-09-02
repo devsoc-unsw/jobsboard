@@ -95,35 +95,41 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { ref } from "vue";
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from "@/constants/job-fields";
 
-  const jobModeObject = ref(JobMode);
-  const StuDemoObject = ref(StudentDemographic);
-  const JobTypeObject = ref(JobType);
-  const WamObject = ref(WamRequirements);
-  const WrObject = ref(WorkingRights);
+const jobModeObject = ref(JobMode);
+const StuDemoObject = ref(StudentDemographic);
+const JobTypeObject = ref(JobType);
+const WamObject = ref(WamRequirements);
+const WrObject = ref(WorkingRights);
 
-  function modalClose() {
-    this.$emit("closeCallback");
-  };
-
-  const props = defineProps({
-    jobTitle: {type: String},
+export default ({
+  data() {
+    return {
+      jobModeObject: JobMode,
+      StuDemoObject: StudentDemographic,
+      JobTypeObject: JobType,
+      WamObject: WamRequirements,
+      WrObject: WorkingRights,
+    }
+  },
+  props: {
+    jobTitle: String,
     jobDescription: String,
     applicationLink: String,
     expiryDate: String,
     isPaidPosition: String,
     jobType: String,
-    jobMode: {type: String },
+    jobMode: String,
     workingRights: Array,
     studentDemographic: Array,
     wamRequirements: String,
     additionalInfo: String,
     closeCallback: Function, 
-  });
-
+  },
+});
 </script>
 
 <style scoped lang="scss">

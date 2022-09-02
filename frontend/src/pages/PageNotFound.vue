@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import StudentViewTemplate from "../components/StudentViewTemplate.vue";
 import Robot from "@/assets/misc/404_Robot.png";
 
@@ -29,7 +29,7 @@ const router = useRouter();
 
 onMounted(() => {
   // Change the page title
-  document.title = this.$route.meta.title;
+  document.title = useRoute().meta.title;
   
   setTimeout(() => {
     router.push("/");

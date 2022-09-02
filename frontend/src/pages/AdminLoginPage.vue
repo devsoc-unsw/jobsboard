@@ -79,20 +79,20 @@ import { ref, onMounted } from 'vue';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Alert from "@/components/Alert.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-
-const apiTokenStore = useApiTokenStore();
-const router = useRouter();
 
 // config
 import config from '@/config/config';
 
 onMounted(() => {
   // Change the page title
-  document.title = this.$route.meta.title;
+  document.title = useRoute().meta.title;
   apiTokenStore.clearApiToken();
 });
+
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
 // set up component variables
 const username = ref<string>("");
@@ -112,12 +112,13 @@ async function performAdminLogin() {
     }),
   });
 
-  const msg = await response.json();
-  apiTokenStore.setApiToken(msg.token);
   if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
     isAlertOpen.value = false;
     router.push("/admin/home");
   } else {
+    console.log('here')
     window.scrollTo({
       top: 0,
       behavior: "smooth",

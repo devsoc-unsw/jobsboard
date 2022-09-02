@@ -8,14 +8,14 @@
         <div class="modalHeading">
           Role: 
         </div>
-        {{ this.role }}
+        {{ role }}
       </div>
 
       <div class="modalGroup">
         <div class="modalHeading">
           Job Description: 
         </div>
-        <p v-html="this.description"> </p>
+        <p v-html="description"> </p>
       </div>
 
       <div class="modalGroup">
@@ -23,9 +23,9 @@
           Application Link: 
         </div>
         <a
-          :href="this.applicationLink"
+          :href="applicationLink"
         >
-          {{ this.applicationLink }}
+          {{ applicationLink }}
         </a>
       </div>
     </Modal>
@@ -98,7 +98,7 @@ async function deleteJob() {
     headers: {
       "Content-Type": "application/json",
       "Authorization": apiTokenStore.getApiToken(),
-    },
+    } as HeadersInit,
   });
 
   const receivedResponse = response as Response;
@@ -132,15 +132,11 @@ function close() {
 
 <style scoped lang="scss">
 .jobsBox {
-  // width: 75%;
   background: $white;
-  /* padding: 10%; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: left;
-  /* border-radius: 0.2rem; */
-  /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
   &:hover {
     background: rgba(0, 0, 0, 0.05);

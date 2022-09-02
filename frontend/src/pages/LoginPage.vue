@@ -26,12 +26,13 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
+import { useRouter, useRoute } from 'vue-router';
+
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
-import { onMounted } from "vue";
-import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
@@ -44,7 +45,7 @@ function toCompanyLogin() {
 
 onMounted(() => {
   // Change the page title
-  document.title = this.$route.meta.title;
+  document.title = useRoute().meta.title;
 });
 </script>
 

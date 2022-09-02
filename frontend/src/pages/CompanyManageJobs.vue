@@ -57,7 +57,7 @@ const error = ref<boolean>(false);
 const errorMsg = ref<string>("");
 const success = ref<boolean>(false);
 const successMsg = ref<string>("");
-const jobs = ref([]);
+const jobs = ref<any>([]);
 
 function internalErrorCallback(msg: string) {
   error.value = true;
@@ -79,7 +79,7 @@ onMounted(async () => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": apiTokenStore.getApiToken(),
-      },
+      } as HeadersInit,
     }
   );
 
@@ -98,7 +98,7 @@ onMounted(async () => {
   } else {
     error.value = true;
     window.scrollTo(0, 10);
-    if (response.status == 401) {
+    if (response.status === 401) {
       errorMsg.value = "Login expired. Redirecting to login page.";
       setTimeout(() => {
         router.push("/login/company");

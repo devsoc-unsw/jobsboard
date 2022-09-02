@@ -12,7 +12,7 @@
           Coming soon
         </span>
       </div>
-      <div v-if="!apiToken">
+      <div v-if="apiToken === undefined">
         <button 
           class="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
@@ -40,20 +40,22 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
+
 import logo from "@/assets/logos/csesocwhite.png";
 import moon from "@/assets/misc/moon.svg";
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const apiToken = ref(apiTokenStore.getApiToken());
+const apiToken = ref<string | undefined>(apiTokenStore.getApiToken());
 
 onMounted(async () => {
   setTimeout(() => {
-    if (apiTokenStore.getApiToken()) {
+    if (!apiTokenStore.getApiToken()) {
+      console.log('herer')
       apiToken.value = undefined;
     }
-  }, 100);
+  }, 10);
 })
 
 function logOut() {

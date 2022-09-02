@@ -25,14 +25,14 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import { ref, onMounted } from 'vue';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleJobManage from "@/components/SingleJobManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import { useRouter } from 'vue-router';
-import { useApiTokenStore } from '@/store/apiToken';
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
@@ -40,19 +40,19 @@ const apiTokenStore = useApiTokenStore();
 const error = ref<boolean>(false);
 const errorMsg = ref<string>("");
 // TODO: associate a type with this!
-const jobs = ref([]);
+const jobs = ref<any>([]);
 const success = ref<boolean>(false);
 
 onMounted(async () => {
   // Change the page title
-  document.title = this.$route.meta.title;
+  document.title = useRoute().meta.title;
 
   const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Authorization": apiTokenStore.getApiToken(),
-    },
+    } as HeadersInit,
   });
 
   if (response.ok) {

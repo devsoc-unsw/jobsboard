@@ -238,8 +238,8 @@
 import { ref, onMounted } from 'vue';
 
 // quilljs related 
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
 // import { quillEditor } from 'vue-quill-editor';
 
 // components
@@ -299,7 +299,7 @@ onMounted(async () => {
       headers: {
         "content-type": "application/json",
         "authorization": apiTokenStore.getApiToken(),
-      },
+      } as HeadersInit,
       // mode: "no-cors",
     },
   );
@@ -351,7 +351,7 @@ async function submitJobPost() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": apiTokenStore.getApiToken(),
-      },
+      } as HeadersInit,
       // mode: "no-cors",
       body: JSON.stringify({
         role: role.value,

@@ -12,7 +12,7 @@
         alertType="error" 
         alertMsg="Invalid credentials. Please try again."
         :isOpen="isAlertOpen"
-        :handleClose="() => { this.isAlertOpen = false }"
+        :handleClose="() => { isAlertOpen = false }"
       />
 
       <!-- Email Input -->
@@ -103,7 +103,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Button from "@/components/buttons/button.vue";
@@ -123,7 +123,7 @@ let isAlertOpen = ref<boolean>(false);
 
 onMounted(async () => {
   // Change the page title
-    document.title = this.$route.meta.title;
+  document.title = useRoute().meta.title;
   apiTokenStore.clearApiToken();
 });
 

@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
@@ -57,12 +56,12 @@ const error = ref<boolean>(false);
 const errorMsg = ref<string>("");
 
 async function verifyCompany() {
-  const response = await fetch(`${config.apiRoot}/admin/company/${this.companyAccountID}/verify`, {
+  const response = await fetch(`${config.apiRoot}/admin/company/${props.companyAccountID}/verify`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
       "Authorization": apiTokenStore.getApiToken(),
-    },
+    } as HeadersInit,
   });
 
   // this.$store.dispatch("setApiToken", msg.token);

@@ -246,8 +246,6 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
 
-const apiTokenStore = useApiTokenStore();
-const router = useRouter();
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
@@ -259,7 +257,10 @@ import Alert from "@/components/Alert.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
-import config from "@/config/config";
+import config from '@/config/config';
+
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
 const editorOptions = {
   placeholder: 'Enter the job description...',
@@ -305,7 +306,7 @@ async function submitJobPost() {
     headers: {
       "Content-Type": "application/json",
       "Authorization": apiTokenStore.getApiToken(),
-    },
+    } as HeadersInit,
     // mode: "no-cors",
     body: JSON.stringify({
       role: role.value,

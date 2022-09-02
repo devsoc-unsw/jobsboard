@@ -2,7 +2,7 @@
   <main>
     <div class="flex flex-col min-h-full">
       <div class="relative">
-        <Header class="header" />
+        <Header class="header"/>
       </div>
       <div class="relative overflow-x-clip">
         <img 

@@ -25,25 +25,25 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleCompanyManage from "@/components/SingleCompanyManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import { useApiTokenStore } from '@/store/apiToken';
-import { useRouter } from 'vue-router';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
 const error = ref<boolean>(false);
 const errorMsg = ref<string>("");
-const companies = ref([]);
+const companies = ref<any>([]);
 const success = ref<boolean>(false);
 
 onMounted(async () => {
   // Change the page title
-  document.title = this.$route.meta.title;
+  document.title = useRoute().meta.title;
 
   const response = await fetch(
     `${config.apiRoot}/admin/pending/companies`,
@@ -52,7 +52,7 @@ onMounted(async () => {
       headers: {
         "Content-Type": "application/json",
         "Authorization": apiTokenStore.getApiToken(),
-      },
+      } as HeadersInit,
     },
   );
 

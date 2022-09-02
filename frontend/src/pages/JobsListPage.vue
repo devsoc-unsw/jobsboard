@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate disableBack>
+  <StudentViewTemplate>
     <Breadcrumbs />
     <div v-if="error">
       <br/>
@@ -29,95 +29,83 @@
         />
       </div>
     </div>
-    <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>
+    <!-- <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/> -->
     <br />
   </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useApiTokenStore } from "@/store/apiToken";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger.vue";
+// import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import config from "@/config/config";
 
-export default Vue.extend({
-  name: "JobsListPage",
-  components: {
-    StudentViewTemplate,
-    JobListingMinimal,
-    ErrorBox,
-    LoggedInTemplate,
-    InfiniteScrollTrigger,
-    Breadcrumbs
-  },
-  data() {
-    return {
-      error: false,
-      errorMsg: "",
-      jobs: [] as any[],
-      loadMoreJobsLock: false,
-    };
-  },
-  methods: {
-    async loadMoreJobs() {
-      const sleep = (milliseconds: number) => { 
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
-      }
-      while (this.loadMoreJobsLock) {
-        await sleep(1000);
-      }
-      this.loadMoreJobsLock = true;
-      // determine whether there is an API key present and redirect if not present
-      // load the jobs using the api token
-      const response = await fetch(`${config.apiRoot}/jobs/${this.jobs.length}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": this.$store.getters.getApiToken,
-          },
-        });
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      /*
-      if (msg.token) {
-        this.$store.dispatch("setApiToken", msg.token);
-      }
-      */
-      if (response.ok) {
-        const msg = await response.json();
-        this.jobs = [... this.jobs, ... msg.jobs];
-      } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login/company");
-          }, 3000);
-        } else {
-          this.errorMsg = "Unable to load jobs at this time. Please try again later.";
-        }
-        this.jobs = [];
-      }
-      this.loadMoreJobsLock = false;
-    }
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  }
+const error = ref<boolean>(false);
+const errorMsg = ref<string>("");
+const jobs = ref<any[]>([]);
+const loadMoreJobsLock = ref<boolean>(false);
+
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+
+  loadMoreJobs();
 });
+
+async function loadMoreJobs() {
+  const sleep = (milliseconds: number) => { 
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+  }
+
+  while (loadMoreJobsLock.value == true) {
+    await sleep(1000);
+  }
+
+  loadMoreJobsLock.value = true;
+  // determine whether there is an API key present and redirect if not present
+  // load the jobs using the api token
+  const response = await fetch(`${config.apiRoot}/jobs/${jobs.value.length}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
+
+  if (response.ok) {
+    const msg = await response.json();
+    jobs.value = [... jobs.value, ... msg.jobs];
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status == 401) {
+      errorMsg.value = "Login expired. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login/company");
+      }, 3000);
+    } else {
+      errorMsg.value = "Unable to load jobs at this time. Please try again later.";
+    }
+    jobs.value = [];
+  }
+  loadMoreJobsLock.value = false;
+}
 </script>
 
 <style scoped lang="scss">
 .jobsBox {
   width: 75%;
   margin: auto;
-  /* padding: 2rem; */
 }
 
 @media screen and (min-width: 900px) {
@@ -127,9 +115,6 @@ export default Vue.extend({
   }
   .searchBar {
     margin-bottom: 0;
-  }
-  .content {
-    /* padding: 2rem; */
   }
   .contentWidth {
     width: 70%;

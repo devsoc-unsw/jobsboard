@@ -3,25 +3,25 @@
   <StudentViewTemplate>
   <Alert
     alertType="error"
-    :alertMsg="this.alertMsg"
-    :isOpen="this.isAlertOpen"
-    :handleClose="() => { this.isAlertOpen = false }"
+    :alertMsg="alertMsg"
+    :isOpen="isAlertOpen"
+    :handleClose="() => { isAlertOpen = false }"
   />
   <div class="flex flex-row justify-center h-screen px-8">
     <div class="hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:flex">
       <h2
         class="font-bold text-xl text-jb-headings" 
-        v-bind:class="[ this.jobs.length === 0 ? 'my-auto' : 'mb-4']"
+        v-bind:class="[ jobs.length === 0 ? 'my-auto' : 'mb-4']"
       >
         {{
-          this.jobs.length === 0
+          jobs.length === 0
             ? "There are no other jobs from this company."
             : "Other jobs from this company"
         }}
       </h2>
       <div>
         <JobListingMinimal
-          v-for="job in this.jobs"
+          v-for="job in jobs"
           :key="job.key"
           :jobId="job.id"
           :role="job.role"
@@ -38,7 +38,7 @@
           <button
             class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
               shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
-            @click="() => window.open(this.applicationLink)"
+            @click="() => window.open(applicationLink)"
           >
             Apply
           </button>
@@ -55,11 +55,11 @@
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
-            <b>Job Mode:</b> {{ jobModeObject[jobMode] }}
+            <b>Job Mode:</b> {{ jobMode }}
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
-            <b>Job Type:</b> {{ JobTypeObject[jobType] }}
+            <b>Job Type:</b> {{ jobType }}
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="calendar" class="mr-5 w-7" />
@@ -71,38 +71,38 @@
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="graduation-cap" class="mr-5 w-7" />
-            <b>Required WAM:</b> {{ WamObject[wamRequirements] }}
+            <b>Required WAM:</b> {{ wamRequirements }}
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="address-card" class="mr-5 w-7" />
             <b>
               {{
-                ["all"].every((val, idx) => val === this.workingRights[idx])
+                ["all"].every((val, idx) => val === workingRights[idx])
                   ? "No required working rights specified for this job listing."
                   : "Must have one of the following working rights in Australia:"
               }}
             </b>
             <ul
-              v-if="!['all'].every((val, idx) => val === this.workingRights[idx])"
+              v-if="!['all'].every((val, idx) => val === workingRights[idx])"
               class="list-disc list-inside ml-12"
             >
-              <li v-for="workingRight in workingRights" :key="workingRight">{{ WrObject[workingRight] }}</li>
+              <li v-for="workingRight in workingRights" :key="workingRight">{{ workingRight }}</li>
             </ul>
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="user" class="mr-5 w-7" />
             <b>
               {{
-                ["all"].every((val, idx) => val === this.studentDemographic[idx])
+                ["all"].every((val, idx) => val === studentDemographic[idx])
                   ? "This job listing is open to students at any stage of their degree."
                   : "This job listing is open to only the following students:"
               }}
             </b>
             <ul
-              v-if="!['all'].every((val, idx) => val === this.studentDemographic[idx])"
+              v-if="!['all'].every((val, idx) => val === studentDemographic[idx])"
               class="list-disc list-inside ml-12"
             >
-              <li v-for="studentType in studentDemographic" :key="studentType">{{ StuDemoObject[studentType] }}</li>
+              <li v-for="studentType in studentDemographic" :key="studentType">{{ studentType }}</li>
             </ul>
           </span>
         </div>
@@ -130,8 +130,8 @@
         </ul>
       </div>
       <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-y-auto shadow-card">
-        <p v-if="this.isJobDescriptionShown" v-html="this.description"></p>
-        <p v-else v-html="this.additionalInfo"></p>
+        <p v-if="isJobDescriptionShown" v-html="description"></p>
+        <p v-else v-html="additionalInfo"></p>
       </div>
     </div>
   </div>
@@ -139,8 +139,11 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
+
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
@@ -148,142 +151,119 @@ import config from "@/config/config";
 import Alert from "@/components/Alert.vue";
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from "@/constants/job-fields";
 
-export default Vue.extend({
-  name: "JobsListPage",
-  components: {
-    StudentViewTemplate,
-    JobListingMinimal,
-    LoggedInTemplate,
-    Alert,
-  },
-  data() {
-    return {
-      jobID: this.$route.query.job,
-      companyID: "",
-      role: "",
-      company: "",
-      companyDescription: "",
-      description: "",
-      jobs: [],
-      location: "",
-      applicationLink: "",
-      jobMode: "",
-      studentDemographic: [],
-      jobType: "",
-      workingRights: [],
-      additionalInfo: "",
-      wamRequirements: "",
-      isPaid: true,
-      expiryDate: "",
-      alertMsg: "",
-      isAlertOpen: false,
-      jobInfoReady: false,
-      jobModeObject: JobMode,
-      StuDemoObject: StudentDemographic,
-      JobTypeObject: JobType,
-      WamObject: WamRequirements,
-      WrObject: WorkingRights,
-      isJobDescriptionShown: true,
-    };
-  },
-  methods: {
-    async fetchJob() {
-      // determine whether there is an API key present and redirect if not present
-      if (this.$store.getters.getApiToken === undefined) {
-        this.$router.push("/login");
-        return;
-      }
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      const jobID = this.$route.params.jobID;
+const companyID = ref<string>('');
+const role = ref<string>('');
+const company = ref<string>('');
+const companyDescription = ref<string>('');
+const description = ref<string>('');
+const jobs = ref<any[]>([]);
+const location = ref<string>('');
+const applicationLink = ref<string>('');
+const jobMode = ref<keyof typeof JobMode>();
+const studentDemographic = ref<typeof StudentDemographic>();
+const jobType = ref<keyof typeof JobType>();
+const workingRights = ref<typeof WorkingRights>();
+const additionalInfo = ref<string>('');
+const wamRequirements = ref<keyof typeof WamRequirements>();
+const isPaid = ref<boolean>(true);
+const expiryDate = ref<string>('');
+const alertMsg = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+const jobInfoReady = ref<boolean>(false);
+const isJobDescriptionShown = ref<boolean>(true);
 
-      // load the jobs using the api token
-      const response = await fetch(`${config.apiRoot}/job/${jobID}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.$store.getters.getApiToken,
-        },
-      });
+async function fetchJob() {
+  // determine whether there is an API key present and redirect if not present
+  if (apiTokenStore.getApiToken() === undefined) {
+    router.push("/login");
+    return;
+  }
 
-      /*
-      if (msg.token) {
-        this.$store.dispatch("setApiToken", msg.token);
-      }
-      */
-      if (response.ok) {
-        const msg = await response.json();
+  const jobID = useRoute().params.jobID;
 
-        // Change the page title
-        document.title = `${msg.job.role} | ${msg.job.company.name} | Jobs Board`;
+  // load the jobs using the api token
+  const response = await fetch(`${config.apiRoot}/job/${jobID}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
 
-        this.role = msg.job.role;
-        this.company = msg.job.company.name;
-        this.description = msg.job.description;
-        this.companyDescription = msg.job.company.description;
-        this.location = msg.job.company.location;
-        this.companyID = msg.job.company.id;
-        this.applicationLink = msg.job.applicationLink;
-        this.jobMode = msg.job.mode;
-        this.studentDemographic = msg.job.studentDemographic;
-        this.jobType = msg.job.jobType;
-        this.workingRights = msg.job.workingRights;
-        this.additionalInfo = msg.job.additionalInfo === ""
-          ? "<p>This company has not provided any additional information.</p>" : msg.job.additionalInfo;
-        this.wamRequirements = msg.job.wamRequirements;
-        this.isPaid = msg.job.isPaid;
-        this.expiryDate = msg.job.expiry;
-      } else {
-        this.isAlertOpen = true;
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        })
-        if (response.status === 401) {
-          this.alertMsg = "Login expired. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login/company");
-          }, 3000);
-        } else {
-          this.alertMsg = "Unable to load jobs at this time. Please try again later.";
-        }
-      }
+  if (response.ok) {
+    const msg = await response.json();
 
-      const jobResponse = await fetch(`${config.apiRoot}/company/${this.companyID}/jobs`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.$store.getters.getApiToken,
-        },
-      });
+    // Change the page title
+    document.title = `${msg.job.role} | ${msg.job.company.name} | Jobs Board`;
 
-      /*
-      if (companyJobMsg.token) {
-        this.$store.dispatch("setApiToken", companyJobMsg.token);
-      }
-      */
-      if (jobResponse.ok) {
-        const companyJobMsg = await jobResponse.json();
-        // TODO(ad-t): Fix below, as it will always be true
-        this.jobs = companyJobMsg.companyJobs.filter((job: any) => {
-          const jobResultID = parseInt(job.id, 10);
-          const currentJobID = parseInt(jobID, 10);
-          return jobResultID !== currentJobID;
-        });
-      } else {
-        this.isAlertOpen = true;
-        this.alertMsg = "Unable to load company jobs at this time. Please try again later.";
-      }
-
-      this.jobInfoReady = true;
+    role.value = msg.job.role;
+    company.value = msg.job.company.name;
+    description.value = msg.job.description;
+    companyDescription.value = msg.job.company.description;
+    location.value = msg.job.company.location;
+    companyID.value = msg.job.company.id;
+    applicationLink.value = msg.job.applicationLink;
+    jobMode.value = msg.job.mode;
+    studentDemographic.value = msg.job.studentDemographic;
+    jobType.value = msg.job.jobType;
+    workingRights.value = msg.job.workingRights;
+    additionalInfo.value = msg.job.additionalInfo === ""
+      ? "<p>This company has not provided any additional information.</p>" : msg.job.additionalInfo;
+    wamRequirements.value = msg.job.wamRequirements;
+    isPaid.value = msg.job.isPaid;
+    expiryDate.value = msg.job.expiry;
+  } else {
+    isAlertOpen.value = true;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+    if (response.status === 401) {
+      alertMsg.value = "Login expired. Redirecting to login page.";
+      setTimeout(() => {
+        router.push("/login/company");
+      }, 3000);
+    } else {
+      alertMsg.value = "Unable to load jobs at this time. Please try again later.";
     }
-  },
+  }
+
+  const jobResponse = await fetch(`${config.apiRoot}/company/${companyID.value}/jobs`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
+
+  if (jobResponse.ok) {
+    const companyJobMsg = await jobResponse.json();
+    // TODO(ad-t): Fix below, as it will always be true
+    jobs.value = companyJobMsg.companyJobs.filter((job: any) => {
+      const jobResultID = parseInt(job.id, 10);
+      const currentJobID = parseInt(jobID as string, 10);
+      return jobResultID !== currentJobID;
+    });
+  } else {
+    isAlertOpen.value = true;
+    alertMsg.value = "Unable to load company jobs at this time. Please try again later.";
+  }
+
+  jobInfoReady.value = true;
+}
+
+onMounted(() => {
+  fetchJob();
+});
+
+export default Vue.extend({
   watch: {
     '$route.params.jobID': function(id) {
       this.fetchJob()
     },
-  },
-  async mounted() {
-    this.fetchJob();
   },
 });
 </script>

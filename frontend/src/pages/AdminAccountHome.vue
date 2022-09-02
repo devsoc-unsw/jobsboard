@@ -119,7 +119,8 @@ onMounted(async () => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-    },
+      "Authorization": apiTokenStore.getApiToken()
+    } as HeadersInit,
   });
 
   if (response.ok) {
@@ -144,7 +145,8 @@ onMounted(async () => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-    },
+      "Authorization": apiTokenStore.getApiToken()
+    } as HeadersInit,
   });
 
   if (pendingJobsResponse.ok) {

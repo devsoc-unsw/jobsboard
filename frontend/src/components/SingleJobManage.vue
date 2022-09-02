@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref="jobCard">
     <div v-if="success">
       <br/>
       <SuccessBox>
@@ -13,15 +13,12 @@
       </ErrorBox>
     </div>
     <div class="modalWrapper">
-      <Modal 
-        v-if="modalVisible"
-        @closeCallback="closeJobModal()"
-        >
+      <Modal v-if="modalVisible" @closeCallback="closeJobModal()">
         <div class="modalGroup">
           <div class="modalHeading">
             Role: 
           </div>
-      {{ this.role }}
+          {{ props.role }}
         </div>
 
         <div class="modalGroup">
@@ -35,10 +32,8 @@
           <div class="modalHeading">
             Application Link: 
           </div>
-          <a
-            :href="applicationLink"
-            >
-            {{ applicationLink }}
+          <a :href="applicationLink">
+            {{ props.applicationLink }}
           </a>
         </div>
       </Modal>
@@ -73,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, onUnmounted, ref } from 'vue';
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
@@ -106,6 +101,8 @@ const actAsLink = ref<boolean>(false);
 const modalVisible = ref<boolean>(false);
 const modalContent = ref<string>("");
 
+const jobCard = ref(null);
+
 async function approveJob() {
   const response = await fetch(
     `${config.apiRoot}/job/${props.jobID}/approve`,
@@ -114,7 +111,7 @@ async function approveJob() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": apiTokenStore.getApiToken(),
-      },
+      } as HeadersInit,
     },
   );
 
@@ -147,7 +144,7 @@ async function rejectJob() {
       headers: {
         "Content-Type": "application/json",
         "Authorization": apiTokenStore.getApiToken(),
-      },
+      } as HeadersInit,
     },
   );
 
@@ -170,6 +167,10 @@ async function rejectJob() {
     }
   }
 }
+
+onUnmounted(() => {
+  close();
+});
 
 function close() {
   setTimeout(() => {

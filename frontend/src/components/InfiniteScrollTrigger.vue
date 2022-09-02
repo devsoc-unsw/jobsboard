@@ -4,6 +4,7 @@
 
 <script lang="ts">
 // Inspired by: https://www.netguru.com/codestories/infinite-scroll-with-vue.js-and-intersection-observer
+
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 export default Vue.extend({

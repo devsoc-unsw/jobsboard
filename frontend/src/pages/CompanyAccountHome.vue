@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
@@ -34,7 +34,7 @@ const router = useRouter();
 
 onMounted(() => {
   // Change the page title
-  document.title = this.$route.meta.title;
+  document.title = useRoute().meta.title;
 });
 
 function goToCompanyJobAdd() {
