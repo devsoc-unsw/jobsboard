@@ -386,7 +386,7 @@
   </LoggedInTemplate>
 </template>
 
-<script setup>
+<script lang="ts">
 
 // libraries
 import { Vue } from "vue-property-decorator";
@@ -400,7 +400,6 @@ import { quillEditor } from 'vue-quill-editor';
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Modal from "@/components/Modal.vue";
-import JobDescriptionView from "@/components/JobDescriptionView.vue";
 import RichTextEditor from "@/components/RichTextEditor.vue";
 import Alert from "@/components/Alert.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
@@ -415,7 +414,7 @@ export default Vue.extend({
     StudentViewTemplate,
     LoggedInTemplate,
     Modal,
-    JobDescriptionView,
+    // eslint-disable-next-line vue/no-unused-components
     RichTextEditor,
     quillEditor,
     Alert,

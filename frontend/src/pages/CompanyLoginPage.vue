@@ -110,8 +110,6 @@ import { Vue } from "vue-property-decorator";
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import Alert from "@/components/Alert.vue";
 
@@ -122,8 +120,6 @@ export default Vue.extend({
   name: "LoginPage",
   components: {
     StudentViewTemplate,
-    Button,
-    StandardButton,
     Breadcrumbs,
     Alert
   },

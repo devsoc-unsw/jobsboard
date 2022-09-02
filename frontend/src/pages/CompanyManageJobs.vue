@@ -41,9 +41,6 @@
 import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import BackButton from "@/components/buttons/back.vue";
 import CompanyJobManage from "@/components/CompanyJobManage.vue";
 import config from "@/config/config";
 import ErrorBox from "@/components/ErrorBox.vue";
@@ -55,9 +52,6 @@ export default Vue.extend({
   components: {
     StudentViewTemplate,
     LoggedInTemplate,
-    Button,
-    StandardButton,
-    BackButton,
     CompanyJobManage,
     SuccessBox,
     ErrorBox,

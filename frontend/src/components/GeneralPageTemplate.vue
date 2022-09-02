@@ -2,12 +2,8 @@
   <div class="viewport">
     <!-- <div class="header" v-if="loggedIn">
       <div class="logoutDiv">
-        <StandardButton>
-        <Button @callback="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
             Log Out
-        </Button>
-        </StandardButton>
         <br/>
       </div>
       <img class="main-logo" :src="logo" />
@@ -27,8 +23,6 @@
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
 import logo from "@/assets/logos/csesocwhite.png";
 import Header from "@/components/Header.vue";
 import NewFooter from "@/components/NewFooter.vue";
@@ -37,8 +31,6 @@ export default Vue.extend({
   name: "GeneralPageTemplate",
   components: {
     Header,
-    Button,
-    StandardButton,
     NewFooter,
   },
   props: {

@@ -142,7 +142,6 @@
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Blob from "@/assets/misc/Blob.svg";
 import CsesocLogoSmall from "@/assets/logos/CsesocLogoSmall.svg";
 import Header from "@/components/Header.vue";
@@ -157,7 +156,6 @@ export default Vue.extend({
   components: {
     Header,
     NewFooter,
-    StudentViewTemplate,
     FeaturedJobCard,
     SponsorCarousel
   },

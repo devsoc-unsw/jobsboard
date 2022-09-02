@@ -29,7 +29,6 @@ import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleCompanyManage from "@/components/SingleCompanyManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import BackButton from "@/components/buttons/back.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({
@@ -38,7 +37,6 @@ export default Vue.extend({
     StudentViewTemplate,
     SingleCompanyManage,
     LoggedInTemplate,
-    BackButton,
     Breadcrumbs
   },
   data() {

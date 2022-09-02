@@ -2,22 +2,6 @@
   <div class="viewport">
     <div class="stretchyPage">
       <Header />
-      <!-- <div class="navbar">
-        <div class="leftBox">
-          <div v-if="!disableBack">
-            <BackButton />
-          </div>
-        </div>
-        <img class="main-logo-student" :src="logo"/>
-        <div class="rightBox" @click="logOut">
-          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" v-if="!notLoggedIn"/>
-        </div>
-        
-        <div>
-          <input class="searchBar" type="text" placeholder="Search all jobs..."/>
-        </div>
-        
-      </div> -->
       <div class="content">
         <div class="contentWidth">
           <slot />
@@ -32,9 +16,6 @@
 
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
-import Button from "@/components/buttons/button.vue";
-import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
-import BackButton from "@/components/buttons/back.vue";
 import logo from "@/assets/logos/csesocwhite.png";
 import Header from "@/components/Header.vue";
 import NewFooter from "@/components/NewFooter.vue";
@@ -43,10 +24,7 @@ export default Vue.extend({
   name: "StudentViewTemplate",
   components: {
     Header,
-    Button,
-    DarkBlueStandardButton,
     NewFooter,
-    BackButton,
   },
   props: {
     notLoggedIn: {

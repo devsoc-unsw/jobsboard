@@ -129,21 +129,17 @@
             <h3 class="text-l font-medium text-gray-900 dark:text-white">
               Job Description:
             </h3>
-            <!-- eslint-disable vue/no-v-html -->
             <p
               class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left list-inside"
               v-html="jobDescription"
             />
-            <!--eslint-enable-->
             <h3 class="text-l font-medium text-gray-900 dark:text-white">
               Additional Info:
             </h3>
-            <!-- eslint-disable vue/no-v-html -->
             <p
               class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-left list-inside"
               v-html="additionalInfo"
             />
-            <!--eslint-enable-->
           </div>
         </div>
       </div>
@@ -188,11 +184,11 @@ export default Vue.extend({
     },
     workingRights: {
       type: Array,
-      default: []
+      default: () => ([])
     },
     studentDemographic: {
       type: Array,
-      default: []
+      default: () => ([])
     },
     wamRequirements: {
       type: String,
@@ -204,7 +200,7 @@ export default Vue.extend({
     },
     closeCallback: {
       type: Function,
-      default: () => {}
+      default: () => undefined
     }, 
   },
   data() {

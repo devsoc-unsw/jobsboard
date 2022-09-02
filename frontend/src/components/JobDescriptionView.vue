@@ -1,9 +1,10 @@
 <template>
   <div>
-    <p v-for="line in finalDescription">
-      <!-- eslint-disable vue/no-v-html -->
+    <p
+      v-for="(line, idx) in finalDescription"
+      :key="idx"
+    >
       <span v-html="line" />
-      <!--eslint-enable-->
     </p>
   </div>
 </template>

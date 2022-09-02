@@ -15,9 +15,7 @@
         <div class="modalHeading">
           Job Description: 
         </div>
-        <!-- eslint-disable vue/no-v-html -->
         <p v-html="description" />
-        <!--eslint-enable-->
       </div>
 
       <div class="modalGroup">
@@ -85,11 +83,11 @@ export default Vue.extend({
     },
     successCallback: {
       type: Function,
-      default: () => {}
+      default: () => undefined
     },
     errorCallback: {
       type: Function,
-      default: () => {}
+      default: () => undefined
     },
     applicationLink: {
       type: String,

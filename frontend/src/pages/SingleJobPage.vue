@@ -169,7 +169,6 @@
             </ul>
           </div>
           <div class="text-left h-full p-4 bg-white rounded-2xl w-full overflow-y-auto shadow-card">
-            <!-- eslint-disable vue/no-v-html -->
             <p
               v-if="isJobDescriptionShown"
               v-html="description"
@@ -178,7 +177,6 @@
               v-else
               v-html="additionalInfo"
             />
-            <!--eslint-enable-->
           </div>
         </div>
       </div>

@@ -81,7 +81,6 @@ import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Alert from "@/components/Alert.vue";
 import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 // config
@@ -93,7 +92,6 @@ export default Vue.extend({
     StudentViewTemplate,
     Alert,
     Button,
-    StandardButton,
     Breadcrumbs
   },
   data() {

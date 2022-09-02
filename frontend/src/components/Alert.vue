@@ -48,7 +48,7 @@ export default Vue.extend({
     isOpen: Boolean,
     handleClose: {
       type: Function,
-      default: () => {}
+      default: () => undefined
     }
   },
   computed: {

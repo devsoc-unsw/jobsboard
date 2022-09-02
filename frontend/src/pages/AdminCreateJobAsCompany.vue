@@ -379,7 +379,7 @@
   </LoggedInTemplate>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 // libraries
 import { Vue } from "vue-property-decorator";
 
@@ -406,6 +406,7 @@ export default Vue.extend({
     LoggedInTemplate,
     Modal,
     quillEditor,
+    // eslint-disable-next-line vue/no-unused-components
     RichTextEditor,
     Alert,
     Breadcrumbs
