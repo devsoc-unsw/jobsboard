@@ -1,26 +1,37 @@
 <template>
   <div>
     <p v-for="line in finalDescription">
-      <span v-html="line"/>
+      <!-- eslint-disable vue/no-v-html -->
+      <span v-html="line" />
+      <!--eslint-enable-->
     </p>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import config from "@/config/config";
+import { Vue } from "vue-property-decorator";
 
 export default Vue.extend({
   name: "JobDescriptionView",
   components: {
   },
   props: {
-    description: String,
+    description: {
+      type: String,
+      default: ""
+    },
   },
   data() {
     return {
       finalDescription: [""],
     };
+  },
+  updated() {
+    // TODO this is causing problems
+    // this.parseText();
+  },
+  mounted() {
+    this.parseText();
   },
   methods: {
     parseText() {
@@ -50,13 +61,6 @@ export default Vue.extend({
         }
       }
     },
-  },
-  updated() {
-    // TODO this is causing problems
-    // this.parseText();
-  },
-  mounted() {
-    this.parseText();
   },
 });
 </script>

@@ -1,44 +1,44 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate loggedIn>
-    <Breadcrumbs />
-    <div class="contentBox">
-      <h1>Manage Jobs</h1>
-      <div v-if="success">
-        <SuccessBox>
-        {{ successMsg }}
-        </SuccessBox>
+    <StudentViewTemplate logged-in>
+      <Breadcrumbs />
+      <div class="contentBox">
+        <h1>Manage Jobs</h1>
+        <div v-if="success">
+          <SuccessBox>
+            {{ successMsg }}
+          </SuccessBox>
+        </div>
+        <div v-else-if="error">
+          <ErrorBox>
+            {{ errorMsg }}
+          </ErrorBox>
+        </div>
+        <div v-if="jobs.length === 1">
+          {{ jobs.length }} Job Found
+        </div>
+        <div v-else>
+          {{ jobs.length }} Jobs Found
+        </div>
+        <div class="jobContainer">
+          <CompanyJobManage
+            v-for="job in jobs"
+            :key="job.key"
+            :job-i-d="job.id"
+            :role="job.role"
+            :description="job.description"
+            :application-link="job.applicationLink"
+            :success-callback="internalSuccessCallback"
+            :error-callback="internalErrorCallback"
+          />
+        </div>
       </div>
-      <div v-else-if="error">
-        <ErrorBox>
-        {{ errorMsg }}
-        </ErrorBox>
-      </div>
-      <div v-if="jobs.length === 1">
-        {{ jobs.length }} Job Found
-      </div>
-      <div v-else>
-        {{ jobs.length }} Jobs Found
-      </div>
-      <div class="jobContainer">
-      <CompanyJobManage
-        v-for="job in jobs"
-        :key="job.key"
-        :jobID="job.id"
-        :role="job.role"
-        :description="job.description"
-        :applicationLink="job.applicationLink"
-        :successCallback="internalSuccessCallback"
-        :errorCallback="internalErrorCallback"
-        />
-      </div>
-    </div>
-  </StudentViewTemplate>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
@@ -73,20 +73,6 @@ export default Vue.extend({
       apiToken: this.$store.getters.getApiToken,
     };
   },
-  methods: {
-    internalErrorCallback(msg: string) {
-      console.log('yuh');
-      this.error = true;
-      this.success = false;
-      this.errorMsg = msg;
-    },
-    internalSuccessCallback(msg: string) {
-      console.log('bruh');
-      this.error = false;
-      this.success = true;
-      this.successMsg = msg;
-    }
-  },
   async mounted() {
     // Change the page title
     document.title = this.$route.meta.title;
@@ -107,7 +93,7 @@ export default Vue.extend({
     const returnedRequest = response as Response;
     if (returnedRequest.ok) {
       const msg = await returnedRequest.json();
-      this.jobs = msg.companyJobs.map((job: any) => {
+      this.jobs = msg.companyJobs.map((job) => {
         return {
           id: job.id,
           role: job.role,
@@ -127,6 +113,20 @@ export default Vue.extend({
       } else {
         this.errorMsg = "Failed to get pending jobs.";
       }
+    }
+  },
+  methods: {
+    internalErrorCallback(msg: string) {
+      console.log('yuh');
+      this.error = true;
+      this.success = false;
+      this.errorMsg = msg;
+    },
+    internalSuccessCallback(msg: string) {
+      console.log('bruh');
+      this.error = false;
+      this.success = true;
+      this.successMsg = msg;
     }
   },
 });

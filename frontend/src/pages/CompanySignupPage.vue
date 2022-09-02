@@ -1,9 +1,11 @@
 <!-- Route: /signup/company -->
 <template>
-  <StudentViewTemplate notLoggedIn>
+  <StudentViewTemplate not-logged-in>
     <Breadcrumbs />
     <main class="h-full flex flex-col justify-center items-center py-16">
-      <h1 class="text-jb-headings font-bold text-3xl">Company Sign Up</h1>
+      <h1 class="text-jb-headings font-bold text-3xl">
+        Company Sign Up
+      </h1>
       <p class="text-jb-subheadings text-base my-4 mx-[18%] sm:mx-8">
         Enter your email address in the format recruiting@company.com and 
       </p>
@@ -19,50 +21,50 @@
           {{ errorMsg }}
         </ErrorBox>
       </div>
-      <br/>
-      <br/>
+      <br>
+      <br>
 
       <!-- Email Input -->
       <input
-        name="username"
         v-model="username"
+        name="username"
         type="text"
         placeholder="email"
         @keyup.enter="performSignup()"
-      />
-      <br/>
+      >
+      <br>
 
       <!-- Password Input -->
       <input
-        name="password"
         v-model="password"
+        name="password"
         type="password"
         placeholder="password"
         @keyup.enter="performSignup()"
-      />
-      <br/>
+      >
+      <br>
 
       <!-- TODO: confirm password input -->
 
       <!-- Company Name Input -->
       <input
-        name="name"
         v-model="name"
+        name="name"
         type="text"
         placeholder="company name"
         @keyup.enter="performSignup()"
-      />
-      <br/>
+      >
+      <br>
 
       <!-- Company Location Input -->
       <input
-        name="location"
         v-model="location"
+        name="location"
         type="text"
         placeholder="location"
         @keyup.enter="performSignup()"
-      />
-      <br/>
+      >
+      <br>
 
       <!-- Company Logo Upload -->
       <!-- TODO: figure out logic for this  -->
@@ -71,15 +73,17 @@
           Sign Up
         </Button>
       </StandardButton>
-      <br/>
-      <br/>
-      Already have an account? <router-link to="/login/company">Company Login</router-link>
+      <br>
+      <br>
+      Already have an account? <router-link to="/login/company">
+        Company Login
+      </router-link>
     </main>
   </StudentViewTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
@@ -109,6 +113,10 @@ export default Vue.extend({
       success: false,
       successMsg: "",
     };
+  },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
   },
   methods: {
     validateInput() {
@@ -166,10 +174,6 @@ export default Vue.extend({
         this.errorMsg = "Invalid username. Please try again.";
       }
     },
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
   }
 });
 </script>

@@ -1,5 +1,8 @@
 <template>
-  <div class="back" @click="back">
+  <div
+    class="back"
+    @click="back"
+  >
     <font-awesome-icon icon="chevron-left" />
   </div>
 </template>

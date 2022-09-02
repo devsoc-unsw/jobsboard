@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import logo from "@/assets/logos/csesocwhite.png";
@@ -41,16 +41,16 @@ export default Vue.extend({
     StandardButton,
     NewFooter,
   },
-  data() {
-    return {
-      logo: logo,
-    };
-  },
   props: {
     loggedIn: {
       type: Boolean,
       default: false,
     },
+  },
+  data() {
+    return {
+      logo: logo,
+    };
   },
   methods: {
     logOut() {

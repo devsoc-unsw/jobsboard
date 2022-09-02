@@ -1,26 +1,55 @@
 <template>
-  <div class="flex items-center p-4 mb-8 mt-2 rounded-lg" :class="getContainerStyles" role="alert" v-if="isOpen">
-    <font-awesome-icon icon="circle-info" :class="getTextStyles"/>
-    <div class="ml-3 text-md" :class="getTextStyles">
+  <div
+    v-if="isOpen"
+    class="flex items-center p-4 mb-8 mt-2 rounded-lg"
+    :class="getContainerStyles"
+    role="alert"
+  >
+    <font-awesome-icon
+      icon="circle-info"
+      :class="getTextStyles"
+    />
+    <div
+      class="ml-3 text-md"
+      :class="getTextStyles"
+    >
       {{ alertMsg }}
     </div>
-    <button @click="handleClose" type="button" class="ml-2 -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex justify-center items-center h-8 w-8" :class="getButtonStyles" aria-label="Close">
+    <button
+      type="button"
+      class="ml-2 -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex justify-center items-center h-8 w-8"
+      :class="getButtonStyles"
+      aria-label="Close"
+      @click="handleClose"
+    >
       <span class="sr-only">Close</span>
-      <font-awesome-icon icon="xmark" :class="getTextStyles"/>
+      <font-awesome-icon
+        icon="xmark"
+        :class="getTextStyles"
+      />
     </button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 
 export default Vue.extend({
   name: "Alert",
   props: {
-    alertType: String, // "error" | "success"
-    alertMsg: String,
+    alertType: {
+      type: String,
+      default: "error" // "error" | "success"
+    },
+    alertMsg: {
+      type: String,
+      default: ""
+    },
     isOpen: Boolean,
-    handleClose: Function
+    handleClose: {
+      type: Function,
+      default: () => {}
+    }
   },
   computed: {
     getContainerStyles() {

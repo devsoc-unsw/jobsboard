@@ -1,37 +1,37 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate disableBack>
-    <Breadcrumbs />
-    <div v-if="error">
-      <br/>
-      <ErrorBox>
-        {{ errorMsg }}
-      </ErrorBox>
-    </div>
-    <div class="jobsBox">
-      <div class="resultsFound">
-        <div v-if="jobs.length === 1">
-          {{ jobs.length }} Job Found
+    <StudentViewTemplate disable-back>
+      <Breadcrumbs />
+      <div v-if="error">
+        <br>
+        <ErrorBox>
+          {{ errorMsg }}
+        </ErrorBox>
+      </div>
+      <div class="jobsBox">
+        <div class="resultsFound">
+          <div v-if="jobs.length === 1">
+            {{ jobs.length }} Job Found
+          </div>
+          <div v-else>
+            {{ jobs.length }} Jobs Found
+          </div>
         </div>
-        <div v-else>
-          {{ jobs.length }} Jobs Found
+        <div class="jobContainer">
+          <JobListingMinimal
+            v-for="job in jobs"
+            :key="job.key"
+            class="jobItems"
+            :job-id="job.id"
+            :role="job.role"
+            :company="job.company.name"
+            :location="job.company.location"
+          />
         </div>
       </div>
-      <div class="jobContainer">
-        <JobListingMinimal
-          class="jobItems"
-          v-for="job in jobs"
-          :key="job.key"
-          :jobId="job.id"
-          :role="job.role"
-          :company="job.company.name"
-          :location="job.company.location"
-        />
-      </div>
-    </div>
-    <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>
-    <br />
-  </StudentViewTemplate>
+      <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs" />
+      <br>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
@@ -59,9 +59,13 @@ export default Vue.extend({
     return {
       error: false,
       errorMsg: "",
-      jobs: [] as any[],
+      jobs: [],
       loadMoreJobsLock: false,
     };
+  },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
   },
   methods: {
     async loadMoreJobs() {
@@ -105,10 +109,6 @@ export default Vue.extend({
       }
       this.loadMoreJobsLock = false;
     }
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
   }
 });
 </script>

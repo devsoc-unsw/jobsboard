@@ -1,27 +1,27 @@
 <template>
   <div>
     <div v-if="success">
-      <br/>
+      <br>
       <SuccessBox>
-      {{ successMsg }}
+        {{ successMsg }}
       </SuccessBox>
     </div>
     <div v-if="error">
-      <br/>
+      <br>
       <ErrorBox>
-      {{ errorMsg }}
+        {{ errorMsg }}
       </ErrorBox>
     </div>
     <div class="modalWrapper">
       <Modal 
         v-if="modalVisible"
         @closeCallback="closeJobModal()"
-        >
+      >
         <div class="modalGroup">
           <div class="modalHeading">
             Role: 
           </div>
-      {{ this.role }}
+          {{ role }}
         </div>
 
         <div class="modalGroup">
@@ -30,28 +30,27 @@
           </div>
           <JobDescriptionView :description="description" />
         </div>
-
         <div class="modalGroup">
           <div class="modalHeading">
             Application Link: 
           </div>
           <a
             :href="applicationLink"
-            >
+          >
             {{ applicationLink }}
           </a>
         </div>
       </Modal>
     </div>
-    <br />
+    <br>
     <div v-if="!success">
       <JobListingMinimal
-        :jobID="jobID"
+        :job-i-d="jobID"
         :role="role"
         :company="company"
         :description="description"
-        :actAsLink="actAsLink"
-        >
+        :act-as-link="actAsLink"
+      >
         <StandardButton>
           <Button @callback="showJobModal">
             Preview
@@ -73,7 +72,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
@@ -98,6 +97,28 @@ export default Vue.extend({
     Modal,
     JobDescriptionView,
   },
+  props: {
+    role: {
+      type: String,
+      default: ""
+    },
+    company: {
+      type: String,
+      default: ""
+    },
+    description: {
+      type: String,
+      default: ""
+    },
+    jobID: {
+      type: Number,
+      default: 0
+    },
+    applicationLink: {
+      type: String,
+      default: ""
+    },
+  },
   data() {
     return {
       success: false,
@@ -109,13 +130,6 @@ export default Vue.extend({
       modalVisible: false,
       modalContent: "",
     };
-  },
-  props: {
-    role: String,
-    company: String,
-    description: String,
-    jobID: Number,
-    applicationLink: String,
   },
   methods: {
     async approveJob() {
@@ -129,7 +143,6 @@ export default Vue.extend({
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
         this.success = true;
         this.successMsg = "Job successfully approved!";
         this.error = false;
@@ -158,7 +171,6 @@ export default Vue.extend({
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
         this.success = true;
         this.successMsg = "Job successfully rejected!";
         this.error = false;
@@ -178,7 +190,7 @@ export default Vue.extend({
     close() {
       setTimeout(() => {
         this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
+        this.$el.parentNode.removeChild(this.$el);
       }, 5000);
     },
     async showJobModal() {

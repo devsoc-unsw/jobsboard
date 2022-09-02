@@ -13,24 +13,23 @@
         <SingleCompanyManage
           v-for="pendingCompany in companies"
           :key="pendingCompany.key"
-          :companyAccountID="pendingCompany.id"
+          :company-account-i-d="pendingCompany.id"
           :name="pendingCompany.company.name"
           :location="pendingCompany.company.location"
           :description="pendingCompany.company.description"
-          />
+        />
       </div>
     </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleCompanyManage from "@/components/SingleCompanyManage.vue";
 import config from "@/config/config";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import BackButton from "@/components/buttons/back.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default Vue.extend({

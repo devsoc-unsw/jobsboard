@@ -1,31 +1,33 @@
 <template>
-  <StudentViewTemplate notLoggedIn>
+  <StudentViewTemplate not-logged-in>
     <Breadcrumbs />
     <div class="h-full flex flex-col justify-center items-center py-16">
-      <h1 class="font-bold text-3xl text-jb-headings">Company Login</h1>
+      <h1 class="font-bold text-3xl text-jb-headings">
+        Company Login
+      </h1>
       <p class="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
         Enter your email in the format example@company.com and your password.
       </p>
 
       <!-- Error Alert -->
       <Alert 
-        alertType="error" 
-        alertMsg="Invalid credentials. Please try again."
-        :isOpen="isAlertOpen"
-        :handleClose="() => { this.isAlertOpen = false }"
+        alert-type="error" 
+        alert-msg="Invalid credentials. Please try again."
+        :is-open="isAlertOpen"
+        :handle-close="() => { isAlertOpen = false }"
       />
 
       <!-- Email Input -->
       <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
-          name="email"
           id="email"
           v-model="username"
+          name="email"
           type="text"
           class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
-          @keyup.enter="performCompanyLogin()"
-          required 
-        />
+          required
+          @keyup.enter="performCompanyLogin()" 
+        >
         <label
           for="email"
           class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
@@ -40,14 +42,14 @@
       <!-- Password Input -->
       <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
-          name="password" 
           id="password" 
           v-model="password" 
+          name="password" 
           type="password"
           class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
-          @keyup.enter="performCompanyLogin()" 
           required 
-        />
+          @keyup.enter="performCompanyLogin()" 
+        >
         <label 
           for="password"
           class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
@@ -94,7 +96,8 @@
         type="submit"
         class="bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base 
                border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-        @click="performCompanyLogin()">
+        @click="performCompanyLogin()"
+      >
         Log In
       </button>
     </div>

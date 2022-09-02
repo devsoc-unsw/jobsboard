@@ -8,14 +8,16 @@
         <div class="modalHeading">
           Role: 
         </div>
-        {{ this.role }}
+        {{ role }}
       </div>
 
       <div class="modalGroup">
         <div class="modalHeading">
           Job Description: 
         </div>
-        <p v-html="this.description"> </p>
+        <!-- eslint-disable vue/no-v-html -->
+        <p v-html="description" />
+        <!--eslint-enable-->
       </div>
 
       <div class="modalGroup">
@@ -23,9 +25,9 @@
           Application Link: 
         </div>
         <a
-          :href="this.applicationLink"
+          :href="applicationLink"
         >
-          {{ this.applicationLink }}
+          {{ applicationLink }}
         </a>
       </div>
     </Modal>
@@ -55,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
 import Modal from "@/components/Modal.vue";
@@ -69,12 +71,30 @@ export default Vue.extend({
     Modal,
   },
   props: {
-    role: String,
-    description: String,
-    jobID: Number,
-    successCallback: Function,
-    errorCallback: Function,
-    applicationLink: String,
+    role: {
+      type: String,
+      default: ""
+    },
+    description: {
+      type: String,
+      default: ""
+    },
+    jobID: {
+      type: Number,
+      default: 0
+    },
+    successCallback: {
+      type: Function,
+      default: () => {}
+    },
+    errorCallback: {
+      type: Function,
+      default: () => {}
+    },
+    applicationLink: {
+      type: String,
+      default: ""
+    },
   },
   data() {
     return {
@@ -125,7 +145,7 @@ export default Vue.extend({
     close() {
       setTimeout(() => {
         this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
+        this.$el.parentNode.removeChild(this.$el);
       }, 5000);
     }
   },

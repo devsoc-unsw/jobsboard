@@ -5,17 +5,26 @@
         <div v-if="loggedIn">
           <div class="logoutDiv">
             <StandardButton>
-            <Button @callback="logOut">
-              <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+              <Button @callback="logOut">
+                <font-awesome-icon
+                  class="paddedIcon"
+                  icon="sign-out-alt"
+                />
                 Log Out
-            </Button>
+              </Button>
             </StandardButton>
-            <br/>
+            <br>
           </div>
-          <img class="main-logo" :src="logo" />
+          <img
+            class="main-logo"
+            :src="logo"
+          >
         </div>
         <div v-if="!loggedIn">
-          <img class="main-logo" :src="logo" />
+          <img
+            class="main-logo"
+            :src="logo"
+          >
         </div>
         <slot />
         <div class="footer">
@@ -27,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import logo from "@/assets/logos/csesocgreyblue.png";
@@ -40,16 +49,16 @@ export default Vue.extend({
     StandardButton,
     NewFooter,
   },
-  data() {
-    return {
-      logo: logo,
-    };
-  },
   props: {
     loggedIn: {
       type: Boolean,
       default: false,
     },
+  },
+  data() {
+    return {
+      logo: logo,
+    };
   },
   methods: {
     logOut() {

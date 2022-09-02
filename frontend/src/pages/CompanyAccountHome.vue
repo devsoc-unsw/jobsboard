@@ -1,28 +1,28 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate>
-    <Breadcrumbs />
-    <div>
-      <h1>Welcome!</h1>
-      <div class="buttonBox">
-        <StandardButton>
-          <Button @callback="goToCompanyJobAdd">
-            Post Jobs
-          </Button>
-        </StandardButton>
-        <StandardButton>
-          <Button @callback="goToCompanyManageJobs">
-            Manage Jobs
-          </Button>
-        </StandardButton>
+    <StudentViewTemplate>
+      <Breadcrumbs />
+      <div>
+        <h1>Welcome!</h1>
+        <div class="buttonBox">
+          <StandardButton>
+            <Button @callback="goToCompanyJobAdd">
+              Post Jobs
+            </Button>
+          </StandardButton>
+          <StandardButton>
+            <Button @callback="goToCompanyManageJobs">
+              Manage Jobs
+            </Button>
+          </StandardButton>
+        </div>
       </div>
-    </div>
-  </StudentViewTemplate>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Button from "@/components/buttons/button.vue";
@@ -38,6 +38,10 @@ export default Vue.extend({
     StandardButton,
     Breadcrumbs,
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  },
   methods: {
     goToCompanyJobAdd() {
       this.$router.push("/company/jobs/add");
@@ -45,10 +49,6 @@ export default Vue.extend({
     goToCompanyManageJobs() {
       this.$router.push("/company/jobs/manage");
     },
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
   }
 });
 </script>

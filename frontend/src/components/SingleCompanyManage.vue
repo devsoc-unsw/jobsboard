@@ -1,25 +1,25 @@
 <template>
   <div>
     <div v-if="success">
-      <br/>
+      <br>
       <SuccessBox>
-      {{ successMsg }}
+        {{ successMsg }}
       </SuccessBox>
     </div>
     <div v-if="error">
-      <br/>
+      <br>
       <ErrorBox>
-      {{ errorMsg }}
+        {{ errorMsg }}
       </ErrorBox>
     </div>
     <div v-if="!success">
-      <br />
+      <br>
       {{ name }} | {{ location }}
-      <br />
-      <br />
+      <br>
+      <br>
       {{ description }}
-      <br />
-      <br />
+      <br>
+      <br>
       <GreenStandardButton>
         <Button @callback="verifyCompany">
           Verify
@@ -30,8 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
+import { Vue } from "vue-property-decorator";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
 import config from "@/config/config";
@@ -46,6 +45,24 @@ export default Vue.extend({
     Button,
     GreenStandardButton,
   },
+  props: {
+    name: {
+      type: String,
+      default: ""
+    },
+    location: {
+      type: String,
+      default: ""
+    },
+    description: {
+      type: String,
+      default: ""
+    },
+    companyAccountID: {
+      type: Number,
+      default: 0
+    },
+  },
   data() {
     return {
       success: false,
@@ -54,12 +71,6 @@ export default Vue.extend({
       errorMsg: "",
       apiToken: this.$store.getters.getApiToken,
     };
-  },
-  props: {
-    name: String,
-    location: String,
-    description: String,
-    companyAccountID: Number,
   },
   methods: {
     async verifyCompany() {
@@ -73,7 +84,6 @@ export default Vue.extend({
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
         this.success = true;
         this.successMsg = "Company successfully verified!";
         this.close();
@@ -93,7 +103,7 @@ export default Vue.extend({
     close() {
       setTimeout(() => {
         this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
+        this.$el.parentNode.removeChild(this.$el);
       }, 5000);
     }
   },

@@ -58,15 +58,6 @@ export default Vue.extend({
       default: false
     }
   },
-  methods: {
-    logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/student");
-    },
-    goToJobs() {
-      this.$router.push("/jobs");
-    }
-  },
   data() {
     return {
       apiToken: this.$store.getters.getApiToken,
@@ -79,6 +70,15 @@ export default Vue.extend({
     }
     else if (this.apiToken === undefined) {
       this.$router.push("/login");
+    }
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch("clearApiToken");
+      this.$router.push("/login/student");
+    },
+    goToJobs() {
+      this.$router.push("/jobs");
     }
   },
 });

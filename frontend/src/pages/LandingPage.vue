@@ -8,43 +8,55 @@
         <img 
           id="blob"
           :src="Blob" 
-        />
+        >
       </div>
-      <div class="grid grid-rows-2 grid-cols-3 justify-center items-center content-center 
-                  w-[40%] lg:w-[50%] md:w-[60%] h-full ml-[45px] my-12 mx-auto pt-36 mb-32 hero">
+      <div
+        class="grid grid-rows-2 grid-cols-3 justify-center items-center content-center 
+                  w-[40%] lg:w-[50%] md:w-[60%] h-full ml-[45px] my-12 mx-auto pt-36 mb-32 hero"
+      >
         <div class="self-start col-span-2">
-          <p class="text-white text-left text-lg">CSESoc presents</p>
-          <h1 class="font-bold text-6xl text-[#1a324e] text-left leading-[72px] drop-shadow-lg m-0">Jobs Board</h1>
+          <p class="text-white text-left text-lg">
+            CSESoc presents
+          </p>
+          <h1 class="font-bold text-6xl text-[#1a324e] text-left leading-[72px] drop-shadow-lg m-0">
+            Jobs Board
+          </h1>
           <p class="text-white text-left text-lg">
             Connecting UNSW students with top employers since 2018.
           </p>
         </div>
         <div class="w-2/4 justify-center items-center content-center justify-items-center col-span-1">
-          <img class="w-full ml-11 sm:w-[100px]" :src="Logo" />
+          <img
+            class="w-full ml-11 sm:w-[100px]"
+            :src="Logo"
+          >
         </div>
         <div class="flex flex-row mt-8 col-span-2 self-start justify-self-start">
           <button 
             class="bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-0 mr-6
                     hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:mt-2"
           >
-          Explore
+            Explore
           </button>
           <button 
             class="bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-0 mr-6
                     hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:mt-2"
           >
-          Advertise
+            Advertise
           </button>
         </div>
-
       </div>
       <div class="w-3/5 mb-12 mx-auto mt-40 xl:mt-0">
-        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Our Sponsors</h3>
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">
+          Our Sponsors
+        </h3>
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           We aim to give you a pleasant student working experience by partnering up with only the best.
         </p>
         <SponsorCarousel />
-        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Discover Featured Student Jobs and Internships</h3>
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">
+          Discover Featured Student Jobs and Internships
+        </h3>
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           Spent hours trying to find something that suited you? Look no further, we've got you covered with some amazing opportunities.
         </p>
@@ -54,20 +66,22 @@
             class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
                      cursor-pointer hover:text-jb-textlink-hovered"
           >
-          here
+            here
           </span>
           .
         </p>
         <div class="flex justify-between items-center my-12">
           <FeaturedJobCard 
-            jobTitle="STEP Intern, 2022 Summer"
-            jobDescription="The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship."
-            :jobTag="['AU/NZ Citizens', 'Internationals']"
-            :imagePath="GoogleLogo"
-           />
+            job-title="STEP Intern, 2022 Summer"
+            job-description="The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship."
+            :job-tag="['AU/NZ Citizens', 'Internationals']"
+            :image-path="GoogleLogo"
+          />
         </div>
 
-        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Want to Post a Job?</h3>
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">
+          Want to Post a Job?
+        </h3>
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           Are you a company looking to advertise with us? We'd absolutely love to hear from you.
           In the meantime, you can also check out 
@@ -81,7 +95,7 @@
                      shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
               @click="companyRegister"
             >
-            Join Us
+              Join Us
             </button>
           </div>
           <div>
@@ -89,12 +103,14 @@
               class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 mb-0 sm:mb-10
                      shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
             >
-            Post a Job
+              Post a Job
             </button>
           </div>
         </div>
 
-        <h3 class="font-bold text-3xl mb-0 text-jb-headings">Looking for More?</h3>
+        <h3 class="font-bold text-3xl mb-0 text-jb-headings">
+          Looking for More?
+        </h3>
         <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
           If you're a CSE student with a keen interest in Jobs Board and looking to get involved,
           keep an eye out for our recruitment announcements on CSESoc's socials. 
@@ -107,11 +123,16 @@
                     hover:bg-jb-btn-hovered hover:shadow-btn-hovered" 
             @click="toGithubRepo"
           >
-          Source Code
+            Source Code
           </button>
         </div>
         <div class="mt-20">
-          <font-awesome-icon icon="chevron-circle-up" size="3x" @click="scrollToTop" class="scroll-button"/>
+          <font-awesome-icon
+            icon="chevron-circle-up"
+            size="3x"
+            class="scroll-button"
+            @click="scrollToTop"
+          />
         </div>
       </div>
       <NewFooter />
@@ -120,7 +141,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Blob from "@/assets/misc/Blob.svg";
 import CsesocLogoSmall from "@/assets/logos/CsesocLogoSmall.svg";

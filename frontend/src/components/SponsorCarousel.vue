@@ -1,6 +1,6 @@
 <template>
   <div class="relative overflow-hidden grow-0 shrink-0 basis-[230px]">
-    <div class="carousel-bar-left"></div>
+    <div class="carousel-bar-left" />
     <div class="relative w-[1450px] h-[100px] my-10 grow-0 shrink-0 basis-auto">
       <div class="sponsor-container carousel-animation-first">
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
@@ -9,7 +9,7 @@
             :src="GoogleLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -17,7 +17,7 @@
             :src="AmazonLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -25,7 +25,7 @@
             :src="MicrosoftLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -33,7 +33,7 @@
             :src="CanvaLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -41,7 +41,7 @@
             :src="JaneStreetLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -49,7 +49,7 @@
             :src="AtlassianLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
       </div>
       <div class="sponsor-container carousel-animation-second">
@@ -59,7 +59,7 @@
             :src="GoogleLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -67,7 +67,7 @@
             :src="AmazonLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -75,7 +75,7 @@
             :src="MicrosoftLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -83,7 +83,7 @@
             :src="CanvaLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -91,7 +91,7 @@
             :src="JaneStreetLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
         <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
           <img
@@ -99,16 +99,16 @@
             :src="AtlassianLogo"
             loading="lazy"
             alt="sponsor logo"
-          />
+          >
         </div>
       </div>
     </div>
-    <div class="carousel-bar-right"></div>
+    <div class="carousel-bar-right" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import GoogleLogo from "@/assets/companies/googleLogo.png";
 import AmazonLogo from "@/assets/companies/amazonLogo.png";
 import MicrosoftLogo from "@/assets/companies/microsoftLogo.svg";

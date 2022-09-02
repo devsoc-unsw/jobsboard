@@ -1,8 +1,11 @@
 <template>
   <div>
-    <br />
+    <br>
     <div class="companyStandout">
-      <div class="back" @click="back">
+      <div
+        class="back"
+        @click="back"
+      >
         <font-awesome-icon icon="chevron-left" />
       </div>
       <div class="companyLogo">

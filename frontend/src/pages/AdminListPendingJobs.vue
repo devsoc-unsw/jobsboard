@@ -13,19 +13,19 @@
         <SingleJobManage
           v-for="job in jobs"
           :key="job.key"
-          :jobID="job.id"
+          :job-i-d="job.id"
           :role="job.role"
           :company="job.company.name"
           :description="job.description"
-          :applicationLink="job.applicationLink"
-          />
+          :application-link="job.applicationLink"
+        />
       </div>
     </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import SingleJobManage from "@/components/SingleJobManage.vue";
 import config from "@/config/config";

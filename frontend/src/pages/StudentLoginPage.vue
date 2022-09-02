@@ -1,31 +1,33 @@
 <template>
-  <StudentViewTemplate notLoggedIn>
+  <StudentViewTemplate not-logged-in>
     <Breadcrumbs />
     <div class="h-full flex flex-col justify-center items-center py-16">
-      <h1 class="font-bold text-3xl text-jb-headings">Student Login</h1>
+      <h1 class="font-bold text-3xl text-jb-headings">
+        Student Login
+      </h1>
       <p class="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
         Enter your zID in the format zXXXXXXX and your zPassword.
       </p>
       
       <!-- Error Alert -->
       <Alert
-        alertType="error"
-        alertMsg="Invalid credentials. Please try again."
-        :isOpen="isAlertOpen"
-        :handleClose="() => { this.isAlertOpen = false }"
+        alert-type="error"
+        alert-msg="Invalid credentials. Please try again."
+        :is-open="isAlertOpen"
+        :handle-close="() => { isAlertOpen = false }"
       />
       
       <!-- zId Input -->
       <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
-          name="zID"
           id="zID"
           v-model="zID"
+          name="zID"
           type="text"
           class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
-          @keyup.enter="performLogin()"
           required
-        />
+          @keyup.enter="performLogin()"
+        >
         <label 
           for="zID" 
           class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
@@ -40,14 +42,14 @@
       <!-- Password Input -->
       <div class="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input 
-          name="password"
           id="password"
           v-model="password"
+          name="password"
           type="password"
           class="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
-          @keyup.enter="performLogin()"
           required
-        />
+          @keyup.enter="performLogin()"
+        >
         <label 
           for="password" 
           class="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
@@ -60,14 +62,14 @@
       </div>
 
       <p class="text-lg text-jb-subheadings text-center">
-          Not a student? 
-          <router-link
-            class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
+        Not a student? 
+        <router-link
+          class="text-jb-textlink font-bold transition-colors duration-200 ease-linear 
                     cursor-pointer hover:text-jb-textlink-hovered"
-            to="/login/company"
-          >
-            Company Login
-          </router-link>
+          to="/login/company"
+        >
+          Company Login
+        </router-link>
       </p>
       <button 
         type="submit" 
@@ -77,12 +79,12 @@
       >
         Log In
       </button>
-      </div>
+    </div>
   </StudentViewTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from "vue-property-decorator";
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import Alert from "@/components/Alert.vue";
 import config from "@/config/config";
