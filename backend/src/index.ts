@@ -119,11 +119,25 @@ async function bootstrap() {
 }
 
 
+/**
+ *  @swagger
+ *  /jobs:
+ *    get:
+ *      description: List all active job posts
+ *      tags:
+ *        - Jobs
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ */
 // NOTE: Temporarily deprecated in favour of pagination
-// app.get(
-//  "/jobs", 
-//  Middleware.authenticateStudentMiddleware, 
-//  StudentFunctions.GetAllActiveJobs);
+// app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs);
 
 app.get(
   "/admin/jobs/pending",
