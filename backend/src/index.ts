@@ -118,66 +118,13 @@ async function bootstrap() {
   await seedDB(activeEntities);
 }
 
-/**
- * components:
- *   schemas:
- *     Job:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *         role:
- *           type: string
- *         company:
- *           type: integer
- *     Company:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *         name:
- *           type: string
- *         location:
- *           type: string
- *         description:
- *           type: string
- */
 
-/**
- *  @swagger
- *  /jobs:
- *    get:
- *      description: List all active job posts
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Job'
- */
 // NOTE: Temporarily deprecated in favour of pagination
-// app.get("/jobs", Middleware.authenticateStudentMiddleware, StudentFunctions.GetAllActiveJobs);
+// app.get(
+//  "/jobs", 
+//  Middleware.authenticateStudentMiddleware, 
+//  StudentFunctions.GetAllActiveJobs);
 
-/**
- *  @swagger
- *  /jobs/pending:
- *    get:
- *      description: List all pending (un-approved or un-rejected) job posts
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Job'
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.get(
   "/admin/jobs/pending",
   cors(corsOptions),
@@ -186,21 +133,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /jobs/{offset}:
- *    get:
- *      description: List all active job post (paginated)
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Job'
- */
 app.get(
   "/jobs/:offset",
   cors(corsOptions),
@@ -209,23 +141,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /job/{jobID}:
- *    get:
- *      description: Get a specific job description
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Job'
- *      400:
- *        description: failed to find job
- */
 app.get(
   "/job/:jobID",
   cors(corsOptions),
@@ -234,28 +149,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /job/company/hidden:
- *  get:
- *    description: retrieve all the hidden jobs in the system 
- *    responses:
- *      200: 
- *        description: Success
- *        content: 
- *          application/json:
- *          schema:
- *            type: object
- *            properties:
- *              hiddenJobs: 
- *                type: string
- *              value:
- *                type: array 
- *      400:
- *        description: unable to query the database
- *      401:
- *        description: invalid parameters
- */
 app.get(
   "/job/company/hidden",
   cors(corsOptions),
@@ -264,23 +157,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 )
 
-/**
- *  @swagger
- *  /company/{companyID}:
- *    get:
- *      description: Get the information for a specific company
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Company'
- *      400:
- *        description: failed to find company
- */
 app.get(
   "/company/:companyID",
   cors(corsOptions),
@@ -289,23 +165,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /company/{companyID}/jobs:
- *    get:
- *      description: Get the jobs from a specific company
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Company'
- *      400:
- *        description: failed to find company
- */
 app.get(
   "/company/:companyID/jobs",
   cors(corsOptions),
@@ -314,25 +173,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /authenticate/student:
- *    post:
- *      description: Authenticate a students credentials
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                token:
- *                  type: string
- *                  description: API token
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.post(
   "/authenticate/student",
   cors(corsOptions),
@@ -340,37 +180,6 @@ app.post(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *
- *  /company:
- *    put:
- *      description: Create a company account
- *      parameters:
- *        - name: username
- *          description: The username of the new company account
- *          type: string
- *          required: true
- *        - name: password
- *          description: The associated password of the new company account
- *          type: string
- *          required: true
- *        - name: name
- *          description: The name of the new company
- *          type: string
- *          required: true
- *        - name: location
- *          description: The location of the new company
- *          type: string
- *          required: true
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Missing parameters
- *      409:
- *        description: Conflicting usernames
- */
 app.put(
   "/company",
   cors(corsOptions),
@@ -378,25 +187,6 @@ app.put(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /authenticate/company:
- *    post:
- *      description: Authenticate a company's credentials
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                token:
- *                  type: string
- *                  description: API token
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.post(
   "/authenticate/company",
   cors(corsOptions),
@@ -404,38 +194,6 @@ app.post(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /company/update/details:
- *    put:
- *      description: change the details of a company
- *      parameters:
- *        - name: name 
- *          description: name of the company
- *          type: string
- *          required: true 
- *        - name: location 
- *          description: location of the company
- *          type: string
- *          required: true 
- *        - name: description 
- *          description: description about the company
- *          type: string
- *          required: true 
- *        - name: sponsor 
- *          description: is the company a sponsor
- *          type: boolean
- *          required: true 
- *        - name: logo
- *          description: logo of company
- *          type: base64 string
- *          required: true
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Missing parameters or unauthorized
- */
 app.put(
   "/company/update/details",
   cors(corsOptions),
@@ -444,22 +202,6 @@ app.put(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /company/upload/logo:
- *    put:
- *      description: change the details of a company
- *      parameters:
- *        - name: logo
- *          description: logo of company
- *          type: base64 string
- *          required: true
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Missing parameters or unauthorized
- */
 app.put(
   "/company/update/logo",
   cors(corsOptions),
@@ -468,27 +210,6 @@ app.put(
   Middleware.genericLoggingMiddleware
 );
 
-
-/**
- *  @swagger
- *  /jobs:
- *    put:
- *      description: Create a job as the logged in company
- *      parameters:
- *        - name: role
- *          description: The role of the job post
- *          type: string
- *          required: true
- *        - name: description
- *          description: A description fo the job
- *          type: string
- *          required: true
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Missing parameters or unauthorized
- */
 app.put(
   "/jobs",
   cors(corsOptions),
@@ -497,68 +218,6 @@ app.put(
   Middleware.genericLoggingMiddleware
 );
 
-/**
-*  @swagger
-*  /company/job/edit:
-*    put:
-*      description: allow companies to update the information of their jobs
-*      parameters:
-*        - name: id
-*          description: id of the job post
-*          type: number
-*          required: true
-*        - name: role
-*          description: role of the job (seems like this property is stale)
-*          type: string
-*          required: true
-*        - name: mode
-*          description: remote, hybrid, onsite
-*          type: string
-*          required: true
-*        - name: studentDemographic 
-*          description: grads, penultimates or all students 
-*          type: array of strings 
-*          required: true 
-*        - name: jobType
-*          description: intern / grad 
-*          type: String
-*          required: true
-*        - name: workingRights
-*          description: aus citizen, pr, etc 
-*          type: array of strings
-*          required: true 
-*        - name: wamRequirements
-*          description: wam requirements HD or above, etc 
-*          type: string 
-*          required: true
-*        - name: additionalInfo
-*          description: additional information
-*          type: string
-*          required: true
-*        - name: description
-*          description: description about the job 
-*          type: string 
-*          required: true 
-*        - name: applicationLink
-*          description: application link
-*          type: string
-*          required: true
-*        - name: isPaid
-*          description: will the job be paid 
-*          type: boolean
-*          required: true 
-*        - name: expiry 
-*          description: expiry date of the job opening 
-*          type: Date 
-*          required: true  
-*    responses:
-*      200:
-*        description: success
-*      400:
-*        description: failed to find company account
-*      403:
-*        description: database failed to update
-*/
 app.put(
   "/company/job/edit",
   cors(corsOptions),
@@ -567,22 +226,6 @@ app.put(
   Middleware.genericLoggingMiddleware
 )
 
-/**
-*  @swagger
-*  /company/forgot:
-*    post:
-*      description: Send mail to company account to reset password
-*      parameters:
-*        - name: username
-*          description: The username of the company account
-*          type: string
-*          required: true
-*    responses:
-*      200:
-*        description: success
-*      400:
-*        description: failed to find company account
-*/
 app.post(
   "/company/forgot-password",
   cors(corsOptions),
@@ -590,54 +233,13 @@ app.post(
   Middleware.genericLoggingMiddleware
 );
 
-
-/**
-*  @swagger
-*  /company/password-reset-token/{username}:
-*    get:
-*      description: Retrieve the token that a company is using to reset its password
-*
-*    responses:
-*      200:
-*        description: success
-*        content:
-*          application/json:
-*            schema:
-*              type: array
-*              items:
-*                token:
-*                  type: string
-*                  description: API token
-*      400:
-*        description: failed to find company account
-*/
-
-
 app.get(
   "/company/password-reset-token/:username",
   cors(corsOptions),
   CompanyFunctions.GetPasswordResetToken,
   Middleware.genericLoggingMiddleware
-)
+);
 
-/**
- *  @swagger
- *  /company/password-reset/:
- *    put:
- *      description: Reset a company's password
- *      parameters:
- *        - name: newPassword 
- *          description: The company's new password which will be hashed and stored in the database
- *          type: string
- *          required: true
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: required parameters not supplied
- *      401:
- *        description: invalid or expired token
- */
  app.put(
   "/company/password-reset",
   cors(corsOptions),
@@ -646,26 +248,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-
-/**
- *  @swagger
- *  /authenticate/admin:
- *    post:
- *      description: Authenticate an admin's credentials
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                token:
- *                  type: string
- *                  description: API token
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.post(
   "/authenticate/admin",
   cors(corsOptions),
@@ -673,17 +255,6 @@ app.post(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /job/:jobID/approve:
- *    patch:
- *      description: Approve a job request as the admin
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.patch(
   "/job/:jobID/approve",
   cors(corsOptions),
@@ -692,17 +263,6 @@ app.patch(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /job/:jobID/approve:
- *    patch:
- *      description: Approve a job request as the admin
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.patch(
   "/job/:jobID/reject",
   cors(corsOptions),
@@ -711,23 +271,6 @@ app.patch(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /admin/pending/companies:
- *    post:
- *      description: List all pending (non-verified) company accounts
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Company'
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.get(
   "/admin/pending/companies",
   cors(corsOptions),
@@ -736,17 +279,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /admin/company/:companyID/verify:
- *    patch:
- *      description: Verify a specific company account as an admin
- *    responses:
- *      200:
- *        description: success
- *      400:
- *        description: Missing parameters or invalid credentials
- */
 app.patch(
   "/admin/company/:companyAccountID/verify",
   cors(corsOptions),
@@ -755,26 +287,6 @@ app.patch(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /job/admin/hidden:
- *  get:
- *    description: retrieve all the hidden jobs in the system
- *    responses:
- *      200: 
- *        description: Success
- *        content: 
- *          application/json:
- *          schema:
- *            type: object
- *            properties:
- *              hiddenJobs: 
- *                type: string
- *              value:
- *                type: object
- *      400:
- *        description: invalid credentials or unable to query the database
- */
 app.get(
   "/job/admin/hidden",
   cors(corsOptions),
@@ -783,23 +295,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 )
 
-/**
- *  @swagger
- *  /companyjobs:
- *    get:
- *      description: Get all submitted from a specific company
- *    responses:
- *      200:
- *        description: success
- *        content:
- *          application/json:
- *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/Job'
- *      400:
- *        description: failed to find company
- */
 app.get(
   "/companyjobs",
   cors(corsOptions),
@@ -808,17 +303,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /company/job/:jobID:
- *    delete:
- *      description: Delete a job post request from a company
- *    responses:
- *      200:
- *        description: success
- *      403:
- *        description: failed to delete job as it does not belong to company
- */
 app.delete(
   "/company/job/:jobID",
   cors(corsOptions),
@@ -827,26 +311,6 @@ app.delete(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /company/stats/verifiedCompanies:
- *  get:
- *    description: Retrieve the number of verified companies
- *    responses:
- *      200: 
- *        description: Success
- *        content: 
- *          application/json:
- *          schema:
- *            type: object
- *            properties:
- *              num: 
- *                type: string
- *              value:
- *                type: integer
- *      400:
- *        description: Unable to query the database
- */
 app.get(
   "/company/stats/verifiedCompanies",
   cors(corsOptions),
@@ -855,26 +319,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /job/stats/approvedJobPosts/:year:
- *  get:
- *    description: Retrieve the number of approved job posts in the given year
- *    responses:
- *      200: 
- *        description: Success
- *        content: 
- *          application/json:
- *          schema:
- *            type: object
- *            properties:
- *              numJobsPosts: 
- *                type: integer
- *              value:
- *                type: integer
- *      400:
- *        description: Unable to query the database
-*/
 app.get(
   "/job/stats/approvedJobPosts/:year",
   cors(corsOptions),
@@ -883,18 +327,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
   
-  
-/**
- *  @swagger
- *  /admin/companies:
- *    get:
- *      description: Get a list of all onboarded companies as an admin
- *    responses:
- *      200:
- *        description: success
- *      401:
- *        description: bad permissions
- */
 app.get(
   "/admin/companies",
   cors(corsOptions),
@@ -903,17 +335,6 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-/**
- *  @swagger
- *  /admin/company/:companyID/jobs:
- *    delete:
- *      description: Create a job as an admin on behalf of a company account
- *    responses:
- *      200:
- *        description: success
- *      401:
- *        description: bad permissions
- */
 app.put(
   "/admin/company/:companyID/jobs",
   cors(corsOptions),
