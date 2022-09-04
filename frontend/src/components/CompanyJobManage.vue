@@ -72,12 +72,16 @@ export default Vue.extend({
     role: String,
     description: String,
     jobID: Number,
+    successCallback: Function,
+    errorCallback: Function,
     applicationLink: String,
   },
   data() {
     return {
       success: false,
       error: false,
+      successMsg: "",
+      errorMsg: "",
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
       modalContent: "",
@@ -105,12 +109,16 @@ export default Vue.extend({
       const receivedResponse = response as Response;
 
       if (receivedResponse.ok) {
+        this.successCallback("Job successfully deleted!");
         this.close();
       } else {
         if (response.status == 401) {
+          this.errorMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);
+        } else {
+          this.errorCallback("Error in processing rejection. Please try again later.");
         }
       }
     },

@@ -21,7 +21,6 @@ const AdminAccountHome = () => import("@/pages/AdminAccountHome.vue");
 const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
 const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
 const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
-const CompanyManageJobs = () => import("@/pages/CompanyManageJobs.vue");
 const TeamPage = () => import("@/pages/TeamPage.vue");
 
 export default new Router({
@@ -161,17 +160,6 @@ export default new Router({
         { name: 'Home', link: '/' },
         { name: 'Job List' , link: '/jobs' },
         { name: 'Job' }
-      ]
-    }
-  }, {
-    path: "/company/jobs/manage",
-    component: CompanyManageJobs,
-    meta: {
-      title: "Manage Jobs | Jobs Board",
-      breadcrumb: [
-        { name: 'Home', link: '/' },
-        { name: 'Dashboard', link: '/company/home' },
-        { name: 'Manage Jobs' }
       ]
     }
   }, {

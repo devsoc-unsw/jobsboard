@@ -14,8 +14,6 @@
         :mode="job.mode"
         :expiry="job.expiry"
         :studentDemographic="job.studentDemographic"
-        :successCallback="internalSuccessCallback"
-        :errorCallback="internalErrorCallback"
         :listName="listName"
         />
     </div>
@@ -36,18 +34,6 @@ export default Vue.extend({
   props: {
     jobList: Object,
     listName: String,
-  },
-  methods: {
-    internalErrorCallback(msg: string) {
-      this.error = true;
-      this.success = false;
-      this.errorMsg = msg;
-    },
-    internalSuccessCallback(msg: string) {
-      this.error = false;
-      this.success = true;
-      this.successMsg = msg;
-    },
   },
 });
 </script>
