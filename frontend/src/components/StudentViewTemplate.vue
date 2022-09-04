@@ -32,7 +32,6 @@ const props = defineProps({
 });
 
 onMounted(async () => {
-  // console.log(props.notLoggedIn)
   if (props.notLoggedIn === true) {
     return;
   } else if (apiTokenStore.getApiToken() === undefined) {

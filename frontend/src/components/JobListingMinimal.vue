@@ -2,7 +2,7 @@
   <!-- TODO: replace router push with window.open instead? -->
   <button
     class="flex flex-row mb-4 items-center p-4 shadow-card rounded-md w-full md:flex-col"
-    @click="() => { this.$router.push({ name: 'job', params: { jobID: this.jobId } }) }"
+    @click="routeToJob"
   >
     <!-- TODO: to be replaced with company logo -->
     <font-awesome-icon icon="building" class="h-12 mr-4 md:mr-0" />
@@ -27,6 +27,15 @@ const props = defineProps({
   location: String,
   // TODO: add company logo
 });
+
+function routeToJob() {
+  router.push({ 
+    name: 'job', 
+    params: { 
+      jobID: props.jobId 
+    } 
+  });
+}
 </script>
 
 <style scoped lang="scss">

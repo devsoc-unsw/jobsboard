@@ -21,15 +21,15 @@
         {{ jobs.length }} Jobs Found
       </div>
       <div class="jobContainer">
-      <CompanyJobManage
-        v-for="job in jobs"
-        :key="job.key"
-        :jobID="job.id"
-        :role="job.role"
-        :description="job.description"
-        :applicationLink="job.applicationLink"
-        :successCallback="internalSuccessCallback"
-        :errorCallback="internalErrorCallback"
+        <CompanyJobManage
+          v-for="job in jobs"
+          :key="job.key"
+          :jobID="job.id"
+          :role="job.role"
+          :description="job.description"
+          :applicationLink="job.applicationLink"
+          :successCallback="internalSuccessCallback"
+          :errorCallback="internalErrorCallback"
         />
       </div>
     </div>

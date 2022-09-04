@@ -118,7 +118,6 @@ async function performAdminLogin() {
     isAlertOpen.value = false;
     router.push("/admin/home");
   } else {
-    console.log('here')
     window.scrollTo({
       top: 0,
       behavior: "smooth",

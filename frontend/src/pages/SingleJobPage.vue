@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate>
+  <Breadcrumbs />
   <Alert
     alertType="error"
     :alertMsg="alertMsg"
@@ -38,7 +39,7 @@
           <button
             class="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 
               shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
-            @click="() => openLink"
+            @click="openLink"
           >
             Apply
           </button>
@@ -148,13 +149,14 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
+import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from "@/constants/job-fields";
 
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import config from "@/config/config";
 import Alert from "@/components/Alert.vue";
-import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from "@/constants/job-fields";
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
@@ -221,7 +223,6 @@ async function fetchJob() {
     studentDemographic.value = msg.job.studentDemographic;
     jobType.value = msg.job.jobType;
     workingRights.value = msg.job.workingRights;
-    console.log(workingRights.value)
     additionalInfo.value = msg.job.additionalInfo === ""
       ? "<p>This company has not provided any additional information.</p>" : msg.job.additionalInfo;
     wamRequirements.value = msg.job.wamRequirements;

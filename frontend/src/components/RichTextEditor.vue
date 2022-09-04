@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="rich-text-editor">
     <quill-editor
       ref="quillRichTextEditor"
@@ -11,15 +11,8 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
 import "quill/dist/quill.snow.css";
 import quillEditor from "vue-quill-editor";
-
-export default Vue.extend({
-  components: {
-    quillEditor,
-  },
-});
 </script>
 
 <style lang="scss">
@@ -29,4 +22,4 @@ export default Vue.extend({
   height: 40vh;
   font-size: 12pt;
 }
-</style>
+</style> -->

@@ -122,12 +122,12 @@ async function deleteJob() {
   }
 }
 
-function close() {
-  setTimeout(() => {
-    this.$destroy();
-    this.$el.parentNode!.removeChild(this.$el);
-  }, 5000);
-}
+// function close() {
+//   setTimeout(() => {
+//     this.$destroy();
+//     this.$el.parentNode!.removeChild(this.$el);
+//   }, 5000);
+// }
 </script>
 
 <style scoped lang="scss">

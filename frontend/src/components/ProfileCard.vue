@@ -22,14 +22,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
+<script setup lang="ts">
 import button from "./buttons/button.vue";
-export default Vue.extend({
-  components: { button },
-  name: "ProfileCard",
-  props: {
-    member: Object,
+
+const props = defineProps({
+  member: {
+    type: Object,
+    required: true,
   },
 });
 </script>

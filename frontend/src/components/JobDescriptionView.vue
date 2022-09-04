@@ -8,7 +8,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import config from "@/config/config";
 
 onMounted(() => {
   parseText();
@@ -25,7 +24,7 @@ function parseText() {
 
   let listFlag = false;
   for (let lineIndex in splitDescription) {
-    let line = splitDescription[lineIndex];
+    let line = splitDescription[lineIndex as any];
     // apply italics
     line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
     if (line.startsWith("- ")) {

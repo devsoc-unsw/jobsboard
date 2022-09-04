@@ -26,38 +26,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+<script setup lang="ts">
+import { useApiTokenStore } from "@/store/apiToken";
+import { useRouter } from "vue-router";
 import Button from "@/components/buttons/button.vue";
 import StandardButton from "@/components/buttons/StandardButton.vue";
 import logo from "@/assets/logos/csesocgreyblue.png";
 import NewFooter from "@/components/NewFooter.vue";
 
-export default Vue.extend({
-  name: "LeftHalfPageTemplate",
-  components: {
-    Button,
-    StandardButton,
-    NewFooter,
-  },
-  data() {
-    return {
-      logo: logo,
-    };
-  },
-  props: {
-    loggedIn: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods: {
-    logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/company");
-    },
-  },
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const props = defineProps({
+  loggedIn: {
+    type: Boolean,
+    default: false,
+  }
 });
+
+function logOut() {
+  apiTokenStore.clearApiToken();
+  router.push("/login/company");
+}
 </script>
 
 <style lang="scss">

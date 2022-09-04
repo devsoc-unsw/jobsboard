@@ -52,7 +52,6 @@ const apiToken = ref<string | undefined>(apiTokenStore.getApiToken());
 onMounted(async () => {
   setTimeout(() => {
     if (!apiTokenStore.getApiToken()) {
-      console.log('herer')
       apiToken.value = undefined;
     }
   }, 10);

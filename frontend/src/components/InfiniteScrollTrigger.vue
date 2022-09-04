@@ -2,44 +2,17 @@
   <span ref="infinitescrolltrigger" />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 // Inspired by: https://www.netguru.com/codestories/infinite-scroll-with-vue.js-and-intersection-observer
+import { onMounted } from 'vue';
 
-import { Component, Prop, Vue } from "vue-property-decorator";
+const emit = defineEmits(['trigger:intersected', 'triggerIntersected']);
 
-export default Vue.extend({
-  name: "InfiniteScrollTrigger",
-  props: {
-    options: {
-      type: Object,
-      default: () => null
+onMounted(() => {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY + window.innerHeight >= document.querySelector('.content')!.scrollHeight) {
+      emit("triggerIntersected");
     }
-  },
-
-  data() {
-    return {
-      observer: null as IntersectionObserver | null,
-    }
-  },
-
-  mounted() {
-    this.observer = new IntersectionObserver( entries => {
-      this.handleIntersect(entries[0]);
-    }, this.options!);
-
-    this.observer.observe(this.$refs.infinitescrolltrigger as any);
-  },
-
-  destroyed() {
-    this!.observer!.disconnect();
-  },
-
-  methods: {
-    handleIntersect(entry: IntersectionObserverEntry) {
-      if (entry.isIntersecting) {
-        this.$emit("triggerIntersected");
-      }
-    }
-  },
+  });
 });
 </script>
