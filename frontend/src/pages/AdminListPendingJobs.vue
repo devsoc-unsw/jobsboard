@@ -18,7 +18,7 @@
           :company="job.company.name"
           :description="job.description"
           :applicationLink="job.applicationLink"
-          />
+        />
       </div>
     </StudentViewTemplate>
   </LoggedInTemplate>

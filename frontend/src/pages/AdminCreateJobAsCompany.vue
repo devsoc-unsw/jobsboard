@@ -55,8 +55,9 @@
       class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
     />
     <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Job Description</h2>
-    <quill-editor 
-      v-model="description"
+    <QuillEditor 
+      v-model:content="description"
+      contentType="html"
       :value="description"
       :options="editorOptions"
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
@@ -204,8 +205,9 @@
     </div>
     <h2 class="text-xl text-jb-headings my-4 font-bold self-start lg:self-center">Additional Information</h2>
     <quill-editor 
-      v-model="additionalInfo"
+      v-model:content="additionalInfo"
       :value="additionalInfo"
+      contentType="html"
       :options="{ 
         ...editorOptions, 
         placeholder: `Please note down any additional information that will make recommending jobs to students easier. This could be things like:
@@ -238,15 +240,13 @@
 import { ref, onMounted } from 'vue';
 
 // quilljs related 
-// import 'quill/dist/quill.core.css'
-// import 'quill/dist/quill.snow.css'
-// import { quillEditor } from 'vue-quill-editor';
+import 'quill/dist/quill.snow.css'
+import { QuillEditor } from '@vueup/vue-quill';
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Modal from "@/components/Modal.vue";
-import RichTextEditor from "@/components/RichTextEditor.vue";
 import Alert from "@/components/Alert.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
@@ -271,7 +271,7 @@ const editorOptions = {
 };
 
 const role = ref<string>("");
-const description = ref<string>("");
+const description = ref<any>("");
 const applicationLink = ref<string>("");
 const expiryDate = ref<string>("");
 const isPaidPosition = ref<string>("");
@@ -280,7 +280,7 @@ const jobMode = ref<string>("");
 const workingRights = ref<string[]>([]);
 const studentDemographic = ref<string[]>([]);
 const wamRequirements = ref<string>("");
-const additionalInfo = ref<string>("");
+const additionalInfo = ref<any>("");
 const alertType = ref<string>("");
 const alertMsg = ref<string>("");
 const isAlertOpen = ref<boolean>(false);
@@ -402,5 +402,19 @@ async function submitJobPost() {
   }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+  /* Using css instead of tailwind to override the div from quill */
+  .ql-editor {
+    background-color: $white;
+    height: 40vh;
+    font-size: 12pt;
+  }
+
+  .ql-toolbar.ql-snow {
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    padding: 8px;
+    width: 100%;
+  }
 </style>

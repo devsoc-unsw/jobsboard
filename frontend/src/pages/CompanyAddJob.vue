@@ -61,10 +61,11 @@
       class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
     />
     <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Job Description</h2>
-    <quill-editor 
-      v-model="description"
+    <QuillEditor
+      v-model:content="description"
       :value="description"
       :options="editorOptions"
+      contentType="html"
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
     <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Application Link</h2>
@@ -209,8 +210,8 @@
       </div>
     </div>
     <h2 class="text-xl text-jb-headings my-4 font-bold self-start lg:self-center">Additional Information</h2>
-    <quill-editor 
-      v-model="additionalInfo"
+    <QuillEditor
+      v-model:content="additionalInfo"
       :value="additionalInfo"
       :options="{ 
         ...editorOptions, 
@@ -220,6 +221,7 @@
         - Is your company able to sponsor the applicant's visa if needed?` 
       }"
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
+      contentType="html"
     />
     <button 
       @click="() => { modalVisible = true }" 
@@ -240,19 +242,18 @@
 </template>
 
 <script setup lang="ts">
-
 // libraries
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import { QuillEditor } from '@vueup/vue-quill';
 
 
 // components
 import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
 import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
 import Modal from "@/components/Modal.vue";
-import JobDescriptionView from "@/components/JobDescriptionView.vue";
-import RichTextEditor from "@/components/RichTextEditor.vue";
 import Alert from "@/components/Alert.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
@@ -275,7 +276,7 @@ const editorOptions = {
 };
 
 const role = ref<string>("");
-const description = ref<string>("");
+const description = ref<any>("");
 const applicationLink = ref<string>("");
 const alertType = ref<string>("");
 const alertMsg = ref<string>("");
@@ -288,7 +289,7 @@ const jobMode = ref<string>("");
 const workingRights = ref<string[]>([]);
 const studentDemographic = ref<string[]>([]);
 const wamRequirements = ref<string>("");
-const additionalInfo = ref<string>("");
+const additionalInfo = ref<any>("");
 
 onMounted(() => {
   // Change the page title
@@ -356,3 +357,20 @@ async function submitJobPost() {
   }
 }
 </script>
+
+<style lang="scss">
+  /* Using css instead of tailwind to override the div from quill */
+  .ql-editor {
+    background-color: $white;
+    height: 40vh;
+    font-size: 12pt;
+  }
+
+  .ql-toolbar.ql-snow {
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    padding: 8px;
+    width: 100%;
+  }
+</style>

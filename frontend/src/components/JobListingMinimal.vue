@@ -21,7 +21,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const props = defineProps({
-  jobId: Number,
+  jobID: Number,
   role: String,
   company: String,
   location: String,
@@ -32,7 +32,7 @@ function routeToJob() {
   router.push({ 
     name: 'job', 
     params: { 
-      jobID: props.jobId 
+      jobID: props.jobID 
     } 
   });
 }
