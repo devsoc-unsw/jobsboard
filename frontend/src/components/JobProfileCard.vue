@@ -1,25 +1,25 @@
 <template>
   <div>
-    <div class="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer" @click="() => {this.$router.push('/company/jobs/manage')}" 
+    <div class="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer px-6" @click="() => {this.$router.push('/company/jobs/manage')}" 
       @mouseenter="isHovering = true"
       @mouseleave="isHovering = false"
       :class="{ boxHover: isHovering }">
       <div class="text-left">
-        <h1 class="font-bold text-xl text-[#1a324e] text-center leading-[60px] mb-[-6px]"> {{ jobRole() }} </h1>
+        <h1 class="font-bold text-xl text-[#1a324e] text-center leading-[60px] mb-[-6px] truncate">{{ this.role }}</h1>
         <!-- Description -->
         <div class="flex">
-          <div class="ml-6">
+          <div>
             <div> <font-awesome-icon icon="suitcase" class="text-black" size="lg" /> </div>
             <div> <font-awesome-icon icon="location-dot" class="text-black ml-0.5" size="lg" /> </div>
             <div> <font-awesome-icon icon="user-group" class="text-black" size="lg" /> </div>
             <div> <font-awesome-icon icon="circle-dollar-to-slot" class="text-black" size="lg" /> </div>
           </div>
 
-          <div>
-            <p class="ml-3 text-jb-subheadings">{{ jobCommit() }}</p>
-            <p class="ml-3 text-jb-subheadings">{{ location() }}</p>
-            <p class="ml-3 text-jb-subheadings"> {{ target() }} </p>
-            <p class="ml-3 text-jb-subheadings"> {{this.$props.pay === true ?  'Paid' : 'Not Paid'}} </p>
+          <div class="truncate">
+            <p class="ml-3 text-jb-subheadings truncate">{{ jobTypeObject[this.jobType] }}</p>
+            <p class="ml-3 text-jb-subheadings truncate">{{ jobModeObject[this.mode] }}</p>
+            <p class="ml-3 text-jb-subheadings truncate"> {{ this.$props.studentDemographic.length === 2 ? "Penult & Final" : studentDemoObject[this.$props.studentDemographic] }}</p>
+            <p class="ml-3 text-jb-subheadings truncate"> {{this.$props.pay ?  'Paid' : 'Not Paid'}} </p>
           </div>
         </div>
 
@@ -46,9 +46,9 @@
 <script lang="ts">
 import { Vue } from "vue-property-decorator";
 import config from "@/config/config";
+import { JobType, JobMode, StudentDemographic } from "@/constants/job-fields.ts";
 
 export default Vue.extend({
-  components: {  },
   name: "JobProfileCard",
   props: {
     jobID: Number,
@@ -58,7 +58,7 @@ export default Vue.extend({
     pay: Boolean,
     jobType: String,
     mode: String,
-    expiry: Date,
+    expiry: String,
     studentDemographic: Array,
     jobList: Object,
     expiredList: Object,
@@ -68,32 +68,14 @@ export default Vue.extend({
     return {
       apiToken: this.$store.getters.getApiToken,
       isHovering: false,
+      jobTypeObject: JobType,
+      jobModeObject: JobMode,
+      studentDemoObject: StudentDemographic,
     };
   },
   methods: {
-    jobRole() {
-      return this.$props.role.length > 20 ? this.$props.role.slice(0, 15) + "..." : this.$props.role;
-    },
-    jobCommit() {
-      const firstLetter = this.$props.jobType.slice(0, 1);
-      const strRest = this.$props.jobType.slice(1);
-      return firstLetter.toUpperCase() + strRest + " " + "Role";
-    },
-    location() {
-      const firstLetter = this.$props.mode.slice(0, 1);
-      const strRest = this.$props.mode.slice(1);
-      return firstLetter.toUpperCase() + strRest;
-    },
     expiryDate() {
       return this.$props.expiry.slice(0, 10).replace(/-/gi, "/");
-    },
-    target() {
-      if (this.$props.studentDemographic.length === 2) {
-        return "Penult & Final";
-      }
-      const firstLetter = this.$props.studentDemographic[0].slice(0, 1);
-      const strRest = this.$props.studentDemographic[0].slice(1);
-      return firstLetter.toUpperCase() + strRest;
     },
     async deleteJob() {
       const uri = `${config.apiRoot}/company/job/${this.jobID}`;
