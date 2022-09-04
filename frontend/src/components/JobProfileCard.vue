@@ -53,8 +53,6 @@ export default Vue.extend({
   props: {
     jobID: Number,
     role: String,
-    successCallback: Function,
-    errorCallback: Function,
     pay: Boolean,
     jobType: String,
     mode: String,
@@ -106,16 +104,12 @@ export default Vue.extend({
       });
       const receivedResponse = response as Response;
       if (receivedResponse.ok && this.listName === "postedJobs") {
-        this.successCallback("Job successfully deleted!");
         this.close();
       } else {
         if (response.status === 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
           setTimeout(() => {
             this.$router.push("/login/company");
           }, 3000);
-        } else {
-          this.errorCallback("Error in processing rejection. Please try again later.");
         }
       }
     },
