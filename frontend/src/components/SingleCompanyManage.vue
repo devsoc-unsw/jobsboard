@@ -64,9 +64,9 @@ async function verifyCompany() {
     } as HeadersInit,
   });
 
-  // this.$store.dispatch("setApiToken", msg.token);
   if (response.ok) {
     const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
     success.value = true;
     successMsg.value = "Company successfully verified!";
     close();
@@ -93,22 +93,4 @@ function close() {
 </script>
 
 <style scoped lang="scss">
-.smallerButton {
-  width: 20%;
-  padding: 0.5em;
-  margin: 0.5em;
-  border-radius: 0.5em;
-}
-
-.approveButton {
-  color: $white;
-  background: $green;
-  border: 0px;
-}
-
-.rejectButton {
-  color: $white;
-  background: $red;
-  border: 0px;
-}
 </style>

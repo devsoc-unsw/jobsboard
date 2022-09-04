@@ -144,14 +144,6 @@ function close() {
   height: 100%;
 }
 
-.companyLogo {
-  width: 100%;
-  font-size: 3em;
-  color: $grey;
-  text-decoration: none;
-    margin-top: 10%;
-}
-
 .jobDescriptionBox {
   text-align: center;
   width: 80%;

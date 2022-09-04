@@ -46,7 +46,7 @@
         :company="company"
         :description="description"
         :actAsLink="actAsLink"
-        >
+      >
         <StandardButton>
           <Button @callback="showJobModal">
             Preview
@@ -69,6 +69,8 @@
 
 <script setup lang="ts">
 import { defineProps, onUnmounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import JobListingMinimal from "@/components/JobListingMinimal.vue";
 import SuccessBox from "@/components/SuccessBox.vue";
 import ErrorBox from "@/components/ErrorBox.vue";
@@ -79,8 +81,6 @@ import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
 import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
 import Modal from "@/components/Modal.vue";
 import JobDescriptionView from "@/components/JobDescriptionView.vue";
-import { useApiTokenStore } from '@/store/apiToken';
-import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
@@ -115,9 +115,9 @@ async function approveJob() {
     },
   );
 
-  // this.$store.dispatch("setApiToken", msg.token);
   if (response.ok) {
     const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
     success.value = true;
     successMsg.value = "Job successfully approved!";
     error.value = false;
@@ -148,9 +148,9 @@ async function rejectJob() {
     },
   );
 
-  // this.$store.dispatch("setApiToken", msg.token);
   if (response.ok) {
     const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
     success.value = true;
     successMsg.value = "Job successfully rejected!";
     error.value = false;
@@ -191,24 +191,6 @@ async function closeJobModal() {
 </script>
 
 <style scoped lang="scss">
-.smallerButton {
-  width: 20%;
-  padding: 0.5em;
-  margin: 0.5em;
-  border-radius: 0.5em;
-}
-
-.approveButton {
-  color: $white;
-  background: $green;
-  border: 0px;
-}
-
-.rejectButton {
-  color: $white;
-  background: $red;
-  border: 0px;
-}
 .modalWrapper {
   text-align: left;
 }

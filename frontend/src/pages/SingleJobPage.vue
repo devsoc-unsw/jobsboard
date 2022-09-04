@@ -55,11 +55,11 @@
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
-            <b>Job Mode:</b> {{ jobMode }}
+            <b>Job Mode:</b> {{ jobModeObject[jobMode] }}
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="suitcase" class="mr-5 w-7" />
-            <b>Job Type:</b> {{ jobType }}
+            <b>Job Type:</b> {{ jobTypeObject[jobType] }}
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="calendar" class="mr-5 w-7" />
@@ -72,38 +72,42 @@
           <span class="mb-1">
             <font-awesome-icon icon="graduation-cap" class="mr-5 w-7" />
             <b>Required WAM:</b> 
-            {{ wamRequirements }}
+            {{ wamRequirementsObject[wamRequirements] }}
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="address-card" class="mr-5 w-7" />
             <b>
               {{
-                ["all"].every((val, idx) => val === workingRights)
+                ["all"].every((val, idx) => val === workingRights[idx])
                   ? "No required working rights specified for this job listing."
                   : "Must have one of the following working rights in Australia:"
               }}
             </b>
             <ul
-              v-if="!['all'].every((val, idx) => val === workingRights)"
+              v-if="!['all'].every((val, idx) => val === workingRights[idx])"
               class="list-disc list-inside ml-12"
             >
-              <li v-for="workingRight in workingRights" :key="workingRight">{{ workingRight }}</li>
+              <li v-for="workingRight in workingRights" :key="workingRight">
+                {{ workingRightsObject[workingRight as keyof typeof workingRightsObject] }}
+              </li>
             </ul>
           </span>
           <span class="mb-1">
             <font-awesome-icon icon="user" class="mr-5 w-7" />
             <b>
               {{
-                ["all"].every((val, idx) => val === studentDemographic)
+                ["all"].every((val, idx) => val === studentDemographic[idx])
                   ? "This job listing is open to students at any stage of their degree."
                   : "This job listing is open to only the following students:"
               }}
             </b>
             <ul
-              v-if="!['all'].every((val, idx) => val === studentDemographic)"
+              v-if="!['all'].every((val, idx) => val === studentDemographic[idx])"
               class="list-disc list-inside ml-12"
             >
-              <li v-for="studentType in studentDemographic" :key="studentType">{{ studentType }}</li>
+              <li v-for="studentType in studentDemographic" :key="studentType">
+                {{ studentDemographicObject[studentType as keyof typeof studentDemographicObject] }}
+              </li>
             </ul>
           </span>
         </div>
@@ -154,7 +158,7 @@ import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } 
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
-let currentRoute = ref<any>('');
+let currentRoute = ref<string>('');
 
 const companyID = ref<string>('');
 const role = ref<string>('');
@@ -164,12 +168,17 @@ const description = ref<string>('');
 const jobs = ref<any[]>([]);
 const location = ref<string>('');
 const applicationLink = ref<string>('');
-const jobMode = ref<keyof typeof JobMode>();
-const studentDemographic = ref<keyof typeof StudentDemographic>();
-const jobType = ref<keyof typeof JobType>();
-const workingRights = ref<keyof typeof WorkingRights>();
+const jobMode = ref<keyof typeof JobMode>('hybrid');
+const jobModeObject = ref<typeof JobMode>(JobMode);
+const studentDemographic = ref<keyof typeof StudentDemographic>('all');
+const studentDemographicObject = ref<typeof StudentDemographic>(StudentDemographic);
+const jobType = ref<keyof typeof JobType>('intern');
+const jobTypeObject = ref<typeof JobType>(JobType);
+const workingRights = ref<keyof typeof WorkingRights>('all');
+const workingRightsObject = ref<typeof WorkingRights>(WorkingRights);
+const wamRequirements = ref<keyof typeof WamRequirements>('none');
+const wamRequirementsObject = ref<typeof WamRequirements>(WamRequirements);
 const additionalInfo = ref<string>('');
-const wamRequirements = ref<keyof typeof WamRequirements>();
 const isPaid = ref<boolean>(true);
 const expiryDate = ref<string>('');
 const alertMsg = ref<string>('');
@@ -212,6 +221,7 @@ async function fetchJob() {
     studentDemographic.value = msg.job.studentDemographic;
     jobType.value = msg.job.jobType;
     workingRights.value = msg.job.workingRights;
+    console.log(workingRights.value)
     additionalInfo.value = msg.job.additionalInfo === ""
       ? "<p>This company has not provided any additional information.</p>" : msg.job.additionalInfo;
     wamRequirements.value = msg.job.wamRequirements;
@@ -259,7 +269,7 @@ async function fetchJob() {
 
 onMounted(() => {
   // Not sure how to replace this with the watch() method for Vue 3
-  currentRoute = useRoute().params.jobID as string;
+  currentRoute.value = useRoute().params.jobID as string;
   fetchJob();
 });
 

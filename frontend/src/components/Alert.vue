@@ -45,33 +45,4 @@ function getButtonStyles() {
 </script>
 
 <style scoped lang="scss">
-  .errorContainer {
-    background-color: rgb(254 202 202);
-  }
-  .successContainer {
-    background-color: rgb(187 247 208);
-  }
-  .errorText {
-    color: rgb(153 27 27);
-  }
-  .successText {
-    color: rgb(22 101 52);
-  }
-  .errorButton {
-    background-color: rgb(254 202 202);
-    color: rgb(239 68 68);
-
-    &:hover {
-      background-color: rgb(252 165 165);
-    }
-  }
-  .successButton {
-    background-color: rgb(187 247 208);
-    color: rgb(34 197 94);
-
-    &:hover {
-      background-color: rgb(134 239 172);
-    }
-  }
-
 </style>
