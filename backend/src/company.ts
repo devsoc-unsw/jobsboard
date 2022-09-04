@@ -525,12 +525,8 @@ export default class CompanyFunctions {
           applicationLink: job.applicationLink,
           status: jobStatus,
           mode: job.mode,
-          hidden: job.hidden,
           studentDemographic: job.studentDemographic,
           jobType: job.jobType,
-          workingRights: job.workingRights,
-          wamRequirements: job.wamRequirements,
-          additionalInfo: job.additionalInfo,
           pay: job.isPaid,
           expiry: job.expiry,
         };
