@@ -30,7 +30,7 @@
       <!-- Board -->
       <JobBoard :jobList="this.boardStatus === 'postedJobs' ? this.jobs : this.expiredJobs" :listName="boardStatus" />
 
-      <h1 class="font-bold text-4xl text-jb-headings text-center leading-[72px]">Curious about our other Partners?</h1>
+      <h1 class="font-bold text-4xl text-jb-headings text-center leading-[72px] mt-14">Curious about our other Partners?</h1>
         <p class="text-lg text-jb-subheadings mb-8 text-center">
           Check out our other
           <a href="https://www.csesoc.unsw.edu.au/sponsors" target="__blank" >
