@@ -11,9 +11,13 @@
         </ErrorBox>
       </div>
       <br/>
-      <input name="zID" v-model="zID" type="text" placeholder="zID" @keyup.enter="performLogin()"/>
+      <form>
+        <input name="zID" v-model="zID" type="text" placeholder="zID" @keyup.enter="performLogin()"/>
+      </form>
       <br/>
-      <input name="password" v-model="password" type="password" placeholder="zPass" @keyup.enter="performLogin()"/>
+      <form>
+        <input name="password" v-model="password" type="password" placeholder="zPass" autocomplete="new-password" performLogin()"/>
+      </form>
       <br/>
       <StandardButton>
         <Button @callback="performLogin">
