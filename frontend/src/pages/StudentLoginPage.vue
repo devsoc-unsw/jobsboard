@@ -12,11 +12,9 @@
       </div>
       <br/>
       <form>
-        <input name="zID" v-model="zID" type="text" placeholder="zID" @keyup.enter="performLogin()"/>
-      </form>
-      <br/>
-      <form>
-        <input name="password" v-model="password" type="password" placeholder="zPass" autocomplete="new-password" performLogin()"/>
+        <input name="zID" v-model="zID" type="text" placeholder="zID" autocomplete="username" @keyup.enter="performLogin()"/>
+        <br/>
+        <input name="password" v-model="password" type="password" placeholder="zPass" autocomplete="new-password" @keyup.enter="performLogin()"/>
       </form>
       <br/>
       <StandardButton>
