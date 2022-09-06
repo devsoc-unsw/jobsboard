@@ -57,7 +57,7 @@ onMounted(async () => {
   }, 10);
 })
 
-function logOut() {
+const logOut = () => {
   apiTokenStore.clearApiToken();
   router.push("/login/student");
 }

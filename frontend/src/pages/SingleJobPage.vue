@@ -188,7 +188,7 @@ const isAlertOpen = ref<boolean>(false);
 const jobInfoReady = ref<boolean>(false);
 const isJobDescriptionShown = ref<boolean>(true);
 
-async function fetchJob() {
+const fetchJob = async () => {
   // determine whether there is an API key present and redirect if not present
   if (apiTokenStore.getApiToken() === undefined) {
     router.push("/login");
@@ -274,7 +274,7 @@ onMounted(() => {
   fetchJob();
 });
 
-function openLink() {
+const openLink = () => {
   window.open(applicationLink.value, "_blank");
 }
 </script>

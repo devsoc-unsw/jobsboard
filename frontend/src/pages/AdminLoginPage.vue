@@ -99,7 +99,7 @@ const username = ref<string>("");
 const password = ref<string>("");
 const isAlertOpen = ref<boolean>(false);
 
-async function performAdminLogin() {
+const performAdminLogin = async () => {
   const response = await fetch(`${config.apiRoot}/authenticate/admin`, {
     method: "POST",
     headers: {
@@ -126,7 +126,7 @@ async function performAdminLogin() {
   }
 }
 
-function toLandingPage() {
+const toLandingPage = () => {
   router.push("/");
 }
 </script>

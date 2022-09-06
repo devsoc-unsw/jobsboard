@@ -55,7 +55,7 @@ const successMsg = ref<string>("");
 const error = ref<boolean>(false);
 const errorMsg = ref<string>("");
 
-async function verifyCompany() {
+const verifyCompany = async () =>  {
   const response = await fetch(`${config.apiRoot}/admin/company/${props.companyAccountID}/verify`, {
     method: "PATCH",
     headers: {

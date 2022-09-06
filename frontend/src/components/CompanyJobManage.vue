@@ -81,17 +81,17 @@ const successMsg = ref<string>("");
 const modalVisible = ref<boolean>(false);
 const modalContent = ref<string>("");
 
-async function showJobModal() {
+const showJobModal = async () => {
   modalVisible.value = true;
   modalContent.value = "Test.";
 }
 
-async function closeJobModal() {
+const closeJobModal = async () => {
   modalVisible.value = false;
   modalContent.value = "";
 }
 
-async function deleteJob() {
+const deleteJob = async () => {
   const uri = `${config.apiRoot}/company/job/${props.jobID}`;
   const response = await fetch(uri, {
     method: "DELETE",

@@ -85,7 +85,7 @@ const alertType = ref<string>('');
 const alertMsg = ref<string>('');
 const isAlertOpen = ref<boolean>(false);
 
-async function performCompanyPasswordReset() {
+const performCompanyPasswordReset = async () => {
   if (newPassword.value !== confirmPassword.value) {
     alertType.value = "error";
     alertMsg.value = "Passwords do not match. Please try again.";

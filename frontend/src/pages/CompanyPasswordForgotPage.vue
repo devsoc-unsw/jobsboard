@@ -76,7 +76,7 @@ const alertType = ref<string>('');
 const alertMsg = ref<string>('');
 const isAlertOpen = ref<boolean>(false);
 
-async function performCompanyPasswordForgot() {
+const performCompanyPasswordForgot = async () => {
   const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
     method: "POST",
     headers: {

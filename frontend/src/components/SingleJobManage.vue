@@ -103,7 +103,7 @@ const modalContent = ref<string>("");
 
 const jobCard = ref(null);
 
-async function approveJob() {
+const approveJob = async () => {
   const response = await fetch(
     `${config.apiRoot}/job/${props.jobID}/approve`,
     {
@@ -136,7 +136,7 @@ async function approveJob() {
   }
 }
 
-async function rejectJob() {
+const rejectJob = async () => {
   const response = await fetch(
     `${config.apiRoot}/job/${props.jobID}/reject`,
     {
@@ -179,12 +179,12 @@ onUnmounted(() => {
 //   }, 5000);
 // }
 
-async function showJobModal() {
+const showJobModal = async () => {
   modalVisible.value = true;
   modalContent.value = "Test.";
 }
 
-async function closeJobModal() {
+const closeJobModal = async () => {
   modalVisible.value = false;
   modalContent.value = "";
 }

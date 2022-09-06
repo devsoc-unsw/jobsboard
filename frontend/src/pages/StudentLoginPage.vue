@@ -104,7 +104,7 @@ onMounted(async () => {
   apiTokenStore.clearApiToken();
 });
 
-async function performLogin() {
+const performLogin = async () => {
   const response = await fetch(
     `${config.apiRoot}/authenticate/student`, 
   {

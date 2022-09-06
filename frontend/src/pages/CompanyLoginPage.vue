@@ -127,7 +127,7 @@ onMounted(async () => {
   apiTokenStore.clearApiToken();
 });
 
-async function performCompanyLogin() {
+const performCompanyLogin = async () => {
   const response = await fetch(
     `${config.apiRoot}/authenticate/company`,
     {

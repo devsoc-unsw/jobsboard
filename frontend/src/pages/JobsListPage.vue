@@ -62,7 +62,7 @@ onMounted(() => {
   loadMoreJobs();
 });
 
-async function loadMoreJobs() {
+const loadMoreJobs = async () => {
   const sleep = (milliseconds: number) => { 
     return new Promise(resolve => setTimeout(resolve, milliseconds));
   }

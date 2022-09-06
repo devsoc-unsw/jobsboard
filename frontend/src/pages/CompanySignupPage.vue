@@ -101,7 +101,7 @@ const successMsg = ref<string>("");
 const error = ref<boolean>(false);
 const errorMsg = ref<string>("");
 
-function validateInput() {
+const validateInput = () => {
   if (username.value === "") {
     error.value = true;
     errorMsg.value = "Username cannot be empty. Please try again.";
@@ -122,7 +122,7 @@ function validateInput() {
   return true;
 }
 
-async function performSignup() {
+const performSignup = async () => {
   if (!validateInput()) {
     return;
   }

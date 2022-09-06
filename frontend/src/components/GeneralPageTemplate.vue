@@ -41,7 +41,7 @@ const props = defineProps({
   }
 });
 
-function logOut() {
+const logOut = () => {
   apiTokenStore.clearApiToken();
   router.push("/login/company");
 }

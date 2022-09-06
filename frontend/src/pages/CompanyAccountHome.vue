@@ -37,11 +37,11 @@ onMounted(() => {
   document.title = useRoute().meta.title;
 });
 
-function goToCompanyJobAdd() {
+const goToCompanyJobAdd = () => {
   router.push("/company/jobs/add");
 }
 
-function goToCompanyManageJobs() {
+const goToCompanyManageJobs = () => {
   router.push("/company/jobs/manage");
 }
 </script>

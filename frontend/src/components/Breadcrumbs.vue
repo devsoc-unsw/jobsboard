@@ -35,13 +35,13 @@ watch(route, () => {
   updateList();
 });
 
-function routeTo(idx: number) {
+const routeTo = (idx: number) => {
   if (breadcrumbList.value[idx].link) {
     router.push(breadcrumbList.value[idx].link);
   }
 }
 
-function updateList() {
+const updateList = () => {
   breadcrumbList.value = route.meta.breadcrumb;
 }
 </script>

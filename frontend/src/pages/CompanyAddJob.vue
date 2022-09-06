@@ -296,7 +296,7 @@ onMounted(() => {
   document.title = useRoute().meta.title;
 });
 
-async function submitJobPost() {
+const submitJobPost = async () => {
   // create a date object using this value
   let jobDate = new Date(expiryDate.value);
   // set to the end of the set day

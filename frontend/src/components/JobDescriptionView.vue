@@ -19,7 +19,7 @@ const props = defineProps({
 
 const finalDescription = ref<string[]>([""]);
 
-function parseText() {
+const parseText = () => {
   let splitDescription = props.description?.split("\n");
 
   let listFlag = false;
@@ -47,7 +47,7 @@ function parseText() {
   }
 }
 
-function updated() {
+const updated = () => {
   // TODO this is causing problems
   // this.parseText();
 }

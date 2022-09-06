@@ -32,13 +32,13 @@ const props = defineProps({
   }
 });
 
-function getContainerStyles() {
+const getContainerStyles = () => {
   return props.alertType === "error" ? "errorContainer" : "successContainer";
 }
-function getTextStyles() {
+const getTextStyles = () => {
   return props.alertType === "error" ? "errorText" : "successText";
 }
-function getButtonStyles() {
+const getButtonStyles = () => {
   return props.alertType === "error" ? "errorButton" : "successButton";
 }
 

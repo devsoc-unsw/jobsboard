@@ -28,7 +28,7 @@ const props = defineProps({
   // TODO: add company logo
 });
 
-function routeToJob() {
+const routeToJob = () => {
   router.push({ 
     name: 'job', 
     params: { 

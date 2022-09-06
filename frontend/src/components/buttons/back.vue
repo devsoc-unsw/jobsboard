@@ -9,7 +9,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-function back() {
+const back = () => {
   router.go(-1);
 }
 </script>

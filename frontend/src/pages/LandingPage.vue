@@ -142,7 +142,7 @@ onMounted(() => {
   apiTokenStore.clearApiToken();
 })
 
-function scrollToTop() {
+const scrollToTop = () => {
   window.scrollTo({ 
     left: 0,
     top: 0, 
@@ -150,11 +150,11 @@ function scrollToTop() {
   });
 }
 
-function companyRegister() {
+const companyRegister = () => {
   router.push("/signup/company");
 }
 
-function toGithubRepo() {
+const toGithubRepo = () => {
   window.open("https://github.com/csesoc/jobs-board");
 }
 </script>

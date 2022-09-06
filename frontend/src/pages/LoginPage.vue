@@ -36,10 +36,10 @@ import ErrorBox from "@/components/ErrorBox.vue";
 
 const router = useRouter();
 
-function toStudentLogin() {
+const toStudentLogin = () => {
   router.push("/login/student");
 }
-function toCompanyLogin() {
+const toCompanyLogin = () => {
   router.push("/login/company");
 }
 

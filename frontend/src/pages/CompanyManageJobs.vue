@@ -59,13 +59,13 @@ const success = ref<boolean>(false);
 const successMsg = ref<string>("");
 const jobs = ref<any>([]);
 
-function internalErrorCallback(msg: string) {
+const internalErrorCallback = (msg: string) => {
   error.value = true;
   success.value = false;
   errorMsg.value = msg;
 }
 
-function internalSuccessCallback(msg: string) {
+const internalSuccessCallback = (msg: string) => {
   error.value = false;
   success.value = true;
   successMsg.value = msg;
