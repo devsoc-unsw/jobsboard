@@ -902,6 +902,29 @@ app.put(
   Middleware.genericLoggingMiddleware
 );
 
+/**
+ *  @swagger
+ *  /getFeaturedJobs:
+ *    get:
+ *      description: List the 4 latest jobs in the database
+ *    responses:
+ *      200:
+ *        description: success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Job'
+ *      400:
+ *        description: failed to get Jobs
+ */
+app.get(
+  "/featured-jobs",
+  cors(corsOptions),
+  StudentFunctions.GetFeaturedJobs,
+  Middleware.genericLoggingMiddleware
+);
 
 /**
  * Comment/uncomment to enable/disable swagger docs and sending test emails.
