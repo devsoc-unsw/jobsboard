@@ -2,7 +2,7 @@
   <!-- TODO: replace router push with window.open instead? -->
   <button
     class='flex flex-row mb-4 items-center p-4 shadow-card rounded-md w-full md:flex-col'
-    @click='() => { $router.push({ name: &apos;job&apos;, params: { jobID: jobId } }) }'
+    @click='() => { $router.push({ name: "job", params: { jobID: jobId } }) }'
   >
     <!-- TODO: to be replaced with company logo -->
     <font-awesome-icon

@@ -79,7 +79,7 @@
           v-model='description'
           :value='description'
           :options='editorOptions'
-          :style='{ &apos;background-color&apos;: &apos;white&apos;, &apos;width&apos;: &apos;100%&apos; }'
+          :style='{ "background-color": "white", "width": "100%" }'
         />
         <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
           Application Link
@@ -364,9 +364,9 @@
             placeholder: `Please note down any additional information that will make recommending jobs to students easier. This could be things like:
         - Point of contact for applicants to reach out with any questions.
         - What type of role is this? Eg: Frontend, Backend, Fullstack, Site Reliability Engineer, etc.
-        - Is your company able to sponsor the applicant&apos;s visa if needed?`,
+        - Is your company able to sponsor the applicant"s visa if needed?`,
           }'
-          :style='{ &apos;background-color&apos;: &apos;white&apos;, &apos;width&apos;: &apos;100%&apos; }'
+          :style='{ "background-color": "white", "width": "100%" }'
         />
         <button
           class='border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered'

@@ -74,7 +74,7 @@
           <FeaturedJobCard
             job-title='STEP Intern, 2022 Summer'
             job-description='The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship.'
-            :job-tag='[&apos;AU/NZ Citizens&apos;, &apos;Internationals&apos;]'
+            :job-tag='["AU/NZ Citizens", "Internationals"]'
             :image-path='GoogleLogo'
           />
         </div>

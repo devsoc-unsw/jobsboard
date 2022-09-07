@@ -13,7 +13,7 @@
           rel='noopener noreferrer'
         >
           <span>
-            <font-awesome-icon :icon='[&apos;fab&apos;, &apos;github&apos;]' />
+            <font-awesome-icon :icon='["fab", "github"]' />
           </span>
         </a>
         <a
@@ -22,7 +22,7 @@
           rel='noopener noreferrer'
         >
           <span>
-            <font-awesome-icon :icon='[&apos;fab&apos;, &apos;linkedin&apos;]' />
+            <font-awesome-icon :icon='["fab", "linkedin"]' />
           </span>
         </a>
         on behalf of
