@@ -2,34 +2,34 @@
   <LoggedInTemplate>
     <StudentViewTemplate disable-back>
       <Breadcrumbs />
-      <div v-if="error">
+      <div v-if='error'>
         <br>
         <ErrorBox>
           {{ errorMsg }}
         </ErrorBox>
       </div>
-      <div class="jobsBox">
-        <div class="resultsFound">
-          <div v-if="jobs.length === 1">
+      <div class='jobsBox'>
+        <div class='resultsFound'>
+          <div v-if='jobs.length === 1'>
             {{ jobs.length }} Job Found
           </div>
           <div v-else>
             {{ jobs.length }} Jobs Found
           </div>
         </div>
-        <div class="jobContainer">
+        <div class='jobContainer'>
           <JobListingMinimal
-            v-for="job in jobs"
-            :key="job.key"
-            class="jobItems"
-            :job-id="job.id"
-            :role="job.role"
-            :company="job.company.name"
-            :location="job.company.location"
+            v-for='job in jobs'
+            :key='job.key'
+            class='jobItems'
+            :job-id='job.id'
+            :role='job.role'
+            :company='job.company.name'
+            :location='job.company.location'
           />
         </div>
       </div>
-      <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs" />
+      <InfiniteScrollTrigger @triggerIntersected='loadMoreJobs' />
       <br>
     </StudentViewTemplate>
   </LoggedInTemplate>
@@ -53,7 +53,7 @@ export default Vue.extend({
     ErrorBox,
     LoggedInTemplate,
     InfiniteScrollTrigger,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {
@@ -69,15 +69,14 @@ export default Vue.extend({
   },
   methods: {
     async loadMoreJobs() {
-      const sleep = (milliseconds: number) => { 
+      const sleep = (milliseconds: number) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
-      }
+      };
       while (this.loadMoreJobsLock) {
         await sleep(1000);
       }
       this.loadMoreJobsLock = true;
-      // determine whether there is an API key present and redirect if not present
-      // load the jobs using the api token
+
       const response = await fetch(`${config.apiRoot}/jobs/${this.jobs.length}`, {
           method: 'GET',
           headers: {
@@ -93,7 +92,7 @@ export default Vue.extend({
       */
       if (response.ok) {
         const msg = await response.json();
-        this.jobs = [... this.jobs, ... msg.jobs];
+        this.jobs = [...this.jobs, ...msg.jobs];
       } else {
         this.error = true;
         window.scrollTo(0, 10);
@@ -108,8 +107,8 @@ export default Vue.extend({
         this.jobs = [];
       }
       this.loadMoreJobsLock = false;
-    }
-  }
+    },
+  },
 });
 </script>
 

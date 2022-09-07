@@ -1,16 +1,16 @@
 <template>
   <!-- TODO: replace router push with window.open instead? -->
   <button
-    class="flex flex-row mb-4 items-center p-4 shadow-card rounded-md w-full md:flex-col"
-    @click="() => { $router.push({ name: 'job', params: { jobID: jobId } }) }"
+    class='flex flex-row mb-4 items-center p-4 shadow-card rounded-md w-full md:flex-col'
+    @click='() => { $router.push({ name: &apos;job&apos;, params: { jobID: jobId } }) }'
   >
     <!-- TODO: to be replaced with company logo -->
     <font-awesome-icon
-      icon="building"
-      class="h-12 mr-4 md:mr-0"
+      icon='building'
+      class='h-12 mr-4 md:mr-0'
     />
-    <div class="flex flex-col text-left pt-0 md:pt-4 md:text-center">
-      <h2 class="font-bold text-jb-headings">
+    <div class='flex flex-col text-left pt-0 md:pt-4 md:text-center'>
+      <h2 class='font-bold text-jb-headings'>
         {{ role }}
       </h2>
       <p>{{ company }}</p>
@@ -28,19 +28,19 @@ export default Vue.extend({
   props: {
     jobId: {
       type: Number,
-      default: 0
+      default: 0,
     },
     role: {
       type: String,
-      default: ''
+      default: '',
     },
     company: {
       type: String,
-      default: ''
+      default: '',
     },
     location: {
       type: String,
-      default: ''
+      default: '',
     },
     // TODO: add company logo
   },

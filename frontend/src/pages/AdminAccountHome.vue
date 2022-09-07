@@ -3,128 +3,128 @@
     <StudentViewTemplate>
       <Breadcrumbs />
       <div>
-        <h1 class="text-3xl text-jb-headings font-bold mt-0 mb-3 md:mt-10">
+        <h1 class='text-3xl text-jb-headings font-bold mt-0 mb-3 md:mt-10'>
           Welcome Back 👋
         </h1>
-        <h3 class="text-base text-jb-subheadings">
+        <h3 class='text-base text-jb-subheadings'>
           Hey there! It's great to see you again.
         </h3>
-    
+
         <!-- Error Alert -->
         <Alert
-          alert-type="error"
-          :alert-msg="alertMsg"
-          :is-open="isAlertOpen"
-          :handle-close="() => { isAlertOpen = false }"
-          class="mx-96 my-5 lg:mx-[25%]"
+          alert-type='error'
+          :alert-msg='alertMsg'
+          :is-open='isAlertOpen'
+          :handle-close='() => { isAlertOpen = false }'
+          class='mx-96 my-5 lg:mx-[25%]'
         />
-    
+
         <!-- Notification Alert -->
-        <div 
-          v-if="infoAlert && !isAlertOpen" 
-          class="flex justify-evenly items-start my-10 mx-[30%] bg-white rounded-md py-5 px-2 border-2 border-blue-300 lg:mx-[25%]"
+        <div
+          v-if='infoAlert && !isAlertOpen'
+          class='flex justify-evenly items-start my-10 mx-[30%] bg-white rounded-md py-5 px-2 border-2 border-blue-300 lg:mx-[25%]'
         >
-          <div class="mx-3 my-auto">
+          <div class='mx-3 my-auto'>
             <font-awesome-icon
-              icon="bell"
-              class="text-2xl text-jb-headings bell"
+              icon='bell'
+              class='text-2xl text-jb-headings bell'
             />
           </div>
-          <div class="flex flex-col items-start text-left ml-2">
-            <h3 class="text-xl font-bold text-jb-headings">
+          <div class='flex flex-col items-start text-left ml-2'>
+            <h3 class='text-xl font-bold text-jb-headings'>
               Looks like we're still in business
             </h3>
-            <p class="text-base text-jb-headings">
-              There are 
-              <span class="text-jb-textlink font-bold hover:text-jb-textlink-hovered">
-                {{ nPendingCompanies }} companies 
+            <p class='text-base text-jb-headings'>
+              There are
+              <span class='text-jb-textlink font-bold hover:text-jb-textlink-hovered'>
+                {{ nPendingCompanies }} companies
               </span>
-              waiting for verification and 
-              <span class="text-jb-textlink font-bold hover:text-jb-textlink-hovered">
-                {{ nPendingJobs }} job posts 
+              waiting for verification and
+              <span class='text-jb-textlink font-bold hover:text-jb-textlink-hovered'>
+                {{ nPendingJobs }} job posts
               </span>
               awaiting approval.
             </p>
           </div>
-          <div class="flex items-start mx-2"> 
+          <div class='flex items-start mx-2'>
             <font-awesome-icon
-              icon="xmark"
-              class="text-xl ml-2 text-jb-headings cursor-pointer"
-              @click="() => { infoAlert = false }"
+              icon='xmark'
+              class='text-xl ml-2 text-jb-headings cursor-pointer'
+              @click='() => { infoAlert = false }'
             />
           </div>
         </div>
-    
+
         <!-- Company Verification -->
-        <div class="flex flex-col justify-center items-center bg-white p-6 mx-[30%] my-4 lg:mx-[25%] rounded-md shadow-card">
-          <h3 class="text-2xl font-bold text-jb-headings">
+        <div class='flex flex-col justify-center items-center bg-white p-6 mx-[30%] my-4 lg:mx-[25%] rounded-md shadow-card'>
+          <h3 class='text-2xl font-bold text-jb-headings'>
             Company Verification
           </h3>
-          <p class="text-md text-jb-subheadings pt-2 pb-5">
+          <p class='text-md text-jb-subheadings pt-2 pb-5'>
             Please ensure that the
-            <span class="text-jb-textlink font-bold"> company is legitimate </span>
+            <span class='text-jb-textlink font-bold'> company is legitimate </span>
             before verifying.
           </p>
-          <Button @callback="() => { $router.push(`/admin/companies/pending`) }">
+          <Button @callback='() => { $router.push(`/admin/companies/pending`) }'>
             <font-awesome-icon
-              icon="user-shield"
-              class="text-white"
+              icon='user-shield'
+              class='text-white'
             />
-            <p class="p-4 text-white">
+            <p class='p-4 text-white'>
               Verify Company
             </p>
             <font-awesome-icon
-              icon="angle-right"
-              class="text-white"
+              icon='angle-right'
+              class='text-white'
             />
           </Button>
         </div>
-    
+
         <!-- Job Verification -->
-        <div class="flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card">
-          <h3 class="text-2xl font-bold text-jb-headings">
+        <div class='flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card'>
+          <h3 class='text-2xl font-bold text-jb-headings'>
             Job Verification
           </h3>
-          <p class="text-md text-jb-subheadings pt-2 pb-5">
+          <p class='text-md text-jb-subheadings pt-2 pb-5'>
             Please ensure that all job posts complies with the
-            <span class="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>.
+            <span class='text-jb-textlink font-bold'> Australian Fair Work Act 2009</span>.
           </p>
-          <Button @callback="() => { $router.push(`/admin/jobs/pending`) }">
+          <Button @callback='() => { $router.push(`/admin/jobs/pending`) }'>
             <font-awesome-icon
-              icon="briefcase"
-              class="text-white"
+              icon='briefcase'
+              class='text-white'
             />
-            <p class="p-4 text-white">
+            <p class='p-4 text-white'>
               Verify Job Post
             </p>
             <font-awesome-icon
-              icon="angle-right"
-              class="text-white"
+              icon='angle-right'
+              class='text-white'
             />
           </Button>
         </div>
-    
+
         <!-- Post Job as Company -->
-        <div class="flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card">
-          <h3 class="text-2xl font-bold text-jb-headings">
+        <div class='flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card'>
+          <h3 class='text-2xl font-bold text-jb-headings'>
             Post job as Company
           </h3>
-          <p class="text-md text-jb-subheadings pt-2 pb-5">
+          <p class='text-md text-jb-subheadings pt-2 pb-5'>
             Make a job
-            <span class="text-jb-textlink font-bold"> post on behalf of a company</span>.
+            <span class='text-jb-textlink font-bold'> post on behalf of a company</span>.
             Ensure that you have their explicit permission before doing so.
           </p>
-          <Button @callback="() => { $router.push(`/admin/jobs/post`) }">
+          <Button @callback='() => { $router.push(`/admin/jobs/post`) }'>
             <font-awesome-icon
-              icon="briefcase"
-              class="text-white"
+              icon='briefcase'
+              class='text-white'
             />
-            <p class="p-4 text-white">
+            <p class='p-4 text-white'>
               Post Job
             </p>
             <font-awesome-icon
-              icon="angle-right"
-              class="text-white"
+              icon='angle-right'
+              class='text-white'
             />
           </Button>
         </div>
@@ -149,7 +149,7 @@ export default Vue.extend({
     LoggedInTemplate,
     Alert,
     Button,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {
@@ -165,7 +165,7 @@ export default Vue.extend({
     // Change the page title
     document.title = this.$route.meta.title;
 
-    // Get the number of companies pending verification 
+    // Get the number of companies pending verification
     const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
       method: 'GET',
       headers: {
@@ -190,8 +190,8 @@ export default Vue.extend({
         this.alertMsg = 'Failed to get pending companies. You might want to check what\'s happening in the console.';
       }
     }
-    
-    // Get the number of jobs pending verification 
+
+    // Get the number of jobs pending verification
     const pendingJobsResponse = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
       method: 'GET',
       headers: {
@@ -217,7 +217,7 @@ export default Vue.extend({
       }
     }
   },
-})
+});
 </script>
 
 <style scoped lang="scss">

@@ -13,11 +13,11 @@
       </p>
     </ErrorBox>
     <h1>Jobs for UNSW CSE Students</h1>
-    <div class="buttonBox">
+    <div class='buttonBox'>
       <StandardButton>
         <Button
           disabled
-          @callback="toStudentLogin"
+          @callback='toStudentLogin'
         >
           Student
         </Button>
@@ -25,7 +25,7 @@
       <StandardButton>
         <Button
           disabled
-          @callback="toCompanyLogin"
+          @callback='toCompanyLogin'
         >
           Company
         </Button>
@@ -59,8 +59,8 @@ export default Vue.extend({
     },
     toCompanyLogin() {
       this.$router.push('/login/company');
-    }
-  }
+    },
+  },
 });
 </script>
 

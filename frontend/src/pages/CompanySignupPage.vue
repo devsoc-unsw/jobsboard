@@ -2,21 +2,21 @@
 <template>
   <StudentViewTemplate not-logged-in>
     <Breadcrumbs />
-    <main class="h-full flex flex-col justify-center items-center py-16">
-      <h1 class="text-jb-headings font-bold text-3xl">
+    <main class='h-full flex flex-col justify-center items-center py-16'>
+      <h1 class='text-jb-headings font-bold text-3xl'>
         Company Sign Up
       </h1>
-      <p class="text-jb-subheadings text-base my-4 mx-[18%] sm:mx-8">
-        Enter your email address in the format recruiting@company.com and 
+      <p class='text-jb-subheadings text-base my-4 mx-[18%] sm:mx-8'>
+        Enter your email address in the format recruiting@company.com and
       </p>
 
       <!-- Success/Error Alert -->
-      <div v-if="success">
+      <div v-if='success'>
         <SuccessBox>
           {{ successMsg }}
         </SuccessBox>
       </div>
-      <div v-if="error">
+      <div v-if='error'>
         <ErrorBox>
           {{ errorMsg }}
         </ErrorBox>
@@ -26,21 +26,21 @@
 
       <!-- Email Input -->
       <input
-        v-model="username"
-        name="username"
-        type="text"
-        placeholder="email"
-        @keyup.enter="performSignup()"
+        v-model='username'
+        name='username'
+        type='text'
+        placeholder='email'
+        @keyup.enter='performSignup()'
       >
       <br>
 
       <!-- Password Input -->
       <input
-        v-model="password"
-        name="password"
-        type="password"
-        placeholder="password"
-        @keyup.enter="performSignup()"
+        v-model='password'
+        name='password'
+        type='password'
+        placeholder='password'
+        @keyup.enter='performSignup()'
       >
       <br>
 
@@ -48,34 +48,34 @@
 
       <!-- Company Name Input -->
       <input
-        v-model="name"
-        name="name"
-        type="text"
-        placeholder="company name"
-        @keyup.enter="performSignup()"
+        v-model='name'
+        name='name'
+        type='text'
+        placeholder='company name'
+        @keyup.enter='performSignup()'
       >
       <br>
 
       <!-- Company Location Input -->
       <input
-        v-model="location"
-        name="location"
-        type="text"
-        placeholder="location"
-        @keyup.enter="performSignup()"
+        v-model='location'
+        name='location'
+        type='text'
+        placeholder='location'
+        @keyup.enter='performSignup()'
       >
       <br>
 
       <!-- Company Logo Upload -->
       <!-- TODO: figure out logic for this  -->
       <StandardButton>
-        <Button @callback="performSignup">
+        <Button @callback='performSignup'>
           Sign Up
         </Button>
       </StandardButton>
       <br>
       <br>
-      Already have an account? <router-link to="/login/company">
+      Already have an account? <router-link to='/login/company'>
         Company Login
       </router-link>
     </main>
@@ -100,7 +100,7 @@ export default Vue.extend({
     SuccessBox,
     Button,
     StandardButton,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {
@@ -174,7 +174,7 @@ export default Vue.extend({
         this.errorMsg = 'Invalid username. Please try again.';
       }
     },
-  }
+  },
 });
 </script>
 

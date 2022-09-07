@@ -1,5 +1,5 @@
 <template>
-  <span ref="infinitescrolltrigger" />
+  <span ref='infinitescrolltrigger' />
 </template>
 
 <script lang="ts">
@@ -11,18 +11,18 @@ export default Vue.extend({
   props: {
     options: {
       type: Object,
-      default: () => null
-    }
+      default: () => null,
+    },
   },
 
   data() {
     return {
       observer: null as IntersectionObserver | null,
-    }
+    };
   },
 
   mounted() {
-    this.observer = new IntersectionObserver( entries => {
+    this.observer = new IntersectionObserver(entries => {
       this.handleIntersect(entries[0]);
     }, this.options);
 
@@ -38,7 +38,7 @@ export default Vue.extend({
       if (entry.isIntersecting) {
         this.$emit('triggerIntersected');
       }
-    }
+    },
   },
 });
 </script>

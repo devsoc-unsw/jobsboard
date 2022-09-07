@@ -1,10 +1,10 @@
 <template>
   <div>
     <p
-      v-for="(line, idx) in finalDescription"
-      :key="idx"
+      v-for='(line, idx) in finalDescription'
+      :key='idx'
     >
-      <span v-html="line" />
+      <span v-html='line' />
     </p>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default Vue.extend({
   props: {
     description: {
       type: String,
-      default: ''
+      default: '',
     },
   },
   data() {
@@ -42,7 +42,10 @@ export default Vue.extend({
       for (let lineIndex in splitDescription) {
         let line = splitDescription[lineIndex];
         // apply italics
-        line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
+        line = line.replace(
+          /_(\s+)_/g,
+          (match: string, italicContent: string) => `<i>${italicContent}</i>`,
+        );
         if (line.startsWith('- ')) {
           // remove that hyphen when rendering
           line = line.replace(/^- ?/, '');

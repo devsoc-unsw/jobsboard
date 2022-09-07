@@ -2,21 +2,21 @@
   <LoggedInTemplate>
     <StudentViewTemplate>
       <Breadcrumbs />
-      <div class="contentBox">
+      <div class='contentBox'>
         <h1>Companies Pending Verification</h1>
-        <div v-if="companies.length === 1">
+        <div v-if='companies.length === 1'>
           {{ companies.length }} Company Found
         </div>
         <div v-else>
           {{ companies.length }} Companies Found
         </div>
         <SingleCompanyManage
-          v-for="pendingCompany in companies"
-          :key="pendingCompany.key"
-          :company-account-i-d="pendingCompany.id"
-          :name="pendingCompany.company.name"
-          :location="pendingCompany.company.location"
-          :description="pendingCompany.company.description"
+          v-for='pendingCompany in companies'
+          :key='pendingCompany.key'
+          :company-account-i-d='pendingCompany.id'
+          :name='pendingCompany.company.name'
+          :location='pendingCompany.company.location'
+          :description='pendingCompany.company.description'
         />
       </div>
     </StudentViewTemplate>
@@ -37,7 +37,7 @@ export default Vue.extend({
     StudentViewTemplate,
     SingleCompanyManage,
     LoggedInTemplate,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {

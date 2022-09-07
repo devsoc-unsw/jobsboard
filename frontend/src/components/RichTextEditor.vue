@@ -1,10 +1,10 @@
 <template>
-  <div class="rich-text-editor">
+  <div class='rich-text-editor'>
     <quill-editor
-      ref="quillRichTextEditor"
-      :content="description"
-      :value="description"
-      :options="editorOptions"
+      ref='quillRichTextEditor'
+      :content='description'
+      :value='description'
+      :options='editorOptions'
     />
     <h2>{{ description }}</h2>
   </div>

@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div v-if="success">
+    <div v-if='success'>
       <br>
       <SuccessBox>
         {{ successMsg }}
       </SuccessBox>
     </div>
-    <div v-if="error">
+    <div v-if='error'>
       <br>
       <ErrorBox>
         {{ errorMsg }}
       </ErrorBox>
     </div>
-    <div v-if="!success">
+    <div v-if='!success'>
       <br>
       {{ name }} | {{ location }}
       <br>
@@ -21,7 +21,7 @@
       <br>
       <br>
       <GreenStandardButton>
-        <Button @callback="verifyCompany">
+        <Button @callback='verifyCompany'>
           Verify
         </Button>
       </GreenStandardButton>
@@ -48,19 +48,19 @@ export default Vue.extend({
   props: {
     name: {
       type: String,
-      default: ''
+      default: '',
     },
     location: {
       type: String,
-      default: ''
+      default: '',
     },
     description: {
       type: String,
-      default: ''
+      default: '',
     },
     companyAccountID: {
       type: Number,
-      default: 0
+      default: 0,
     },
   },
   data() {
@@ -105,7 +105,7 @@ export default Vue.extend({
         this.$destroy();
         this.$el.parentNode.removeChild(this.$el);
       }, 5000);
-    }
+    },
   },
 });
 </script>

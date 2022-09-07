@@ -1,5 +1,5 @@
 <template>
-  <div class="viewport">
+  <div class='viewport'>
     <!-- <div class="header" v-if="loggedIn">
       <div class="logoutDiv">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
@@ -12,10 +12,10 @@
       <img class="main-logo" :src="logo" />
     </div> -->
     <Header />
-    <div class="homeBox">
+    <div class='homeBox'>
       <slot />
     </div>
-    <div class="footer">
+    <div class='footer'>
       <NewFooter />
     </div>
   </div>

@@ -2,22 +2,22 @@
   <LoggedInTemplate>
     <StudentViewTemplate>
       <Breadcrumbs />
-      <div class="contentBox">
+      <div class='contentBox'>
         <h1>Pending Job Requests</h1>
-        <div v-if="jobs.length === 1">
+        <div v-if='jobs.length === 1'>
           {{ jobs.length }} Pending Job Found
         </div>
         <div v-else>
           {{ jobs.length }} Pending Jobs Found
         </div>
         <SingleJobManage
-          v-for="job in jobs"
-          :key="job.key"
-          :job-i-d="job.id"
-          :role="job.role"
-          :company="job.company.name"
-          :description="job.description"
-          :application-link="job.applicationLink"
+          v-for='job in jobs'
+          :key='job.key'
+          :job-i-d='job.id'
+          :role='job.role'
+          :company='job.company.name'
+          :description='job.description'
+          :application-link='job.applicationLink'
         />
       </div>
     </StudentViewTemplate>
@@ -38,7 +38,7 @@ export default Vue.extend({
     StudentViewTemplate,
     SingleJobManage,
     LoggedInTemplate,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {

@@ -1,28 +1,28 @@
 <template>
-  <div class="flex flex-col w-[300px] shadow-card rounded-lg mr-7">
-    <div class="min-w-0 mx-5">
+  <div class='flex flex-col w-[300px] shadow-card rounded-lg mr-7'>
+    <div class='min-w-0 mx-5'>
       <img
-        :src="imagePath"
-        class="select-none pointer-events-none object-contain w-full"
-        alt="sponsor logo"
+        :src='imagePath'
+        class='select-none pointer-events-none object-contain w-full'
+        alt='sponsor logo'
       >
     </div>
-    <h3 class="text-xl font-bold mx-4 mb-4">
+    <h3 class='text-xl font-bold mx-4 mb-4'>
       {{ jobTitle }}
     </h3>
-    <div class="flex flex-row m-0 justify-evenly items-center mx-5 my-2 xs:flex-col">
+    <div class='flex flex-row m-0 justify-evenly items-center mx-5 my-2 xs:flex-col'>
       <div
-        v-for="(tag, idx) in jobTag"
-        :key="idx"
-        class="flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base"
+        v-for='(tag, idx) in jobTag'
+        :key='idx'
+        class='flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base'
       >
         {{ tag }}
       </div>
     </div>
-    <p class="text-base m-0 py-4 px-5 text-left text-jb-placeholder">
+    <p class='text-base m-0 py-4 px-5 text-left text-jb-placeholder'>
       {{ jobDescription }}
     </p>
-    <div class="flex justify-center mt-5">
+    <div class='flex justify-center mt-5'>
       <button>Learn More</button>
     </div>
   </div>
@@ -49,7 +49,7 @@ export default Vue.extend({
     imagePath: {
       type: String,
       required: true,
-    }
+    },
   },
   data() {
     return {
@@ -58,7 +58,7 @@ export default Vue.extend({
   },
   methods: {
 
-  }
+  },
 });
 </script>
 

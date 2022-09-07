@@ -1,49 +1,49 @@
 <template>
   <div>
-    <Modal 
-      v-if="modalVisible"
-      @closeCallback="closeJobModal()"
+    <Modal
+      v-if='modalVisible'
+      @closeCallback='closeJobModal()'
     >
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Role: 
+      <div class='modalGroup'>
+        <div class='modalHeading'>
+          Role:
         </div>
         {{ role }}
       </div>
 
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Job Description: 
+      <div class='modalGroup'>
+        <div class='modalHeading'>
+          Job Description:
         </div>
-        <p v-html="description" />
+        <p v-html='description' />
       </div>
 
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Application Link: 
+      <div class='modalGroup'>
+        <div class='modalHeading'>
+          Application Link:
         </div>
         <a
-          :href="applicationLink"
+          :href='applicationLink'
         >
           {{ applicationLink }}
         </a>
       </div>
     </Modal>
-    <div class="jobsBox">
-      <div class="jobDescriptionBox">
-        <div class="roleHeading">
+    <div class='jobsBox'>
+      <div class='jobDescriptionBox'>
+        <div class='roleHeading'>
           {{ role }}
         </div>
         <br>
-        <div class="companyHeading">
+        <div class='companyHeading'>
           <green-standard-button>
-            <Button @click="showJobModal">
+            <Button @click='showJobModal'>
               Show
             </Button>
           </green-standard-button>
 
           <red-standard-button>
-            <Button @click="deleteJob">
+            <Button @click='deleteJob'>
               Delete
             </Button>
           </red-standard-button>
@@ -71,27 +71,27 @@ export default Vue.extend({
   props: {
     role: {
       type: String,
-      default: ''
+      default: '',
     },
     description: {
       type: String,
-      default: ''
+      default: '',
     },
     jobID: {
       type: Number,
-      default: 0
+      default: 0,
     },
     successCallback: {
       type: Function,
-      default: () => undefined
+      default: () => undefined,
     },
     errorCallback: {
       type: Function,
-      default: () => undefined
+      default: () => undefined,
     },
     applicationLink: {
       type: String,
-      default: ''
+      default: '',
     },
   },
   data() {
@@ -145,7 +145,7 @@ export default Vue.extend({
         this.$destroy();
         this.$el.parentNode.removeChild(this.$el);
       }, 5000);
-    }
+    },
   },
 });
 

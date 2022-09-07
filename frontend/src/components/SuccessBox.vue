@@ -1,5 +1,5 @@
 <template>
-  <div class="success success-leave-animation">
+  <div class='success success-leave-animation'>
     <slot />
   </div>
 </template>

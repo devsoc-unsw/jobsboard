@@ -1,12 +1,12 @@
 <template>
-  <div class="viewport">
-    <div class="stretchyPage">
+  <div class='viewport'>
+    <div class='stretchyPage'>
       <Header />
-      <div class="content">
-        <div class="contentWidth">
+      <div class='content'>
+        <div class='contentWidth'>
           <slot />
         </div>
-        <div class="footer">
+        <div class='footer'>
           <NewFooter />
         </div>
       </div>
@@ -29,12 +29,12 @@ export default Vue.extend({
   props: {
     notLoggedIn: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disableBack: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -45,8 +45,7 @@ export default Vue.extend({
   async mounted() {
     if (this.notLoggedIn === true) {
       return;
-    }
-    else if (this.apiToken === undefined) {
+    } else if (this.apiToken === undefined) {
       this.$router.push('/login');
     }
   },
@@ -57,7 +56,7 @@ export default Vue.extend({
     },
     goToJobs() {
       this.$router.push('/jobs');
-    }
+    },
   },
 });
 </script>
@@ -94,7 +93,7 @@ export default Vue.extend({
 }
 
 @media screen
-and (min-width: 320px) 
+and (min-width: 320px)
 and (max-width: 768.98px) {
   .footer {
     margin-top: 100px;
@@ -107,13 +106,13 @@ and (max-width: 768.98px) {
 }
 
 @media screen
-and (min-width: 320px) 
+and (min-width: 320px)
 and (max-width: 768.98px) {
   .footer {
     margin-top: 100px;
   }
 }
-/* 
+/*
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;

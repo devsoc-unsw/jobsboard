@@ -4,14 +4,14 @@
       <Breadcrumbs />
       <div>
         <h1>Welcome!</h1>
-        <div class="buttonBox">
+        <div class='buttonBox'>
           <StandardButton>
-            <Button @callback="goToCompanyJobAdd">
+            <Button @callback='goToCompanyJobAdd'>
               Post Jobs
             </Button>
           </StandardButton>
           <StandardButton>
-            <Button @callback="goToCompanyManageJobs">
+            <Button @callback='goToCompanyManageJobs'>
               Manage Jobs
             </Button>
           </StandardButton>
@@ -49,7 +49,7 @@ export default Vue.extend({
     goToCompanyManageJobs() {
       this.$router.push('/company/jobs/manage');
     },
-  }
+  },
 });
 </script>
 

@@ -2,34 +2,34 @@
   <LoggedInTemplate>
     <StudentViewTemplate logged-in>
       <Breadcrumbs />
-      <div class="contentBox">
+      <div class='contentBox'>
         <h1>Manage Jobs</h1>
-        <div v-if="success">
+        <div v-if='success'>
           <SuccessBox>
             {{ successMsg }}
           </SuccessBox>
         </div>
-        <div v-else-if="error">
+        <div v-else-if='error'>
           <ErrorBox>
             {{ errorMsg }}
           </ErrorBox>
         </div>
-        <div v-if="jobs.length === 1">
+        <div v-if='jobs.length === 1'>
           {{ jobs.length }} Job Found
         </div>
         <div v-else>
           {{ jobs.length }} Jobs Found
         </div>
-        <div class="jobContainer">
+        <div class='jobContainer'>
           <CompanyJobManage
-            v-for="job in jobs"
-            :key="job.key"
-            :job-i-d="job.id"
-            :role="job.role"
-            :description="job.description"
-            :application-link="job.applicationLink"
-            :success-callback="internalSuccessCallback"
-            :error-callback="internalErrorCallback"
+            v-for='job in jobs'
+            :key='job.key'
+            :job-i-d='job.id'
+            :role='job.role'
+            :description='job.description'
+            :application-link='job.applicationLink'
+            :success-callback='internalSuccessCallback'
+            :error-callback='internalErrorCallback'
           />
         </div>
       </div>
@@ -55,7 +55,7 @@ export default Vue.extend({
     CompanyJobManage,
     SuccessBox,
     ErrorBox,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {
@@ -70,7 +70,7 @@ export default Vue.extend({
   async mounted() {
     // Change the page title
     document.title = this.$route.meta.title;
-    
+
     const response = await fetch(`${config.apiRoot}/companyjobs`, {
       method: 'GET',
       headers: {
@@ -95,7 +95,7 @@ export default Vue.extend({
           description: job.description,
           applicationLink: job.applicationLink,
         };
-      })
+      });
     } else {
       this.error = true;
       window.scrollTo(0, 10);
@@ -121,7 +121,7 @@ export default Vue.extend({
       this.error = false;
       this.success = true;
       this.successMsg = msg;
-    }
+    },
   },
 });
 </script>

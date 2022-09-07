@@ -9,7 +9,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint --ext .vue src --fix"
+    "lint": "eslint --ext .vue src",
+    "lint:fix": "eslint --ext .vue src --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "1.1.8",

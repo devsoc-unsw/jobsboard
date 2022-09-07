@@ -1,41 +1,41 @@
 <template>
   <div>
-    <div v-if="success">
+    <div v-if='success'>
       <br>
       <SuccessBox>
         {{ successMsg }}
       </SuccessBox>
     </div>
-    <div v-if="error">
+    <div v-if='error'>
       <br>
       <ErrorBox>
         {{ errorMsg }}
       </ErrorBox>
     </div>
-    <div class="modalWrapper">
-      <Modal 
-        v-if="modalVisible"
-        @closeCallback="closeJobModal()"
+    <div class='modalWrapper'>
+      <Modal
+        v-if='modalVisible'
+        @closeCallback='closeJobModal()'
       >
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Role: 
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Role:
           </div>
           {{ role }}
         </div>
 
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Job Description: 
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Job Description:
           </div>
-          <JobDescriptionView :description="description" />
+          <JobDescriptionView :description='description' />
         </div>
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Application Link: 
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Application Link:
           </div>
           <a
-            :href="applicationLink"
+            :href='applicationLink'
           >
             {{ applicationLink }}
           </a>
@@ -43,26 +43,26 @@
       </Modal>
     </div>
     <br>
-    <div v-if="!success">
+    <div v-if='!success'>
       <JobListingMinimal
-        :job-i-d="jobID"
-        :role="role"
-        :company="company"
-        :description="description"
-        :act-as-link="actAsLink"
+        :job-i-d='jobID'
+        :role='role'
+        :company='company'
+        :description='description'
+        :act-as-link='actAsLink'
       >
         <StandardButton>
-          <Button @callback="showJobModal">
+          <Button @callback='showJobModal'>
             Preview
           </Button>
         </StandardButton>
         <GreenStandardButton>
-          <Button @callback="approveJob">
+          <Button @callback='approveJob'>
             Approve
           </Button>
         </GreenStandardButton>
         <RedStandardButton>
-          <Button @callback="rejectJob">
+          <Button @callback='rejectJob'>
             Reject
           </Button>
         </RedStandardButton>
@@ -100,23 +100,23 @@ export default Vue.extend({
   props: {
     role: {
       type: String,
-      default: ''
+      default: '',
     },
     company: {
       type: String,
-      default: ''
+      default: '',
     },
     description: {
       type: String,
-      default: ''
+      default: '',
     },
     jobID: {
       type: Number,
-      default: 0
+      default: 0,
     },
     applicationLink: {
       type: String,
-      default: ''
+      default: '',
     },
   },
   data() {

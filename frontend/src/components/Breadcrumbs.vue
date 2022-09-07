@@ -1,22 +1,22 @@
 <template>
   <div>
-    <ul class="flex justify-start ml-[28%] mt-10 mb-4 p-0 list-none font-bold">
+    <ul class='flex justify-start ml-[28%] mt-10 mb-4 p-0 list-none font-bold'>
       <li
-        v-for="(breadcrumb, idx) in breadcrumbList"
-        :key="idx"
-        class="flex float-left h-5 w-auto items-center"
-        :class="{'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered': breadcrumb.link}"
-        @click="routeTo(idx)"
+        v-for='(breadcrumb, idx) in breadcrumbList'
+        :key='idx'
+        class='flex float-left h-5 w-auto items-center'
+        :class='{ &apos;text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered&apos;: breadcrumb.link }'
+        @click='routeTo(idx)'
       >
         <font-awesome-icon
-          v-if="breadcrumb.name === 'Home'"
-          icon="house"
-          size="xs"
+          v-if='breadcrumb.name === &apos;Home&apos;'
+          icon='house'
+          size='xs'
         />
         <p
           v-else
-          :class="{'text-jb-headings text-base font-bold': !breadcrumb.link, 
-                   'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered ': breadcrumb.link}"
+          :class='{ &apos;text-jb-headings text-base font-bold&apos;: !breadcrumb.link,
+                    &apos;text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered &apos;: breadcrumb.link }'
         >
           {{ breadcrumb.name }}
         </p>
@@ -30,15 +30,15 @@ export default {
   name: 'Breadcrumbs',
   data() {
     return {
-      breadcrumbList: []
-    }
+      breadcrumbList: [],
+    };
   },
-  watch: { 
-    '$route'() { 
+  watch: {
+    '$route'() {
       this.updateList();
-    } 
+    },
   },
-  mounted() { 
+  mounted() {
     this.updateList();
   },
   methods: {
@@ -47,11 +47,11 @@ export default {
         this.$router.push(this.breadcrumbList[idx].link);
       }
     },
-    updateList() { 
+    updateList() {
       this.breadcrumbList = this.$route.meta.breadcrumb;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

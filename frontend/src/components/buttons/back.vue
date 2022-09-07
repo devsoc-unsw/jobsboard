@@ -1,9 +1,9 @@
 <template>
   <div
-    class="back"
-    @click="back"
+    class='back'
+    @click='back'
   >
-    <font-awesome-icon icon="chevron-left" />
+    <font-awesome-icon icon='chevron-left' />
   </div>
 </template>
 

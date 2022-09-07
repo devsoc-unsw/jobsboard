@@ -1,37 +1,37 @@
 <template>
   <GeneralPageTemplate>
-    <Breadcrumbs class="w-1/4" />
-    <h2 class="font-bold text-4xl drop-shadow-xl mb-10 text-jb-headings mt-4">
+    <Breadcrumbs class='w-1/4' />
+    <h2 class='font-bold text-4xl drop-shadow-xl mb-10 text-jb-headings mt-4'>
       Interested about the people behind <br>
       Jobs Board?
     </h2>
-    <h4 class="mb-3 text-jb-subheadings text-xl">
+    <h4 class='mb-3 text-jb-subheadings text-xl'>
       Hi there! We're the jobsboard team and we want <br>
       to help you find your dream student job!
     </h4>
-    
-    <div class="w-80 h-1 bg-gray-300 m-auto mt-10 mb-20" />
+
+    <div class='w-80 h-1 bg-gray-300 m-auto mt-10 mb-20' />
     <!-- items-center -->
-    <div class="justify-items-center grid grid-cols-2 grid-flow-row lg:grid-cols-1">
+    <div class='justify-items-center grid grid-cols-2 grid-flow-row lg:grid-cols-1'>
       <ProfileCard
-        v-for="member in members"
-        :key="member.name"
-        :member="member"
+        v-for='member in members'
+        :key='member.name'
+        :member='member'
       />
     </div>
 
     <div
-      class="interestBox box-border m-auto w-8/12 rounded-md mb-24
-                shadow-card bg-white"
+      class='interestBox box-border m-auto w-8/12 rounded-md mb-24
+                shadow-card bg-white'
     >
-      <div class="flex flex-col items-center px-10 pt-4 pb-8">
-        <p class="text-jb-subheadings my-4 text-lg">
-          Still interested? Want to be part of this exciting team? If so, 
-          then keep an eye out for our recruitment announcements on CSESoc's socials. 
+      <div class='flex flex-col items-center px-10 pt-4 pb-8'>
+        <p class='text-jb-subheadings my-4 text-lg'>
+          Still interested? Want to be part of this exciting team? If so,
+          then keep an eye out for our recruitment announcements on CSESoc's socials.
           We're always looking for keen and passionate people with a drive to learn and contribute.
         </p>
-        <p class="text-jb-subheadings text-lg">
-          Otherwise, you can also contribute by suggesting cool new features or even coding them 
+        <p class='text-jb-subheadings text-lg'>
+          Otherwise, you can also contribute by suggesting cool new features or even coding them
           yourself and making a pull request on the jobsboard repo.
         </p>
       </div>
@@ -50,7 +50,7 @@ export default Vue.extend({
   components: {
     ProfileCard,
     GeneralPageTemplate,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {
@@ -119,12 +119,12 @@ export default Vue.extend({
           photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
         },
       ],
-    }
+    };
   },
   mounted() {
     // Change the page title
     document.title = this.$route.meta.title;
-  }
+  },
 });
 
 </script>

@@ -1,14 +1,14 @@
 <template>
-  <div class="viewport">
-    <div class="leftHalfWindowSection">
-      <div class="homeBox">
-        <div v-if="loggedIn">
-          <div class="logoutDiv">
+  <div class='viewport'>
+    <div class='leftHalfWindowSection'>
+      <div class='homeBox'>
+        <div v-if='loggedIn'>
+          <div class='logoutDiv'>
             <StandardButton>
-              <Button @callback="logOut">
+              <Button @callback='logOut'>
                 <font-awesome-icon
-                  class="paddedIcon"
-                  icon="sign-out-alt"
+                  class='paddedIcon'
+                  icon='sign-out-alt'
                 />
                 Log Out
               </Button>
@@ -16,18 +16,18 @@
             <br>
           </div>
           <img
-            class="main-logo"
-            :src="logo"
+            class='main-logo'
+            :src='logo'
           >
         </div>
-        <div v-if="!loggedIn">
+        <div v-if='!loggedIn'>
           <img
-            class="main-logo"
-            :src="logo"
+            class='main-logo'
+            :src='logo'
           >
         </div>
         <slot />
-        <div class="footer">
+        <div class='footer'>
           <NewFooter />
         </div>
       </div>
