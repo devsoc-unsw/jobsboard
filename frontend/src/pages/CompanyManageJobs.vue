@@ -38,17 +38,17 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import CompanyJobManage from "@/components/CompanyJobManage.vue";
-import config from "@/config/config";
-import ErrorBox from "@/components/ErrorBox.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import CompanyJobManage from '@/components/CompanyJobManage.vue';
+import config from '@/config/config';
+import ErrorBox from '@/components/ErrorBox.vue';
+import SuccessBox from '@/components/SuccessBox.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 export default Vue.extend({
-  name: "CompanyManageJobs",
+  name: 'CompanyManageJobs',
   components: {
     StudentViewTemplate,
     LoggedInTemplate,
@@ -60,9 +60,9 @@ export default Vue.extend({
   data() {
     return {
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       success: false,
-      successMsg: "",
+      successMsg: '',
       jobs: [],
       apiToken: this.$store.getters.getApiToken,
     };
@@ -72,10 +72,10 @@ export default Vue.extend({
     document.title = this.$route.meta.title;
     
     const response = await fetch(`${config.apiRoot}/companyjobs`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        'Content-Type': 'application/json',
+        'Authorization': this.apiToken,
       },
     });
 
@@ -100,12 +100,12 @@ export default Vue.extend({
       this.error = true;
       window.scrollTo(0, 10);
       if (response.status == 401) {
-        this.errorMsg = "Login expired. Redirecting to login page.";
+        this.errorMsg = 'Login expired. Redirecting to login page.';
         setTimeout(() => {
-          this.$router.push("/login/company");
+          this.$router.push('/login/company');
         }, 3000);
       } else {
-        this.errorMsg = "Failed to get pending jobs.";
+        this.errorMsg = 'Failed to get pending jobs.';
       }
     }
   },

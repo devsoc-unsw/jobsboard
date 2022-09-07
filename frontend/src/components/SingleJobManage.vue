@@ -72,20 +72,20 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
-import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
-import Modal from "@/components/Modal.vue";
-import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import { Vue } from 'vue-property-decorator';
+import JobListingMinimal from '@/components/JobListingMinimal.vue';
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import config from '@/config/config';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
+import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
+import Modal from '@/components/Modal.vue';
+import JobDescriptionView from '@/components/JobDescriptionView.vue';
 
 export default Vue.extend({
-  name: "SingleJobManage",
+  name: 'SingleJobManage',
   components: {
     JobListingMinimal,
     SuccessBox,
@@ -100,15 +100,15 @@ export default Vue.extend({
   props: {
     role: {
       type: String,
-      default: ""
+      default: ''
     },
     company: {
       type: String,
-      default: ""
+      default: ''
     },
     description: {
       type: String,
-      default: ""
+      default: ''
     },
     jobID: {
       type: Number,
@@ -116,74 +116,74 @@ export default Vue.extend({
     },
     applicationLink: {
       type: String,
-      default: ""
+      default: ''
     },
   },
   data() {
     return {
       success: false,
-      successMsg: "",
+      successMsg: '',
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       actAsLink: false,
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
-      modalContent: "",
+      modalContent: '',
     };
   },
   methods: {
     async approveJob() {
       const response = await fetch(`${config.apiRoot}/job/${this.jobID}/approve`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
       });
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
         this.success = true;
-        this.successMsg = "Job successfully approved!";
+        this.successMsg = 'Job successfully approved!';
         this.error = false;
         this.close();
       } else {
         this.error = true;
         window.scrollTo(0, 10);
         if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 3000);
         } else {
-          this.errorMsg = "Error in processing approval. Please try again later.";
+          this.errorMsg = 'Error in processing approval. Please try again later.';
         }
       }
     },
     async rejectJob() {
       const response = await fetch(`${config.apiRoot}/job/${this.jobID}/reject`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
       });
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
         this.success = true;
-        this.successMsg = "Job successfully rejected!";
+        this.successMsg = 'Job successfully rejected!';
         this.error = false;
         this.close();
       } else {
         this.error = true;
         if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 3000);
         } else {
-          this.errorMsg = "Error in processing rejection. Please try again later.";
+          this.errorMsg = 'Error in processing rejection. Please try again later.';
         }
       }
     },
@@ -195,11 +195,11 @@ export default Vue.extend({
     },
     async showJobModal() {
       this.modalVisible = true;
-      this.modalContent = "Test.";
+      this.modalContent = 'Test.';
     },
     async closeJobModal() {
       this.modalVisible = false;
-      this.modalContent = "";
+      this.modalContent = '';
     },
   },
 });

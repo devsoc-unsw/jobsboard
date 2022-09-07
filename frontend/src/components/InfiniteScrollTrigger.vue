@@ -4,10 +4,10 @@
 
 <script lang="ts">
 // Inspired by: https://www.netguru.com/codestories/infinite-scroll-with-vue.js-and-intersection-observer
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "InfiniteScrollTrigger",
+  name: 'InfiniteScrollTrigger',
   props: {
     options: {
       type: Object,
@@ -36,7 +36,7 @@ export default Vue.extend({
   methods: {
     handleIntersect(entry: IntersectionObserverEntry) {
       if (entry.isIntersecting) {
-        this.$emit("triggerIntersected");
+        this.$emit('triggerIntersected');
       }
     }
   },

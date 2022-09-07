@@ -25,15 +25,15 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import SingleJobManage from "@/components/SingleJobManage.vue";
-import config from "@/config/config";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import SingleJobManage from '@/components/SingleJobManage.vue';
+import config from '@/config/config';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 export default Vue.extend({
-  name: "AdminListPendingJobs",
+  name: 'AdminListPendingJobs',
   components: {
     StudentViewTemplate,
     SingleJobManage,
@@ -43,7 +43,7 @@ export default Vue.extend({
   data() {
     return {
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       jobs: [],
       success: false,
       apiToken: this.$store.getters.getApiToken,
@@ -54,28 +54,28 @@ export default Vue.extend({
     document.title = this.$route.meta.title;
 
     const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        'Content-Type': 'application/json',
+        'Authorization': this.apiToken,
       },
     });
 
     if (response.ok) {
       const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
+      this.$store.dispatch('setApiToken', msg.token);
       this.success = true;
       this.jobs = msg.pendingJobs;
     } else {
       this.error = true;
       window.scrollTo(0, 10);
       if (response.status == 401) {
-        this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+        this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
         setTimeout(() => {
-          this.$router.push("/login");
+          this.$router.push('/login');
         }, 3000);
       } else {
-        this.errorMsg = "Failed to get pending jobs.";
+        this.errorMsg = 'Failed to get pending jobs.';
       }
     }
   },

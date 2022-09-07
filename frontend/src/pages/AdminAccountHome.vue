@@ -134,16 +134,16 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import config from "@/config/config";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import Alert from "@/components/Alert.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import config from '@/config/config';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import Button from '@/components/buttons/button.vue';
+import Alert from '@/components/Alert.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 export default Vue.extend({
-  name: "AdminAccountHome",
+  name: 'AdminAccountHome',
   components: {
     StudentViewTemplate,
     LoggedInTemplate,
@@ -153,7 +153,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      alertMsg: "",
+      alertMsg: '',
       isAlertOpen: false,
       infoAlert: true,
       nPendingCompanies: 0,
@@ -167,53 +167,53 @@ export default Vue.extend({
 
     // Get the number of companies pending verification 
     const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        'Content-Type': 'application/json',
+        'Authorization': this.apiToken,
       },
     });
 
     if (response.ok) {
       const msg = await response.json();
-      this.$store.dispatch("setApiToken", msg.token);
+      this.$store.dispatch('setApiToken', msg.token);
       this.nPendingCompanies = msg.pendingCompanyVerifications.length;
     } else {
       this.isAlertOpen = true;
       window.scrollTo(0, 10);
       if (response.status === 401) {
-        this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
+        this.alertMsg = 'You are not authorized to perform this action. Redirecting to login page.';
         setTimeout(() => {
-          this.$router.push("/");
+          this.$router.push('/');
         }, 5000);
       } else {
-        this.alertMsg = "Failed to get pending companies. You might want to check what's happening in the console.";
+        this.alertMsg = 'Failed to get pending companies. You might want to check what\'s happening in the console.';
       }
     }
     
     // Get the number of jobs pending verification 
     const pendingJobsResponse = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        'Content-Type': 'application/json',
+        'Authorization': this.apiToken,
       },
     });
 
     if (pendingJobsResponse.ok) {
       const msg = await pendingJobsResponse.json();
-      this.$store.dispatch("setApiToken", msg.token);
+      this.$store.dispatch('setApiToken', msg.token);
       this.success = true;
       this.nPendingJobs = msg.pendingJobs.length;
     } else {
       window.scrollTo(0, 10);
       if (pendingJobsResponse.status === 401) {
-        this.alertMsg = "You are not authorized to perform this action. Redirecting to login page...";
+        this.alertMsg = 'You are not authorized to perform this action. Redirecting to login page...';
         setTimeout(() => {
-          this.$router.push("/");
+          this.$router.push('/');
         }, 5000);
       } else {
-        this.alertMsg = "Failed to get pending jobs. You might want to check what's happening in the console.";
+        this.alertMsg = 'Failed to get pending jobs. You might want to check what\'s happening in the console.';
       }
     }
   },

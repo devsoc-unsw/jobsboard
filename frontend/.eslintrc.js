@@ -22,5 +22,6 @@ module.exports = {
     'vue/no-v-html': 'off',
     'vue/no-reserved-component-names': 'off',
     'vue/multi-word-component-names': 'off',
+    'quotes': ['error', 'single']
   }
 };

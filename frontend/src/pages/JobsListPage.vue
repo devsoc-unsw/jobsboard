@@ -36,17 +36,17 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import config from "@/config/config";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import JobListingMinimal from '@/components/JobListingMinimal.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import InfiniteScrollTrigger from '@/components/InfiniteScrollTrigger.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import config from '@/config/config';
 
 export default Vue.extend({
-  name: "JobsListPage",
+  name: 'JobsListPage',
   components: {
     StudentViewTemplate,
     JobListingMinimal,
@@ -58,7 +58,7 @@ export default Vue.extend({
   data() {
     return {
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       jobs: [],
       loadMoreJobsLock: false,
     };
@@ -79,10 +79,10 @@ export default Vue.extend({
       // determine whether there is an API key present and redirect if not present
       // load the jobs using the api token
       const response = await fetch(`${config.apiRoot}/jobs/${this.jobs.length}`, {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": this.$store.getters.getApiToken,
+            'Content-Type': 'application/json',
+            'Authorization': this.$store.getters.getApiToken,
           },
         });
 
@@ -98,12 +98,12 @@ export default Vue.extend({
         this.error = true;
         window.scrollTo(0, 10);
         if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
+          this.errorMsg = 'Login expired. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login/company");
+            this.$router.push('/login/company');
           }, 3000);
         } else {
-          this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+          this.errorMsg = 'Unable to load jobs at this time. Please try again later.';
         }
         this.jobs = [];
       }

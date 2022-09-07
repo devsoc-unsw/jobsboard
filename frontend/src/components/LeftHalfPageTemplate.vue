@@ -36,14 +36,14 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import logo from "@/assets/logos/csesocgreyblue.png";
-import NewFooter from "@/components/NewFooter.vue";
+import { Vue } from 'vue-property-decorator';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import logo from '@/assets/logos/csesocgreyblue.png';
+import NewFooter from '@/components/NewFooter.vue';
 
 export default Vue.extend({
-  name: "LeftHalfPageTemplate",
+  name: 'LeftHalfPageTemplate',
   components: {
     Button,
     StandardButton,
@@ -62,8 +62,8 @@ export default Vue.extend({
   },
   methods: {
     logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/company");
+      this.$store.dispatch('clearApiToken');
+      this.$router.push('/login/company');
     },
   },
 });

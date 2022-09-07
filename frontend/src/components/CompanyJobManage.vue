@@ -55,14 +55,14 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
-import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
-import Modal from "@/components/Modal.vue";
-import config from "@/config/config";
+import { Vue } from 'vue-property-decorator';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
+import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
+import Modal from '@/components/Modal.vue';
+import config from '@/config/config';
 
 export default Vue.extend({
-  name: "CompanyJobManage",
+  name: 'CompanyJobManage',
   components: {
     GreenStandardButton,
     RedStandardButton,
@@ -71,11 +71,11 @@ export default Vue.extend({
   props: {
     role: {
       type: String,
-      default: ""
+      default: ''
     },
     description: {
       type: String,
-      default: ""
+      default: ''
     },
     jobID: {
       type: Number,
@@ -91,52 +91,52 @@ export default Vue.extend({
     },
     applicationLink: {
       type: String,
-      default: ""
+      default: ''
     },
   },
   data() {
     return {
       success: false,
       error: false,
-      successMsg: "",
-      errorMsg: "",
+      successMsg: '',
+      errorMsg: '',
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
-      modalContent: "",
+      modalContent: '',
     };
   },
   methods: {
     async showJobModal() {
       this.modalVisible = true;
-      this.modalContent = "Test.";
+      this.modalContent = 'Test.';
     },
     async closeJobModal() {
       this.modalVisible = false;
-      this.modalContent = "";
+      this.modalContent = '';
     },
     async deleteJob() {
       const uri = `${config.apiRoot}/company/job/${this.jobID}`;
       const response = await fetch(uri, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
       });
 
       const receivedResponse = response as Response;
 
       if (receivedResponse.ok) {
-        this.successCallback("Job successfully deleted!");
+        this.successCallback('Job successfully deleted!');
         this.close();
       } else {
         if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
+          this.errorMsg = 'Login expired. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login/company");
+            this.$router.push('/login/company');
           }, 3000);
         } else {
-          this.errorCallback("Error in processing rejection. Please try again later.");
+          this.errorCallback('Error in processing rejection. Please try again later.');
         }
       }
     },

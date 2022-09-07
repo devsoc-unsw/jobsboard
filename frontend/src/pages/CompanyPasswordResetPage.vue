@@ -75,19 +75,19 @@
 
 <script lang="ts">
 // libs
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 // components
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import Alert from "@/components/Alert.vue";
-import Button from "@/components/buttons/button.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import Alert from '@/components/Alert.vue';
+import Button from '@/components/buttons/button.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
-import config from "@/config/config";
+import config from '@/config/config';
 
 export default Vue.extend({
-  name: "PasswordResetPage",
+  name: 'PasswordResetPage',
   components: {
     StudentViewTemplate,
     Alert,
@@ -96,10 +96,10 @@ export default Vue.extend({
   },
   data() {
     return {
-      newPassword: "",
-      confirmPassword: "",
-      alertType: "",
-      alertMsg: "",
+      newPassword: '',
+      confirmPassword: '',
+      alertType: '',
+      alertMsg: '',
       isAlertOpen: false,
     };
   },
@@ -110,43 +110,43 @@ export default Vue.extend({
   methods: {
     async performCompanyPasswordReset() {
       if (this.newPassword !== this.confirmPassword) {
-        this.alertType = "error";
-        this.alertMsg = "Passwords do not match. Please try again.";
+        this.alertType = 'error';
+        this.alertMsg = 'Passwords do not match. Please try again.';
         this.isAlertOpen = true;
       } else {
         const response = await fetch(`${config.apiRoot}/company/password-reset`, {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": this.$route.params.token
+            'Content-Type': 'application/json',
+            'Authorization': this.$route.params.token
           },
           // mode: "no-cors",
           body: JSON.stringify({
-            "newPassword": this.newPassword,
+            'newPassword': this.newPassword,
           }),
         });
 
         if (response.ok) {
           window.scrollTo(0, 10);
-          this.alertType = "success";
+          this.alertType = 'success';
           this.isAlertOpen = true;
-          this.alertMsg = "Your password has been successfully been reset. Redirecting you to the login page...";
+          this.alertMsg = 'Your password has been successfully been reset. Redirecting you to the login page...';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 5000);
         } else {
           window.scrollTo(0, 10);
           this.isAlertOpen = true;
-          this.alertType = "error";
+          this.alertType = 'error';
           if (response.status === 400) {
-            this.alertMsg = "Please try again. Password reset failed.";
+            this.alertMsg = 'Please try again. Password reset failed.';
           } else if (response.status === 401) {
-            this.alertMsg = "Token may be invalid or expired. Redirecting to login page.";
+            this.alertMsg = 'Token may be invalid or expired. Redirecting to login page.';
             setTimeout(() => {
-              this.$router.push("/login/company");
+              this.$router.push('/login/company');
             }, 3000);
           } else {
-            this.alertMsg = "There was an error when trying to reset your password. Please try again.";
+            this.alertMsg = 'There was an error when trying to reset your password. Please try again.';
           }
         }
       }

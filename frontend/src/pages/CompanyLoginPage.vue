@@ -106,18 +106,18 @@
 
 <script lang="ts">
 // libs
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 // components
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import Alert from "@/components/Alert.vue";
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import Alert from '@/components/Alert.vue';
 
 // config
-import config from "@/config/config";
+import config from '@/config/config';
 
 export default Vue.extend({
-  name: "LoginPage",
+  name: 'LoginPage',
   components: {
     StudentViewTemplate,
     Breadcrumbs,
@@ -125,22 +125,22 @@ export default Vue.extend({
   },
   data() {
     return {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       isAlertOpen: false,
     };
   },
   async mounted() {
     // Change the page title
     document.title = this.$route.meta.title;
-    this.$store.dispatch("clearApiToken");
+    this.$store.dispatch('clearApiToken');
   },
   methods: {
     async performCompanyLogin() {
       const response = await fetch(`${config.apiRoot}/authenticate/company`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         // mode: "no-cors",
         body: JSON.stringify({
@@ -151,13 +151,13 @@ export default Vue.extend({
 
       if (response.ok) {
         const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
+        this.$store.dispatch('setApiToken', msg.token);
         this.isAlertOpen = false;
-        this.$router.push("/company/home");
+        this.$router.push('/company/home');
       } else {
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
         this.isAlertOpen = true;
       }

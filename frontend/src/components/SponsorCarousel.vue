@@ -108,16 +108,16 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import GoogleLogo from "@/assets/companies/googleLogo.png";
-import AmazonLogo from "@/assets/companies/amazonLogo.png";
-import MicrosoftLogo from "@/assets/companies/microsoftLogo.svg";
-import CanvaLogo from "@/assets/companies/canvaLogo.png";
-import JaneStreetLogo from "@/assets/companies/janeStreetLogo.png";
-import AtlassianLogo from "@/assets/companies/atlassianLogo.png";
+import { Vue } from 'vue-property-decorator';
+import GoogleLogo from '@/assets/companies/googleLogo.png';
+import AmazonLogo from '@/assets/companies/amazonLogo.png';
+import MicrosoftLogo from '@/assets/companies/microsoftLogo.svg';
+import CanvaLogo from '@/assets/companies/canvaLogo.png';
+import JaneStreetLogo from '@/assets/companies/janeStreetLogo.png';
+import AtlassianLogo from '@/assets/companies/atlassianLogo.png';
 
 export default Vue.extend({
-  name: "SponsorCarousel",
+  name: 'SponsorCarousel',
   data() {
     return {
       MicrosoftLogo: MicrosoftLogo,

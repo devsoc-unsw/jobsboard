@@ -15,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import logo from "@/assets/logos/csesocwhite.png";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
+import { Vue } from 'vue-property-decorator';
+import logo from '@/assets/logos/csesocwhite.png';
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
 
 export default Vue.extend({
-  name: "StudentViewTemplate",
+  name: 'StudentViewTemplate',
   components: {
     Header,
     NewFooter,
@@ -47,16 +47,16 @@ export default Vue.extend({
       return;
     }
     else if (this.apiToken === undefined) {
-      this.$router.push("/login");
+      this.$router.push('/login');
     }
   },
   methods: {
     logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/student");
+      this.$store.dispatch('clearApiToken');
+      this.$router.push('/login/student');
     },
     goToJobs() {
-      this.$router.push("/jobs");
+      this.$router.push('/jobs');
     }
   },
 });

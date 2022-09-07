@@ -381,7 +381,7 @@
 
 <script lang="ts">
 // libraries
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 // QuillJs related 
 import 'quill/dist/quill.core.css'
@@ -389,18 +389,18 @@ import 'quill/dist/quill.snow.css'
 import { quillEditor } from 'vue-quill-editor';
 
 // components
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Modal from "@/components/Modal.vue";
-import RichTextEditor from "@/components/RichTextEditor.vue";
-import Alert from "@/components/Alert.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import Modal from '@/components/Modal.vue';
+import RichTextEditor from '@/components/RichTextEditor.vue';
+import Alert from '@/components/Alert.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
-import config from "@/config/config";
+import config from '@/config/config';
 
 export default Vue.extend({
-  name: "AdminCreateJobAsCompany",
+  name: 'AdminCreateJobAsCompany',
   components: {
     StudentViewTemplate,
     LoggedInTemplate,
@@ -413,11 +413,11 @@ export default Vue.extend({
   },
   data() {
     return {
-      role: "",
-      description: "",
+      role: '',
+      description: '',
       editorOptions: {
         placeholder: 'Enter the job description...',
-        theme: "snow",
+        theme: 'snow',
         modules: {
           toolbar: [
             [{ 'font': [] }, {'size': ['large', 'small', 'huge'] }],
@@ -426,22 +426,22 @@ export default Vue.extend({
           ]
         }
       },
-      applicationLink: "",
-      expiryDate: "",
-      isPaidPosition: "",
-      jobType: "",
-      jobMode: "",
+      applicationLink: '',
+      expiryDate: '',
+      isPaidPosition: '',
+      jobType: '',
+      jobMode: '',
       workingRights: [],
       studentDemographic:[],
-      wamRequirements: "",
-      additionalInfo: "",
-      alertType: "",
-      alertMsg: "",
+      wamRequirements: '',
+      additionalInfo: '',
+      alertType: '',
+      alertMsg: '',
       isAlertOpen: false,
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
       verifiedCompanies: {},
-      selectedCompanyID: "",
+      selectedCompanyID: '',
     };
   },
   async mounted() {
@@ -450,10 +450,10 @@ export default Vue.extend({
     
     // make the call to get a list of verified companies to select from
     const response = await fetch(`${config.apiRoot}/admin/companies`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
+        'Content-Type': 'application/json',
+        'Authorization': this.apiToken,
       },
       // mode: "no-cors",
     });
@@ -462,19 +462,19 @@ export default Vue.extend({
       // alphabetically sort them
       this.verifiedCompanies = msg.companies.sort((companyA, companyB) => companyA.name > companyB.name);
     } else {
-      this.alertType = "error";
+      this.alertType = 'error';
       if (response.status === 401) {
-        this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
+        this.alertMsg = 'You are not authorized to perform this action. Redirecting to login page.';
         setTimeout(() => {
-          this.$router.push("/login");
+          this.$router.push('/login');
         }, 3000);
       } else {
-        this.alertMsg = "Malformed request. Please contact the admin.";
+        this.alertMsg = 'Malformed request. Please contact the admin.';
       }
       this.isAlertOpen = true;
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       })
     }
   },
@@ -487,21 +487,21 @@ export default Vue.extend({
       jobDate.setMinutes(59);
       // ensure that there is a selected company
       if (isNaN(parseInt(this.selectedCompanyID, 10)) || parseInt(this.selectedCompanyID, 10) < 0) {
-        this.alertType = "error";
-        this.alertMsg = "Please select a valid company";
+        this.alertType = 'error';
+        this.alertMsg = 'Please select a valid company';
         this.isAlertOpen = true;
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
         return;
       }
 
       const response = await fetch(`${config.apiRoot}/admin/company/${this.selectedCompanyID}/jobs`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
         // mode: "no-cors",
         body: JSON.stringify({
@@ -521,33 +521,33 @@ export default Vue.extend({
 
       if (response.ok) {
         const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
-        this.alertType = "success";
-        this.alertMsg = "Job posted! This job will be made available to students shortly. Redirecting to the admin account home...";
+        this.$store.dispatch('setApiToken', msg.token);
+        this.alertType = 'success';
+        this.alertMsg = 'Job posted! This job will be made available to students shortly. Redirecting to the admin account home...';
         this.isAlertOpen = true;
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
         setTimeout(() => {
-          this.$router.push("/admin/home");
+          this.$router.push('/admin/home');
         }, 5000);
       } else {
-        this.alertType = "error";
+        this.alertType = 'error';
         if (response.status === 403) {
-          this.alertMsg = "Failed to post job request as this company has not been verified.";
+          this.alertMsg = 'Failed to post job request as this company has not been verified.';
         } else if (response.status === 401) {
-          this.alertMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          this.alertMsg = 'You are not authorized to perform this action. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 3000);
         } else {
-          this.alertMsg = "Missing one or more fields. Please ensure that all fields are filled.";
+          this.alertMsg = 'Missing one or more fields. Please ensure that all fields are filled.';
         }
         this.isAlertOpen = true;
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
       }
     },

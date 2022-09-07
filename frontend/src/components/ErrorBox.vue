@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "ErrorBox",
+  name: 'ErrorBox',
 });
 </script>
 

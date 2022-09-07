@@ -185,16 +185,16 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import config from "@/config/config";
-import Alert from "@/components/Alert.vue";
-import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from "@/constants/job-fields";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import JobListingMinimal from '@/components/JobListingMinimal.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import config from '@/config/config';
+import Alert from '@/components/Alert.vue';
+import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 
 export default Vue.extend({
-  name: "JobsListPage",
+  name: 'JobsListPage',
   components: {
     StudentViewTemplate,
     JobListingMinimal,
@@ -204,23 +204,23 @@ export default Vue.extend({
   data() {
     return {
       jobID: this.$route.query.job,
-      companyID: "",
-      role: "",
-      company: "",
-      companyDescription: "",
-      description: "",
+      companyID: '',
+      role: '',
+      company: '',
+      companyDescription: '',
+      description: '',
       jobs: [],
-      location: "",
-      applicationLink: "",
-      jobMode: "",
+      location: '',
+      applicationLink: '',
+      jobMode: '',
       studentDemographic: [],
-      jobType: "",
+      jobType: '',
       workingRights: [],
-      additionalInfo: "",
-      wamRequirements: "",
+      additionalInfo: '',
+      wamRequirements: '',
       isPaid: true,
-      expiryDate: "",
-      alertMsg: "",
+      expiryDate: '',
+      alertMsg: '',
       isAlertOpen: false,
       jobInfoReady: false,
       jobModeObject: JobMode,
@@ -243,7 +243,7 @@ export default Vue.extend({
     async fetchJob() {
       // determine whether there is an API key present and redirect if not present
       if (this.$store.getters.getApiToken === undefined) {
-        this.$router.push("/login");
+        this.$router.push('/login');
         return;
       }
 
@@ -251,10 +251,10 @@ export default Vue.extend({
 
       // load the jobs using the api token
       const response = await fetch(`${config.apiRoot}/job/${jobID}`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.$store.getters.getApiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.$store.getters.getApiToken,
         },
       });
 
@@ -280,8 +280,8 @@ export default Vue.extend({
         this.studentDemographic = msg.job.studentDemographic;
         this.jobType = msg.job.jobType;
         this.workingRights = msg.job.workingRights;
-        this.additionalInfo = msg.job.additionalInfo === ""
-          ? "<p>This company has not provided any additional information.</p>" : msg.job.additionalInfo;
+        this.additionalInfo = msg.job.additionalInfo === ''
+          ? '<p>This company has not provided any additional information.</p>' : msg.job.additionalInfo;
         this.wamRequirements = msg.job.wamRequirements;
         this.isPaid = msg.job.isPaid;
         this.expiryDate = msg.job.expiry;
@@ -289,23 +289,23 @@ export default Vue.extend({
         this.isAlertOpen = true;
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
         if (response.status === 401) {
-          this.alertMsg = "Login expired. Redirecting to login page.";
+          this.alertMsg = 'Login expired. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login/company");
+            this.$router.push('/login/company');
           }, 3000);
         } else {
-          this.alertMsg = "Unable to load jobs at this time. Please try again later.";
+          this.alertMsg = 'Unable to load jobs at this time. Please try again later.';
         }
       }
 
       const jobResponse = await fetch(`${config.apiRoot}/company/${this.companyID}/jobs`, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.$store.getters.getApiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.$store.getters.getApiToken,
         },
       });
 
@@ -324,7 +324,7 @@ export default Vue.extend({
         });
       } else {
         this.isAlertOpen = true;
-        this.alertMsg = "Unable to load company jobs at this time. Please try again later.";
+        this.alertMsg = 'Unable to load company jobs at this time. Please try again later.';
       }
 
       this.jobInfoReady = true;

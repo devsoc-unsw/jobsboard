@@ -148,39 +148,39 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from "@/constants/job-fields";
+import { Vue } from 'vue-property-decorator';
+import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 
 export default Vue.extend({
-  name: "Modal",
+  name: 'Modal',
   props: {
     jobTitle: {
       type: String,
-      default: ""
+      default: ''
     },
     jobDescription: {
       type: String,
-      default: ""
+      default: ''
     },
     applicationLink: {
       type: String,
-      default: ""
+      default: ''
     },
     expiryDate: {
       type: String,
-      default: ""
+      default: ''
     },
     isPaidPosition: {
       type: String,
-      default: ""
+      default: ''
     },
     jobType: {
       type: String,
-      default: ""
+      default: ''
     },
     jobMode: {
       type: String,
-      default: ""
+      default: ''
     },
     workingRights: {
       type: Array,
@@ -192,11 +192,11 @@ export default Vue.extend({
     },
     wamRequirements: {
       type: String,
-      default: ""
+      default: ''
     },
     additionalInfo: {
       type: String,
-      default: ""
+      default: ''
     },
     closeCallback: {
       type: Function,
@@ -214,7 +214,7 @@ export default Vue.extend({
   },
   methods: {
     modalClose() {
-      this.$emit("closeCallback");
+      this.$emit('closeCallback');
     },
   }
 });

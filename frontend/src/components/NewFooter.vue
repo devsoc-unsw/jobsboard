@@ -99,17 +99,17 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import logo from "@/assets/logos/csesocwhite.png";
-import facebookLogo from "@/assets/SocialMedia/facebook.svg";
-import instagramLogo from "@/assets/SocialMedia/instagram.svg";
-import linkedinLogo from "@/assets/SocialMedia/linkedin.svg";
-import youtubeLogo from "@/assets/SocialMedia/youtube.svg";
-import discordLogo from "@/assets/SocialMedia/discord.svg";
-import githubLogo from "@/assets/SocialMedia/github.svg";
+import { Vue } from 'vue-property-decorator';
+import logo from '@/assets/logos/csesocwhite.png';
+import facebookLogo from '@/assets/SocialMedia/facebook.svg';
+import instagramLogo from '@/assets/SocialMedia/instagram.svg';
+import linkedinLogo from '@/assets/SocialMedia/linkedin.svg';
+import youtubeLogo from '@/assets/SocialMedia/youtube.svg';
+import discordLogo from '@/assets/SocialMedia/discord.svg';
+import githubLogo from '@/assets/SocialMedia/github.svg';
 
 export default Vue.extend({
-  name: "NewFooter",
+  name: 'NewFooter',
   data() {
     return {
       logo: logo,
@@ -123,7 +123,7 @@ export default Vue.extend({
   },
   methods: {
     toTeamPage() {
-      this.$router.push("/team");
+      this.$router.push('/team');
     }
   },
 });

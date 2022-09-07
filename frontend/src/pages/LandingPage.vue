@@ -141,18 +141,18 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import Blob from "@/assets/misc/Blob.svg";
-import CsesocLogoSmall from "@/assets/logos/CsesocLogoSmall.svg";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
-import FeaturedJobCard from "@/components/FeaturedJobCard.vue";
-import SponsorCarousel from "@/components/SponsorCarousel.vue";
+import { Vue } from 'vue-property-decorator';
+import Blob from '@/assets/misc/Blob.svg';
+import CsesocLogoSmall from '@/assets/logos/CsesocLogoSmall.svg';
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
+import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
+import SponsorCarousel from '@/components/SponsorCarousel.vue';
 
-import GoogleLogo from "@/assets/companies/googleLogo.png";
+import GoogleLogo from '@/assets/companies/googleLogo.png';
 
 export default Vue.extend({
-  name: "StudentLoginPage",
+  name: 'StudentLoginPage',
   components: {
     Header,
     NewFooter,
@@ -170,21 +170,21 @@ export default Vue.extend({
     // Change the page title
     document.title = this.$route.meta.title;
     
-    this.$store.dispatch("clearApiToken");
+    this.$store.dispatch('clearApiToken');
   },
   methods: {
     scrollToTop() {
       window.scrollTo({ 
         left: 0,
         top: 0, 
-        behavior: "smooth" 
+        behavior: 'smooth' 
       });
     },
     companyRegister() {
-      this.$router.push("/signup/company");
+      this.$router.push('/signup/company');
     },
     toGithubRepo() {
-      window.open("https://github.com/csesoc/jobs-board");
+      window.open('https://github.com/csesoc/jobs-board');
     }
   },
 });

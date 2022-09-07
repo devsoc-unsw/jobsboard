@@ -71,19 +71,19 @@
 
 <script lang="ts">
 // libs
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 // components
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import Alert from "@/components/Alert.vue";
-import Button from "@/components/buttons/button.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import Alert from '@/components/Alert.vue';
+import Button from '@/components/buttons/button.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
-import config from "@/config/config";
+import config from '@/config/config';
 
 export default Vue.extend({
-  name: "PasswordForgotPage",
+  name: 'PasswordForgotPage',
   components: {
     StudentViewTemplate,
     Button,
@@ -92,9 +92,9 @@ export default Vue.extend({
   },
   data() {
     return {
-      email: "",
-      alertType: "",
-      alertMsg: "",
+      email: '',
+      alertType: '',
+      alertMsg: '',
       isAlertOpen: false,
     };
   },
@@ -105,35 +105,35 @@ export default Vue.extend({
   methods: {
     async performCompanyPasswordForgot() {
       const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         // mode: "no-cors",
         body: JSON.stringify({
-          "username": this.email,
+          'username': this.email,
         }),
       });
 
       if (response.ok) {
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
-        this.alertType = "success";
+        this.alertType = 'success';
         this.isAlertOpen = true;
-        this.alertMsg = "An email will be sent shortly. Please check your inbox.";
+        this.alertMsg = 'An email will be sent shortly. Please check your inbox.';
       } else {
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
-        this.alertType = "error";
+        this.alertType = 'error';
         this.isAlertOpen = true;
         if (response.status === 400) {
-          this.alertMsg = "Could not find a company account with that email. Please try again.";
+          this.alertMsg = 'Could not find a company account with that email. Please try again.';
         } else {
-          this.alertMsg = "Email failed to send. Please try again.";
+          this.alertMsg = 'Email failed to send. Please try again.';
         }
       }
     },

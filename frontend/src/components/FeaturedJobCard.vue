@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "FeaturedJobCard",
+  name: 'FeaturedJobCard',
   props: {
     jobTitle: {
       type: String,

@@ -22,13 +22,13 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import logo from "@/assets/logos/csesocwhite.png";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
+import { Vue } from 'vue-property-decorator';
+import logo from '@/assets/logos/csesocwhite.png';
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
 
 export default Vue.extend({
-  name: "GeneralPageTemplate",
+  name: 'GeneralPageTemplate',
   components: {
     Header,
     NewFooter,
@@ -46,8 +46,8 @@ export default Vue.extend({
   },
   methods: {
     logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/company");
+      this.$store.dispatch('clearApiToken');
+      this.$router.push('/login/company');
     },
   },
 });

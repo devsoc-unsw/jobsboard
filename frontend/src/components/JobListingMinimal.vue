@@ -20,10 +20,10 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "JobsList",
+  name: 'JobsList',
   components: {},
   props: {
     jobId: {
@@ -32,15 +32,15 @@ export default Vue.extend({
     },
     role: {
       type: String,
-      default: ""
+      default: ''
     },
     company: {
       type: String,
-      default: ""
+      default: ''
     },
     location: {
       type: String,
-      default: ""
+      default: ''
     },
     // TODO: add company logo
   },

@@ -46,12 +46,12 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import logo from "@/assets/logos/csesocwhite.png";
-import moon from "@/assets/misc/moon.svg";
+import { Vue } from 'vue-property-decorator';
+import logo from '@/assets/logos/csesocwhite.png';
+import moon from '@/assets/misc/moon.svg';
 
 export default Vue.extend({
-  name: "Header",
+  name: 'Header',
   data() {
     return {
       logo: logo,
@@ -68,8 +68,8 @@ export default Vue.extend({
   },
   methods: {
     logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/student");
+      this.$store.dispatch('clearApiToken');
+      this.$router.push('/login/student');
     },
   }
 });

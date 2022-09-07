@@ -28,13 +28,13 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "../components/StudentViewTemplate.vue";
-import Logo from "@/assets/logos/csesocgreyblue.png";
-import Robot from "@/assets/misc/404_Robot.png";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '../components/StudentViewTemplate.vue';
+import Logo from '@/assets/logos/csesocgreyblue.png';
+import Robot from '@/assets/misc/404_Robot.png';
 
 export default Vue.extend({
-  name: "PageNotFound",
+  name: 'PageNotFound',
   components: {
     StudentViewTemplate,
   },
@@ -49,7 +49,7 @@ export default Vue.extend({
     document.title = this.$route.meta.title;
     
     setTimeout(() => {
-      this.$router.push("/");
+      this.$router.push('/');
     }, 5000);
   }
 });

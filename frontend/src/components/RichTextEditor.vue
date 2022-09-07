@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import "quill/dist/quill.snow.css";
-import quillEditor from "vue-quill-editor";
+import { Vue } from 'vue-property-decorator';
+import 'quill/dist/quill.snow.css';
+import quillEditor from 'vue-quill-editor';
 
 export default Vue.extend({
   components: {

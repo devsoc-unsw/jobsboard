@@ -84,14 +84,14 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import Alert from "@/components/Alert.vue";
-import config from "@/config/config";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import Alert from '@/components/Alert.vue';
+import config from '@/config/config';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 export default Vue.extend({
-  name: "StudentLoginPage",
+  name: 'StudentLoginPage',
   components: {
     StudentViewTemplate,
     Breadcrumbs,
@@ -99,22 +99,22 @@ export default Vue.extend({
   },
   data() {
     return {
-      zID: "",
-      password: "",
+      zID: '',
+      password: '',
       isAlertOpen: false,
     };
   },
   async mounted() {
     // Change the page title 
     document.title = this.$route.meta.title;
-    this.$store.dispatch("clearApiToken");
+    this.$store.dispatch('clearApiToken');
   },
   methods: {
     async performLogin() {
       const response = await fetch(`${config.apiRoot}/authenticate/student`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         // mode: "no-cors",
         body: JSON.stringify({
@@ -124,13 +124,13 @@ export default Vue.extend({
       });
       if (response.ok) {
         const msg = await response.json();
-        this.$store.dispatch("setApiToken", msg.token);
+        this.$store.dispatch('setApiToken', msg.token);
         this.isAlertOpen = false;
-        this.$router.push("/jobs");
+        this.$router.push('/jobs');
       } else {
         window.scrollTo({
           top: 0,
-          behavior: "smooth",
+          behavior: 'smooth',
         })
         this.isAlertOpen = true;
       }

@@ -32,18 +32,18 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "Alert",
+  name: 'Alert',
   props: {
     alertType: {
       type: String,
-      default: "error" // "error" | "success"
+      default: 'error' // "error" | "success"
     },
     alertMsg: {
       type: String,
-      default: ""
+      default: ''
     },
     isOpen: Boolean,
     handleClose: {
@@ -53,13 +53,13 @@ export default Vue.extend({
   },
   computed: {
     getContainerStyles() {
-      return this.alertType === "error" ? "errorContainer" : "successContainer";
+      return this.alertType === 'error' ? 'errorContainer' : 'successContainer';
     },
     getTextStyles() {
-      return this.alertType === "error" ? "errorText" : "successText";
+      return this.alertType === 'error' ? 'errorText' : 'successText';
     },
     getButtonStyles() {
-      return this.alertType === "error" ? "errorButton" : "successButton";
+      return this.alertType === 'error' ? 'errorButton' : 'successButton';
     }
   }
 });

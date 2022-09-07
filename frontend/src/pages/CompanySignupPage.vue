@@ -83,17 +83,17 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import config from "@/config/config";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import Button from "@/components/buttons/button.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import SuccessBox from '@/components/SuccessBox.vue';
+import config from '@/config/config';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import Button from '@/components/buttons/button.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 export default Vue.extend({
-  name: "CompanySignupPage",
+  name: 'CompanySignupPage',
   components: {
     StudentViewTemplate,
     ErrorBox,
@@ -104,14 +104,14 @@ export default Vue.extend({
   },
   data() {
     return {
-      username: "",
-      password: "",
-      name: "",
-      location: "",
+      username: '',
+      password: '',
+      name: '',
+      location: '',
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       success: false,
-      successMsg: "",
+      successMsg: '',
     };
   },
   mounted() {
@@ -120,21 +120,21 @@ export default Vue.extend({
   },
   methods: {
     validateInput() {
-      if (this.username === "") {
+      if (this.username === '') {
         this.error = true;
-        this.errorMsg = "Username cannot be empty. Please try again.";
+        this.errorMsg = 'Username cannot be empty. Please try again.';
         return false;
-      } else if (this.password === "") {
+      } else if (this.password === '') {
         this.error = true;
-        this.errorMsg = "Password cannot be empty. Please try again.";
+        this.errorMsg = 'Password cannot be empty. Please try again.';
         return false;
-      } else if (this.name === "") {
+      } else if (this.name === '') {
         this.error = true;
-        this.errorMsg = "Company name cannot be empty. Please try again.";
+        this.errorMsg = 'Company name cannot be empty. Please try again.';
         return false;
-      } else if (this.location === "") {
+      } else if (this.location === '') {
         this.error = true;
-        this.errorMsg = "Company location cannot be empty. Please try again.";
+        this.errorMsg = 'Company location cannot be empty. Please try again.';
         return false;
       }
       return true;
@@ -144,9 +144,9 @@ export default Vue.extend({
         return;
       }
       const response = await fetch(`${config.apiRoot}/company`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         // mode: "no-cors",
         body: JSON.stringify({
@@ -160,18 +160,18 @@ export default Vue.extend({
       if (response.ok) {
         this.error = false;
         this.success = true;
-        this.successMsg = "Company account created successfully! Redirecting to the login page...";
+        this.successMsg = 'Company account created successfully! Redirecting to the login page...';
         setTimeout(() => {
-          this.$router.push("/login/company");
+          this.$router.push('/login/company');
         }, 5000);
       } else if (response.status === 409) {
         this.error = true;
         window.scrollTo(0, 10);
-        this.errorMsg = "There already exists a company with this email. Please try again.";
+        this.errorMsg = 'There already exists a company with this email. Please try again.';
       } else {
         this.error = true;
         window.scrollTo(0, 10);
-        this.errorMsg = "Invalid username. Please try again.";
+        this.errorMsg = 'Invalid username. Please try again.';
       }
     },
   }

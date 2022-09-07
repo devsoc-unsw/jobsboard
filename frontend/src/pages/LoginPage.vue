@@ -35,14 +35,14 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
 
 export default Vue.extend({
-  name: "LoginPage",
+  name: 'LoginPage',
   components: {
     StudentViewTemplate,
     Button,
@@ -55,10 +55,10 @@ export default Vue.extend({
   },
   methods: {
     toStudentLogin() {
-      this.$router.push("/login/student");
+      this.$router.push('/login/student');
     },
     toCompanyLogin() {
-      this.$router.push("/login/company");
+      this.$router.push('/login/company');
     }
   }
 });

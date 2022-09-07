@@ -30,15 +30,15 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import SuccessBox from "@/components/SuccessBox.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
+import { Vue } from 'vue-property-decorator';
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import config from '@/config/config';
+import Button from '@/components/buttons/button.vue';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
 
 export default Vue.extend({
-  name: "SingleJobManage",
+  name: 'SingleJobManage',
   components: {
     SuccessBox,
     ErrorBox,
@@ -48,15 +48,15 @@ export default Vue.extend({
   props: {
     name: {
       type: String,
-      default: ""
+      default: ''
     },
     location: {
       type: String,
-      default: ""
+      default: ''
     },
     description: {
       type: String,
-      default: ""
+      default: ''
     },
     companyAccountID: {
       type: Number,
@@ -66,37 +66,37 @@ export default Vue.extend({
   data() {
     return {
       success: false,
-      successMsg: "",
+      successMsg: '',
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       apiToken: this.$store.getters.getApiToken,
     };
   },
   methods: {
     async verifyCompany() {
       const response = await fetch(`${config.apiRoot}/admin/company/${this.companyAccountID}/verify`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
       });
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
         this.success = true;
-        this.successMsg = "Company successfully verified!";
+        this.successMsg = 'Company successfully verified!';
         this.close();
       } else {
         this.error = true;
         window.scrollTo(0, 10);
         if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 3000);
         } else {
-          this.errorMsg = "Error in processing verification. Please try again later.";
+          this.errorMsg = 'Error in processing verification. Please try again later.';
         }
       }
     },

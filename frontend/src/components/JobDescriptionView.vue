@@ -10,21 +10,21 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "JobDescriptionView",
+  name: 'JobDescriptionView',
   components: {
   },
   props: {
     description: {
       type: String,
-      default: ""
+      default: ''
     },
   },
   data() {
     return {
-      finalDescription: [""],
+      finalDescription: [''],
     };
   },
   updated() {
@@ -36,19 +36,19 @@ export default Vue.extend({
   },
   methods: {
     parseText() {
-      let splitDescription = this.$props.description.split("\n");
+      let splitDescription = this.$props.description.split('\n');
 
       let listFlag = false;
       for (let lineIndex in splitDescription) {
         let line = splitDescription[lineIndex];
         // apply italics
         line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
-        if (line.startsWith("- ")) {
+        if (line.startsWith('- ')) {
           // remove that hyphen when rendering
-          line = line.replace(/^- ?/, "");
+          line = line.replace(/^- ?/, '');
           if (!listFlag) {
             listFlag = true;
-            this.finalDescription.push(`<ul>`);
+            this.finalDescription.push('<ul>');
           }
           this.finalDescription.push(`<li>${line}</li>`);
         } else if (/^#/.test(line)) {
@@ -56,7 +56,7 @@ export default Vue.extend({
         } else {
           if (listFlag) {
             listFlag = false;
-            this.finalDescription.push(`</ul>`);
+            this.finalDescription.push('</ul>');
           }
           this.finalDescription.push(line);
         }
