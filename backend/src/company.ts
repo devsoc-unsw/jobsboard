@@ -742,7 +742,7 @@ export default class CompanyFunctions {
         .where("id = :id", { id: companyAccountID })
         .execute()
       
-      Logger.Info(`COMPANY=${companyAccountID} successfully updated its details`);
+      Logger.Info(`COMPANY=${companyAccountID} successfully updated it's details`);
       
       return {
         status: 200,
