@@ -11,7 +11,7 @@
         <div class='hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:flex'>
           <h2
             class='font-bold text-xl text-jb-headings'
-            :class='[jobs.length === 0 ? &apos;my-auto&apos; : &apos;mb-4&apos;]'
+            :class='[jobs.length === 0 ? "my-auto" : "mb-4"]'
           >
             {{
               jobs.length === 0
@@ -113,7 +113,7 @@
                   }}
                 </b>
                 <ul
-                  v-if='![&apos;all&apos;].every((val, idx) => val === workingRights[idx])'
+                  v-if='!["all"].every((val, idx) => val === workingRights[idx])'
                   class='list-disc list-inside ml-12'
                 >
                   <li
@@ -135,7 +135,7 @@
                   }}
                 </b>
                 <ul
-                  v-if='![&apos;all&apos;].every((val, idx) => val === studentDemographic[idx])'
+                  v-if='!["all"].every((val, idx) => val === studentDemographic[idx])'
                   class='list-disc list-inside ml-12'
                 >
                   <li
@@ -151,7 +151,7 @@
               <li class='mr-2'>
                 <button
                   class='inline-block p-4'
-                  :class='[isJobDescriptionShown ? &apos;text-jb-textlink font-black&apos; : &apos;text-gray-500 hover:text-gray-700&apos;]'
+                  :class='[isJobDescriptionShown ? "text-jb-textlink font-black" : "text-gray-500 hover:text-gray-700"]'
                   @click='() => { isJobDescriptionShown = true }'
                 >
                   Description
@@ -160,7 +160,7 @@
               <li class='mr-2'>
                 <button
                   class='inline-block p-4'
-                  :class='[!isJobDescriptionShown ? &apos;text-jb-textlink font-black&apos; : &apos;text-gray-500 hover:text-gray-700&apos;]'
+                  :class='[!isJobDescriptionShown ? "text-jb-textlink font-black" : "text-gray-500 hover:text-gray-700"]'
                   @click='() => { isJobDescriptionShown = false }'
                 >
                   Additional Information

@@ -12,7 +12,7 @@
           target='__blank'
         >
           <font-awesome-icon
-            :icon='[&apos;fab&apos;, &apos;linkedin&apos;]'
+            :icon='["fab", "linkedin"]'
             class='text-blue-700 h-8 mr-3'
           />
         </a>
@@ -21,7 +21,7 @@
           target='__blank'
         >
           <font-awesome-icon
-            :icon='[&apos;fab&apos;, &apos;github&apos;]'
+            :icon='["fab", "github"]'
             class='h-8'
           />
         </a>
