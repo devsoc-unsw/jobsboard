@@ -10,9 +10,9 @@
       to help you find your dream student job!
     </h4>
     
-    <div class="lineSeparator w-80 h-1 bg-gray-300 m-auto mt-10 mb-20" />
+    <div class="w-80 h-1 bg-gray-300 m-auto mt-10 mb-20" />
     <!-- items-center -->
-    <div class="justify-items-center grid grid-cols-1 grid-flow-row lg:grid-cols-2">
+    <div class="justify-items-center grid grid-cols-2 grid-flow-row lg:grid-cols-1">
       <ProfileCard v-for="member in members" :member="member" :key="member.name" />
     </div>
 
@@ -116,6 +116,10 @@ export default Vue.extend({
       ],
     }
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 
 </script>

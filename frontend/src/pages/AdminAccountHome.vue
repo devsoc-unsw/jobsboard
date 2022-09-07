@@ -3,7 +3,7 @@
   <StudentViewTemplate>
   <Breadcrumbs />
   <div>
-    <h1 class="text-3xl text-jb-headings font-bold mt-10 mb-3 md:mt-0">Welcome Back 👋</h1>
+    <h1 class="text-3xl text-jb-headings font-bold mt-0 mb-3 md:mt-10">Welcome Back 👋</h1>
     <h3 class="text-base text-jb-subheadings">Hey there! It's great to see you again.</h3>
     
     <!-- Error Alert -->
@@ -12,13 +12,13 @@
       :alertMsg="this.alertMsg"
       :isOpen="this.isAlertOpen"
       :handleClose="() => { this.isAlertOpen = false }"
-      class="mx-[25%] my-5 lg:mx-96"
+      class="mx-96 my-5 lg:mx-[25%]"
     />
     
     <!-- Notification Alert -->
     <div 
       v-if="infoAlert && !isAlertOpen" 
-      class="flex justify-evenly items-start my-10 mx-[25%] bg-white rounded-md py-5 px-2 border-2 border-blue-300 lg:mx-[30%]"
+      class="flex justify-evenly items-start my-10 mx-[30%] bg-white rounded-md py-5 px-2 border-2 border-blue-300 lg:mx-[25%]"
     >
       <div class="mx-3 my-auto">
         <font-awesome-icon icon="bell" class="text-2xl text-jb-headings bell" />
@@ -43,7 +43,7 @@
     </div>
     
     <!-- Company Verification -->
-    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[25%] my-4 lg:mx-[30%] rounded-md shadow-card">
+    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[30%] my-4 lg:mx-[25%] rounded-md shadow-card">
       <h3 class="text-2xl font-bold text-jb-headings">Company Verification</h3>
       <p class="text-md text-jb-subheadings pt-2 pb-5">
         Please ensure that the
@@ -58,7 +58,7 @@
     </div>
     
     <!-- Job Verification -->
-    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[25%] mt-6 lg:mx-[30%] rounded-md shadow-card">
+    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card">
       <h3 class="text-2xl font-bold text-jb-headings">Job Verification</h3>
       <p class="text-md text-jb-subheadings pt-2 pb-5">
         Please ensure that all job posts complies with the
@@ -72,7 +72,7 @@
     </div>
     
     <!-- Post Job as Company -->
-    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[25%] mt-6 lg:mx-[30%] rounded-md shadow-card">
+    <div class="flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card">
       <h3 class="text-2xl font-bold text-jb-headings">Post job as Company</h3>
       <p class="text-md text-jb-subheadings pt-2 pb-5">
         Make a job
@@ -119,6 +119,9 @@ export default Vue.extend({
     };
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+
     // Get the number of companies pending verification 
     const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
       method: "GET",

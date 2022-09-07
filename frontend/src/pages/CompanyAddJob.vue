@@ -18,12 +18,12 @@
     @closeCallback="() => { this.modalVisible = false }"
   />
   <div class="flex flex-col items-center w-4/5 mx-auto">
-    <h1 class="text-jb-headings font-bold text-3xl mt-10 lg:mt-0">Post a Job</h1>
+    <h1 class="text-jb-headings font-bold text-3xl mt-0 lg:mt-10">Post a Job</h1>
     <p class="text-jb-subheadings mb-12">
       Reach out to a talented pool of over 10,000 Computer Science and Engineering students
     </p>
     <!-- disclaimer box -->
-    <div v-if="!isAlertOpen" class="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md lg:mx-[15%] mb-10">
+    <div v-if="!isAlertOpen" class="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md mx-[15%] lg:mx-0 mb-10">
       <div class="flex">
         <div class="py-1">
           <font-awesome-icon icon="circle-info" size="lg"/>
@@ -52,7 +52,7 @@
       :handleClose="() => { this.isAlertOpen = false }"
     />
     <!-- input fields -->
-    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Title</h2>
+    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Job Title</h2>
     <input 
       name="role"
       v-model="role"
@@ -60,14 +60,14 @@
       placeholder="Job Title"
       class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
     />
-    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Description</h2>
+    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Job Description</h2>
     <quill-editor 
       v-model="description"
       :value="description"
       :options="editorOptions"
       v-bind:style="{ 'background-color': 'white', 'width': '100%' }"
     />
-    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Application Link</h2>
+    <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Application Link</h2>
     <input 
       name="applicationLink"
       v-model="applicationLink"
@@ -75,9 +75,9 @@
       placeholder="www.example.com"
       class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
     />
-    <div class="flex flex-col justify-between w-full text-left lg:flex-row">
-      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
-        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Application Expiry Date</h2>
+    <div class="flex flex-row justify-between w-full text-left lg:flex-col">
+      <div class="flex flex-col items-start text-left w-2/5 lg:w-full">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Application Expiry Date</h2>
         <input
           name="expiryDate"
           v-model="expiryDate"
@@ -85,8 +85,8 @@
           class="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
         />
       </div>
-      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
-        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Is this position paid?</h2>
+      <div class="flex flex-col items-start text-left w-2/5 lg:w-full">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Is this position paid?</h2>
         <select 
           name="paidPosition" 
           id="paidPosition" 
@@ -99,9 +99,9 @@
         </select>
       </div>
     </div>
-    <div class="flex flex-col justify-between w-full text-left lg:flex-row">
-      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
-        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Type</h2>
+    <div class="flex flex-row justify-between w-full text-left lg:flex-col">
+      <div class="flex flex-col items-start text-left w-2/5 lg:w-full">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Job Type</h2>
         <select 
           name="jobType" 
           id="jobType" 
@@ -113,8 +113,8 @@
           <option value="grad">Graduate Position</option>
         </select>
       </div>
-      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
-        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-center lg:self-start">Job Mode</h2>
+      <div class="flex flex-col items-start text-left w-2/5 lg:w-full">
+        <h2 class="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">Job Mode</h2>
         <select 
           name="jobMode" 
           id="jobMode" 
@@ -128,8 +128,8 @@
         </select>
       </div>
     </div>
-    <h2 class="text-xl text-jb-headings mt-4 font-bold self-center lg:self-start">Applicant's Working Rights</h2>
-    <p class="text-jb-subheadings mb-2 self-center lg:self-start">
+    <h2 class="text-xl text-jb-headings mt-4 font-bold self-start lg:self-center">Applicant's Working Rights</h2>
+    <p class="text-jb-subheadings mb-2 self-start lg:self-center">
       Please check all that applies
     </p>
     <div class="flex flex-row items-center self-start text-left text-lg">
@@ -160,12 +160,12 @@
       <input type="checkbox" value="all" id="wr_all" v-model="workingRights" class="self-center mr-2 w-auto"/>
       <label for="wr_all">All</label>
     </div>
-    <div class="flex flex-col justify-between w-full text-left lg:flex-row">
-      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
-        <h2 class="text-xl text-jb-headings mt-4 font-bold self-center lg:self-start">
+    <div class="flex flex-row justify-between w-full text-left lg:flex-col">
+      <div class="flex flex-col items-start text-left w-2/5 lg:w-full">
+        <h2 class="text-xl text-jb-headings mt-4 font-bold self-start lg:self-center">
           Who Should Apply for this Role?
         </h2>
-        <p class="text-jb-subheadings mb-2 self-center lg:self-start">
+        <p class="text-jb-subheadings mb-2 self-start lg:self-center">
           Please check all that applies
         </p>
         <div>
@@ -183,9 +183,9 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-col items-start text-left w-full lg:w-2/5">
-        <h2 class="text-xl text-jb-headings mt-4 font-bold self-center lg:self-start">Applicant's WAM</h2>
-        <p class="text-jb-subheadings mb-2 self-center lg:self-start">
+      <div class="flex flex-col items-start text-left w-2/5 lg:w-full">
+        <h2 class="text-xl text-jb-headings mt-4 font-bold self-start lg:self-center">Applicant's WAM</h2>
+        <p class="text-jb-subheadings mb-2 self-start lg:self-center">
           Please select one option
         </p>
         <div>
@@ -208,7 +208,7 @@
         </div>
       </div>
     </div>
-    <h2 class="text-xl text-jb-headings my-4 font-bold self-center lg:self-start">Additional Information</h2>
+    <h2 class="text-xl text-jb-headings my-4 font-bold self-start lg:self-center">Additional Information</h2>
     <quill-editor 
       v-model="additionalInfo"
       :value="additionalInfo"
@@ -367,6 +367,10 @@ export default Vue.extend({
       }
     },
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  }
 });
 
 </script>

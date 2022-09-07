@@ -88,6 +88,9 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+    
     const response = await fetch(`${config.apiRoot}/companyjobs`, {
       method: "GET",
       headers: {

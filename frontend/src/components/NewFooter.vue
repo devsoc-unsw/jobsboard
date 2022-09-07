@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-row">
+  <div class="flex flex-row justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-col text-white">
     <div>
-      <img class="inline pt-4 pr-4 pl-4 w-2/3 sm:w-1/2 md:w-2/3 xl:w-1/2 2xl:w-1/3" :src="logo" />
+      <img class="inline pt-4 pr-4 pl-4 w-1/2 lg:w-2/3 sm:w-1/2" :src="logo" />
       <div class="py-2.5 font-bold">
         <a
           class="py-2.5" 
@@ -12,7 +12,7 @@
         </a>
         <a @click="toTeamPage" class="cursor-pointer">Meet the Team</a>
       </div>
-      <p>&#169; CSESoc UNSW - 2022</p>
+      <p class="m-0">&#169; CSESoc UNSW - 2022</p>
       <div class="flex justify-center py-[15px]">
         <a href="https://www.facebook.com/csesoc" target="__blank">
           <img class="block w-1/2" :src="facebookLogo" />
@@ -36,7 +36,7 @@
     </div>
 
     <div class="flex flex-col justify-center items-center text-justify px-[30px]">
-      <p>
+      <p class="m-0">
         CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. 
         We do not represent the School, Faculty, or University. 
         This website seeks to be a centralised platform for students looking 
@@ -49,8 +49,6 @@
         Jobsboard was made with 
         <font-awesome-icon icon="heart" />
         by CSE students for CSE students.
-      </p>
-      <p>
       </p>
     </div>
   </div>
@@ -88,27 +86,9 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-p {
-  color: white;
-  font-size: 0.75em;
-  margin: 0;
-
-  @media screen 
-  and (min-width: 320px) 
-  and (max-width: 768px) {
-    font-size: 1em;
-  }
-
-  @media screen and (min-width: 768.1px) {
-    font-size: 1em;
-  }
-}
-
 a {
   display: flex;
   justify-content: center;
-  align-items: center;
-  text-decoration: none;
   color: #ffffff;
 }
 </style>

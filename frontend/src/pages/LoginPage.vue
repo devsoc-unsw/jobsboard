@@ -47,6 +47,10 @@ export default Vue.extend({
     toCompanyLogin() {
       this.$router.push("/login/company");
     }
+  },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
   }
 });
 </script>
