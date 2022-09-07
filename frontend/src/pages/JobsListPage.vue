@@ -22,7 +22,7 @@
           class="jobItems"
           v-for="job in jobs"
           :key="job.key"
-          :jobId="job.id"
+          :jobID="job.id"
           :role="job.role"
           :company="job.company.name"
           :location="job.company.location"
@@ -106,20 +106,6 @@ const loadMoreJobs = async () => {
 .jobsBox {
   width: 75%;
   margin: auto;
-}
-
-@media screen and (min-width: 900px) {
-  .navbar {
-    width: 50%;
-    padding: 1.5rem;
-  }
-  .searchBar {
-    margin-bottom: 0;
-  }
-  .contentWidth {
-    width: 70%;
-    margin: auto;
-  }
 }
 
 .jobContainer {
