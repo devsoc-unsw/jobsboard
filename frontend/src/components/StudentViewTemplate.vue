@@ -1,28 +1,12 @@
 <template>
-  <div class="viewport">
-    <div class="stretchyPage">
+  <div class='viewport'>
+    <div class='stretchyPage'>
       <Header />
-      <!-- <div class="navbar">
-        <div class="leftBox">
-          <div v-if="!disableBack">
-            <BackButton />
-          </div>
-        </div>
-        <img class="main-logo-student" :src="logo"/>
-        <div class="rightBox" @click="logOut">
-          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" v-if="!notLoggedIn"/>
-        </div>
-        
-        <div>
-          <input class="searchBar" type="text" placeholder="Search all jobs..."/>
-        </div>
-        
-      </div> -->
-      <div class="content">
-        <div class="contentWidth">
+      <div class='content'>
+        <div class='contentWidth'>
           <slot />
         </div>
-        <div class="footer">
+        <div class='footer'>
           <NewFooter />
         </div>
       </div>
@@ -31,41 +15,26 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import Button from "@/components/buttons/button.vue";
-import DarkBlueStandardButton from "@/components/buttons/DarkBlueStandardButton.vue";
-import BackButton from "@/components/buttons/back.vue";
-import logo from "@/assets/logos/csesocwhite.png";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
+import { Vue } from 'vue-property-decorator';
+import logo from '@/assets/logos/csesocwhite.png';
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
 
 export default Vue.extend({
-  name: "StudentViewTemplate",
+  name: 'StudentViewTemplate',
   components: {
     Header,
-    Button,
-    DarkBlueStandardButton,
     NewFooter,
-    BackButton,
   },
   props: {
     notLoggedIn: {
       type: Boolean,
-      default: false
+      default: false,
     },
     disableBack: {
       type: Boolean,
-      default: false
-    }
-  },
-  methods: {
-    logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/student");
+      default: false,
     },
-    goToJobs() {
-      this.$router.push("/jobs");
-    }
   },
   data() {
     return {
@@ -76,10 +45,18 @@ export default Vue.extend({
   async mounted() {
     if (this.notLoggedIn === true) {
       return;
+    } else if (this.apiToken === undefined) {
+      this.$router.push('/login');
     }
-    else if (this.apiToken === undefined) {
-      this.$router.push("/login");
-    }
+  },
+  methods: {
+    logOut() {
+      this.$store.dispatch('clearApiToken');
+      this.$router.push('/login/student');
+    },
+    goToJobs() {
+      this.$router.push('/jobs');
+    },
   },
 });
 </script>
@@ -116,7 +93,7 @@ export default Vue.extend({
 }
 
 @media screen
-and (min-width: 320px) 
+and (min-width: 320px)
 and (max-width: 768.98px) {
   .footer {
     margin-top: 100px;
@@ -129,13 +106,13 @@ and (max-width: 768.98px) {
 }
 
 @media screen
-and (min-width: 320px) 
+and (min-width: 320px)
 and (max-width: 768.98px) {
   .footer {
     margin-top: 100px;
   }
 }
-/* 
+/*
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
