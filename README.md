@@ -61,5 +61,6 @@ Navigate to the `/backend` folder and create a `.env` file with the following co
 ### Pushing
 Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
 
-
-[API docs](http://localhost:8080/docs/). This is only available when the api is started.
+### API Docs
+After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/). 
+When adding, modifying or removing routes from `backend/src/index.ts`, update the documentation at `backend/src/docs/openapi.json` accordingly to by following the existing format.
