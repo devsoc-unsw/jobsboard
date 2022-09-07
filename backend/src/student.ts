@@ -155,4 +155,59 @@ export default class StudentFunctions {
       } as IResponseWithStatus;
     }, next);
   }
+
+  public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      Logger.Info(`Attempting to get featured jobs`);
+      let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
+        // TODO(ad-t): doesnt check fields of company, but that's ok for now
+        return await AppDataSource
+          .getRepository(Job)
+          .createQueryBuilder()
+          .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .where("Job.approved = :approved", { approved: true })
+          .where("Job.expiry > :expiry", { expiry: new Date() })
+          .andWhere("Job.hidden = :hidden", { hidden: false })
+          .leftJoinAndSelect("Job.company", "company")
+          .getMany();
+      }, `Couldn't query for featured jobs`);
+
+      // check if there are enough jobs to feature 
+      if (featuredJobs.length >= 4) {
+        featuredJobs = featuredJobs.slice(0, 4);
+      } else {
+        featuredJobs = featuredJobs.slice(0, featuredJobs.length);
+      }
+      
+      // select and join company.name
+      featuredJobs = featuredJobs.map((job: Job) => {
+        // if no jobs are found, return null
+        if (job === null) {
+          return null;
+        }
+        const newJob: any = {};
+        newJob.id = job.id;
+        newJob.role = job.role;
+        newJob.description = job.description;
+        newJob.applicationLink = job.applicationLink;
+        newJob.company = job.company.name;
+        return newJob;
+      });
+      
+      return {
+        status: 200, 
+        msg: {
+          token: req.newJbToken,
+          featuredJobs: featuredJobs
+        }
+      } as IResponseWithStatus;
+    }, () => {
+      return {
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        }
+      } as IResponseWithStatus;
+    }, next);
+  }
 }
