@@ -194,17 +194,52 @@ app.post(
   Middleware.genericLoggingMiddleware
 );
 
+/**
+ *  @swagger
+ *
+ *  /company:
+ *    put:
+ *      description: Create a company account
+ *      tags:
+ *        - Company
+ *      parameters:
+ *        - name: username
+ *          description: The username of the new company account
+ *          type: string
+ *          required: true
+ *        - name: password
+ *          description: The associated password of the new company account
+ *          type: string
+ *          required: true
+ *        - name: name
+ *          description: The name of the new company
+ *          type: string
+ *          required: true
+ *        - name: location
+ *          description: The location of the new company
+ *          type: string
+ *          required: true
+ *    responses:
+ *      200:
+ *        description: success
+ *      400:
+ *        description: Missing parameters
+ *      409:
+ *        description: Conflicting usernames
+ */
 app.put(
-  "/company",
+  "/company/update/details",
   cors(corsOptions),
-  CompanyFunctions.CreateCompany,
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.UpdateCompanyDetails,
   Middleware.genericLoggingMiddleware
 );
 
 app.post(
   "/authenticate/company",
   cors(corsOptions),
-  Auth.AuthenticateCompany,
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.UploadLogo,
   Middleware.genericLoggingMiddleware
 );
 
@@ -349,15 +384,31 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
+/**
+ *  @swagger
+ *  /admin/company/:companyID/jobs:
+ *    put:
+ *      description: Create a job as an admin on behalf of a company account
+ *      tags:
+ *        - Admin
+ *    responses:
+ *      200:
+ *        description: success
+ *      401:
+ *        description: bad permissions
+ */
 app.put(
   "/admin/company/:companyID/jobs",
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
-  AdminFunctions.CreateJobOnBehalfOfExistingCompany,
+  StudentFunctions.GetFeaturedJobs,
   Middleware.genericLoggingMiddleware
 );
 
 
+/**
+ * Comment/uncomment to enable/disable swagger docs and sending test emails.
+ * Currently only works in development mode.
+ */
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapi));
