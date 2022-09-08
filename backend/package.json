@@ -22,7 +22,7 @@
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.0.7",
     "typeorm": "^0.3.0",
-    "vue": "^2.6.14",
+    "vue": "^3.0.0",
     "winston": "^3.2.1"
   },
   "nodemonConfig": {
