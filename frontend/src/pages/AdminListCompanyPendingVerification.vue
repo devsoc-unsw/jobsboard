@@ -13,7 +13,7 @@
         <SingleCompanyManage
           v-for='pendingCompany in companies'
           :key='pendingCompany.key'
-          :company-account-i-d='pendingCompany.id'
+          :companyAccountID='pendingCompany.id'
           :name='pendingCompany.company.name'
           :location='pendingCompany.company.location'
           :description='pendingCompany.company.description'

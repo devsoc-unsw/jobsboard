@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-    <StudentViewTemplate logged-in>
+    <StudentViewTemplate loggedIn>
       <Breadcrumbs />
       <div class='contentBox'>
         <h1>Manage Jobs</h1>
@@ -24,12 +24,12 @@
           <CompanyJobManage
             v-for='job in jobs'
             :key='job.key'
-            :job-i-d='job.id'
+            :jobID='job.id'
             :role='job.role'
             :description='job.description'
-            :application-link='job.applicationLink'
-            :success-callback='internalSuccessCallback'
-            :error-callback='internalErrorCallback'
+            :applicationLink='job.applicationLink'
+            :successCallback='internalSuccessCallback'
+            :errorCallback='internalErrorCallback'
           />
         </div>
       </div>

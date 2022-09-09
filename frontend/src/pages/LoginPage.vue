@@ -1,7 +1,7 @@
 <template>
   <StudentViewTemplate
-    not-logged-in
-    disable-back
+    notLoggedIn
+    disableBack
   >
     <ErrorBox>
       <h1>Under Maintenance</h1>

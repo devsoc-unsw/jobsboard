@@ -2,10 +2,10 @@
   <LoggedInTemplate>
     <StudentViewTemplate>
       <Alert
-        alert-type='error'
-        :alert-msg='alertMsg'
-        :is-open='isAlertOpen'
-        :handle-close='() => { isAlertOpen = false }'
+        alertType='error'
+        :alertMsg='alertMsg'
+        :isOpen='isAlertOpen'
+        :handleClose='() => { isAlertOpen = false }'
       />
       <div class='flex flex-row justify-center h-screen px-8'>
         <div class='hidden flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:flex'>
@@ -23,7 +23,7 @@
             <JobListingMinimal
               v-for='job in jobs'
               :key='job.key'
-              :job-id='job.id'
+              :jobId='job.id'
               :role='job.role'
               :company='company'
               :location='location'

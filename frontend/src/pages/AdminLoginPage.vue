@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate not-logged-in>
+  <StudentViewTemplate notLoggedIn>
     <Breadcrumbs />
     <main class='h-full flex flex-col justify-center items-center mb-16'>
       <h1 class='font-bold text-3xl mb-0 text-jb-headings'>
@@ -9,10 +9,10 @@
         Enter your username and password. If there are any problems, please get in touch with a project lead.
       </p>
       <Alert
-        alert-type='error'
-        alert-msg='Invalid credentials. Please try again.'
-        :is-open='isAlertOpen'
-        :handle-close='() => { isAlertOpen = false }'
+        alertType='error'
+        alertMsg='Invalid credentials. Please try again.'
+        :isOpen='isAlertOpen'
+        :handleClose='() => { isAlertOpen = false }'
       />
       <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
         <input

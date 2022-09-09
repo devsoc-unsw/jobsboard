@@ -72,10 +72,10 @@
         </p>
         <div class='flex justify-between items-center my-12'>
           <FeaturedJobCard
-            job-title='STEP Intern, 2022 Summer'
-            job-description='The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship.'
-            :job-tag='["AU/NZ Citizens", "Internationals"]'
-            :image-path='GoogleLogo'
+            jobTitle='STEP Intern, 2022 Summer'
+            jobDescription='The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship.'
+            :jobTag='["AU/NZ Citizens", "Internationals"]'
+            :imagePath='GoogleLogo'
           />
         </div>
 

@@ -13,11 +13,11 @@
         <SingleJobManage
           v-for='job in jobs'
           :key='job.key'
-          :job-i-d='job.id'
+          :jobID='job.id'
           :role='job.role'
           :company='job.company.name'
           :description='job.description'
-          :application-link='job.applicationLink'
+          :applicationLink='job.applicationLink'
         />
       </div>
     </StudentViewTemplate>
