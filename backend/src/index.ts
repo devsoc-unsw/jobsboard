@@ -170,6 +170,13 @@ app.post(
 );
 
 app.put(
+  "/company",
+  cors(corsOptions),
+  CompanyFunctions.CreateCompany,
+  Middleware.genericLoggingMiddleware
+);
+
+app.put(
   "/company/update/details",
   cors(corsOptions),
   Middleware.authenticateCompanyMiddleware,
