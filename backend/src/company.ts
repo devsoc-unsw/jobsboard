@@ -14,7 +14,6 @@ import MailFunctions from "./mail";
 import Logger from "./logging";
 import { AccountType, IToken } from "./auth";
 import JWT from "./jwt";
-import { Statistics } from "./entity/statistics";
 import { Brackets } from "typeorm";
 
 export default class CompanyFunctions {
@@ -792,7 +791,36 @@ export default class CompanyFunctions {
     }, next);
     
   };
-  
+
+  public static async GetCompanyLogoStatus(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      const companyLogo = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource.getRepository(Company)
+          .createQueryBuilder()
+          .select(["Company.logo"])
+          .where("Company.id = :id", { id: parseInt(req.companyAccountId, 10) })
+          .getOne();
+      }, `Failed to find logo for COMPANY=${req.companyAccountId}.`);
+
+      if (!companyLogo) {
+        return {
+          status: 404,
+          msg: undefined
+        } as IResponseWithStatus;  
+      }
+
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+  };
 }
 
 

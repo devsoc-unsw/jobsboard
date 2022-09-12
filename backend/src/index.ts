@@ -279,6 +279,14 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
+app.get(
+  "/companyLogoStatus",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.GetCompanyLogoStatus,
+  Middleware.genericLoggingMiddleware
+);
+
 app.delete(
   "/company/job/:jobID",
   cors(corsOptions),
