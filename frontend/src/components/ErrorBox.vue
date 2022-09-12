@@ -1,14 +1,14 @@
 <template>
-  <div class="error">
+  <div class='error'>
     <slot />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "ErrorBox",
+  name: 'ErrorBox',
 });
 </script>
 

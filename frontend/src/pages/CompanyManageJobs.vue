@@ -1,77 +1,113 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate loggedIn>
-    <Breadcrumbs />
-    <div class="contentBox">
-      <h1>Manage Jobs</h1>
-      <div v-if="success">
-        <SuccessBox>
-        {{ successMsg }}
-        </SuccessBox>
+    <StudentViewTemplate logged-in>
+      <Breadcrumbs />
+      <div class='contentBox'>
+        <h1>Manage Jobs</h1>
+        <div v-if='success'>
+          <SuccessBox>
+            {{ successMsg }}
+          </SuccessBox>
+        </div>
+        <div v-else-if='error'>
+          <ErrorBox>
+            {{ errorMsg }}
+          </ErrorBox>
+        </div>
+        <div v-if='jobs.length === 1'>
+          {{ jobs.length }} Job Found
+        </div>
+        <div v-else>
+          {{ jobs.length }} Jobs Found
+        </div>
+        <div class='jobContainer'>
+          <CompanyJobManage
+            v-for='job in jobs'
+            :key='job.key'
+            :job-i-d='job.id'
+            :role='job.role'
+            :description='job.description'
+            :application-link='job.applicationLink'
+            :success-callback='internalSuccessCallback'
+            :error-callback='internalErrorCallback'
+          />
+        </div>
       </div>
-      <div v-else-if="error">
-        <ErrorBox>
-        {{ errorMsg }}
-        </ErrorBox>
-      </div>
-      <div v-if="jobs.length === 1">
-        {{ jobs.length }} Job Found
-      </div>
-      <div v-else>
-        {{ jobs.length }} Jobs Found
-      </div>
-      <div class="jobContainer">
-      <CompanyJobManage
-        v-for="job in jobs"
-        :key="job.key"
-        :jobID="job.id"
-        :role="job.role"
-        :description="job.description"
-        :applicationLink="job.applicationLink"
-        :successCallback="internalSuccessCallback"
-        :errorCallback="internalErrorCallback"
-        />
-      </div>
-    </div>
-  </StudentViewTemplate>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import BackButton from "@/components/buttons/back.vue";
-import CompanyJobManage from "@/components/CompanyJobManage.vue";
-import config from "@/config/config";
-import ErrorBox from "@/components/ErrorBox.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import CompanyJobManage from '@/components/CompanyJobManage.vue';
+import config from '@/config/config';
+import ErrorBox from '@/components/ErrorBox.vue';
+import SuccessBox from '@/components/SuccessBox.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 export default Vue.extend({
-  name: "CompanyManageJobs",
+  name: 'CompanyManageJobs',
   components: {
     StudentViewTemplate,
     LoggedInTemplate,
-    Button,
-    StandardButton,
-    BackButton,
     CompanyJobManage,
     SuccessBox,
     ErrorBox,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       success: false,
-      successMsg: "",
+      successMsg: '',
       jobs: [],
       apiToken: this.$store.getters.getApiToken,
     };
+  },
+  async mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+
+    const response = await fetch(`${config.apiRoot}/companyjobs`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': this.apiToken,
+      },
+    });
+
+    /*
+    if (msg.token) {
+      this.$store.dispatch("setApiToken", msg.token);
+    }
+    */
+    const returnedRequest = response as Response;
+    if (returnedRequest.ok) {
+      const msg = await returnedRequest.json();
+      this.jobs = msg.companyJobs.map((job) => {
+        return {
+          id: job.id,
+          role: job.role,
+          status: `Status: ${job.status}`,
+          description: job.description,
+          applicationLink: job.applicationLink,
+        };
+      });
+    } else {
+      this.error = true;
+      window.scrollTo(0, 10);
+      if (response.status == 401) {
+        this.errorMsg = 'Login expired. Redirecting to login page.';
+        setTimeout(() => {
+          this.$router.push('/login/company');
+        }, 3000);
+      } else {
+        this.errorMsg = 'Failed to get pending jobs.';
+      }
+    }
   },
   methods: {
     internalErrorCallback(msg: string) {
@@ -85,49 +121,7 @@ export default Vue.extend({
       this.error = false;
       this.success = true;
       this.successMsg = msg;
-    }
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    
-    const response = await fetch(`${config.apiRoot}/companyjobs`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": this.apiToken,
-      },
-    });
-
-    /*
-    if (msg.token) {
-      this.$store.dispatch("setApiToken", msg.token);
-    }
-    */
-    const returnedRequest = response as Response;
-    if (returnedRequest.ok) {
-      const msg = await returnedRequest.json();
-      this.jobs = msg.companyJobs.map((job: any) => {
-        return {
-          id: job.id,
-          role: job.role,
-          status: `Status: ${job.status}`,
-          description: job.description,
-          applicationLink: job.applicationLink,
-        };
-      })
-    } else {
-      this.error = true;
-      window.scrollTo(0, 10);
-      if (response.status == 401) {
-        this.errorMsg = "Login expired. Redirecting to login page.";
-        setTimeout(() => {
-          this.$router.push("/login/company");
-        }, 3000);
-      } else {
-        this.errorMsg = "Failed to get pending jobs.";
-      }
-    }
+    },
   },
 });
 </script>
