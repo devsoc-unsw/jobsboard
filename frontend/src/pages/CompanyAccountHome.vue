@@ -20,22 +20,31 @@
                 </h2>
               </div>
               <!-- Modal body -->
-              <div class="flex justify-center items-center w-full p-6">
-                <label class="flex flex-col justify-center items-center w-full h-64 rounded-lg border-2 border-dashed cursor-pointer bg-gray-700 border-gray-600 hover:border-gray-500 hover:bg-gray-600">
-                    <div class="flex flex-col justify-center items-center pt-5 pb-6">
-                        <font-awesome-icon icon='cloud-upload' class='text-white mb-4' size='3x' />
-                        <p class="mb-2 text-sm text-white">
-                          {{ logo ? logo.name: 'Click to upload an image' }}
-                        </p>
-                    </div>
-                    <input accept=".jpg, .png" type="file" class="hidden" @change='(e) => this.logo = e.target.files[0]' />
+              <div class='flex justify-center items-center w-full p-6'>
+                <label class='flex flex-col justify-center items-center w-full h-64 rounded-lg border-2 border-dashed cursor-pointer bg-gray-700 border-gray-600 hover:border-gray-500 hover:bg-gray-600'>
+                  <div class='flex flex-col justify-center items-center pt-5 pb-6'>
+                    <font-awesome-icon
+                      icon='cloud-upload'
+                      class='text-white mb-4'
+                      size='3x'
+                    />
+                    <p class='mb-2 text-sm text-white'>
+                      {{ logo ? logo.name: 'Click to upload an image' }}
+                    </p>
+                  </div>
+                  <input
+                    accept='.jpg, .png'
+                    type='file'
+                    class='hidden'
+                    @change='(e) => logo = e.target.files[0]'
+                  >
                 </label>
-              </div> 
+              </div>
               <!-- Modal footer -->
-              <div class="flex flex-row justify-end p-6 space-x-2 rounded-b border-t border-gray-600">
+              <div class='flex flex-row justify-end p-6 space-x-2 rounded-b border-t border-gray-600'>
                 <button
                   class='bg-red-600 rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-md-hovered'
-                  @click='() => this.isModalShown = false'
+                  @click='() => isModalShown = false'
                 >
                   Cancel
                 </button>
@@ -92,7 +101,7 @@ export default Vue.extend({
       apiToken: this.$store.getters.getApiToken,
       isModalShown: false,
       logo: null,
-    }
+    };
   },
   async mounted() {
     // Change the page title
@@ -108,19 +117,15 @@ export default Vue.extend({
       this.$router.push('/company/jobs/manage');
     },
     async checkCompanyLogoStatus() {
-      try {
-        const response = await fetch(`${config.apiRoot}/companyLogoStatus`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': this.apiToken,
-          },
-        });
-  
-        if (!response.ok) {
-          this.isModalShown = true;
-        }
-      } catch (err: any) {
+      const response = await fetch(`${config.apiRoot}/companyLogoStatus`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
+        },
+      });
+
+      if (!response.ok) {
         this.isModalShown = true;
       }
     },
@@ -145,12 +150,12 @@ export default Vue.extend({
           'Authorization': this.apiToken,
         },
         body: JSON.stringify({
-          logo: convertedFile
-        })
+          logo: convertedFile,
+        }),
       });
 
       this.isModalShown = false;
-    }
+    },
   },
 });
 </script>
