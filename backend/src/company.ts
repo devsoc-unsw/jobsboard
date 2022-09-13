@@ -798,9 +798,9 @@ export default class CompanyFunctions {
         return await AppDataSource.getRepository(Company)
           .createQueryBuilder()
           .select(["Company.logo"])
-          .where("Company.id = :id", { id: parseInt(req.companyAccountId, 10) })
+          .where("Company.id = :id", { id: parseInt(req.companyAccountID, 10) })
           .getOne();
-      }, `Failed to find logo for COMPANY=${req.companyAccountId}.`);
+      }, `Failed to find logo for COMPANY=${req.companyAccountID}.`);
 
       if (!companyLogo) {
         return {

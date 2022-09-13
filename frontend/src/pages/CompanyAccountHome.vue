@@ -124,28 +124,32 @@ export default Vue.extend({
         this.isModalShown = true;
       }
     },
+    toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    },
     async uploadLogo() {
-      const formData = new FormData();
-      formData.append('logo', this.logo);
-
-      try {
-        const response = await fetch(`${config.apiRoot}/company/update/logo`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': this.apiToken,
-          },
-          body: formData
-        });
-  
-        if (response.ok) {
-          this.isModalShown = false;
-        } else {
-          // todo: show some error
-        }
-      } catch (err: any) {
-        // todo: show some error
+      if (!this.logo) {
+        return;
       }
+
+      const convertedFile = await this.toBase64(this.logo);
+      await fetch(`${config.apiRoot}/company/update/logo`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
+        },
+        body: JSON.stringify({
+          logo: convertedFile
+        })
+      });
+
+      this.isModalShown = false;
     }
   },
 });
