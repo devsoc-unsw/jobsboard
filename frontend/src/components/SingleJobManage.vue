@@ -45,7 +45,7 @@
     <br>
     <div v-if='!success'>
       <JobListingMinimal
-        :jobID='jobID'
+        :jobId='jobID'
         :role='role'
         :company='company'
         :description='description'
