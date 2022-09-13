@@ -11,6 +11,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'prettier',
+        "plugin:prettier/recommended",
     ],
     // all the rules have been set to warning for now after reading below
     // https://github.com/typescript-eslint/typescript-eslint/issues/2767#issuecomment-728144784
