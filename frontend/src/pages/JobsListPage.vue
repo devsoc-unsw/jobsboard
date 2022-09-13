@@ -1,6 +1,6 @@
 <template>
   <LoggedInTemplate>
-    <StudentViewTemplate disable-back>
+    <StudentViewTemplate disableBack>
       <Breadcrumbs />
       <div v-if='error'>
         <br>
@@ -22,7 +22,7 @@
             v-for='job in jobs'
             :key='job.key'
             class='jobItems'
-            :job-id='job.id'
+            :jobId='job.id'
             :role='job.role'
             :company='job.company.name'
             :location='job.company.location'
