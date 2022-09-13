@@ -74,7 +74,7 @@
           contentType='html'
           :value='description'
           :options='editorOptions'
-          :style='{ "background-color": "white", "width": "100%" }'
+          :style='{ &apos;background-color&apos;: &apos;white&apos;, &apos;width&apos;: &apos;100%&apos; }'
         />
         <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
           Application Link
@@ -97,14 +97,15 @@
               type='date'
               class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink'
             >
-            <!-- input fields -->
+          </div>
+          <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
             <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-              Select Company
+              Is this position paid?
             </h2>
             <select
-              id='selectedCompany'
-              v-model='selectedCompanyID'
-              name='selectedCompany'
+              id='paidPosition'
+              v-model='isPaidPosition'
+              name='paidPosition'
               class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white'
             >
               <option
@@ -114,302 +115,234 @@
               >
                 Please select an option
               </option>
-              <option
-                v-for='company in verifiedCompanies'
-                :key='company.id'
-                :value='company.id'
-              >
-                {{ company.name }} - {{ company.location }}
+              <option value='true'>
+                Yes
+              </option>
+              <option value='false'>
+                No
               </option>
             </select>
+          </div>
+        </div>
+        <div class='flex flex-row justify-between w-full text-left lg:flex-col'>
+          <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
             <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-              Job Title
+              Job Type
             </h2>
-            <input
-              v-model='role'
-              name='role'
-              type='text'
-              placeholder='Job Title'
-              class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink'
+            <select
+              id='jobType'
+              v-model='jobType'
+              name='jobType'
+              class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white'
             >
+              <option
+                value=''
+                disabled
+                selected
+              >
+                Please select an option
+              </option>
+              <option value='intern'>
+                Intern
+              </option>
+              <option value='grad'>
+                Grad
+              </option>
+            </select>
+          </div>
+          <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
             <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-              Job Description
+              Job Mode
             </h2>
-            <quill-editor
-              v-model='description'
-              :value='description'
-              :options='editorOptions'
-              :style='{ "background-color": "white", "width": "100%" }'
-            />
-            <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-              Application Link
-            </h2>
-            <input
-              v-model='applicationLink'
-              name='applicationLink'
-              type='text'
-              placeholder='www.example.com'
-              class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink'
+            <select
+              id='jobMode'
+              v-model='jobMode'
+              name='jobMode'
+              class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white'
             >
-            <div class='flex flex-row justify-between w-full text-left lg:flex-col'>
-              <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
-                <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-                  Application Expiry Date
-                </h2>
-                <input
-                  v-model='expiryDate'
-                  name='expiryDate'
-                  type='date'
-                  class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink'
-                >
-              </div>
-              <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
-                <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-                  Is this position paid?
-                </h2>
-                <select
-                  id='paidPosition'
-                  v-model='isPaidPosition'
-                  name='paidPosition'
-                  class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white'
-                >
-                  <option
-                    value=''
-                    disabled
-                    selected
-                  >
-                    Please select an option
-                  </option>
-                  <option value='true'>
-                    Yes
-                  </option>
-                  <option value='false'>
-                    No
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div class='flex flex-row justify-between w-full text-left lg:flex-col'>
-              <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
-                <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-                  Job Type
-                </h2>
-                <select
-                  id='jobType'
-                  v-model='jobType'
-                  name='jobType'
-                  class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white'
-                >
-                  <option
-                    value=''
-                    disabled
-                    selected
-                  >
-                    Please select an option
-                  </option>
-                  <option value='intern'>
-                    Intern
-                  </option>
-                  <option value='grad'>
-                    Grad
-                  </option>
-                </select>
-              </div>
-              <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
-                <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
-                  Job Mode
-                </h2>
-                <select
-                  id='jobMode'
-                  v-model='jobMode'
-                  name='jobMode'
-                  class='font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white'
-                >
-                  <option
-                    value=''
-                    disabled
-                    selected
-                  >
-                    Please select an option
-                  </option>
-                  <option value='onsite'>
-                    Onsite
-                  </option>
-                  <option value='hybrid'>
-                    Hybrid
-                  </option>
-                  <option value='remote'>
-                    Remote
-                  </option>
-                </select>
-              </div>
-            </div>
+              <option
+                value=''
+                disabled
+                selected
+              >
+                Please select an option
+              </option>
+              <option value='onsite'>
+                Onsite
+              </option>
+              <option value='hybrid'>
+                Hybrid
+              </option>
+              <option value='remote'>
+                Remote
+              </option>
+            </select>
+          </div>
+        </div>
+        <h2 class='text-xl text-jb-headings mt-4 font-bold self-start lg:self-center'>
+          Applicant's Working Rights
+        </h2>
+        <p class='text-jb-subheadings mb-2 self-start lg:self-center'>
+          Please check all that applies
+        </p>
+        <div class='flex flex-row items-center self-start text-left text-lg'>
+          <input
+            id='wr_aus_ctz'
+            v-model='workingRights'
+            type='checkbox'
+            value='aus_ctz'
+            class='self-center mr-2 w-auto'
+          >
+          <label for='wr_aus_ctz'>Australian Citizen</label>
+        </div>
+        <div class='flex flex-row items-center self-start text-left text-lg'>
+          <input
+            id='wr_aus_perm_res'
+            v-model='workingRights'
+            type='checkbox'
+            value='aus_perm_res'
+            class='self-center mr-2 w-auto'
+          >
+          <label for='wr_aus_perm_res'>Australian Permanent Resident</label>
+        </div>
+        <div class='flex flex-row items-center self-start text-left text-lg'>
+          <input
+            id='wr_aus_stud_visa'
+            v-model='workingRights'
+            type='checkbox'
+            value='aus_stud_visa'
+            class='self-center mr-2 w-auto'
+          >
+          <label for='wr_aus_stud_visa'>Australian Student Visa</label>
+        </div>
+        <div class='flex flex-row items-center self-start text-left text-lg'>
+          <input
+            id='wr_aus_temp_grad_visa'
+            v-model='workingRights'
+            type='checkbox'
+            value='aus_temp_grad_visa'
+            class='self-center mr-2 w-auto'
+          >
+          <label for='wr_aus_temp_grad_visa'>Australian Temporary Grad Visa</label>
+        </div>
+        <div class='flex flex-row items-center self-start text-left text-lg'>
+          <input
+            id='wr_nz_ctz_and_perm_res'
+            v-model='workingRights'
+            type='checkbox'
+            value='nz_ctz_and_perm_res'
+            class='self-center mr-2 w-auto'
+          >
+          <label for='wr_nz_ctz_and_perm_res'>NZ Citizen/Permanent Resident</label>
+        </div>
+        <div class='flex flex-row items-center self-start text-left text-lg'>
+          <input
+            id='wr_no_wr'
+            v-model='workingRights'
+            type='checkbox'
+            value='no_wr'
+            class='self-center mr-2 w-auto'
+          >
+          <label for='wr_no_wr'>No Working Rights</label>
+        </div>
+        <div class='flex flex-row items-center self-start text-left text-lg'>
+          <input
+            id='wr_all'
+            v-model='workingRights'
+            type='checkbox'
+            value='all'
+            class='self-center mr-2 w-auto'
+          >
+          <label for='wr_all'>All</label>
+        </div>
+        <div class='flex flex-row justify-between w-full text-left lg:flex-col'>
+          <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
             <h2 class='text-xl text-jb-headings mt-4 font-bold self-start lg:self-center'>
-              Applicant's Working Rights
+              Who Should Apply for this Role?
             </h2>
             <p class='text-jb-subheadings mb-2 self-start lg:self-center'>
               Please check all that applies
             </p>
-            <div class='flex flex-row items-center self-start text-left text-lg'>
-              <input
-                id='wr_aus_ctz'
-                v-model='workingRights'
-                type='checkbox'
-                value='aus_ctz'
-                class='self-center mr-2 w-auto'
-              >
-              <label for='wr_aus_ctz'>Australian Citizen</label>
-            </div>
-            <div class='flex flex-row items-center self-start text-left text-lg'>
-              <input
-                id='wr_aus_perm_res'
-                v-model='workingRights'
-                type='checkbox'
-                value='aus_perm_res'
-                class='self-center mr-2 w-auto'
-              >
-              <label for='wr_aus_perm_res'>Australian Permanent Resident</label>
-            </div>
-            <div class='flex flex-row items-center self-start text-left text-lg'>
-              <input
-                id='wr_aus_stud_visa'
-                v-model='workingRights'
-                type='checkbox'
-                value='aus_stud_visa'
-                class='self-center mr-2 w-auto'
-              >
-              <label for='wr_aus_stud_visa'>Australian Student Visa</label>
-            </div>
-            <div class='flex flex-row items-center self-start text-left text-lg'>
-              <input
-                id='wr_aus_temp_grad_visa'
-                v-model='workingRights'
-                type='checkbox'
-                value='aus_temp_grad_visa'
-                class='self-center mr-2 w-auto'
-              >
-              <label for='wr_aus_temp_grad_visa'>Australian Temporary Grad Visa</label>
-            </div>
-            <div class='flex flex-row items-center self-start text-left text-lg'>
-              <input
-                id='wr_nz_ctz_and_perm_res'
-                v-model='workingRights'
-                type='checkbox'
-                value='nz_ctz_and_perm_res'
-                class='self-center mr-2 w-auto'
-              >
-              <label for='wr_nz_ctz_and_perm_res'>NZ Citizen/Permanent Resident</label>
-            </div>
-            <div class='flex flex-row items-center self-start text-left text-lg'>
-              <input
-                id='wr_no_wr'
-                v-model='workingRights'
-                type='checkbox'
-                value='no_wr'
-                class='self-center mr-2 w-auto'
-              >
-              <label for='wr_no_wr'>No Working Rights</label>
-            </div>
-            <div class='flex flex-row items-center self-start text-left text-lg'>
-              <input
-                id='wr_all'
-                v-model='workingRights'
-                type='checkbox'
-                value='all'
-                class='self-center mr-2 w-auto'
-              >
-              <label for='wr_all'>All</label>
-            </div>
-            <div class='flex flex-row justify-between w-full text-left lg:flex-col'>
-              <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
-                <h2 class='text-xl text-jb-headings mt-4 font-bold self-start lg:self-center'>
-                  Who Should Apply for this Role?
-                </h2>
-                <p class='text-jb-subheadings mb-2 self-start lg:self-center'>
-                  Please check all that applies
-                </p>
-                <div>
-                  <div class='flex flex-row items-center self-start text-left text-lg'>
-                    <input
-                      id='student_demographic_final_year'
-                      v-model='studentDemographic'
-                      type='checkbox'
-                      value='final_year'
-                      class='self-center mr-2 w-auto'
-                    >
-                    <label for='student_demographic_final_year'>Graduates</label>
-                  </div>
-                  <div class='flex flex-row items-center self-start text-left text-lg'>
-                    <input
-                      id='student_demographic_penultimate'
-                      v-model='studentDemographic'
-                      type='checkbox'
-                      value='penultimate'
-                      class='self-center mr-2 w-auto'
-                    >
-                    <label for='student_demographic_penultimate'>Penultimate Students</label>
-                  </div>
-                  <div class='flex flex-row items-center self-start text-left text-lg'>
-                    <input
-                      id='student_demographic_all'
-                      v-model='studentDemographic'
-                      type='checkbox'
-                      value='all'
-                      class='self-center mr-2 w-auto'
-                    >
-                    <label for='student_demographic_all'>All Students</label>
-                  </div>
-                </div>
+            <div>
+              <div class='flex flex-row items-center self-start text-left text-lg'>
+                <input
+                  id='student_demographic_final_year'
+                  v-model='studentDemographic'
+                  type='checkbox'
+                  value='final_year'
+                  class='self-center mr-2 w-auto'
+                >
+                <label for='student_demographic_final_year'>Graduates</label>
               </div>
-              <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
-                <h2 class='text-xl text-jb-headings mt-4 font-bold self-start lg:self-center'>
-                  Applicant's WAM
-                </h2>
-                <p class='text-jb-subheadings mb-2 self-start lg:self-center'>
-                  Please select one option
-                </p>
-                <div>
-                  <div class='flex flex-row items-center self-start text-left text-lg'>
-                    <input
-                      id='applicantWam_HD'
-                      v-model='wamRequirements'
-                      type='radio'
-                      value='HD'
-                      class='self-center mr-2 w-auto'
-                    >
-                    <label for='applicantWam_HD'>High Distinction | 85 and above</label>
-                  </div>
-                  <div class='flex flex-row items-center self-start text-left text-lg'>
-                    <input
-                      id='applicantWam_D'
-                      v-model='wamRequirements'
-                      type='radio'
-                      value='D'
-                      class='self-center mr-2 w-auto'
-                    >
-                    <label for='applicantWam_D'>Distinction | 75 and above</label>
-                  </div>
-                  <div class='flex flex-row items-center self-start text-left text-lg'>
-                    <input
-                      id='applicantWam_C'
-                      v-model='wamRequirements'
-                      type='radio'
-                      value='C'
-                      class='self-center mr-2 w-auto'
-                    >
-                    <label for='applicantWam_C'>Credit | 65 and above</label>
-                  </div>
-                  <div class='flex flex-row items-center self-start text-left text-lg'>
-                    <input
-                      id='applicantWam_none'
-                      v-model='wamRequirements'
-                      type='radio'
-                      value='none'
-                      class='self-center mr-2 w-auto'
-                    >
-                    <label for='applicantWam_none'>No preference</label>
-                  </div>
-                </div>
+              <div class='flex flex-row items-center self-start text-left text-lg'>
+                <input
+                  id='student_demographic_penultimate'
+                  v-model='studentDemographic'
+                  type='checkbox'
+                  value='penultimate'
+                  class='self-center mr-2 w-auto'
+                >
+                <label for='student_demographic_penultimate'>Penultimate Students</label>
+              </div>
+              <div class='flex flex-row items-center self-start text-left text-lg'>
+                <input
+                  id='student_demographic_all'
+                  v-model='studentDemographic'
+                  type='checkbox'
+                  value='all'
+                  class='self-center mr-2 w-auto'
+                >
+                <label for='student_demographic_all'>All Students</label>
+              </div>
+            </div>
+          </div>
+          <div class='flex flex-col items-start text-left w-2/5 lg:w-full'>
+            <h2 class='text-xl text-jb-headings mt-4 font-bold self-start lg:self-center'>
+              Applicant's WAM
+            </h2>
+            <p class='text-jb-subheadings mb-2 self-start lg:self-center'>
+              Please select one option
+            </p>
+            <div>
+              <div class='flex flex-row items-center self-start text-left text-lg'>
+                <input
+                  id='applicantWam_HD'
+                  v-model='wamRequirements'
+                  type='radio'
+                  value='HD'
+                  class='self-center mr-2 w-auto'
+                >
+                <label for='applicantWam_HD'>High Distinction | 85 and above</label>
+              </div>
+              <div class='flex flex-row items-center self-start text-left text-lg'>
+                <input
+                  id='applicantWam_D'
+                  v-model='wamRequirements'
+                  type='radio'
+                  value='D'
+                  class='self-center mr-2 w-auto'
+                >
+                <label for='applicantWam_D'>Distinction | 75 and above</label>
+              </div>
+              <div class='flex flex-row items-center self-start text-left text-lg'>
+                <input
+                  id='applicantWam_C'
+                  v-model='wamRequirements'
+                  type='radio'
+                  value='C'
+                  class='self-center mr-2 w-auto'
+                >
+                <label for='applicantWam_C'>Credit | 65 and above</label>
+              </div>
+              <div class='flex flex-row items-center self-start text-left text-lg'>
+                <input
+                  id='applicantWam_none'
+                  v-model='wamRequirements'
+                  type='radio'
+                  value='none'
+                  class='self-center mr-2 w-auto'
+                >
+                <label for='applicantWam_none'>No preference</label>
               </div>
             </div>
           </div>
@@ -426,9 +359,9 @@
             placeholder: `Please note down any additional information that will make recommending jobs to students easier. This could be things like:
         - Point of contact for applicants to reach out with any questions.
         - What type of role is this? Eg: Frontend, Backend, Fullstack, Site Reliability Engineer, etc.
-        - Is your company able to sponsor the applicant"s visa if needed?`,
+        - Is your company able to sponsor the applicant&apos;s visa if needed?`,
           }'
-          :style='{ "background-color": "white", "width": "100%" }'
+          :style='{ &apos;background-color&apos;: &apos;white&apos;, &apos;width&apos;: &apos;100%&apos; }'
         />
         <button
           class='border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered'

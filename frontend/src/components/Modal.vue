@@ -18,7 +18,7 @@
             <button
               type='button'
               class='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
-              @click='$emit("closeCallback")'
+              @click='$emit(&apos;closeCallback&apos;)'
             >
               <svg
                 class='w-5 h-5'
@@ -148,16 +148,60 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 
-const jobModeObject = ref(JobMode);
-const StuDemoObject = ref(StudentDemographic);
-const JobTypeObject = ref(JobType);
-const WamObject = ref(WamRequirements);
-const WrObject = ref(WorkingRights);
-
 export default ({
+  name: 'Modal',
+  props: {
+    jobTitle: {
+      type: String,
+      default: '',
+    },
+    jobDescription: {
+      type: String,
+      default: '',
+    },
+    applicationLink: {
+      type: String,
+      default: '',
+    },
+    expiryDate: {
+      type: String,
+      default: '',
+    },
+    isPaidPosition: {
+      type: String,
+      default: '',
+    },
+    jobType: {
+      type: String,
+      default: '',
+    },
+    jobMode: {
+      type: String,
+      default: '',
+    },
+    workingRights: {
+      type: Array,
+      default: () => ([]),
+    },
+    studentDemographic: {
+      type: Array,
+      default: () => ([]),
+    },
+    wamRequirements: {
+      type: String,
+      default: '',
+    },
+    additionalInfo: {
+      type: String,
+      default: '',
+    },
+    closeCallback: {
+      type: Function,
+      default: () => undefined,
+    },
+  },
   data() {
     return {
       jobModeObject: JobMode,

@@ -99,7 +99,7 @@
                   icon='graduation-cap'
                   class='mr-5 w-7'
                 />
-                <b>Required WAM:</b> 
+                <b>Required WAM:</b>
                 {{ wamRequirementsObject[wamRequirements] }}
               </span>
               <span class='mb-1'>
@@ -151,8 +151,8 @@
                     :key='studentType'
                   >
                     {{ studentDemographicObject[
-                        studentType as keyof typeof studentDemographicObject
-                      ] 
+                      studentType as keyof typeof studentDemographicObject
+                    ]
                     }}
                   </li>
                 </ul>
@@ -279,7 +279,7 @@ const fetchJob = async () => {
     jobType.value = msg.job.jobType;
     workingRights.value = msg.job.workingRights;
     additionalInfo.value = msg.job.additionalInfo === ''
-      ? '<p>This company has not provided any additional information.</p>' 
+      ? '<p>This company has not provided any additional information.</p>'
       : msg.job.additionalInfo;
     wamRequirements.value = msg.job.wamRequirements;
     isPaid.value = msg.job.isPaid;
