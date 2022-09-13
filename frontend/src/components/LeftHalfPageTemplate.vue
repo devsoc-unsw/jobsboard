@@ -1,24 +1,33 @@
 <template>
-  <div class="viewport">
-    <div class="leftHalfWindowSection">
-      <div class="homeBox">
-        <div v-if="loggedIn">
-          <div class="logoutDiv">
+  <div class='viewport'>
+    <div class='leftHalfWindowSection'>
+      <div class='homeBox'>
+        <div v-if='loggedIn'>
+          <div class='logoutDiv'>
             <StandardButton>
-            <Button @callback="logOut">
-              <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+              <Button @callback='logOut'>
+                <font-awesome-icon
+                  class='paddedIcon'
+                  icon='sign-out-alt'
+                />
                 Log Out
-            </Button>
+              </Button>
             </StandardButton>
-            <br/>
+            <br>
           </div>
-          <img class="main-logo" :src="logo" />
+          <img
+            class='main-logo'
+            :src='logo'
+          >
         </div>
-        <div v-if="!loggedIn">
-          <img class="main-logo" :src="logo" />
+        <div v-if='!loggedIn'>
+          <img
+            class='main-logo'
+            :src='logo'
+          >
         </div>
         <slot />
-        <div class="footer">
+        <div class='footer'>
           <NewFooter />
         </div>
       </div>
@@ -27,12 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import { useApiTokenStore } from "@/store/apiToken";
-import { useRouter } from "vue-router";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import logo from "@/assets/logos/csesocgreyblue.png";
-import NewFooter from "@/components/NewFooter.vue";
+import { useApiTokenStore } from '@/store/apiToken';
+import { useRouter } from 'vue-router';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import logo from '@/assets/logos/csesocgreyblue.png';
+import NewFooter from '@/components/NewFooter.vue';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
@@ -41,13 +50,13 @@ const props = defineProps({
   loggedIn: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 const logOut = () => {
   apiTokenStore.clearApiToken();
-  router.push("/login/company");
-}
+  router.push('/login/company');
+};
 </script>
 
 <style lang="scss">

@@ -1,34 +1,34 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate>
-    <Breadcrumbs />
-    <div>
-      <h1>Welcome!</h1>
-      <div class="buttonBox">
-        <StandardButton>
-          <Button @callback="goToCompanyJobAdd">
-            Post Jobs
-          </Button>
-        </StandardButton>
-        <StandardButton>
-          <Button @callback="goToCompanyManageJobs">
-            Manage Jobs
-          </Button>
-        </StandardButton>
+    <StudentViewTemplate>
+      <Breadcrumbs />
+      <div>
+        <h1>Welcome!</h1>
+        <div class='buttonBox'>
+          <StandardButton>
+            <Button @callback='goToCompanyJobAdd'>
+              Post Jobs
+            </Button>
+          </StandardButton>
+          <StandardButton>
+            <Button @callback='goToCompanyManageJobs'>
+              Manage Jobs
+            </Button>
+          </StandardButton>
+        </div>
       </div>
-    </div>
-  </StudentViewTemplate>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const router = useRouter();
 
@@ -38,12 +38,12 @@ onMounted(() => {
 });
 
 const goToCompanyJobAdd = () => {
-  router.push("/company/jobs/add");
-}
+  router.push('/company/jobs/add');
+};
 
 const goToCompanyManageJobs = () => {
-  router.push("/company/jobs/manage");
-}
+  router.push('/company/jobs/manage');
+};
 </script>
 
 <style scoped lang="scss">

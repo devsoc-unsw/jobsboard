@@ -6,8 +6,8 @@
 
 <script lang="ts">
 export default {
-  name: "DarkBlueStandardButton",
-}
+  name: 'DarkBlueStandardButton',
+};
 </script>
 
 <style scoped lang="scss">

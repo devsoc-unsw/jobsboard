@@ -1,7 +1,10 @@
 <template>
   <div>
-    <p v-for="line in finalDescription">
-      <span v-html="line"/>
+    <p
+      v-for='(line, idx) in finalDescription'
+      :key='idx'
+    >
+      <span v-html='line' />
     </p>
   </div>
 </template>
@@ -17,22 +20,22 @@ const props = defineProps({
   description: String,
 });
 
-const finalDescription = ref<string[]>([""]);
+const finalDescription = ref<string[]>(['']);
 
 const parseText = () => {
-  let splitDescription = props.description?.split("\n");
+  let splitDescription = props.description?.split('\n');
 
   let listFlag = false;
   for (let lineIndex in splitDescription) {
     let line = splitDescription[lineIndex as any];
     // apply italics
     line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
-    if (line.startsWith("- ")) {
+    if (line.startsWith('- ')) {
       // remove that hyphen when rendering
-      line = line.replace(/^- ?/, "");
+      line = line.replace(/^- ?/, '');
       if (!listFlag) {
         listFlag = true;
-        finalDescription.value.push(`<ul>`);
+        finalDescription.value.push('<ul>');
       }
       finalDescription.value.push(`<li>${line}</li>`);
     } else if (/^#/.test(line)) {
@@ -40,17 +43,17 @@ const parseText = () => {
     } else {
       if (listFlag) {
         listFlag = false;
-        finalDescription.value.push(`</ul>`);
+        finalDescription.value.push('</ul>');
       }
       finalDescription.value.push(line);
     }
   }
-}
+};
 
 const updated = () => {
   // TODO this is causing problems
   // this.parseText();
-}
+};
 </script>
 
 <style scoped lang="scss">

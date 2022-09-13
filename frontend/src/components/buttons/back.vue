@@ -1,6 +1,9 @@
 <template>
-  <div class="back" @click="back">
-    <font-awesome-icon icon="chevron-left" />
+  <div
+    class='back'
+    @click='back'
+  >
+    <font-awesome-icon icon='chevron-left' />
   </div>
 </template>
 
@@ -11,7 +14,7 @@ const router = useRouter();
 
 const back = () => {
   router.go(-1);
-}
+};
 </script>
 
 <style scoped lang="scss">

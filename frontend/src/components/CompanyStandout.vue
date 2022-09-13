@@ -1,17 +1,20 @@
 <!-- <template>
   <div>
-    <br />
-    <div class="companyStandout">
-      <div class="back" @click="back">
-        <font-awesome-icon icon="chevron-left" />
+    <br>
+    <div class='companyStandout'>
+      <div
+        class='back'
+        @click='back'
+      >
+        <font-awesome-icon icon='chevron-left' />
       </div>
-      <div class="companyLogo">
-        <font-awesome-icon icon="building" />
+      <div class='companyLogo'>
+        <font-awesome-icon icon='building' />
       </div>
-      <div class="companyInfo">
+      <div class='companyInfo'>
         {{ company }} | {{ location }}
       </div>
-      <div class="description">
+      <div class='description'>
         {{ description }}
       </div>
     </div>
@@ -19,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {

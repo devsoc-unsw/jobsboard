@@ -1,5 +1,5 @@
 <template>
-  <span ref="infinitescrolltrigger" />
+  <span ref='infinitescrolltrigger' />
 </template>
 
 <script setup lang="ts">
@@ -11,7 +11,7 @@ const emit = defineEmits(['trigger:intersected', 'triggerIntersected']);
 onMounted(() => {
   window.addEventListener('scroll', () => {
     if (window.scrollY + window.innerHeight >= document.querySelector('.content')!.scrollHeight) {
-      emit("triggerIntersected");
+      emit('triggerIntersected');
     }
   });
 });

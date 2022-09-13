@@ -1,27 +1,27 @@
 <template>
   <div>
-    <div v-if="success">
-      <br/>
+    <div v-if='success'>
+      <br>
       <SuccessBox>
-      {{ successMsg }}
+        {{ successMsg }}
       </SuccessBox>
     </div>
-    <div v-if="error">
-      <br/>
+    <div v-if='error'>
+      <br>
       <ErrorBox>
-      {{ errorMsg }}
+        {{ errorMsg }}
       </ErrorBox>
     </div>
-    <div v-if="!success">
-      <br />
+    <div v-if='!success'>
+      <br>
       {{ name }} | {{ location }}
-      <br />
-      <br />
+      <br>
+      <br>
       {{ description }}
-      <br />
-      <br />
+      <br>
+      <br>
       <GreenStandardButton>
-        <Button @callback="verifyCompany">
+        <Button @callback='verifyCompany'>
           Verify
         </Button>
       </GreenStandardButton>
@@ -31,11 +31,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import SuccessBox from "@/components/SuccessBox.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import config from '@/config/config';
+import Button from '@/components/buttons/button.vue';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
 
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
@@ -51,16 +51,16 @@ const props = defineProps({
 });
 
 const success = ref<boolean>(false);
-const successMsg = ref<string>("");
+const successMsg = ref<string>('');
 const error = ref<boolean>(false);
-const errorMsg = ref<string>("");
+const errorMsg = ref<string>('');
 
-const verifyCompany = async () =>  {
+const verifyCompany = async () => {
   const response = await fetch(`${config.apiRoot}/admin/company/${props.companyAccountID}/verify`, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      "Content-Type": "application/json",
-      "Authorization": apiTokenStore.getApiToken(),
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
     } as HeadersInit,
   });
 
@@ -68,21 +68,21 @@ const verifyCompany = async () =>  {
     const msg = await response.json();
     apiTokenStore.setApiToken(msg.token);
     success.value = true;
-    successMsg.value = "Company successfully verified!";
+    successMsg.value = 'Company successfully verified!';
     close();
   } else {
     error.value = true;
     window.scrollTo(0, 10);
     if (response.status === 401) {
-      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
       setTimeout(() => {
-        router.push("/login");
+        router.push('/login');
       }, 3000);
     } else {
-      errorMsg.value = "Error in processing verification. Please try again later.";
+      errorMsg.value = 'Error in processing verification. Please try again later.';
     }
   }
-}
+};
 
 // function close() {
 //   setTimeout(() => {

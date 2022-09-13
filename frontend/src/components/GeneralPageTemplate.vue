@@ -1,13 +1,9 @@
 <template>
-  <div class="viewport">
+  <div class='viewport'>
     <!-- <div class="header" v-if="loggedIn">
       <div class="logoutDiv">
-        <StandardButton>
-        <Button @callback="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
             Log Out
-        </Button>
-        </StandardButton>
         <br/>
       </div>
       <img class="main-logo" :src="logo" />
@@ -16,20 +12,20 @@
       <img class="main-logo" :src="logo" />
     </div> -->
     <Header />
-    <div class="homeBox">
+    <div class='homeBox'>
       <slot />
     </div>
-    <div class="footer">
+    <div class='footer'>
       <NewFooter />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useApiTokenStore } from "@/store/apiToken";
-import { useRouter } from "vue-router";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
+import { useApiTokenStore } from '@/store/apiToken';
+import { useRouter } from 'vue-router';
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
@@ -38,13 +34,13 @@ const props = defineProps({
   loggedIn: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 const logOut = () => {
   apiTokenStore.clearApiToken();
-  router.push("/login/company");
-}
+  router.push('/login/company');
+};
 </script>
 
 <style lang="scss">

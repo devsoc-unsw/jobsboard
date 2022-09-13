@@ -1,64 +1,66 @@
 <template>
-  <div ref="jobCard">
-    <div v-if="success">
-      <br/>
+  <div ref='jobCard'>
+    <div v-if='success'>
+      <br>
       <SuccessBox>
-      {{ successMsg }}
+        {{ successMsg }}
       </SuccessBox>
     </div>
-    <div v-if="error">
-      <br/>
+    <div v-if='error'>
+      <br>
       <ErrorBox>
-      {{ errorMsg }}
+        {{ errorMsg }}
       </ErrorBox>
     </div>
-    <div class="modalWrapper">
-      <Modal v-if="modalVisible" @closeCallback="closeJobModal()">
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Role: 
+    <div class='modalWrapper'>
+      <Modal
+        v-if='modalVisible'
+        @closeCallback='closeJobModal()'
+      >
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Role:
           </div>
           {{ props.role }}
         </div>
 
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Job Description: 
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Job Description:
           </div>
-          <JobDescriptionView :description="description" />
+          <JobDescriptionView :description='description' />
         </div>
-
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Application Link: 
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Application Link:
           </div>
-          <a :href="applicationLink">
+          <a :href='applicationLink'>
             {{ props.applicationLink }}
           </a>
         </div>
       </Modal>
     </div>
-    <br />
-    <div v-if="!success">
+    <br>
+    <div v-if='!success'>
       <JobListingMinimal
-        :jobID="jobID"
-        :role="role"
-        :company="company"
-        :description="description"
-        :actAsLink="actAsLink"
+        :jobID='jobID'
+        :role='role'
+        :company='company'
+        :description='description'
+        :actAsLink='actAsLink'
       >
         <StandardButton>
-          <Button @callback="showJobModal">
+          <Button @callback='showJobModal'>
             Preview
           </Button>
         </StandardButton>
         <GreenStandardButton>
-          <Button @callback="approveJob">
+          <Button @callback='approveJob'>
             Approve
           </Button>
         </GreenStandardButton>
         <RedStandardButton>
-          <Button @callback="rejectJob">
+          <Button @callback='rejectJob'>
             Reject
           </Button>
         </RedStandardButton>
@@ -71,16 +73,16 @@
 import { defineProps, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
-import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
-import Modal from "@/components/Modal.vue";
-import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import JobListingMinimal from '@/components/JobListingMinimal.vue';
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import config from '@/config/config';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
+import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
+import Modal from '@/components/Modal.vue';
+import JobDescriptionView from '@/components/JobDescriptionView.vue';
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
@@ -94,12 +96,12 @@ const props = defineProps({
 });
 
 const success = ref<boolean>(false);
-const successMsg = ref<string>("");
+const successMsg = ref<string>('');
 const error = ref<boolean>(false);
-const errorMsg = ref<string>("");
+const errorMsg = ref<string>('');
 const actAsLink = ref<boolean>(false);
 const modalVisible = ref<boolean>(false);
-const modalContent = ref<string>("");
+const modalContent = ref<string>('');
 
 const jobCard = ref(null);
 
@@ -107,10 +109,10 @@ const approveJob = async () => {
   const response = await fetch(
     `${config.apiRoot}/job/${props.jobID}/approve`,
     {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": apiTokenStore.getApiToken(),
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
       } as HeadersInit,
     },
   );
@@ -119,31 +121,31 @@ const approveJob = async () => {
     const msg = await response.json();
     apiTokenStore.setApiToken(msg.token);
     success.value = true;
-    successMsg.value = "Job successfully approved!";
+    successMsg.value = 'Job successfully approved!';
     error.value = false;
     close();
   } else {
     error.value = true;
     window.scrollTo(0, 10);
     if (response.status === 401) {
-      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
       setTimeout(() => {
-        router.push("/login");
+        router.push('/login');
       }, 3000);
     } else {
-      errorMsg.value = "Error in processing approval. Please try again later.";
+      errorMsg.value = 'Error in processing approval. Please try again later.';
     }
   }
-}
+};
 
 const rejectJob = async () => {
   const response = await fetch(
     `${config.apiRoot}/job/${props.jobID}/reject`,
     {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": apiTokenStore.getApiToken(),
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
       } as HeadersInit,
     },
   );
@@ -152,21 +154,21 @@ const rejectJob = async () => {
     const msg = await response.json();
     apiTokenStore.setApiToken(msg.token);
     success.value = true;
-    successMsg.value = "Job successfully rejected!";
+    successMsg.value = 'Job successfully rejected!';
     error.value = false;
     close();
   } else {
     error.value = true;
     if (response.status === 401) {
-      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
       setTimeout(() => {
-        router.push("/login");
+        router.push('/login');
       }, 3000);
     } else {
-      errorMsg.value = "Error in processing rejection. Please try again later.";
+      errorMsg.value = 'Error in processing rejection. Please try again later.';
     }
   }
-}
+};
 
 onUnmounted(() => {
   close();
@@ -181,13 +183,13 @@ onUnmounted(() => {
 
 const showJobModal = async () => {
   modalVisible.value = true;
-  modalContent.value = "Test.";
-}
+  modalContent.value = 'Test.';
+};
 
 const closeJobModal = async () => {
   modalVisible.value = false;
-  modalContent.value = "";
-}
+  modalContent.value = '';
+};
 </script>
 
 <style scoped lang="scss">

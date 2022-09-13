@@ -1,12 +1,12 @@
 <template>
-  <div class="viewport">
-    <div class="stretchyPage">
+  <div class='viewport'>
+    <div class='stretchyPage'>
       <Header />
-      <div class="content">
-        <div class="contentWidth">
+      <div class='content'>
+        <div class='contentWidth'>
           <slot />
         </div>
-        <div class="footer">
+        <div class='footer'>
           <NewFooter />
         </div>
       </div>
@@ -17,8 +17,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
 import { useApiTokenStore } from '@/store/apiToken';
 
 const router = useRouter();
@@ -27,15 +27,15 @@ const apiTokenStore = useApiTokenStore();
 const props = defineProps({
   notLoggedIn: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
 onMounted(async () => {
   if (props.notLoggedIn === true) {
     return;
   } else if (apiTokenStore.getApiToken() === undefined) {
-    router.push("/");
+    router.push('/');
   }
 });
 </script>
@@ -71,7 +71,7 @@ onMounted(async () => {
 }
 
 @media screen
-and (min-width: 320px) 
+and (min-width: 320px)
 and (max-width: 768.98px) {
   .footer {
     margin-top: 100px;
@@ -84,7 +84,7 @@ and (max-width: 768.98px) {
 }
 
 @media screen
-and (min-width: 320px) 
+and (min-width: 320px)
 and (max-width: 768.98px) {
   .footer {
     margin-top: 100px;

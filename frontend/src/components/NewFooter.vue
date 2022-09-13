@@ -1,53 +1,97 @@
 <template>
-  <div class="flex flex-row justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-col text-white">
+  <div class='flex flex-row justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-col text-white'>
     <div>
-      <img class="inline pt-4 pr-4 pl-4 w-1/2 lg:w-2/3 sm:w-1/2" :src="logo" />
-      <div class="py-2.5 font-bold">
+      <img
+        class='inline pt-4 pr-4 pl-4 w-1/2 lg:w-2/3 sm:w-1/2'
+        :src='logo'
+      >
+      <div class='py-2.5 font-bold'>
         <a
-          class="py-2.5" 
-          href="https://docs.google.com/forms/d/e/1FAIpQLSeldliO0mbbbJWvJk3CoUhiN-ACwmHGnX-e3xtO-l4rGk9bPg/viewform"
-          target="_blank"
+          class='py-2.5'
+          href='https://docs.google.com/forms/d/e/1FAIpQLSeldliO0mbbbJWvJk3CoUhiN-ACwmHGnX-e3xtO-l4rGk9bPg/viewform'
+          target='_blank'
         >
-        Got a Question?
+          Got a Question?
         </a>
-        <a @click="() => { router.push('/team') }" class="cursor-pointer">Meet the Team</a>
+        <a
+          class='cursor-pointer'
+          @click='() => { router.push("/team") }'
+        >Meet the Team</a>
       </div>
-      <p class="m-0">&#169; CSESoc UNSW - 2022</p>
-      <div class="flex justify-center py-[15px]">
-        <a href="https://www.facebook.com/csesoc" target="__blank">
-          <img class="block w-1/2" :src="facebookLogo" />
+      <p class='m-0'>
+        &#169; CSESoc UNSW - 2022
+      </p>
+      <div class='flex justify-center py-[15px]'>
+        <a
+          href='https://www.facebook.com/csesoc'
+          target='__blank'
+        >
+          <img
+            class='block w-1/2'
+            :src='facebookLogo'
+          >
         </a>
-        <a href="https://www.instagram.com/csesoc_unsw/?hl=en" target="__blank">
-          <img class="block w-1/2" :src="instagramLogo" />
+        <a
+          href='https://www.instagram.com/csesoc_unsw/?hl=en'
+          target='__blank'
+        >
+          <img
+            class='block w-1/2'
+            :src='instagramLogo'
+          >
         </a>
-        <a href="https://au.linkedin.com/company/csesoc" target="__blank">
-          <img class="block w-1/2" :src="linkedinLogo" />
+        <a
+          href='https://au.linkedin.com/company/csesoc'
+          target='__blank'
+        >
+          <img
+            class='block w-1/2'
+            :src='linkedinLogo'
+          >
         </a>
-        <a href="https://www.youtube.com/channel/UC1JHpRrf9j5IKluzXhprUJg" target="__blank">
-          <img class="block w-1/2" :src="youtubeLogo" />
+        <a
+          href='https://www.youtube.com/channel/UC1JHpRrf9j5IKluzXhprUJg'
+          target='__blank'
+        >
+          <img
+            class='block w-1/2'
+            :src='youtubeLogo'
+          >
         </a>
-        <a href="https://bit.ly/CSESocDiscord" target="__blank">
-          <img class="block w-1/2" :src="discordLogo" />
+        <a
+          href='https://bit.ly/CSESocDiscord'
+          target='__blank'
+        >
+          <img
+            class='block w-1/2'
+            :src='discordLogo'
+          >
         </a>
-        <a href="https://github.com/csesoc" target="__blank">
-          <img class="block w-1/2" :src="githubLogo" />
+        <a
+          href='https://github.com/csesoc'
+          target='__blank'
+        >
+          <img
+            class='block w-1/2'
+            :src='githubLogo'
+          >
         </a>
       </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center text-justify px-[30px]">
-      <p class="m-0">
-        CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. 
-        We do not represent the School, Faculty, or University. 
-        This website seeks to be a centralised platform for students looking 
-        for employment opportunities, but its information has not been officially 
-        endorsed by  the University, Faculty, School, or the Computer Science and 
-        Engineering Society.  You should confirm with the employer that any information 
+    <div class='flex flex-col justify-center items-center text-justify px-[30px]'>
+      <p class='m-0'>
+        CSESoc is the constituent student society of UNSW's School of Computer Science
+        and Engineering. We do not represent the School, Faculty, or University.
+        This website seeks to be a centralised platform for students looking
+        for employment opportunities, but its information has not been officially
+        endorsed by  the University, Faculty, School, or the Computer Science and
+        Engineering Society.  You should confirm with the employer that any information
         received through this website is correct.
-        <br />
-        <br />
-        Jobsboard was made with 
-        <font-awesome-icon icon="heart" />
+        <br>
+        <br>
+        Jobsboard was made with
+        <font-awesome-icon icon='heart' />
         by CSE students for CSE students.
       </p>
     </div>
@@ -55,14 +99,14 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import logo from "@/assets/logos/csesocwhite.png";
-import facebookLogo from "@/assets/SocialMedia/facebook.svg";
-import instagramLogo from "@/assets/SocialMedia/instagram.svg";
-import linkedinLogo from "@/assets/SocialMedia/linkedin.svg";
-import youtubeLogo from "@/assets/SocialMedia/youtube.svg";
-import discordLogo from "@/assets/SocialMedia/discord.svg";
-import githubLogo from "@/assets/SocialMedia/github.svg";
+import { useRouter } from 'vue-router';
+import logo from '@/assets/logos/csesocwhite.png';
+import facebookLogo from '@/assets/SocialMedia/facebook.svg';
+import instagramLogo from '@/assets/SocialMedia/instagram.svg';
+import linkedinLogo from '@/assets/SocialMedia/linkedin.svg';
+import youtubeLogo from '@/assets/SocialMedia/youtube.svg';
+import discordLogo from '@/assets/SocialMedia/discord.svg';
+import githubLogo from '@/assets/SocialMedia/github.svg';
 
 const router = useRouter();
 </script>

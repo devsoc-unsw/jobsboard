@@ -2,22 +2,22 @@
   <LoggedInTemplate>
     <StudentViewTemplate>
       <Breadcrumbs />
-      <div class="contentBox">
+      <div class='contentBox'>
         <h1>Companies Pending Verification</h1>
-        <div v-if="companies.length === 1">
+        <div v-if='companies.length === 1'>
           {{ companies.length }} Company Found
         </div>
         <div v-else>
           {{ companies.length }} Companies Found
         </div>
         <SingleCompanyManage
-          v-for="pendingCompany in companies"
-          :key="pendingCompany.key"
-          :companyAccountID="pendingCompany.id"
-          :name="pendingCompany.company.name"
-          :location="pendingCompany.company.location"
-          :description="pendingCompany.company.description"
-          />
+          v-for='pendingCompany in companies'
+          :key='pendingCompany.key'
+          :companyAccountID='pendingCompany.id'
+          :name='pendingCompany.company.name'
+          :location='pendingCompany.company.location'
+          :description='pendingCompany.company.description'
+        />
       </div>
     </StudentViewTemplate>
   </LoggedInTemplate>
@@ -27,17 +27,17 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import SingleCompanyManage from "@/components/SingleCompanyManage.vue";
-import config from "@/config/config";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import SingleCompanyManage from '@/components/SingleCompanyManage.vue';
+import config from '@/config/config';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
 const error = ref<boolean>(false);
-const errorMsg = ref<string>("");
+const errorMsg = ref<string>('');
 const companies = ref<any>([]);
 const success = ref<boolean>(false);
 
@@ -48,10 +48,10 @@ onMounted(async () => {
   const response = await fetch(
     `${config.apiRoot}/admin/pending/companies`,
     {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": apiTokenStore.getApiToken(),
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
       } as HeadersInit,
     },
   );
@@ -65,12 +65,12 @@ onMounted(async () => {
     error.value = true;
     window.scrollTo(0, 10);
     if (response.status === 401) {
-      errorMsg.value = "You are not authorized to perform this action. Redirecting to login page.";
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
       setTimeout(() => {
-        router.push("/login");
+        router.push('/login');
       }, 3000);
     } else {
-      errorMsg.value = "Failed to get pending companies.";
+      errorMsg.value = 'Failed to get pending companies.';
     }
   }
 });

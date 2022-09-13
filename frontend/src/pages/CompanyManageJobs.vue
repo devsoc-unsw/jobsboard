@@ -1,39 +1,39 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate loggedIn>
-    <Breadcrumbs />
-    <div class="contentBox">
-      <h1>Manage Jobs</h1>
-      <div v-if="success">
-        <SuccessBox>
-        {{ successMsg }}
-        </SuccessBox>
+    <StudentViewTemplate loggedIn>
+      <Breadcrumbs />
+      <div class='contentBox'>
+        <h1>Manage Jobs</h1>
+        <div v-if='success'>
+          <SuccessBox>
+            {{ successMsg }}
+          </SuccessBox>
+        </div>
+        <div v-else-if='error'>
+          <ErrorBox>
+            {{ errorMsg }}
+          </ErrorBox>
+        </div>
+        <div v-if='jobs.length === 1'>
+          {{ jobs.length }} Job Found
+        </div>
+        <div v-else>
+          {{ jobs.length }} Jobs Found
+        </div>
+        <div class='jobContainer'>
+          <CompanyJobManage
+            v-for='job in jobs'
+            :key='job.key'
+            :jobID='job.id'
+            :role='job.role'
+            :description='job.description'
+            :applicationLink='job.applicationLink'
+            :successCallback='internalSuccessCallback'
+            :errorCallback='internalErrorCallback'
+          />
+        </div>
       </div>
-      <div v-else-if="error">
-        <ErrorBox>
-        {{ errorMsg }}
-        </ErrorBox>
-      </div>
-      <div v-if="jobs.length === 1">
-        {{ jobs.length }} Job Found
-      </div>
-      <div v-else>
-        {{ jobs.length }} Jobs Found
-      </div>
-      <div class="jobContainer">
-        <CompanyJobManage
-          v-for="job in jobs"
-          :key="job.key"
-          :jobID="job.id"
-          :role="job.role"
-          :description="job.description"
-          :applicationLink="job.applicationLink"
-          :successCallback="internalSuccessCallback"
-          :errorCallback="internalErrorCallback"
-        />
-      </div>
-    </div>
-  </StudentViewTemplate>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
@@ -41,46 +41,46 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import CompanyJobManage from "@/components/CompanyJobManage.vue";
-import config from "@/config/config";
-import ErrorBox from "@/components/ErrorBox.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import CompanyJobManage from '@/components/CompanyJobManage.vue';
+import config from '@/config/config';
+import ErrorBox from '@/components/ErrorBox.vue';
+import SuccessBox from '@/components/SuccessBox.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
 const error = ref<boolean>(false);
-const errorMsg = ref<string>("");
+const errorMsg = ref<string>('');
 const success = ref<boolean>(false);
-const successMsg = ref<string>("");
+const successMsg = ref<string>('');
 const jobs = ref<any>([]);
 
 const internalErrorCallback = (msg: string) => {
   error.value = true;
   success.value = false;
   errorMsg.value = msg;
-}
+};
 
 const internalSuccessCallback = (msg: string) => {
   error.value = false;
   success.value = true;
   successMsg.value = msg;
-}
+};
 
 onMounted(async () => {
   const response = await fetch(
     `${config.apiRoot}/companyjobs`,
     {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": apiTokenStore.getApiToken(),
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
       } as HeadersInit,
-    }
+    },
   );
 
   const returnedRequest = response as Response;
@@ -94,17 +94,17 @@ onMounted(async () => {
         description: job.description,
         applicationLink: job.applicationLink,
       };
-    })
+    });
   } else {
     error.value = true;
     window.scrollTo(0, 10);
     if (response.status === 401) {
-      errorMsg.value = "Login expired. Redirecting to login page.";
+      errorMsg.value = 'Login expired. Redirecting to login page.';
       setTimeout(() => {
-        router.push("/login/company");
+        router.push('/login/company');
       }, 3000);
     } else {
-      errorMsg.value = "Failed to get pending jobs.";
+      errorMsg.value = 'Failed to get pending jobs.';
     }
   }
 });
