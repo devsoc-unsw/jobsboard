@@ -25,10 +25,10 @@
                     <div class="flex flex-col justify-center items-center pt-5 pb-6">
                         <font-awesome-icon icon='cloud-upload' class='text-white mb-4' size='3x' />
                         <p class="mb-2 text-sm text-white">
-                          Click to upload an image
+                          {{ logo ? logo.name: 'Click to upload an image' }}
                         </p>
                     </div>
-                    <input accept=".jpg, .png" type="file" class="hidden" @change='updateLogo' />
+                    <input accept=".jpg, .png" type="file" class="hidden" @change='(e) => this.logo = e.target.files[0]' />
                 </label>
               </div> 
               <!-- Modal footer -->
@@ -107,9 +107,6 @@ export default Vue.extend({
     goToCompanyManageJobs() {
       this.$router.push('/company/jobs/manage');
     },
-    updateLogo(event) {
-      this.logo = event.target.files;
-    },
     async checkCompanyLogoStatus() {
       try {
         const response = await fetch(`${config.apiRoot}/companyLogoStatus`, {
@@ -128,7 +125,27 @@ export default Vue.extend({
       }
     },
     async uploadLogo() {
-      console.log(this.logo);
+      const formData = new FormData();
+      formData.append('logo', this.logo);
+
+      try {
+        const response = await fetch(`${config.apiRoot}/company/update/logo`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': this.apiToken,
+          },
+          body: formData
+        });
+  
+        if (response.ok) {
+          this.isModalShown = false;
+        } else {
+          // todo: show some error
+        }
+      } catch (err: any) {
+        // todo: show some error
+      }
     }
   },
 });
