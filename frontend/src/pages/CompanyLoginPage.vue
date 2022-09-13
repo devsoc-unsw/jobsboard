@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate not-logged-in>
+  <StudentViewTemplate notLoggedIn>
     <Breadcrumbs />
     <div class='h-full flex flex-col justify-center items-center py-16'>
       <h1 class='font-bold text-3xl text-jb-headings'>
@@ -11,10 +11,10 @@
 
       <!-- Error Alert -->
       <Alert
-        alert-type='error'
-        alert-msg='Invalid credentials. Please try again.'
-        :is-open='isAlertOpen'
-        :handle-close='() => { isAlertOpen = false }'
+        alertType='error'
+        alertMsg='Invalid credentials. Please try again.'
+        :isOpen='isAlertOpen'
+        :handleClose='() => { isAlertOpen = false }'
       />
 
       <!-- Email Input -->

@@ -77,5 +77,6 @@ module.exports = {
     'vue/brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
     'vue/comma-dangle': ['error', 'always-multiline'],
     'vue/comma-spacing': 'error',
+    'vue/attribute-hyphenation': 'off'
   }
 };

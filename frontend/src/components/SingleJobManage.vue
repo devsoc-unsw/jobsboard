@@ -45,11 +45,11 @@
     <br>
     <div v-if='!success'>
       <JobListingMinimal
-        :job-i-d='jobID'
+        :jobId='jobID'
         :role='role'
         :company='company'
         :description='description'
-        :act-as-link='actAsLink'
+        :actAsLink='actAsLink'
       >
         <StandardButton>
           <Button @callback='showJobModal'>
