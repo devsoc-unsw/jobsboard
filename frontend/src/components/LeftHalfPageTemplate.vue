@@ -1,24 +1,33 @@
 <template>
-  <div class="viewport">
-    <div class="leftHalfWindowSection">
-      <div class="homeBox">
-        <div v-if="loggedIn">
-          <div class="logoutDiv">
+  <div class='viewport'>
+    <div class='leftHalfWindowSection'>
+      <div class='homeBox'>
+        <div v-if='loggedIn'>
+          <div class='logoutDiv'>
             <StandardButton>
-            <Button @callback="logOut">
-              <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
+              <Button @callback='logOut'>
+                <font-awesome-icon
+                  class='paddedIcon'
+                  icon='sign-out-alt'
+                />
                 Log Out
-            </Button>
+              </Button>
             </StandardButton>
-            <br/>
+            <br>
           </div>
-          <img class="main-logo" :src="logo" />
+          <img
+            class='main-logo'
+            :src='logo'
+          >
         </div>
-        <div v-if="!loggedIn">
-          <img class="main-logo" :src="logo" />
+        <div v-if='!loggedIn'>
+          <img
+            class='main-logo'
+            :src='logo'
+          >
         </div>
         <slot />
-        <div class="footer">
+        <div class='footer'>
           <NewFooter />
         </div>
       </div>
@@ -27,23 +36,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import logo from "@/assets/logos/csesocgreyblue.png";
-import NewFooter from "@/components/NewFooter.vue";
+import { Vue } from 'vue-property-decorator';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import logo from '@/assets/logos/csesocgreyblue.png';
+import NewFooter from '@/components/NewFooter.vue';
 
 export default Vue.extend({
-  name: "LeftHalfPageTemplate",
+  name: 'LeftHalfPageTemplate',
   components: {
     Button,
     StandardButton,
     NewFooter,
-  },
-  data() {
-    return {
-      logo: logo,
-    };
   },
   props: {
     loggedIn: {
@@ -51,10 +55,15 @@ export default Vue.extend({
       default: false,
     },
   },
+  data() {
+    return {
+      logo: logo,
+    };
+  },
   methods: {
     logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/company");
+      this.$store.dispatch('clearApiToken');
+      this.$router.push('/login/company');
     },
   },
 });

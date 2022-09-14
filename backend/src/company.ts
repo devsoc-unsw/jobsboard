@@ -712,6 +712,87 @@ export default class CompanyFunctions {
       } as IResponseWithStatus;
     }, next);
   };
+  
+  public static async UpdateCompanyDetails(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+
+      const companyAccountID = req.companyAccountID;
+      
+      // check if required parameters are supplied
+      Helpers.requireParameters(companyAccountID);
+      Helpers.requireParameters(req.body.name);
+      Helpers.requireParameters(req.body.location);
+      Helpers.requireParameters(req.body.description);
+      Helpers.requireParameters(req.body.logo);
+      
+      // ? not sure if the sponsor status can be directly changed by the company itself
+      // Helpers.requireParameters(req.body.sponsor);
+      
+      Logger.Info(`COMPANY=${companyAccountID} attempting to update its details`);
+  
+      await AppDataSource
+        .createQueryBuilder()
+        .update(Company)
+        .set({ 
+          name: req.body.name,
+          location: req.body.location,
+          description: req.body.description,
+          logo: req.body.logo
+        })
+        .where("id = :id", { id: companyAccountID })
+        .execute()
+      
+      Logger.Info(`COMPANY=${companyAccountID} successfully updated it's details`);
+      
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+  }
+  
+  public static async UploadLogo(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+
+      const companyAccountID = req.companyAccountID;
+      
+      // check if the required parameters are provided
+      Helpers.requireParameters(companyAccountID);
+      Helpers.requireParameters(req.body.logo);
+  
+      Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
+  
+      await AppDataSource
+        .createQueryBuilder()
+        .update(Company)
+        .set({ 
+          logo: req.body.logo
+        })
+        .where("id = :id", { id: companyAccountID })
+        .execute()
+      
+      Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
+      
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+    
+  };
+  
 }
 
 

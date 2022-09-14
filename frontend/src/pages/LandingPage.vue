@@ -108,26 +108,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
+import { Vue } from 'vue-property-decorator';
 import BigBlob from "@/assets/misc/BigBlob.svg";
 import SmallBlob from "@/assets/misc/SmallBlob.svg";
 import JobsboardLogo from "@/assets/logos/JobsboardLogo.png";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
-import FeaturedJobCard from "@/components/FeaturedJobCard.vue";
-import SponsorCarousel from "@/components/SponsorCarousel.vue";
-
-import GoogleLogo from "@/assets/companies/googleLogo.png";
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
+import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
+import SponsorCarousel from '@/components/SponsorCarousel.vue';
+import GoogleLogo from '@/assets/companies/googleLogo.png';
 
 export default Vue.extend({
-  name: "StudentLoginPage",
+  name: 'StudentLoginPage',
   components: {
     Header,
     NewFooter,
-    StudentViewTemplate,
     FeaturedJobCard,
-    SponsorCarousel
+    SponsorCarousel,
   },
   data() {
     return {
@@ -140,23 +137,23 @@ export default Vue.extend({
   mounted() {
     // Change the page title
     document.title = this.$route.meta.title;
-    
-    this.$store.dispatch("clearApiToken");
+
+    this.$store.dispatch('clearApiToken');
   },
   methods: {
     scrollToTop() {
-      window.scrollTo({ 
+      window.scrollTo({
         left: 0,
-        top: 0, 
-        behavior: "smooth" 
+        top: 0,
+        behavior: 'smooth',
       });
     },
     companyRegister() {
-      this.$router.push("/signup/company");
+      this.$router.push('/signup/company');
     },
     toGithubRepo() {
-      window.open("https://github.com/csesoc/jobs-board");
-    }
+      window.open('https://github.com/csesoc/jobs-board');
+    },
   },
 });
 </script>

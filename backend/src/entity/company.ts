@@ -18,7 +18,13 @@ export class Company {
     length: 4096,
   })
   public description: string;
-
+  
+  @Column({
+    type: "bytea",
+    nullable: true
+  })
+  public logo: Buffer; 
+  
   @Column({
     default: false,
   })

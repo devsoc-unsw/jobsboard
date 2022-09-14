@@ -1,14 +1,17 @@
 <template>
-  <div class="back" @click="back">
-    <font-awesome-icon icon="chevron-left" />
+  <div
+    class='back'
+    @click='back'
+  >
+    <font-awesome-icon icon='chevron-left' />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "BackButton",
+  name: 'BackButton',
   methods: {
     back() {
       this.$router.go(-1);

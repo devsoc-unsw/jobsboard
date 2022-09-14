@@ -1,69 +1,68 @@
 <template>
   <div>
-    <div v-if="success">
-      <br/>
+    <div v-if='success'>
+      <br>
       <SuccessBox>
-      {{ successMsg }}
+        {{ successMsg }}
       </SuccessBox>
     </div>
-    <div v-if="error">
-      <br/>
+    <div v-if='error'>
+      <br>
       <ErrorBox>
-      {{ errorMsg }}
+        {{ errorMsg }}
       </ErrorBox>
     </div>
-    <div class="modalWrapper">
-      <Modal 
-        v-if="modalVisible"
-        @closeCallback="closeJobModal()"
-        >
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Role: 
+    <div class='modalWrapper'>
+      <Modal
+        v-if='modalVisible'
+        @closeCallback='closeJobModal()'
+      >
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Role:
           </div>
-      {{ this.role }}
+          {{ role }}
         </div>
 
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Job Description: 
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Job Description:
           </div>
-          <JobDescriptionView :description="description" />
+          <JobDescriptionView :description='description' />
         </div>
-
-        <div class="modalGroup">
-          <div class="modalHeading">
-            Application Link: 
+        <div class='modalGroup'>
+          <div class='modalHeading'>
+            Application Link:
           </div>
           <a
-            :href="applicationLink"
-            >
+            :href='applicationLink'
+          >
             {{ applicationLink }}
           </a>
         </div>
       </Modal>
     </div>
-    <br />
-    <div v-if="!success">
+    <br>
+    <div v-if='!success'>
       <JobListingMinimal
-        :jobID="jobID"
-        :role="role"
-        :company="company"
-        :description="description"
-        :actAsLink="actAsLink"
-        >
+        :jobId='jobID'
+        :role='role'
+        :company='company'
+        :description='description'
+        :actAsLink='actAsLink'
+      >
         <StandardButton>
-          <Button @callback="showJobModal">
+          <Button @callback='showJobModal'>
             Preview
           </Button>
         </StandardButton>
         <GreenStandardButton>
-          <Button @callback="approveJob">
+          <Button @callback='approveJob'>
             Approve
           </Button>
         </GreenStandardButton>
         <RedStandardButton>
-          <Button @callback="rejectJob">
+          <Button @callback='rejectJob'>
             Reject
           </Button>
         </RedStandardButton>
@@ -73,20 +72,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
-import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
-import Modal from "@/components/Modal.vue";
-import JobDescriptionView from "@/components/JobDescriptionView.vue";
+import { Vue } from 'vue-property-decorator';
+import JobListingMinimal from '@/components/JobListingMinimal.vue';
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import config from '@/config/config';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
+import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
+import Modal from '@/components/Modal.vue';
+import JobDescriptionView from '@/components/JobDescriptionView.vue';
 
 export default Vue.extend({
-  name: "SingleJobManage",
+  name: 'SingleJobManage',
   components: {
     JobListingMinimal,
     SuccessBox,
@@ -98,96 +97,109 @@ export default Vue.extend({
     Modal,
     JobDescriptionView,
   },
+  props: {
+    role: {
+      type: String,
+      default: '',
+    },
+    company: {
+      type: String,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+    jobID: {
+      type: Number,
+      default: 0,
+    },
+    applicationLink: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       success: false,
-      successMsg: "",
+      successMsg: '',
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       actAsLink: false,
       apiToken: this.$store.getters.getApiToken,
       modalVisible: false,
-      modalContent: "",
+      modalContent: '',
     };
-  },
-  props: {
-    role: String,
-    company: String,
-    description: String,
-    jobID: Number,
-    applicationLink: String,
   },
   methods: {
     async approveJob() {
       const response = await fetch(`${config.apiRoot}/job/${this.jobID}/approve`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
       });
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
         this.success = true;
-        this.successMsg = "Job successfully approved!";
+        this.successMsg = 'Job successfully approved!';
         this.error = false;
         this.close();
       } else {
         this.error = true;
         window.scrollTo(0, 10);
         if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 3000);
         } else {
-          this.errorMsg = "Error in processing approval. Please try again later.";
+          this.errorMsg = 'Error in processing approval. Please try again later.';
         }
       }
     },
     async rejectJob() {
       const response = await fetch(`${config.apiRoot}/job/${this.jobID}/reject`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
       });
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
         this.success = true;
-        this.successMsg = "Job successfully rejected!";
+        this.successMsg = 'Job successfully rejected!';
         this.error = false;
         this.close();
       } else {
         this.error = true;
         if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 3000);
         } else {
-          this.errorMsg = "Error in processing rejection. Please try again later.";
+          this.errorMsg = 'Error in processing rejection. Please try again later.';
         }
       }
     },
     close() {
       setTimeout(() => {
         this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
+        this.$el.parentNode.removeChild(this.$el);
       }, 5000);
     },
     async showJobModal() {
       this.modalVisible = true;
-      this.modalContent = "Test.";
+      this.modalContent = 'Test.';
     },
     async closeJobModal() {
       this.modalVisible = false;
-      this.modalContent = "";
+      this.modalContent = '';
     },
   },
 });
