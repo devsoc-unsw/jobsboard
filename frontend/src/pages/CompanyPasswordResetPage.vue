@@ -80,7 +80,6 @@ import { useRoute, useRouter } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
 import Button from '@/components/buttons/button.vue';
-import StandardButton from '@/components/buttons/StandardButton.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config

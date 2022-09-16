@@ -213,7 +213,6 @@ import Breadcrumbs from '@/components/Breadcrumbs.vue';
 const router = useRouter();
 const route = useRoute();
 const apiTokenStore = useApiTokenStore();
-let currentRoute = ref<string>('');
 
 const companyID = ref<string>('');
 const role = ref<string>('');

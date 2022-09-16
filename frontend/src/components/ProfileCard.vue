@@ -46,7 +46,6 @@
 </template>
 
 <script setup lang="ts">
-import button from './buttons/button.vue';
 
 const props = defineProps({
   member: {

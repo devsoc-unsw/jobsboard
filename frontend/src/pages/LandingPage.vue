@@ -144,7 +144,6 @@
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Blob from '@/assets/misc/Blob.svg';
 import CsesocLogoSmall from '@/assets/logos/CsesocLogoSmall.svg';
 import Header from '@/components/Header.vue';
