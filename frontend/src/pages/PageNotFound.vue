@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate not-logged-in>
+  <StudentViewTemplate notLoggedIn>
     <main class='flex flex-col items-center justify-center min-h-full w-full'>
       <img
         class='filter invert w-1/5 mt-10 mb-16 md:w-3/5 sm:w-1/2 xs:w-3/5'

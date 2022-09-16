@@ -1,20 +1,20 @@
 <template>
   <LoggedInTemplate>
-    <StudentViewTemplate logged-in>
+    <StudentViewTemplate loggedIn>
       <Breadcrumbs class='w-4/5 mx-0' />
       <Modal
         v-if='modalVisible'
-        :job-title='role'
-        :job-description='description'
-        :application-link='applicationLink'
-        :expiry-date='expiryDate'
-        :is-paid-position='isPaidPosition'
-        :job-type='jobType'
-        :job-mode='jobMode'
-        :working-rights='workingRights'
-        :student-demographic='studentDemographic'
-        :wam-requirements='wamRequirements'
-        :additional-info='additionalInfo'
+        :jobTitle='role'
+        :jobDescription='description'
+        :applicationLink='applicationLink'
+        :expiryDate='expiryDate'
+        :isPaidPosition='isPaidPosition'
+        :jobType='jobType'
+        :jobMode='jobMode'
+        :workingRights='workingRights'
+        :studentDemographic='studentDemographic'
+        :wamRequirements='wamRequirements'
+        :additionalInfo='additionalInfo'
         @closeCallback='() => { modalVisible = false }'
       />
       <div class='flex flex-col items-center w-4/5 mx-auto'>
@@ -26,10 +26,10 @@
           Reach out to a talented pool of over 10,000 Computer Science and Engineering students
         </p>
         <Alert
-          :alert-type='alertType'
-          :alert-msg='alertMsg'
-          :is-open='isAlertOpen'
-          :handle-close='() => { isAlertOpen = false }'
+          :alertType='alertType'
+          :alertMsg='alertMsg'
+          :isOpen='isAlertOpen'
+          :handleClose='() => { isAlertOpen = false }'
         />
         <!-- input fields -->
         <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>

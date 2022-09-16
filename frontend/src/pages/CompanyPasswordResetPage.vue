@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate not-logged-in>
+  <StudentViewTemplate notLoggedIn>
     <Breadcrumbs />
     <main class='h-full flex flex-col justify-center items-center py-16'>
       <h1 class='text-jb-headings font-bold text-3xl'>
@@ -11,10 +11,10 @@
 
       <!-- Success/Error Alert -->
       <Alert
-        :alert-type='alertType'
-        :alert-msg='alertMsg'
-        :is-open='isAlertOpen'
-        :handle-close='() => { isAlertOpen = false }'
+        :alertType='alertType'
+        :alertMsg='alertMsg'
+        :isOpen='isAlertOpen'
+        :handleClose='() => { isAlertOpen = false }'
       />
 
       <!-- New Password Input -->

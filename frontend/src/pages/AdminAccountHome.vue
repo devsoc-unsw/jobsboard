@@ -12,10 +12,10 @@
 
         <!-- Error Alert -->
         <Alert
-          alert-type='error'
-          :alert-msg='alertMsg'
-          :is-open='isAlertOpen'
-          :handle-close='() => { isAlertOpen = false }'
+          alertType='error'
+          :alertMsg='alertMsg'
+          :isOpen='isAlertOpen'
+          :handleClose='() => { isAlertOpen = false }'
           class='mx-96 my-5 lg:mx-[25%]'
         />
 

@@ -165,8 +165,14 @@ app.put(
 app.post(
   "/authenticate/company",
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
-  CompanyFunctions.UploadLogo,
+  Auth.AuthenticateCompany,
+  Middleware.genericLoggingMiddleware
+);
+
+app.put(
+  "/company",
+  cors(corsOptions),
+  CompanyFunctions.CreateCompany,
   Middleware.genericLoggingMiddleware
 );
 
