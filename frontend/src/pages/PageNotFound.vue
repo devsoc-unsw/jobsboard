@@ -1,17 +1,25 @@
 <template>
   <StudentViewTemplate notLoggedIn>
-    <main class="flex flex-col items-center justify-center min-h-full w-full">
-      <img class="filter invert w-1/5 mt-10 mb-16 md:w-3/5 sm:w-1/2 xs:w-3/5" :src="Robot" alt="logo"/>
-      <h1 class="text-5xl font-bold text-jb-headings">Page not Found</h1>
-      <p class="text-xl text-jb-subheadings my-10 mx-[25%] md:mx-auto">
+    <main class='flex flex-col items-center justify-center min-h-full w-full'>
+      <img
+        class='filter invert w-1/5 mt-10 mb-16 md:w-3/5 sm:w-1/2 xs:w-3/5'
+        :src='Robot'
+        alt='logo'
+      >
+      <h1 class='text-5xl font-bold text-jb-headings'>
+        Page not Found
+      </h1>
+      <p class='text-xl text-jb-subheadings my-10 mx-[25%] md:mx-auto'>
         Hmm... wondering how you ended up here in the middle of nowhere? 'Cause we're wondering that too.
         But don't worry, hang tight and we will beam you back to the home page in a couple of seconds.
       </p>
-      <h3 class="text-xl font-bold">Redirecting</h3>
-      <div class="m-4">
-        <div class="pulsing-dot">
+      <h3 class='text-xl font-bold'>
+        Redirecting
+      </h3>
+      <div class='m-4'>
+        <div class='pulsing-dot'>
           <div>
-            <div class="pulsing-dot"></div>
+            <div class='pulsing-dot' />
           </div>
         </div>
       </div>
@@ -20,13 +28,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import StudentViewTemplate from "../components/StudentViewTemplate.vue";
-import Logo from "@/assets/logos/csesocgreyblue.png";
-import Robot from "@/assets/misc/404_Robot.png";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '../components/StudentViewTemplate.vue';
+import Logo from '@/assets/logos/csesocgreyblue.png';
+import Robot from '@/assets/misc/404_Robot.png';
 
 export default Vue.extend({
-  name: "PageNotFound",
+  name: 'PageNotFound',
   components: {
     StudentViewTemplate,
   },
@@ -39,11 +47,11 @@ export default Vue.extend({
   mounted() {
     // Change the page title
     document.title = this.$route.meta.title;
-    
+
     setTimeout(() => {
-      this.$router.push("/");
+      this.$router.push('/');
     }, 5000);
-  }
+  },
 });
 </script>
 

@@ -5,10 +5,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "LoggedInTemplate",
+  name: 'LoggedInTemplate',
   data() {
     return {
       apiToken: this.$store.getters.getApiToken,
@@ -16,7 +16,7 @@ export default Vue.extend({
   },
   async mounted() {
     if (this.apiToken === undefined) {
-      this.$router.push("/login");
+      this.$router.push('/login');
     }
   },
 });

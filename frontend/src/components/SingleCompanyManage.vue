@@ -1,27 +1,27 @@
 <template>
   <div>
-    <div v-if="success">
-      <br/>
+    <div v-if='success'>
+      <br>
       <SuccessBox>
-      {{ successMsg }}
+        {{ successMsg }}
       </SuccessBox>
     </div>
-    <div v-if="error">
-      <br/>
+    <div v-if='error'>
+      <br>
       <ErrorBox>
-      {{ errorMsg }}
+        {{ errorMsg }}
       </ErrorBox>
     </div>
-    <div v-if="!success">
-      <br />
+    <div v-if='!success'>
+      <br>
       {{ name }} | {{ location }}
-      <br />
-      <br />
+      <br>
+      <br>
       {{ description }}
-      <br />
-      <br />
+      <br>
+      <br>
       <GreenStandardButton>
-        <Button @callback="verifyCompany">
+        <Button @callback='verifyCompany'>
           Verify
         </Button>
       </GreenStandardButton>
@@ -30,72 +30,82 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
-import SuccessBox from "@/components/SuccessBox.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import config from "@/config/config";
-import Button from "@/components/buttons/button.vue";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
+import { Vue } from 'vue-property-decorator';
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import config from '@/config/config';
+import Button from '@/components/buttons/button.vue';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
 
 export default Vue.extend({
-  name: "SingleJobManage",
+  name: 'SingleJobManage',
   components: {
     SuccessBox,
     ErrorBox,
     Button,
     GreenStandardButton,
   },
+  props: {
+    name: {
+      type: String,
+      default: '',
+    },
+    location: {
+      type: String,
+      default: '',
+    },
+    description: {
+      type: String,
+      default: '',
+    },
+    companyAccountID: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       success: false,
-      successMsg: "",
+      successMsg: '',
       error: false,
-      errorMsg: "",
+      errorMsg: '',
       apiToken: this.$store.getters.getApiToken,
     };
-  },
-  props: {
-    name: String,
-    location: String,
-    description: String,
-    companyAccountID: Number,
   },
   methods: {
     async verifyCompany() {
       const response = await fetch(`${config.apiRoot}/admin/company/${this.companyAccountID}/verify`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
+          'Content-Type': 'application/json',
+          'Authorization': this.apiToken,
         },
       });
 
       // this.$store.dispatch("setApiToken", msg.token);
       if (response.ok) {
-        const msg = await response.json();
         this.success = true;
-        this.successMsg = "Company successfully verified!";
+        this.successMsg = 'Company successfully verified!';
         this.close();
       } else {
         this.error = true;
         window.scrollTo(0, 10);
         if (response.status === 401) {
-          this.errorMsg = "You are not authorized to perform this action. Redirecting to login page.";
+          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login");
+            this.$router.push('/login');
           }, 3000);
         } else {
-          this.errorMsg = "Error in processing verification. Please try again later.";
+          this.errorMsg = 'Error in processing verification. Please try again later.';
         }
       }
     },
     close() {
       setTimeout(() => {
         this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
+        this.$el.parentNode.removeChild(this.$el);
       }, 5000);
-    }
+    },
   },
 });
 </script>
