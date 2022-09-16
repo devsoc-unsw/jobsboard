@@ -41,7 +41,7 @@
     "watch:test": "sleep 7 && ./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
     "test": "nodemon -w ./src -w ./tests -x yarn run watch:test",
     "travis:test": "./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
-    "prettier": "prettier './src/**/*.ts'",
+    "prettier:run": "prettier './src/**/*.ts'",
     "prettier:fix": "prettier --write './src/**/*.ts'",
     "eslint": "eslint './src/**/*.ts'",
     "eslint:fix": "eslint --fix './src/**/*.ts'"

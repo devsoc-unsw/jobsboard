@@ -69,7 +69,7 @@ When adding, modifying or removing routes from `backend/src/index.ts`, update th
 #### Frontend
 
 #### Backend
-- Run `"eslint": "eslint './src/**/*.ts'"` to see both style and linting issues in `.ts` files within the `backend` directory at once **(recommended)**
-- Run `"eslint:fix": "eslint --fix './src/**/*.ts'"` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
+- Run `"npm run eslint": "eslint './src/**/*.ts'"` to see both style and linting issues in `.ts` files within the `backend` directory at once **(recommended)**
+- Run `"npm run eslint:fix": "eslint --fix './src/**/*.ts'"` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
 - Run `npm run prettier` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
 - Run `npm run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier`

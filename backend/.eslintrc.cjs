@@ -10,16 +10,16 @@ module.exports = {
         'eslint:recommended', 
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
-        'prettier',
         "plugin:prettier/recommended",
+        'prettier',
     ],
     // all the rules have been set to warning for now after reading below
     // https://github.com/typescript-eslint/typescript-eslint/issues/2767#issuecomment-728144784
     rules: {
-        "@typescript-eslint/adjacent-overload-signatures": "warn",
-        "@typescript-eslint/ban-ts-comment": "warn",
+        "@typescript-eslint/adjacent-overload-signatures": "error",
+        "@typescript-eslint/ban-ts-comment": "error",
         "@typescript-eslint/ban-types": [
-            "warn",
+            "error",
             {
                 // when adding a new type to be banned, please include a custom 
                 // message explaining why it should not be used 
@@ -29,7 +29,7 @@ module.exports = {
             },
         ],
         "@typescript-eslint/member-ordering": [
-            "warn",
+            "off",
             {
                 "default": {
                     "memberTypes": ["signature", "method", "constructor", "field"],
@@ -37,31 +37,31 @@ module.exports = {
                 }
             }
         ],
-        "@typescript-eslint/no-empty-interface": "warn",
-        // below should be enabled but so much of our backend uses any as the type 
-        // "@typescript-eslint/no-explicit-any": "warn",
-        "@typescript-eslint/no-extra-non-null-assertion": "warn",
-        "@typescript-eslint/no-floating-promises": "warn",
-        "@typescript-eslint/no-for-in-array": "warn",
-        "@typescript-eslint/no-inferrable-types": "warn",
-        "@typescript-eslint/no-misused-new": "warn",
-        "@typescript-eslint/no-misused-promises": "warn",
-        "@typescript-eslint/no-namespace": "warn",
-        "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
-        "@typescript-eslint/no-non-null-assertion": "warn",
-        "@typescript-eslint/no-this-alias": "warn",
-        "@typescript-eslint/no-unnecessary-type-assertion": "warn",
-        "@typescript-eslint/no-unnecessary-type-constraint": "warn",
-        // below should be enabled but so much of our backend uses any as the type 
-        // "@typescript-eslint/no-unsafe-argument": "warn",
-        // "@typescript-eslint/no-unsafe-assignment": "warn",
-        // "@typescript-eslint/no-unsafe-call": "warn"
-        // "@typescript-eslint/no-unsafe-member-access": "warn",
+        "@typescript-eslint/no-empty-interface": "error",
+        // below should be error but so much of our backend uses any as the type 
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-extra-non-null-assertion": "error",
+        "@typescript-eslint/no-floating-promises": "error",
+        "@typescript-eslint/no-for-in-array": "error",
+        "@typescript-eslint/no-inferrable-types": "error",
+        "@typescript-eslint/no-misused-new": "error",
+        "@typescript-eslint/no-misused-promises": "error",
+        "@typescript-eslint/no-namespace": "error",
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+        "@typescript-eslint/no-non-null-assertion": "error",
+        "@typescript-eslint/no-this-alias": "error",
+        "@typescript-eslint/no-unnecessary-type-assertion": "error",
+        "@typescript-eslint/no-unnecessary-type-constraint": "error",
+        // next 4 should be error but so much of our backend uses any as the type 
+        "@typescript-eslint/no-unsafe-argument": "warn",
+        "@typescript-eslint/no-unsafe-assignment": "warn",
+        "@typescript-eslint/no-unsafe-call": "warn",
+        "@typescript-eslint/no-unsafe-member-access": "warn",
         "@typescript-eslint/no-unsafe-return": "warn",
-        "@typescript-eslint/no-var-requires": "warn",
-        "@typescript-eslint/prefer-as-const": "warn",
-        "@typescript-eslint/restrict-plus-operands": "warn",
-        "@typescript-eslint/triple-slash-reference": "warn",
-        "@typescript-eslint/unbound-method": "warn"
+        "@typescript-eslint/no-var-requires": "error",
+        "@typescript-eslint/prefer-as-const": "error",
+        "@typescript-eslint/restrict-plus-operands": "error",
+        "@typescript-eslint/triple-slash-reference": "error",
+        "@typescript-eslint/unbound-method": "error"
     },
 };
