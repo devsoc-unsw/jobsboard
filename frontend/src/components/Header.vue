@@ -7,7 +7,7 @@
       class='w-[15%] cursor-pointer xl:w-[20%] lg:w-[17%] md:w-[20%] sm:w-[40%]'
       :src='logo'
       alt='CSESoc'
-      @click='() => { $router.push(`/`) }'
+      @click='() => { router.push(`/`) }'
     >
     <div class='flex justify-evenly items-center'>
       <div class='group fill-black cursor-pointer w-[20%] mr-5 sm:mr-2.5 relative inline-block'>
@@ -21,12 +21,12 @@
           Coming soon
         </span>
       </div>
-      <div v-if='!apiToken'>
+      <div v-if='apiToken === undefined'>
         <button
           class='bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg'
-          @click='() => { $router.push(`/login/student`) }'
+          @click='() => { router.push(`/login/student`) }'
         >
           Log In
         </button>
@@ -45,34 +45,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
+
 import logo from '@/assets/logos/csesocwhite.png';
 import moon from '@/assets/misc/moon.svg';
 
-export default Vue.extend({
-  name: 'Header',
-  data() {
-    return {
-      logo: logo,
-      moon: moon,
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  async mounted() {
-    setTimeout(() => {
-      if (!this.$store.getters.getApiToken) {
-        this.apiToken = undefined;
-      }
-    }, 100);
-  },
-  methods: {
-    logOut() {
-      this.$store.dispatch('clearApiToken');
-      this.$router.push('/login/student');
-    },
-  },
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
+
+const apiToken = ref<string | undefined>(apiTokenStore.getApiToken());
+
+onMounted(async () => {
+  setTimeout(() => {
+    if (!apiTokenStore.getApiToken()) {
+      apiToken.value = undefined;
+    }
+  }, 10);
 });
+
+const logOut = () => {
+  apiTokenStore.clearApiToken();
+  router.push('/login/student');
+};
 </script>
 
 <style scoped lang="scss">

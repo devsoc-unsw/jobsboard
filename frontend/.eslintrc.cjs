@@ -18,10 +18,14 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     "plugin:vue/recommended"
   ],
+  globals: {
+    'HeadersInit': true,
+  },
   rules: {
     'vue/no-v-html': 'off', // enabled to render html from free text editor
     'vue/no-reserved-component-names': 'off',
     'vue/multi-word-component-names': 'off',
+    'vue/no-v-model-argument': 'off',
 
     // eslint rules
     'quotes': ['error', 'single'],

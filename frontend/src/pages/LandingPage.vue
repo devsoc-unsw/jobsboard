@@ -28,7 +28,7 @@
         <div class='w-2/4 justify-center items-center content-center justify-items-center col-span-1'>
           <img
             class='w-full ml-11 sm:w-[100px]'
-            :src='Logo'
+            :src='CsesocLogoSmall'
           >
         </div>
         <div class='flex flex-row mt-8 col-span-2 self-start justify-self-start'>
@@ -140,8 +140,10 @@
   </main>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import Blob from '@/assets/misc/Blob.svg';
 import CsesocLogoSmall from '@/assets/logos/CsesocLogoSmall.svg';
 import Header from '@/components/Header.vue';
@@ -151,43 +153,30 @@ import SponsorCarousel from '@/components/SponsorCarousel.vue';
 
 import GoogleLogo from '@/assets/companies/googleLogo.png';
 
-export default Vue.extend({
-  name: 'StudentLoginPage',
-  components: {
-    Header,
-    NewFooter,
-    FeaturedJobCard,
-    SponsorCarousel,
-  },
-  data() {
-    return {
-      GoogleLogo: GoogleLogo,
-      Blob: Blob,
-      Logo: CsesocLogoSmall,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
-    this.$store.dispatch('clearApiToken');
-  },
-  methods: {
-    scrollToTop() {
-      window.scrollTo({
-        left: 0,
-        top: 0,
-        behavior: 'smooth',
-      });
-    },
-    companyRegister() {
-      this.$router.push('/signup/company');
-    },
-    toGithubRepo() {
-      window.open('https://github.com/csesoc/jobs-board');
-    },
-  },
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
 });
+
+const scrollToTop = () => {
+  window.scrollTo({
+    left: 0,
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
+const companyRegister = () => {
+  router.push('/signup/company');
+};
+
+const toGithubRepo = () => {
+  window.open('https://github.com/csesoc/jobs-board');
+};
 </script>
 
 <style scoped lang="scss">

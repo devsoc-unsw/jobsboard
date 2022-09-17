@@ -82,8 +82,10 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 import SuccessBox from '@/components/SuccessBox.vue';
@@ -92,89 +94,77 @@ import StandardButton from '@/components/buttons/StandardButton.vue';
 import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
-export default Vue.extend({
-  name: 'CompanySignupPage',
-  components: {
-    StudentViewTemplate,
-    ErrorBox,
-    SuccessBox,
-    Button,
-    StandardButton,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      username: '',
-      password: '',
-      name: '',
-      location: '',
-      error: false,
-      errorMsg: '',
-      success: false,
-      successMsg: '',
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  },
-  methods: {
-    validateInput() {
-      if (this.username === '') {
-        this.error = true;
-        this.errorMsg = 'Username cannot be empty. Please try again.';
-        return false;
-      } else if (this.password === '') {
-        this.error = true;
-        this.errorMsg = 'Password cannot be empty. Please try again.';
-        return false;
-      } else if (this.name === '') {
-        this.error = true;
-        this.errorMsg = 'Company name cannot be empty. Please try again.';
-        return false;
-      } else if (this.location === '') {
-        this.error = true;
-        this.errorMsg = 'Company location cannot be empty. Please try again.';
-        return false;
-      }
-      return true;
-    },
-    async performSignup() {
-      if (!this.validateInput()) {
-        return;
-      }
-      const response = await fetch(`${config.apiRoot}/company`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-          name: this.name,
-          location: this.location,
-        }),
-      });
+const router = useRouter();
 
-      if (response.ok) {
-        this.error = false;
-        this.success = true;
-        this.successMsg = 'Company account created successfully! Redirecting to the login page...';
-        setTimeout(() => {
-          this.$router.push('/login/company');
-        }, 5000);
-      } else if (response.status === 409) {
-        this.error = true;
-        window.scrollTo(0, 10);
-        this.errorMsg = 'There already exists a company with this email. Please try again.';
-      } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        this.errorMsg = 'Invalid username. Please try again.';
-      }
+const username = ref<string>('');
+const password = ref<string>('');
+const name = ref<string>('');
+const location = ref<string>('');
+const success = ref<boolean>(false);
+const successMsg = ref<string>('');
+const error = ref<boolean>(false);
+const errorMsg = ref<string>('');
+
+const validateInput = () => {
+  if (username.value === '') {
+    error.value = true;
+    errorMsg.value = 'Username cannot be empty. Please try again.';
+    return false;
+  } else if (password.value === '') {
+    error.value = true;
+    errorMsg.value = 'Password cannot be empty. Please try again.';
+    return false;
+  } else if (name.value === '') {
+    error.value = true;
+    errorMsg.value = 'Company name cannot be empty. Please try again.';
+    return false;
+  } else if (location.value === '') {
+    error.value = true;
+    errorMsg.value = 'Company location cannot be empty. Please try again.';
+    return false;
+  }
+  return true;
+};
+
+const performSignup = async () => {
+  if (!validateInput()) {
+    return;
+  }
+  const response = await fetch(`${config.apiRoot}/company`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  },
+    // mode: "no-cors",
+    body: JSON.stringify({
+      username: username.value,
+      password: password.value,
+      name: name.value,
+      location: location.value,
+    }),
+  });
+
+  if (response.ok) {
+    error.value = false;
+    success.value = true;
+    successMsg.value = 'Company account created successfully! Redirecting to the login page...';
+    setTimeout(() => {
+      router.push('/login/company');
+    }, 5000);
+  } else if (response.status === 409) {
+    error.value = true;
+    window.scrollTo(0, 10);
+    errorMsg.value = 'There already exists a company with this email. Please try again.';
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    errorMsg.value = 'Invalid username. Please try again.';
+  }
+};
+
+onMounted(() => {
+    // Change the page title
+    document.title = useRoute().meta.title;
 });
 </script>
 

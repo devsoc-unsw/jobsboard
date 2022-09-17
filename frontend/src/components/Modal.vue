@@ -18,7 +18,7 @@
             <button
               type='button'
               class='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
-              @click='modalClose'
+              @click='$emit("closeCallback")'
             >
               <svg
                 class='w-5 h-5'
@@ -148,10 +148,9 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 
-export default Vue.extend({
+export default ({
   name: 'Modal',
   props: {
     jobTitle: {
@@ -211,11 +210,6 @@ export default Vue.extend({
       WamObject: WamRequirements,
       WrObject: WorkingRights,
     };
-  },
-  methods: {
-    modalClose() {
-      this.$emit('closeCallback');
-    },
   },
 });
 </script>
