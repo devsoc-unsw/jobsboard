@@ -1,7 +1,12 @@
-import Vue from "vue";
-import App from "./App.vue";
+import { createApp, VueElement } from 'vue';
+import App from './App.vue';
+import router from './router';
+import { createPinia } from 'pinia';
+import './style/tailwind.scss';
 
-import { library, IconDefinition } from "@fortawesome/fontawesome-svg-core";
+// set up fontawesome
+import { library, IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faBuilding,
   faChevronLeft,
@@ -29,10 +34,9 @@ import {
   faGithub,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-import store from "./store/store";
-import './style/tailwind.scss';
+// set up pinia
+const pinia = createPinia();
 
 library.add(faBuilding as IconDefinition);
 library.add(faChevronLeft as IconDefinition);
@@ -57,14 +61,8 @@ library.add(faAngleRight as IconDefinition);
 library.add(faBriefcase as IconDefinition);
 library.add(faHouse as IconDefinition);
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
-
-Vue.config.productionTip = false;
-
-import router from "./router";
-
-const app = new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
+const app = createApp(App);
+app.use(router);
+app.use(pinia);
+app.component('font-awesome-icon', FontAwesomeIcon)
+app.mount('#app');

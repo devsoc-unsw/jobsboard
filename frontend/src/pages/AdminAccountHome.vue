@@ -65,7 +65,7 @@
             <span class='text-jb-textlink font-bold'> company is legitimate </span>
             before verifying.
           </p>
-          <Button @callback='() => { $router.push(`/admin/companies/pending`) }'>
+          <Button @callback='() => { router.push(`/admin/companies/pending`) }'>
             <font-awesome-icon
               icon='user-shield'
               class='text-white'
@@ -89,7 +89,7 @@
             Please ensure that all job posts complies with the
             <span class='text-jb-textlink font-bold'> Australian Fair Work Act 2009</span>.
           </p>
-          <Button @callback='() => { $router.push(`/admin/jobs/pending`) }'>
+          <Button @callback='() => { router.push(`/admin/jobs/pending`) }'>
             <font-awesome-icon
               icon='briefcase'
               class='text-white'
@@ -114,7 +114,7 @@
             <span class='text-jb-textlink font-bold'> post on behalf of a company</span>.
             Ensure that you have their explicit permission before doing so.
           </p>
-          <Button @callback='() => { $router.push(`/admin/jobs/post`) }'>
+          <Button @callback='() => { router.push(`/admin/jobs/post`) }'>
             <font-awesome-icon
               icon='briefcase'
               class='text-white'
@@ -133,90 +133,80 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import config from '@/config/config';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import Button from '@/components/buttons/button.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import { useApiTokenStore } from '@/store/apiToken';
 
-export default Vue.extend({
-  name: 'AdminAccountHome',
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Alert,
-    Button,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      alertMsg: '',
-      isAlertOpen: false,
-      infoAlert: true,
-      nPendingCompanies: 0,
-      nPendingJobs: 0,
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-    // Get the number of companies pending verification
-    const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': this.apiToken,
-      },
-    });
+const alertMsg = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+const infoAlert = ref<boolean>(true);
+const nPendingCompanies = ref<number>(0);
+const nPendingJobs = ref<number>(0);
 
-    if (response.ok) {
-      const msg = await response.json();
-      this.$store.dispatch('setApiToken', msg.token);
-      this.nPendingCompanies = msg.pendingCompanyVerifications.length;
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+
+  // Get the number of companies pending verification
+  const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
+
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    nPendingCompanies.value = msg.pendingCompanyVerifications.length;
+  } else {
+    isAlertOpen.value = true;
+    window.scrollTo(0, 10);
+    if (response.status === 401) {
+      alertMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/');
+      }, 5000);
     } else {
-      this.isAlertOpen = true;
-      window.scrollTo(0, 10);
-      if (response.status === 401) {
-        this.alertMsg = 'You are not authorized to perform this action. Redirecting to login page.';
-        setTimeout(() => {
-          this.$router.push('/');
-        }, 5000);
-      } else {
-        this.alertMsg = 'Failed to get pending companies. You might want to check what\'s happening in the console.';
-      }
+      alertMsg.value = 'Failed to get pending companies. You might want to check what\'s happening in the console.';
     }
+  }
 
-    // Get the number of jobs pending verification
-    const pendingJobsResponse = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': this.apiToken,
-      },
-    });
+  // Get the number of jobs pending verification
+  const pendingJobsResponse = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
 
-    if (pendingJobsResponse.ok) {
-      const msg = await pendingJobsResponse.json();
-      this.$store.dispatch('setApiToken', msg.token);
-      this.success = true;
-      this.nPendingJobs = msg.pendingJobs.length;
+  if (pendingJobsResponse.ok) {
+    const msg = await pendingJobsResponse.json();
+    apiTokenStore.setApiToken(msg.token);
+    nPendingJobs.value = msg.pendingJobs.length;
+  } else {
+    window.scrollTo(0, 10);
+    if (pendingJobsResponse.status === 401) {
+      alertMsg.value = 'You are not authorized to perform this action. Redirecting to login page...';
+      setTimeout(() => {
+        router.push('/');
+      }, 5000);
     } else {
-      window.scrollTo(0, 10);
-      if (pendingJobsResponse.status === 401) {
-        this.alertMsg = 'You are not authorized to perform this action. Redirecting to login page...';
-        setTimeout(() => {
-          this.$router.push('/');
-        }, 5000);
-      } else {
-        this.alertMsg = 'Failed to get pending jobs. You might want to check what\'s happening in the console.';
-      }
+      alertMsg.value = 'Failed to get pending jobs. You might want to check what\'s happening in the console.';
     }
-  },
+  }
 });
 </script>
 

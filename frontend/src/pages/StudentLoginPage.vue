@@ -71,72 +71,69 @@
           Company Login
         </router-link>
       </p>
-      <button
+      <Button
         type='submit'
         class='bg-jb-textlink rounded-md w-40 h-11 my-4 p-2 text-white font-bold text-base
                border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
         @click='performLogin()'
       >
         Log In
-      </button>
+      </Button>
     </div>
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
 import config from '@/config/config';
+import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
-export default Vue.extend({
-  name: 'StudentLoginPage',
-  components: {
-    StudentViewTemplate,
-    Breadcrumbs,
-    Alert,
-  },
-  data() {
-    return {
-      zID: '',
-      password: '',
-      isAlertOpen: false,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    this.$store.dispatch('clearApiToken');
-  },
-  methods: {
-    async performLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/student`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          zID: this.zID,
-          password: this.password,
-        }),
-      });
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch('setApiToken', msg.token);
-        this.isAlertOpen = false;
-        this.$router.push('/jobs');
-      } else {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        this.isAlertOpen = true;
-      }
-    },
-  },
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const zID = ref<string>('');
+const password = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
 });
+
+const performLogin = async () => {
+  const response = await fetch(
+    `${config.apiRoot}/authenticate/student`,
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    // mode: "no-cors",
+    body: JSON.stringify({
+      zID: zID.value,
+      password: password.value,
+    }),
+  });
+
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    isAlertOpen.value = false;
+    router.push('/jobs');
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    isAlertOpen.value = true;
+  }
+};
 </script>
 
 <style scoped lang="scss">

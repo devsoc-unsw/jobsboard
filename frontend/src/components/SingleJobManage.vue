@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ref='jobCard'>
     <div v-if='success'>
       <br>
       <SuccessBox>
@@ -21,7 +21,7 @@
           <div class='modalHeading'>
             Role:
           </div>
-          {{ role }}
+          {{ props.role }}
         </div>
 
         <div class='modalGroup'>
@@ -34,10 +34,8 @@
           <div class='modalHeading'>
             Application Link:
           </div>
-          <a
-            :href='applicationLink'
-          >
-            {{ applicationLink }}
+          <a :href='applicationLink'>
+            {{ props.applicationLink }}
           </a>
         </div>
       </Modal>
@@ -45,7 +43,7 @@
     <br>
     <div v-if='!success'>
       <JobListingMinimal
-        :jobId='jobID'
+        :jobID='jobID'
         :role='role'
         :company='company'
         :description='description'
@@ -71,8 +69,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { defineProps, onUnmounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import JobListingMinimal from '@/components/JobListingMinimal.vue';
 import SuccessBox from '@/components/SuccessBox.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
@@ -84,146 +84,115 @@ import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
 import Modal from '@/components/Modal.vue';
 import JobDescriptionView from '@/components/JobDescriptionView.vue';
 
-export default Vue.extend({
-  name: 'SingleJobManage',
-  components: {
-    JobListingMinimal,
-    SuccessBox,
-    ErrorBox,
-    Button,
-    StandardButton,
-    GreenStandardButton,
-    RedStandardButton,
-    Modal,
-    JobDescriptionView,
-  },
-  props: {
-    role: {
-      type: String,
-      default: '',
-    },
-    company: {
-      type: String,
-      default: '',
-    },
-    description: {
-      type: String,
-      default: '',
-    },
-    jobID: {
-      type: Number,
-      default: 0,
-    },
-    applicationLink: {
-      type: String,
-      default: '',
-    },
-  },
-  data() {
-    return {
-      success: false,
-      successMsg: '',
-      error: false,
-      errorMsg: '',
-      actAsLink: false,
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-      modalContent: '',
-    };
-  },
-  methods: {
-    async approveJob() {
-      const response = await fetch(`${config.apiRoot}/job/${this.jobID}/approve`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.apiToken,
-        },
-      });
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      // this.$store.dispatch("setApiToken", msg.token);
-      if (response.ok) {
-        this.success = true;
-        this.successMsg = 'Job successfully approved!';
-        this.error = false;
-        this.close();
-      } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        if (response.status === 401) {
-          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
-          setTimeout(() => {
-            this.$router.push('/login');
-          }, 3000);
-        } else {
-          this.errorMsg = 'Error in processing approval. Please try again later.';
-        }
-      }
-    },
-    async rejectJob() {
-      const response = await fetch(`${config.apiRoot}/job/${this.jobID}/reject`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.apiToken,
-        },
-      });
-
-      // this.$store.dispatch("setApiToken", msg.token);
-      if (response.ok) {
-        this.success = true;
-        this.successMsg = 'Job successfully rejected!';
-        this.error = false;
-        this.close();
-      } else {
-        this.error = true;
-        if (response.status === 401) {
-          this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
-          setTimeout(() => {
-            this.$router.push('/login');
-          }, 3000);
-        } else {
-          this.errorMsg = 'Error in processing rejection. Please try again later.';
-        }
-      }
-    },
-    close() {
-      setTimeout(() => {
-        this.$destroy();
-        this.$el.parentNode.removeChild(this.$el);
-      }, 5000);
-    },
-    async showJobModal() {
-      this.modalVisible = true;
-      this.modalContent = 'Test.';
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-      this.modalContent = '';
-    },
-  },
+const props = defineProps({
+  role: String,
+  company: String,
+  description: String,
+  jobID: Number,
+  applicationLink: String,
 });
+
+const success = ref<boolean>(false);
+const successMsg = ref<string>('');
+const error = ref<boolean>(false);
+const errorMsg = ref<string>('');
+const actAsLink = ref<boolean>(false);
+const modalVisible = ref<boolean>(false);
+const modalContent = ref<string>('');
+
+const jobCard = ref(null);
+
+const approveJob = async () => {
+  const response = await fetch(
+    `${config.apiRoot}/job/${props.jobID}/approve`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
+      } as HeadersInit,
+    },
+  );
+
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    success.value = true;
+    successMsg.value = 'Job successfully approved!';
+    error.value = false;
+    close();
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status === 401) {
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
+    } else {
+      errorMsg.value = 'Error in processing approval. Please try again later.';
+    }
+  }
+};
+
+const rejectJob = async () => {
+  const response = await fetch(
+    `${config.apiRoot}/job/${props.jobID}/reject`,
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
+      } as HeadersInit,
+    },
+  );
+
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    success.value = true;
+    successMsg.value = 'Job successfully rejected!';
+    error.value = false;
+    close();
+  } else {
+    error.value = true;
+    if (response.status === 401) {
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
+    } else {
+      errorMsg.value = 'Error in processing rejection. Please try again later.';
+    }
+  }
+};
+
+onUnmounted(() => {
+  close();
+});
+
+// function close() {
+//   setTimeout(() => {
+//     this.$destroy();
+//     this.$el.parentNode!.removeChild(this.$el);
+//   }, 5000);
+// }
+
+const showJobModal = async () => {
+  modalVisible.value = true;
+  modalContent.value = 'Test.';
+};
+
+const closeJobModal = async () => {
+  modalVisible.value = false;
+  modalContent.value = '';
+};
 </script>
 
 <style scoped lang="scss">
-.smallerButton {
-  width: 20%;
-  padding: 0.5em;
-  margin: 0.5em;
-  border-radius: 0.5em;
-}
-
-.approveButton {
-  color: $white;
-  background: $green;
-  border: 0px;
-}
-
-.rejectButton {
-  color: $white;
-  background: $red;
-  border: 0px;
-}
 .modalWrapper {
   text-align: left;
 }

@@ -23,61 +23,56 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import SingleCompanyManage from '@/components/SingleCompanyManage.vue';
 import config from '@/config/config';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
-export default Vue.extend({
-  name: 'AdminListPendingJobs',
-  components: {
-    StudentViewTemplate,
-    SingleCompanyManage,
-    LoggedInTemplate,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      error: false,
-      errorMsg: '',
-      companies: [],
-      success: false,
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
-    const response = await fetch(`${config.apiRoot}/admin/pending/companies`, {
+const error = ref<boolean>(false);
+const errorMsg = ref<string>('');
+const companies = ref<any>([]);
+const success = ref<boolean>(false);
+
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+
+  const response = await fetch(
+    `${config.apiRoot}/admin/pending/companies`,
+    {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': this.apiToken,
-      },
-    });
+        'Authorization': apiTokenStore.getApiToken(),
+      } as HeadersInit,
+    },
+  );
 
-    if (response.ok) {
-      const msg = await response.json();
-      this.$store.dispatch('setApiToken', msg.token);
-      this.success = true;
-      this.companies = msg.pendingCompanyVerifications;
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    success.value = true;
+    companies.value = msg.pendingCompanyVerifications;
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status === 401) {
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
     } else {
-      this.error = true;
-      window.scrollTo(0, 10);
-      if (response.status === 401) {
-        this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
-        setTimeout(() => {
-          this.$router.push('/login');
-        }, 3000);
-      } else {
-        this.errorMsg = 'Failed to get pending companies.';
-      }
+      errorMsg.value = 'Failed to get pending companies.';
     }
-  },
+  }
 });
 </script>
 
