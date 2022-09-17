@@ -98,30 +98,6 @@ async function bootstrap() {
   await seedDB(activeEntities);
 }
 
-/**
- * components:
- *   schemas:
- *     Job:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *         role:
- *           type: string
- *         company:
- *           type: integer
- *     Company:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *         name:
- *           type: string
- *         location:
- *           type: string
- *         description:
- *           type: string
- */
 
 app.get(
   "/admin/jobs/pending",
