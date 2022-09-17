@@ -304,7 +304,7 @@ export default class CompanyFunctions {
   }
 
   public static GetCompanyHiddenJobs(this: void, req: any, res: Response, next: NextFunction) {
-    await Helpers.catchAndLogError(
+    Helpers.catchAndLogError(
       res,
       async () => {
         const companyID = req.companyAccountID;
