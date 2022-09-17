@@ -36,7 +36,7 @@
                     accept='.jpg, .png'
                     type='file'
                     class='hidden'
-                    @change='(e) => logo = e.target.files[0]'
+                    @change='(e) => logo = (e.target as HTMLInputElement).files![0]'
                   >
                 </label>
               </div>
@@ -81,7 +81,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useApiTokenStore as apiTokenStore } from '@/store/apiToken';
+import { useApiTokenStore } from '@/store/apiToken';
 import config from '@/config/config';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
@@ -90,6 +90,7 @@ import StandardButton from '@/components/buttons/StandardButton.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
 const isModalShown = ref<boolean>(false);
 const logo = ref<any>(null);
@@ -101,7 +102,7 @@ onMounted(async () => {
   await checkCompanyLogoStatus();
 });
 
-const toBase64 = (file) => {
+const toBase64 = (file: any) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -116,7 +117,7 @@ const checkCompanyLogoStatus = async () => {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': apiTokenStore.getApiToken(),
-    },
+    } as HeadersInit,
   });
 
   if (!response.ok) {
@@ -135,7 +136,7 @@ const uploadLogo = async () => {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': apiTokenStore.getApiToken(),
-    },
+    } as HeadersInit,
     body: JSON.stringify({
       logo: convertedFile,
     }),
