@@ -344,7 +344,7 @@
           }
         }
       },
-      "/company/upload/logo": {
+      "/company/update/logo": {
         "put": {
           "description": "Update the logo of a company",
           "tags": [
