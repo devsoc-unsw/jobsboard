@@ -62,7 +62,7 @@
       <div>
         <h1>Welcome!</h1>
         <div class='buttonBox'>
-          <button @callback='() => { router.push(`/company/jobs/add`) }'>
+          <button @callback='() => router.push(`/company/jobs/add`)'>
             Post Jobs
           </button>
           <button @callback='() => router.push(`/company/jobs/manage`)'>
