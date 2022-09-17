@@ -117,7 +117,7 @@ export default Vue.extend({
       this.$router.push('/company/jobs/manage');
     },
     async checkCompanyLogoStatus() {
-      const response = await fetch(`${config.apiRoot}/companyLogoStatus`, {
+      const response = await fetch(`${config.apiRoot}/company/logo/status`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -286,7 +286,7 @@ app.get(
 );
 
 app.get(
-  "/companyLogoStatus",
+  "/company/logo/status",
   cors(corsOptions),
   Middleware.authenticateCompanyMiddleware,
   CompanyFunctions.GetCompanyLogoStatus,
