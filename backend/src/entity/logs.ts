@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Logs {
@@ -6,7 +6,7 @@ export class Logs {
   public id: number;
 
   @Column({
-    type: "text"
+    type: 'text',
   })
   public what: string;
 

@@ -1,6 +1,6 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { Company } from "./company";
-import { JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements } from "../types/job-field";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Company } from './company';
+import { JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements } from '../types/job-field';
 
 @Entity()
 export class Job {
@@ -11,56 +11,56 @@ export class Job {
   public role: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: JobMode,
-    default: JobMode.Onsite
+    default: JobMode.Onsite,
   })
   public mode: JobMode;
 
   @Column({
-    type: "text",
+    type: 'text',
     array: true,
-    default: [StudentDemographic.All]
+    default: [StudentDemographic.All],
   })
   public studentDemographic: StudentDemographic[];
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: JobType,
-    default: JobType.Intern
+    default: JobType.Intern,
   })
   public jobType: JobType;
 
   @Column({
-    type: "text",
+    type: 'text',
     array: true,
-    default: [WorkingRights.AusCtz, WorkingRights.AusPermRes] 
+    default: [WorkingRights.AusCtz, WorkingRights.AusPermRes],
   })
   public workingRights: WorkingRights[];
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: WamRequirements,
-    default: WamRequirements.None
+    default: WamRequirements.None,
   })
   public wamRequirements: WamRequirements;
 
   @Column({
-    type: "text",
-    default: ""
+    type: 'text',
+    default: '',
   })
   public additionalInfo: string;
 
   @Column({
-    type: "text"
+    type: 'text',
   })
   public description: string;
 
   @Column({
-    default: "",
+    default: '',
   })
   public applicationLink: string;
-  
+
   @Column({
     default: true,
   })
