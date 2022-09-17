@@ -62,16 +62,12 @@
       <div>
         <h1>Welcome!</h1>
         <div class='buttonBox'>
-          <StandardButton>
-            <Button @callback='() => router.push(`/company/jobs/add`)'>
-              Post Jobs
-            </Button>
-          </StandardButton>
-          <StandardButton>
-            <Button @callback='() => router.push(`/company/jobs/manage`)'>
-              Manage Jobs
-            </Button>
-          </StandardButton>
+          <button @callback='() => { router.push(`/company/jobs/add`) }'>
+            Post Jobs
+          </button>
+          <button @callback='() => router.push(`/company/jobs/manage`)'>
+            Manage Jobs
+          </button>
         </div>
       </div>
     </StudentViewTemplate>
@@ -85,8 +81,6 @@ import { useApiTokenStore } from '@/store/apiToken';
 import config from '@/config/config';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import Button from '@/components/buttons/button.vue';
-import StandardButton from '@/components/buttons/StandardButton.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const router = useRouter();
@@ -155,16 +149,5 @@ const uploadLogo = async () => {
   min-width: 70%;
   max-width: 70%;
   border-radius: 0.5rem;
-}
-
-.editButton {
-  background: $white;
-  color: $blue;
-}
-
-.postButton {
-  border: 1px solid $blue;
-  background: $blue;
-  color: $white;
 }
 </style>
