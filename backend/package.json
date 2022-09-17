@@ -46,7 +46,7 @@
     "@types/helmet": "0.0.48",
     "@types/mongodb": "4.0.7",
     "@types/node": "16.11.59",
-    "@types/nodemailer": "6.4.4",
+    "@types/nodemailer": "6.4.6",
     "@types/swagger-jsdoc": "6.0.1",
     "@types/swagger-ui-express": "4.1.3",
     "@typescript-eslint/eslint-plugin": "5.31.0",
