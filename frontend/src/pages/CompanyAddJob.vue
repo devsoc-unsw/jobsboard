@@ -473,8 +473,6 @@ const submitJobPost = async () => {
   });
 
   if (response.ok) {
-    const msg = await response.json();
-    apiTokenStore.setApiToken(msg.token);
     isAlertOpen.value = true;
     alertType.value = 'success';
     alertMsg.value = 'Job posted! This job will be made available to students shortly. Redirecting to your dashboard...';
