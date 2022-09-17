@@ -76,70 +76,64 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-// libs
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+// lib
+import { ref, onMounted } from 'vue';
 
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 
 // config
 import config from '@/config/config';
 
-export default Vue.extend({
-  name: 'AdminLoginPage',
-  components: {
-    StudentViewTemplate,
-    Alert,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      username: '',
-      password: '',
-      isAlertOpen: false,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-
-    this.$store.dispatch('clearApiToken');
-  },
-  methods: {
-    async performAdminLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/admin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-      });
-
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch('setApiToken', msg.token);
-        this.isAlertOpen = false;
-        this.$router.push('/admin/home');
-      } else {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        this.isAlertOpen = true;
-      }
-    },
-    toLandingPage() {
-      this.$router.push('/');
-    },
-  },
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
 });
+
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
+
+// set up component variables
+const username = ref<string>('');
+const password = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+
+const performAdminLogin = async () => {
+  const response = await fetch(`${config.apiRoot}/authenticate/admin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    // mode: "no-cors",
+    body: JSON.stringify({
+      username: username.value,
+      password: password.value,
+    }),
+  });
+
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    isAlertOpen.value = false;
+    router.push('/admin/home');
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    isAlertOpen.value = true;
+  }
+};
+
+const toLandingPage = () => {
+  router.push('/');
+};
 </script>
 
 <style scoped lang="scss">

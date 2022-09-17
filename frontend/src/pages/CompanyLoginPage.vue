@@ -92,78 +92,72 @@
         </router-link>
       </p>
 
-      <button
+      <Button
         type='submit'
         class='bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base
                border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
         @click='performCompanyLogin()'
       >
         Log In
-      </button>
+      </Button>
     </div>
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-// libs
-import { Vue } from 'vue-property-decorator';
-
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Alert from '@/components/Alert.vue';
 
 // config
 import config from '@/config/config';
+import { useApiTokenStore } from '@/store/apiToken';
 
-export default Vue.extend({
-  name: 'LoginPage',
-  components: {
-    StudentViewTemplate,
-    Breadcrumbs,
-    Alert,
-  },
-  data() {
-    return {
-      username: '',
-      password: '',
-      isAlertOpen: false,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    this.$store.dispatch('clearApiToken');
-  },
-  methods: {
-    async performCompanyLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-      });
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch('setApiToken', msg.token);
-        this.isAlertOpen = false;
-        this.$router.push('/company/home');
-      } else {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        this.isAlertOpen = true;
-      }
-    },
-  },
+const username = ref<string>('');
+const password = ref<string>('');
+let isAlertOpen = ref<boolean>(false);
+
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
 });
+
+const performCompanyLogin = async () => {
+  const response = await fetch(
+    `${config.apiRoot}/authenticate/company`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // mode: "no-cors",
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value,
+      }),
+    });
+
+  if (response.ok) {
+    const msg = await response.json();
+    isAlertOpen.value = false;
+    apiTokenStore.setApiToken(msg.token);
+    router.push('/company/home');
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    isAlertOpen.value = true;
+  }
+};
 </script>
 
 <style scoped lang="scss">

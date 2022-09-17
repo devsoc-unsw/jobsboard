@@ -21,36 +21,26 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
-import logo from '@/assets/logos/csesocwhite.png';
+<script setup lang="ts">
+import { useApiTokenStore } from '@/store/apiToken';
+import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import NewFooter from '@/components/NewFooter.vue';
 
-export default Vue.extend({
-  name: 'GeneralPageTemplate',
-  components: {
-    Header,
-    NewFooter,
-  },
-  props: {
-    loggedIn: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      logo: logo,
-    };
-  },
-  methods: {
-    logOut() {
-      this.$store.dispatch('clearApiToken');
-      this.$router.push('/login/company');
-    },
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const props = defineProps({
+  loggedIn: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const logOut = () => {
+  apiTokenStore.clearApiToken();
+  router.push('/login/company');
+};
 </script>
 
 <style lang="scss">

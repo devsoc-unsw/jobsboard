@@ -4,15 +4,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
-
-export default Vue.extend({
-  name: 'StandardButton',
-});
+<script setup lang="ts">
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 button {
   border-width: 0px;
   border-left-style: solid;

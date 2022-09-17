@@ -1,7 +1,7 @@
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
-  content: ['./public/index.html', './src/**/*.{vue,js,ts}'],
+  content: ['./index.html', './src/**/*.{vue,js,ts}'],
   media: false,
   theme: {
     screens: {

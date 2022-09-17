@@ -63,12 +63,12 @@
         <h1>Welcome!</h1>
         <div class='buttonBox'>
           <StandardButton>
-            <Button @callback='goToCompanyJobAdd'>
+            <Button @callback='() => router.push(`/company/jobs/add`)'>
               Post Jobs
             </Button>
           </StandardButton>
           <StandardButton>
-            <Button @callback='goToCompanyManageJobs'>
+            <Button @callback='() => router.push(`/company/jobs/manage`)'>
               Manage Jobs
             </Button>
           </StandardButton>
@@ -78,86 +78,71 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore as apiTokenStore } from '@/store/apiToken';
+import config from '@/config/config';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import Button from '@/components/buttons/button.vue';
 import StandardButton from '@/components/buttons/StandardButton.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
-import config from '@/config/config';
 
-export default Vue.extend({
-  name: 'CompanyAccountHome',
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Button,
-    StandardButton,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      apiToken: this.$store.getters.getApiToken,
-      isModalShown: false,
-      logo: null,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
+const router = useRouter();
 
-    await this.checkCompanyLogoStatus();
-  },
-  methods: {
-    goToCompanyJobAdd() {
-      this.$router.push('/company/jobs/add');
-    },
-    goToCompanyManageJobs() {
-      this.$router.push('/company/jobs/manage');
-    },
-    async checkCompanyLogoStatus() {
-      const response = await fetch(`${config.apiRoot}/company/logo/status`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.apiToken,
-        },
-      });
+const isModalShown = ref<boolean>(false);
+const logo = ref<any>(null);
 
-      if (!response.ok) {
-        this.isModalShown = true;
-      }
-    },
-    toBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      });
-    },
-    async uploadLogo() {
-      if (!this.logo) {
-        return;
-      }
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
 
-      const convertedFile = await this.toBase64(this.logo);
-      await fetch(`${config.apiRoot}/company/update/logo`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.apiToken,
-        },
-        body: JSON.stringify({
-          logo: convertedFile,
-        }),
-      });
-
-      this.isModalShown = false;
-    },
-  },
+  await checkCompanyLogoStatus();
 });
+
+const toBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+};
+
+const checkCompanyLogoStatus = async () => {
+  const response = await fetch(`${config.apiRoot}/company/logo/status`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    },
+  });
+
+  if (!response.ok) {
+    isModalShown.value = true;
+  }
+};
+
+const uploadLogo = async () => {
+  if (!logo.value) {
+    return;
+  }
+
+  const convertedFile = await toBase64(logo.value);
+  await fetch(`${config.apiRoot}/company/update/logo`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    },
+    body: JSON.stringify({
+      logo: convertedFile,
+    }),
+  });
+
+  isModalShown.value = false;
+};
 </script>
 
 <style scoped lang="scss">
@@ -169,11 +154,6 @@ export default Vue.extend({
   min-width: 70%;
   max-width: 70%;
   border-radius: 0.5rem;
-  /* padding-top: 2%; */
-  /* padding-bottom: 2%; */
-  /* padding-left: 5%; */
-  /* padding-right: 5%; */
-  /* margin: 1%; */
 }
 
 .editButton {

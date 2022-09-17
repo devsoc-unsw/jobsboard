@@ -325,19 +325,22 @@ app.get(
   Middleware.genericLoggingMiddleware
 );
 
-
 app.put(
   "/admin/company/:companyID/jobs",
+  cors(corsOptions),
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.CreateJobOnBehalfOfExistingCompany,
+  Middleware.genericLoggingMiddleware
+);
+
+app.get(
+  "/featured-jobs",
   cors(corsOptions),
   StudentFunctions.GetFeaturedJobs,
   Middleware.genericLoggingMiddleware
 );
 
 
-/**
- * Comment/uncomment to enable/disable swagger docs and sending test emails.
- * Currently only works in development mode.
- */
 if (process.env.NODE_ENV === "development") {
   app.post("/email", MailFunctions.SendTestEmail);
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(openapi));
