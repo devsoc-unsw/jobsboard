@@ -1,13 +1,9 @@
 <template>
-  <div class="viewport">
+  <div class='viewport'>
     <!-- <div class="header" v-if="loggedIn">
       <div class="logoutDiv">
-        <StandardButton>
-        <Button @callback="logOut">
           <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
             Log Out
-        </Button>
-        </StandardButton>
         <br/>
       </div>
       <img class="main-logo" :src="logo" />
@@ -16,35 +12,26 @@
       <img class="main-logo" :src="logo" />
     </div> -->
     <Header />
-    <div class="homeBox">
+    <div class='homeBox'>
       <slot />
     </div>
-    <div class="footer">
+    <div class='footer'>
       <NewFooter />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import logo from "@/assets/logos/csesocwhite.png";
-import Header from "@/components/Header.vue";
-import NewFooter from "@/components/NewFooter.vue";
+import { Vue } from 'vue-property-decorator';
+import logo from '@/assets/logos/csesocwhite.png';
+import Header from '@/components/Header.vue';
+import NewFooter from '@/components/NewFooter.vue';
 
 export default Vue.extend({
-  name: "GeneralPageTemplate",
+  name: 'GeneralPageTemplate',
   components: {
     Header,
-    Button,
-    StandardButton,
     NewFooter,
-  },
-  data() {
-    return {
-      logo: logo,
-    };
   },
   props: {
     loggedIn: {
@@ -52,10 +39,15 @@ export default Vue.extend({
       default: false,
     },
   },
+  data() {
+    return {
+      logo: logo,
+    };
+  },
   methods: {
     logOut() {
-      this.$store.dispatch("clearApiToken");
-      this.$router.push("/login/company");
+      this.$store.dispatch('clearApiToken');
+      this.$router.push('/login/company');
     },
   },
 });

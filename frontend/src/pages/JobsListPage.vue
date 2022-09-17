@@ -1,84 +1,87 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate disableBack>
-    <Breadcrumbs />
-    <div v-if="error">
-      <br/>
-      <ErrorBox>
-        {{ errorMsg }}
-      </ErrorBox>
-    </div>
-    <div class="jobsBox">
-      <div class="resultsFound">
-        <div v-if="jobs.length === 1">
-          {{ jobs.length }} Job Found
+    <StudentViewTemplate disableBack>
+      <Breadcrumbs />
+      <div v-if='error'>
+        <br>
+        <ErrorBox>
+          {{ errorMsg }}
+        </ErrorBox>
+      </div>
+      <div class='jobsBox'>
+        <div class='resultsFound'>
+          <div v-if='jobs.length === 1'>
+            {{ jobs.length }} Job Found
+          </div>
+          <div v-else>
+            {{ jobs.length }} Jobs Found
+          </div>
         </div>
-        <div v-else>
-          {{ jobs.length }} Jobs Found
+        <div class='jobContainer'>
+          <JobListingMinimal
+            v-for='job in jobs'
+            :key='job.key'
+            class='jobItems'
+            :jobId='job.id'
+            :role='job.role'
+            :company='job.company.name'
+            :location='job.company.location'
+          />
         </div>
       </div>
-      <div class="jobContainer">
-        <JobListingMinimal
-          class="jobItems"
-          v-for="job in jobs"
-          :key="job.key"
-          :jobId="job.id"
-          :role="job.role"
-          :company="job.company.name"
-          :location="job.company.location"
-        />
-      </div>
-    </div>
-    <InfiniteScrollTrigger @triggerIntersected="loadMoreJobs"/>
-    <br />
-  </StudentViewTemplate>
+      <InfiniteScrollTrigger @triggerIntersected='loadMoreJobs' />
+      <br>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import JobListingMinimal from "@/components/JobListingMinimal.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import InfiniteScrollTrigger from "@/components/InfiniteScrollTrigger.vue";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import config from "@/config/config";
+import { Vue } from 'vue-property-decorator';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import JobListingMinimal from '@/components/JobListingMinimal.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import InfiniteScrollTrigger from '@/components/InfiniteScrollTrigger.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import config from '@/config/config';
 
 export default Vue.extend({
-  name: "JobsListPage",
+  name: 'JobsListPage',
   components: {
     StudentViewTemplate,
     JobListingMinimal,
     ErrorBox,
     LoggedInTemplate,
     InfiniteScrollTrigger,
-    Breadcrumbs
+    Breadcrumbs,
   },
   data() {
     return {
       error: false,
-      errorMsg: "",
-      jobs: [] as any[],
+      errorMsg: '',
+      jobs: [],
       loadMoreJobsLock: false,
     };
   },
+  mounted() {
+    // Change the page title
+    document.title = this.$route.meta.title;
+  },
   methods: {
     async loadMoreJobs() {
-      const sleep = (milliseconds: number) => { 
+      const sleep = (milliseconds: number) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
-      }
+      };
       while (this.loadMoreJobsLock) {
         await sleep(1000);
       }
       this.loadMoreJobsLock = true;
-      // determine whether there is an API key present and redirect if not present
-      // load the jobs using the api token
+
       const response = await fetch(`${config.apiRoot}/jobs/${this.jobs.length}`, {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": this.$store.getters.getApiToken,
+            'Content-Type': 'application/json',
+            'Authorization': this.$store.getters.getApiToken,
           },
         });
 
@@ -89,27 +92,23 @@ export default Vue.extend({
       */
       if (response.ok) {
         const msg = await response.json();
-        this.jobs = [... this.jobs, ... msg.jobs];
+        this.jobs = [...this.jobs, ...msg.jobs];
       } else {
         this.error = true;
         window.scrollTo(0, 10);
         if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
+          this.errorMsg = 'Login expired. Redirecting to login page.';
           setTimeout(() => {
-            this.$router.push("/login/company");
+            this.$router.push('/login/company');
           }, 3000);
         } else {
-          this.errorMsg = "Unable to load jobs at this time. Please try again later.";
+          this.errorMsg = 'Unable to load jobs at this time. Please try again later.';
         }
         this.jobs = [];
       }
       this.loadMoreJobsLock = false;
-    }
+    },
   },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  }
 });
 </script>
 

@@ -1,14 +1,14 @@
 <template>
-  <div class="success success-leave-animation">
+  <div class='success success-leave-animation'>
     <slot />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from 'vue-property-decorator';
 
 export default Vue.extend({
-  name: "SuccessBox",
+  name: 'SuccessBox',
 });
 </script>
 

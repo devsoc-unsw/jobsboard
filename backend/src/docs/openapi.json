@@ -344,7 +344,7 @@
           }
         }
       },
-      "/company/upload/logo": {
+      "/company/update/logo": {
         "put": {
           "description": "Update the logo of a company",
           "tags": [
@@ -864,6 +864,30 @@
             },
             "401": {
               "description": "Unable to authorise the caller's credentials (not logged in as an admin)"
+            }
+          }
+        }
+      },
+      "/featured-jobs": {
+        "get": {
+          "summary": "Return a list of the 4 latest job posts",
+          "description": "Query the database to find 4 of the latest job posts from the database and returns them as a list",
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the 4 latest job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to query the database and find the latest job posts"
             }
           }
         }
