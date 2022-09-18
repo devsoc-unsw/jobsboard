@@ -37,7 +37,7 @@
     "@vue/cli-plugin-babel": "4.5.19",
     "@vue/cli-plugin-typescript": "4.5.19",
     "@vue/cli-service": "4.5.19",
-    "eslint": "8.21.0",
+    "eslint": "8.23.1",
     "sass": "1.54.0",
     "sass-loader": "8.0.2",
     "vue-template-compiler": "2.6.14"
