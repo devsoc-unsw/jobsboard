@@ -1,12 +1,6 @@
 name: Docker (staging)
 on:
   push:
-    branches:
-      - "develop"
-      - "renovate/*"
-  pull_request:
-    branches:
-      - "develop"
 
 jobs:
   build:
