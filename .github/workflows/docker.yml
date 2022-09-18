@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - "develop"
+      - "renovate/*"
+  pull_request:
+    branches:
+      - "develop"
 
 jobs:
   build:
@@ -34,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ${{ matrix.component }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
           platforms: linux/amd64
           file: ${{ matrix.component }}/Dockerfile
           tags: |
