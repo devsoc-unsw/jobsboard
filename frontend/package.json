@@ -22,7 +22,7 @@
     "eslint-plugin-node": "11.1.0",
     "iview": "3.5.4",
     "terser-webpack-plugin": "5.3.3",
-    "typescript": "4.7.4",
+    "typescript": "4.8.3",
     "vue": "2.6.14",
     "vue-class-component": "7.2.6",
     "vue-fontawesome": "0.0.2",
