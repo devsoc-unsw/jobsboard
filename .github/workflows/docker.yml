@@ -4,6 +4,9 @@ on:
     branches:
       - "develop"
       - "renovate/*"
+  pull_request:
+    branches:
+      - "develop"
 
 jobs:
   build:
