@@ -279,10 +279,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.47.tgz#efa9e3e0f72e7aa6a138055dace7437a83d9f91c"
   integrity sha512-fpP+jk2zJ4VW66+wAMFoBJlx1bxmBKx4DUFf68UHgdGCOuyUTDlLWqsaNPJh7xhNDykyJ9eIzAygilP/4WoN8g==
 
-"@types/nodemailer@6.4.4":
-  version "6.4.4"
-  resolved "https://registry.npmjs.org/@types/nodemailer/-/nodemailer-6.4.4.tgz"
-  integrity sha512-Ksw4t7iliXeYGvIQcSIgWQ5BLuC/mljIEbjf615svhZL10PE9t+ei8O9gDaD3FPCasUJn9KTLwz2JFJyiiyuqw==
+"@types/nodemailer@6.4.6":
+  version "6.4.6"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-6.4.6.tgz#ce21b4b474a08f672f182e15982b7945dde1f288"
+  integrity sha512-pD6fL5GQtUKvD2WnPmg5bC2e8kWCAPDwMPmHe/ohQbW+Dy0EcHgZ2oCSuPlWNqk74LS5BVMig1SymQbFMPPK3w==
   dependencies:
     "@types/node" "*"
 
