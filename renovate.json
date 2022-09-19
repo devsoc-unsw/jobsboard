@@ -7,13 +7,13 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": false,
+      "automerge": true,
       "automergeType": "branch"
     },
     {
       "groupName": "docker-github-actions",
       "matchPackagePatterns": ["docker/*"],
-      "automerge": false,
+      "automerge": true,
       "automergeType": "branch"
     },
     {
