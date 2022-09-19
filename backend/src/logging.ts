@@ -30,7 +30,7 @@ export default class Logger {
 
   // this is intentionally async and it's not used with an await so as not to
   // become blocking to the functions calling it
-  private static async loggerFunc(lvl: string, msg: string) {
+  private static loggerFunc(lvl: string, msg: string) {
     Logger.logger.log({
       level: lvl,
       message: msg,
@@ -39,6 +39,6 @@ export default class Logger {
     // write the log
     const log = new Logs();
     log.what = msg;
-    await AppDataSource.manager.save(log);
+    AppDataSource.manager.save(log);
   }
 }
