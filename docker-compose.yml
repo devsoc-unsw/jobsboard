@@ -21,7 +21,20 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: dev.dockerfile
     image: webpersonal.azurecr.io/jb-frontend:latest
+    volumes:
+      - ./frontend/src:/app/src
+    ports:
+      - "3001:3001"
+    expose:
+      - 3001
+  frontend-prod:
+    build:
+      context: ./frontend
+    image: webpersonal.azurecr.io/jb-frontend:latest
+    volumes:
+      - ./frontend/src:/app/src
     ports:
       - "8081:80"
     expose:
@@ -39,7 +52,6 @@ services:
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
     volumes:
       - db-data:/var/lib/postgresql/data # mounting a local folder into the container
-      
   test:
     build:
       dockerfile: Dockerfile.test
