@@ -1,49 +1,49 @@
 <template>
   <div>
-    <Modal 
-      v-if="modalVisible"
-      @closeCallback="closeJobModal()"
+    <Modal
+      v-if='modalVisible'
+      @closeCallback='closeJobModal()'
     >
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Role: 
+      <div class='modalGroup'>
+        <div class='modalHeading'>
+          Role:
         </div>
-        {{ this.role }}
+        {{ role }}
       </div>
 
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Job Description: 
+      <div class='modalGroup'>
+        <div class='modalHeading'>
+          Job Description:
         </div>
-        <p v-html="this.description"> </p>
+        <p v-html='description' />
       </div>
 
-      <div class="modalGroup">
-        <div class="modalHeading">
-          Application Link: 
+      <div class='modalGroup'>
+        <div class='modalHeading'>
+          Application Link:
         </div>
         <a
-          :href="this.applicationLink"
+          :href='applicationLink'
         >
-          {{ this.applicationLink }}
+          {{ applicationLink }}
         </a>
       </div>
     </Modal>
-    <div class="jobsBox">
-      <div class="jobDescriptionBox">
-        <div class="roleHeading">
+    <div class='jobsBox'>
+      <div class='jobDescriptionBox'>
+        <div class='roleHeading'>
           {{ role }}
         </div>
         <br>
-        <div class="companyHeading">
+        <div class='companyHeading'>
           <green-standard-button>
-            <Button @click="showJobModal">
+            <Button @click='showJobModal'>
               Show
             </Button>
           </green-standard-button>
 
           <red-standard-button>
-            <Button @click="deleteJob">
+            <Button @click='deleteJob'>
               Delete
             </Button>
           </red-standard-button>
@@ -54,109 +54,112 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import GreenStandardButton from "@/components/buttons/GreenStandardButton.vue";
-import RedStandardButton from "@/components/buttons/RedStandardButton.vue";
-import Modal from "@/components/Modal.vue";
-import config from "@/config/config";
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
+import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
+import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
+import Modal from '@/components/Modal.vue';
+import config from '@/config/config';
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
-export default Vue.extend({
-  name: "CompanyJobManage",
-  components: {
-    GreenStandardButton,
-    RedStandardButton,
-    Modal,
+const props = defineProps({
+  role: {
+    type: String,
+    default: '',
   },
-  props: {
-    role: String,
-    description: String,
-    jobID: Number,
-    successCallback: Function,
-    errorCallback: Function,
-    applicationLink: String,
+  description: {
+    type: String,
+    default: '',
   },
-  data() {
-    return {
-      success: false,
-      error: false,
-      successMsg: "",
-      errorMsg: "",
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-      modalContent: "",
-    };
+  jobID: {
+    type: Number,
+    default: -1,
   },
-  methods: {
-    async showJobModal() {
-      this.modalVisible = true;
-      this.modalContent = "Test.";
-    },
-    async closeJobModal() {
-      this.modalVisible = false;
-      this.modalContent = "";
-    },
-    async deleteJob() {
-      const uri = `${config.apiRoot}/company/job/${this.jobID}`;
-      const response = await fetch(uri, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": this.apiToken,
-        },
-      });
-
-      const receivedResponse = response as Response;
-
-      if (receivedResponse.ok) {
-        this.successCallback("Job successfully deleted!");
-        this.close();
-      } else {
-        if (response.status == 401) {
-          this.errorMsg = "Login expired. Redirecting to login page.";
-          setTimeout(() => {
-            this.$router.push("/login/company");
-          }, 3000);
-        } else {
-          this.errorCallback("Error in processing rejection. Please try again later.");
-        }
-      }
-    },
-    close() {
-      setTimeout(() => {
-        this.$destroy();
-        this.$el.parentNode!.removeChild(this.$el);
-      }, 5000);
-    }
+  successCallback: {
+    type: Function,
+    required: true,
+  },
+  errorCallback: {
+    type: Function,
+    required: true,
+  },
+  applicationLink: {
+    type: String,
+    default: '',
   },
 });
 
+// const error = ref<boolean>(false);
+const errorMsg = ref<string>('');
+// const success = ref<boolean>(false);
+// const successMsg = ref<string>('');
+const modalVisible = ref<boolean>(false);
+const modalContent = ref<string>('');
+
+const showJobModal = async () => {
+  modalVisible.value = true;
+  modalContent.value = 'Test.';
+};
+
+const closeJobModal = async () => {
+  modalVisible.value = false;
+  modalContent.value = '';
+};
+
+const deleteJob = async () => {
+  const uri = `${config.apiRoot}/company/job/${props.jobID}`;
+  const response = await fetch(uri, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
+
+  const receivedResponse = response as Response;
+
+  if (receivedResponse.ok && props.successCallback) {
+    props.successCallback('Job successfully deleted!');
+    close();
+  } else {
+    if (response.status == 401) {
+      errorMsg.value = 'Login expired. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login/company');
+      }, 3000);
+    } else {
+      if (props.errorCallback) {
+        props.errorCallback(
+          'Error in processing rejection. Please try again later.',
+        );
+      }
+    }
+  }
+};
+
+// function close() {
+//   setTimeout(() => {
+//     this.$destroy();
+//     this.$el.parentNode!.removeChild(this.$el);
+//   }, 5000);
+// }
 </script>
 
 <style scoped lang="scss">
 .jobsBox {
-  // width: 75%;
   background: $white;
-  /* padding: 10%; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: left;
-  /* border-radius: 0.2rem; */
-  /* offset-x | offset-y | blur-radius | spread-radius | color */
   box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.1);
   &:hover {
     background: rgba(0, 0, 0, 0.05);
   }
   height: 100%;
-}
-
-.companyLogo {
-  width: 100%;
-  font-size: 3em;
-  color: $grey;
-  text-decoration: none;
-    margin-top: 10%;
 }
 
 .jobDescriptionBox {

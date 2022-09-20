@@ -5,11 +5,9 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-
-export default Vue.extend({
-  name: "DarkBlueStandardButton",
-});
+export default {
+  name: 'DarkBlueStandardButton',
+};
 </script>
 
 <style scoped lang="scss">

@@ -1,0 +1,1424 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Jobsboard API",
+      "description": "Jobsboard API",
+      "version": "2.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://jobsboard.staging.csesoc.unsw.edu.au/",
+        "description": "Internal staging server"
+      }
+    ],
+    "tags": [
+      {
+        "name": "admin",
+        "description": "all admin related routes"
+      },
+      {
+        "name": "student",
+        "description": "all student related routes"
+      },
+      {
+        "name": "company",
+        "description": "all company related routes"
+      },
+      {
+        "name": "job",
+        "description": "all job related routes"
+      },
+      {
+        "name": "authentication",
+        "description": "all authentication related routes"
+      },
+      {
+        "name": "stats",
+        "description": "all statistics related routes"
+      }
+    ],
+    "paths": {
+      "/admin/jobs/pending": {
+        "get": {
+          "summary": "Returns a list of all pending (un-approved or un-rejected) jobs posts",
+          "description": "Query the database to find all pending job posts and return them as a list",
+          "tags": [
+            "admin"
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON array of job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
+      "/jobs/{offset}": {
+        "get": {
+          "summary": "Returns a list of all active job posts (paginated)",
+          "description": "Query the database to find all active job posts and returns them as a list",
+          "tags": [
+            "student",
+            "job"
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON array of job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
+      "/job/{jobID}": {
+        "get": {
+          "summary": "Return the job post corresponding to jobID",
+          "description": "Query the database to find the job post using the jobID and return it",
+          "tags": [
+            "student",
+            "job"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "jobID",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "integer identifier corresponding to a job post"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON object containing a job post",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Job"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "No job corresponds to jobID or database query failed"
+            }
+          }
+        }
+      },
+      "/job/company/hidden": {
+        "get": {
+          "summary": "Return all hidden job posts as a list",
+          "description": "Query the database to find all hidden job posts and return them as a list",
+          "tags": [
+            "company",
+            "job"
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON array of job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Database query failed"
+            },
+            "401": {
+              "description": "Invalid Parameters"
+            }
+          }
+        }
+      },
+      "/company/{companyID}": {
+        "get": {
+          "summary": "Return the company corresponding to companyID",
+          "description": "Query the database to find the company corresponding to the companyID and return it",
+          "tags": [
+            "company"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "companyID",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "integer identifier corresponding to a company"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON object of a company",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Company"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to find company corresponding to companyID"
+            }
+          }
+        }
+      },
+      "/company/{companyID}/jobs": {
+        "get": {
+          "summary": "Return a list of all active and verified job posts from a specific company",
+          "description": "Query the database to find all the active and verified job posts from the company corresponding to companyID",
+          "tags": [
+            "job",
+            "company"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "companyID",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "integer identifier corresponding to a company"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A JSON list of job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Company"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to find company corresponding to companyID or database query failed to find their jobs"
+            }
+          }
+        }
+      },
+      "/authenticate/student": {
+        "post": {
+          "summary": "Authenticate a student's credentials",
+          "description": "Use the UNSW login system to validate a student's zID and password",
+          "tags": [
+            "authentication",
+            "student"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/StudentLoginBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]*)",
+                        "description": "API token"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
+      "/company": {
+        "put": {
+          "summary": "Create a company account",
+          "description": "Create a company account using the passed in location, name, username and password strings",
+          "tags": [
+            "company"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/CreateCompanyBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Company has been successfully created"
+            },
+            "400": {
+              "description": "Missing parameters"
+            },
+            "409": {
+              "description": "Conflicting usernames"
+            }
+          }
+        }
+      },
+      "/authenticate/company": {
+        "post": {
+          "summary": "Authenticate a company's credentials",
+          "description": "Authenticate a company's credentials using their username and password",
+          "tags": [
+            "company",
+            "authentication"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/LoginBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]*)",
+                        "description": "API token"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/company/update/details": {
+        "put": {
+          "summary": "Update the details of a company",
+          "description": "Use passed in name, location, description, sponsor, logo parameters to update a company's information in the database",
+          "tags": [
+            "company"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/CompanyInfoBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Company's details have been successfully updated"
+            },
+            "400": {
+              "description": "Missing paramemters or unauthorised"
+            }
+          }
+        }
+      },
+      "/company/update/logo": {
+        "put": {
+          "description": "Update the logo of a company",
+          "tags": [
+            "company"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "logo": {
+                      "type": "string",
+                      "format": "byte",
+                      "example": "some-base64-string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Company's logo has been successfully updated"
+            },
+            "400": {
+              "description": "Missing parameters or unauthorised"
+            }
+          }
+        }
+      },
+      "/jobs": {
+        "put": {
+          "summary": "Create a job post as the logged in company",
+          "description": "Create a job post as the logged in company using a Job object",
+          "tags": [
+            "company",
+            "job"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/CreateJobBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Job has been successfully created"
+            },
+            "400": {
+              "description": "Missing parameters or unauthorised"
+            }
+          }
+        }
+      },
+      "/company/job/edit": {
+        "put": {
+          "summary": "Update the information of a job post",
+          "description": "Allow a company to update the information of a job post in the database",
+          "tags": [
+            "company",
+            "job"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/UpdateJobBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Information about this job has been successfully updated"
+            },
+            "400": {
+              "description": "Failed to find company account in the database"
+            },
+            "403": {
+              "description": "Database failed to update"
+            }
+          }
+        }
+      },
+      "/company/forgot": {
+        "post": {
+          "summary": "Send email to company account to reset password",
+          "description": "Send email to company account to reset password",
+          "tags": [
+            "company"
+          ],
+          "responses": {
+            "200": {
+              "description": "Password reset email has been successfully sent to the company"
+            },
+            "400": {
+              "description": "Failed to find the company account"
+            }
+          }
+        }
+      },
+      "/company/password-reset-token/{username}": {
+        "get": {
+          "summary": "Retrieve the token that a company is using to reset its password",
+          "description": "Retrieve the token that the company corresponding to 'username' is using to reset its password",
+          "tags": [
+            "company"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "username",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "a company's username",
+              "example": "Projects Inc."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieve the company's password reset token",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]*)",
+                        "description": "API token"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to find company account in the database"
+            }
+          }
+        }
+      },
+      "/company/password-reset": {
+        "put": {
+          "summary": "Reset a company's password",
+          "description": "Use the passed in password to update a company's password in the database",
+          "tags": [
+            "company"
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "newPassword": {
+                      "type": "string",
+                      "format": "password",
+                      "example": "password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Company's password has been successfully reset"
+            },
+            "400": {
+              "description": "Missing required parameters"
+            },
+            "401": {
+              "description": "Invalid or expired password reset token"
+            }
+          }
+        }
+      },
+      "/authenticate/admin": {
+        "post": {
+          "summary": "Authenticate a admin's credentials",
+          "description": "Authenticate an admin's credentials using their username and password",
+          "tags": [
+            "authentication",
+            "admin"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/LoginBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "pattern": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]*)",
+                        "description": "API token"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
+      "/job/:jobID/approve": {
+        "patch": {
+          "summary": "Approve a job request as the admin",
+          "description": "Allow an admin to approve a create-job request from a company",
+          "tags": [
+            "admin"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "jobID",
+              "required": true,
+              "type": "integer",
+              "description": "Integer identifier corresponding to a job post",
+              "example": 42
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Job request has been successfully approved"
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
+      "/job/:jobID/reject": {
+        "patch": {
+          "summary": "Reject a job request as the admin",
+          "description": "Allow an admin to reject a create-job request from a company",
+          "tags": [
+            "admin"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "jobID",
+              "required": true,
+              "type": "integer",
+              "description": "Integer identifier corresponding to a job post",
+              "example": 42
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Job request has been successfully rejected"
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
+      "/admin/pending/companies": {
+        "get": {
+          "summary": "Return a list of all pending (non-verified) company accounts",
+          "description": "Query the database to find all pending (non-verfied) company account ids and return them as a list",
+          "tags": [
+            "admin"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrived all pending company accounts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    },
+                    "example": [
+                      0,
+                      1,
+                      3,
+                      5
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/admin/company/:companyID/verify": {
+        "patch": {
+          "summary": "Verify a company account as an admin",
+          "description": "Verify the company account corresponding to 'companyID' logged in as an admin",
+          "tags": [
+            "admin"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "companyID",
+              "type": "integer",
+              "required": true,
+              "example": 1
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Company corresponding to companyID has been successfully verified"
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
+      "/job/admin/hidden": {
+        "get": {
+          "summary": "Returns a list of all hidden jobs",
+          "description": "Query the database to find all hidden jobs and returns them as a list",
+          "tags": [
+            "admin",
+            "job"
+          ],
+          "responses": {
+            "200": {
+              "description": "success",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/companyjobs": {
+        "get": {
+          "summary": "Return a list of all submitted job posts from a company",
+          "description": "Query the database to find all submitted jobs from a company corresponding to 'companyAccountID' amd return them as a list",
+          "tags": [
+            "company"
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "companyAcctountID": {
+                      "type": "int"
+                    }
+                  },
+                  "example": {
+                    "comapnyAccountID": 1
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "All submitted jobs from the company have been successfully retrieved",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/JobInfo"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to find company corresponding to 'companyAccountID'"
+            }
+          }
+        }
+      },
+      "/company/stats/verifiedCompanies": {
+        "get": {
+          "summary": "Returns the number of verified companies",
+          "description": "Query the database to find the total number of verified companies and returns it",
+          "tags": [
+            "stats"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the number of verified companies",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "num": {
+                        "type": "integer"
+                      }
+                    },
+                    "example": {
+                      "num": 17
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Unable to query the database"
+            }
+          }
+        }
+      },
+      "/job/stats/approvedJobPosts/:year": {
+        "get": {
+          "summary": "Returns the number of approved job posts in a given year",
+          "description": "Query the database to find the number of approved jobs in the provided year and returns it",
+          "tags": [
+            "stats"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "year",
+              "required": true,
+              "type": "integer",
+              "example": 2020
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the number of job posts in the given year",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "numJobPosts": {
+                        "type": "integer"
+                      }
+                    },
+                    "example": {
+                      "numJobPosts": 66
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Unable to query the database"
+            }
+          }
+        }
+      },
+      "/admin/companies": {
+        "get": {
+          "summary": "Returns the number of verified companies while logged in as an admin",
+          "description": "Quert the database to find the number of verified companies while logged in as an admin and returns it",
+          "tags": [
+            "admin"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrived the number of verified companies",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/CompanyAccount"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Unable to query the database"
+            },
+            "401": {
+              "description": "Unable to authorise the caller's credentials (not logged in as an admin)"
+            }
+          }
+        }
+      },
+      "/admin/company/:companyID/jobs": {
+        "put": {
+          "summary": "Create a job post as an admin on behalf of a company",
+          "description": "Create a job post as an admin on behalf of the company corresponding to companyID",
+          "tags": [
+            "admin"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "companyID",
+              "type": "integer",
+              "required": true,
+              "example": 1
+            }
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/CreateJobBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Successfully created a job post on behalf of the company"
+            },
+            "400": {
+              "description": "Unable to query / update the database"
+            },
+            "401": {
+              "description": "Unable to authorise the caller's credentials (not logged in as an admin)"
+            }
+          }
+        }
+      },
+      "/featured-jobs": {
+        "get": {
+          "summary": "Return a list of the 4 latest job posts",
+          "description": "Query the database to find 4 of the latest job posts from the database and returns them as a list",
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the 4 latest job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to query the database and find the latest job posts"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "requestBodies": {
+        "StudentLoginBody": {
+          "description": "JSON object containing a student's zID and password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "zID": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "pasword"
+                  }
+                },
+                "example": {
+                  "zID": "z5555555",
+                  "password": "password"
+                }
+              }
+            }
+          }
+        },
+        "CreateCompanyBody": {
+          "description": "JSON object containing a company's username, password, location and name",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "location": "Sydeny",
+                  "name": "Projects Incorporated",
+                  "username": "poggers",
+                  "password": "password"
+                }
+              }
+            }
+          }
+        },
+        "LoginBody": {
+          "description": "JSON object containing a username and password",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "example": {
+                  "username": "username",
+                  "password": "password"
+                }
+              }
+            }
+          }
+        },
+        "CompanyInfoBody": {
+          "description": "JSON object containing a company's information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "buffer"
+                  },
+                  "sponsor": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "example": {
+                "name": "Projects Inc.",
+                "location": "Zimbabwe",
+                "description": "A good tech company from Zimbabwe",
+                "logo": null,
+                "sponsor": false
+              }
+            }
+          }
+        },
+        "CreateJobBody": {
+          "description": "JSON object containing all the information required to create a job post",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "$ref": "#/components/schemas/JobMode"
+                  },
+                  "studentDemographic": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/StudentDemographic"
+                    }
+                  },
+                  "jobType": {
+                    "$ref": "#/components/schemas/JobType"
+                  },
+                  "workingRights": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WorkingRights"
+                    }
+                  },
+                  "additionalInfo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "applicationLink": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "isPaid": {
+                    "type": "boolean"
+                  },
+                  "approved": {
+                    "type": "boolean"
+                  },
+                  "hidden": {
+                    "type": "boolean"
+                  },
+                  "deleted": {
+                    "type": "boolean"
+                  },
+                  "adminCreated": {
+                    "type": "boolean"
+                  },
+                  "expiry": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "UpdateJobBody": {
+          "description": "JSON object containing all the information required to update a job post",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "mode": {
+                    "$ref": "#/components/schemas/JobMode"
+                  },
+                  "studentDemographic": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/StudentDemographic"
+                    }
+                  },
+                  "jobType": {
+                    "$ref": "#/components/schemas/JobType"
+                  },
+                  "workingRights": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/WorkingRights"
+                    }
+                  },
+                  "additionalInfo": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "applicationLink": {
+                    "type": "string",
+                    "format": "url"
+                  },
+                  "isPaid": {
+                    "type": "boolean"
+                  },
+                  "approved": {
+                    "type": "boolean"
+                  },
+                  "hidden": {
+                    "type": "boolean"
+                  },
+                  "deleted": {
+                    "type": "boolean"
+                  },
+                  "adminCreated": {
+                    "type": "boolean"
+                  },
+                  "expiry": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "schemas": {
+        "StudentDemographic": {
+          "type": "string",
+          "enum": [
+            "penultimate",
+            "final_year",
+            "all"
+          ],
+          "example": "all"
+        },
+        "JobMode": {
+          "type": "string",
+          "enum": [
+            "onsite",
+            "hybrid",
+            "remote"
+          ],
+          "example": "remote"
+        },
+        "JobType": {
+          "type": "string",
+          "enum": [
+            "intern",
+            "grad"
+          ],
+          "example": "intern"
+        },
+        "WorkingRights": {
+          "type": "string",
+          "enum": [
+            "aus_ctz",
+            "aus_perm_res",
+            "aus_stud_visa",
+            "aus_temp_grad_visa",
+            "nz_ctz_and_perm_res",
+            "no_wr",
+            "all"
+          ],
+          "example": "aus_stud_visa"
+        },
+        "WamRequirements": {
+          "type": "string",
+          "enum": [
+            "HD",
+            "D",
+            "C",
+            "none"
+          ]
+        },
+        "Job": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "role": {
+              "type": "string"
+            },
+            "mode": {
+              "$ref": "#/components/schemas/JobMode"
+            },
+            "studentDemographic": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StudentDemographic"
+              }
+            },
+            "jobType": {
+              "$ref": "#/components/schemas/JobType"
+            },
+            "workingRights": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/WorkingRights"
+              }
+            },
+            "additionalInfo": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "applicationLink": {
+              "type": "string",
+              "format": "url"
+            },
+            "isPaid": {
+              "type": "boolean"
+            },
+            "approved": {
+              "type": "boolean"
+            },
+            "hidden": {
+              "type": "boolean"
+            },
+            "deleted": {
+              "type": "boolean"
+            },
+            "adminCreated": {
+              "type": "boolean"
+            },
+            "expiry": {
+              "type": "string",
+              "format": "date"
+            },
+            "company": {
+              "$ref": "#/components/schemas/Company"
+            }
+          },
+          "example": {
+            "id": 1,
+            "role": "Backend Engineer",
+            "mode": "hybdird",
+            "studentDemographic": [
+              "all"
+            ],
+            "workingRights": [
+              "aus_ctz",
+              "aus_stud_visa"
+            ],
+            "additionalInfo": "We're a good company",
+            "applicationLink": "https://www.google.com/",
+            "isPaid": true,
+            "approved": true,
+            "hidden": false,
+            "deleted": false,
+            "adminCreated": false,
+            "expiry": "2022-09-01T00:00:00.000Z",
+            "company": {
+              "id": "16,",
+              "name": "A good Company,",
+              "location": "Zimbabwe,",
+              "description": "We are a good company,",
+              "logo": "some base64 string,",
+              "sponsor": "true,",
+              "jobs": []
+            }
+          }
+        },
+        "JobInfo": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "role": {
+              "type": "string"
+            },
+            "mode": {
+              "$ref": "#/components/schemas/JobMode"
+            },
+            "studentDemographic": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/StudentDemographic"
+              }
+            },
+            "jobType": {
+              "$ref": "#/components/schemas/JobType"
+            },
+            "workingRights": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/WorkingRights"
+              }
+            },
+            "additionalInfo": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "applicationLink": {
+              "type": "string"
+            },
+            "isPaid": {
+              "type": "boolean"
+            },
+            "approved": {
+              "type": "boolean"
+            },
+            "hidden": {
+              "type": "boolean"
+            },
+            "deleted": {
+              "type": "boolean"
+            },
+            "adminCreated": {
+              "type": "boolean"
+            },
+            "expiry": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          "example": {
+            "id": 1,
+            "role": "Backend Engineer",
+            "mode": "hybdird",
+            "studentDemographic": [
+              "all"
+            ],
+            "workingRights": [
+              "aus_ctz",
+              "aus_stud_visa"
+            ],
+            "additionalInfo": "We're a good company",
+            "applicationLink": "https://www.google.com/",
+            "isPaid": true,
+            "approved": true,
+            "hidden": false,
+            "deleted": false,
+            "adminCreated": false,
+            "expiry": "2022-09-01T00:00:00.000Z"
+          }
+        },
+        "Company": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "name": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "logo": {
+              "type": "string",
+              "format": "byte"
+            },
+            "sponsor": {
+              "type": "boolean"
+            },
+            "jobs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Job"
+              }
+            }
+          },
+          "example": {
+            "id": 1,
+            "name": "Good Company",
+            "location": "Zimbabwe",
+            "description": "A Good Company",
+            "logo": "some base64 string",
+            "sponsor": true,
+            "jobs": []
+          }
+        },
+        "CompanyAccount": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "username": {
+              "type": "string"
+            },
+            "hash": {
+              "type": "string",
+              "pattern": "\\b[A-Fa-f0-9]{64}\\b"
+            },
+            "company": {
+              "type": "integer"
+            }
+          },
+          "example": {
+            "id": 1,
+            "username": "A Good Company",
+            "hash": "4d30494cCb4b10792FE7CBbaA2CCF861dAa0e5ad951ebC7F5ce281B8b0dAec54",
+            "company": 1
+          }
+        }
+      }
+    }
+  }

@@ -1,15 +1,10 @@
 <template>
-  <div class="error">
+  <div class='error'>
     <slot />
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-export default Vue.extend({
-  name: "ErrorBox",
-});
+<script setup lang="ts">
 </script>
 
 <style scoped lang="scss">

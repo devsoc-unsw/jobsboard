@@ -1,134 +1,119 @@
 <template>
-  <div class="relative overflow-hidden grow-0 shrink-0 basis-[230px]">
-    <div class="carousel-bar-left"></div>
-    <div class="relative w-[1450px] h-[100px] my-10 grow-0 shrink-0 basis-auto">
-      <div class="sponsor-container carousel-animation-first">
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+  <div class='relative overflow-hidden grow-0 shrink-0 basis-[230px]'>
+    <div class='carousel-bar-left' />
+    <div class='relative w-[1450px] h-[100px] my-10 grow-0 shrink-0 basis-auto'>
+      <div class='sponsor-container carousel-animation-first'>
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="GoogleLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='GoogleLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="AmazonLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='AmazonLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="MicrosoftLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='MicrosoftLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="CanvaLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='CanvaLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="JaneStreetLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='JaneStreetLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="AtlassianLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='AtlassianLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
       </div>
-      <div class="sponsor-container carousel-animation-second">
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+      <div class='sponsor-container carousel-animation-second'>
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="GoogleLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='GoogleLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="AmazonLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='AmazonLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="MicrosoftLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='MicrosoftLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="CanvaLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='CanvaLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="JaneStreetLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='JaneStreetLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
-        <div class="grow-1 shrink-1 basis-[200px] min-w-0 m-5">
+        <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
-            class="select-none pointer-events-none object-contain w-full"
-            :src="AtlassianLogo"
-            loading="lazy"
-            alt="sponsor logo"
-          />
+            class='select-none pointer-events-none object-contain w-full'
+            :src='AtlassianLogo'
+            loading='lazy'
+            alt='sponsor logo'
+          >
         </div>
       </div>
     </div>
-    <div class="carousel-bar-right"></div>
+    <div class='carousel-bar-right' />
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import GoogleLogo from "@/assets/companies/googleLogo.png";
-import AmazonLogo from "@/assets/companies/amazonLogo.png";
-import MicrosoftLogo from "@/assets/companies/microsoftLogo.svg";
-import CanvaLogo from "@/assets/companies/canvaLogo.png";
-import JaneStreetLogo from "@/assets/companies/janeStreetLogo.png";
-import AtlassianLogo from "@/assets/companies/atlassianLogo.png";
-
-export default Vue.extend({
-  name: "SponsorCarousel",
-  data() {
-    return {
-      MicrosoftLogo: MicrosoftLogo,
-      GoogleLogo: GoogleLogo,
-      AmazonLogo: AmazonLogo,
-      CanvaLogo: CanvaLogo,
-      JaneStreetLogo: JaneStreetLogo,
-      AtlassianLogo: AtlassianLogo,
-    };
-  }
-});
+<script setup lang="ts">
+import GoogleLogo from '@/assets/companies/googleLogo.png';
+import AmazonLogo from '@/assets/companies/amazonLogo.png';
+import MicrosoftLogo from '@/assets/companies/microsoftLogo.svg';
+import CanvaLogo from '@/assets/companies/canvaLogo.png';
+import JaneStreetLogo from '@/assets/companies/janeStreetLogo.png';
+import AtlassianLogo from '@/assets/companies/atlassianLogo.png';
 </script>
 
 <style scoped lang="scss">

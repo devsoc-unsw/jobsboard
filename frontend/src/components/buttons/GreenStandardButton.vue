@@ -4,12 +4,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
-
-export default Vue.extend({
-  name: "GreenStandardButton",
-});
+<script setup lang="ts">
 </script>
 
 <style scoped lang="scss">

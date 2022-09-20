@@ -1,7 +1,11 @@
-import Vue from "vue";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
-Vue.use(Router);
+declare module 'vue-router' {
+  interface RouteMeta {
+    title: string,
+    breadcrumb?: Object
+  }
+}
 
 // pages
 const LandingPage = () => import("@/pages/LandingPage.vue");
@@ -23,8 +27,8 @@ const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompa
 const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
 const TeamPage = () => import("@/pages/TeamPage.vue");
 
-export default new Router({
-  mode: "history",
+export default createRouter({
+  history: createWebHistory(),
   scrollBehavior: () => ({ y: 0 }),
   routes: [{
     path: "/login/student",
@@ -201,7 +205,7 @@ export default new Router({
       title: "Home | Jobs Board",
     }
   }, {
-    path: "*",
+    path: "/:pathMatch(.*)*",
     component: PageNotFoundPage,
     meta: {
       title: "Page Not Found | Jobs Board",

@@ -1,6 +1,7 @@
 <template>
   <LoggedInTemplate>
   <StudentViewTemplate>
+    <Breadcrumbs />
     <div class="px-[10%]">
       <h1 class="font-bold text-5xl text-jb-headings text-left leading-[72px] m-0 mt-4">
         Welcome Back! &nbsp;👋
@@ -28,7 +29,7 @@
         </div>
       </div>
       <!-- Board -->
-      <JobBoard :jobList="this.boardStatus === 'postedJobs' ? this.jobs : this.expiredJobs" :listName="boardStatus" />
+      <JobBoard :jobList="boardStatus === 'postedJobs' ? jobs : expiredJobs" :listName="boardStatus" />
 
       <h1 class="font-bold text-4xl text-jb-headings text-center leading-[72px] mt-14">Curious about our other Partners?</h1>
         <p class="text-lg text-jb-subheadings mb-8 text-center">
@@ -45,44 +46,32 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import LoggedInTemplate from "@/components/LoggedInTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import config from "@/config/config";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import JobBoard from "@/components/JobBoard.vue"
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { useApiTokenStore } from '@/store/apiToken';
+import { useRouter, useRoute } from 'vue-router';
+import config from '@/config/config';
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
-export default Vue.extend({
-  name: "CompanyAccountHome",
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Button,
-    StandardButton,
-    Breadcrumbs,
-    JobBoard
-  },
-  data() {
-    return {
-      jobs: [],
-      expiredJobs: [],
-      boardStatus: "postedJobs",
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
+const router = useRouter();
 
-    const response = await fetch(`${config.apiRoot}/companyjobs`, {
+let jobs = ref([]);
+let expiredJobs = ref([]);
+const boardStatus = ref("postedJobs");
+const apiTokenStore = useApiTokenStore();
+
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+
+  const response = await fetch(`${config.apiRoot}/companyjobs`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": this.apiToken,
-      },
+        "Authorization": apiTokenStore.getApiToken(),
+      } as HeadersInit,
     }) as Response;
 
     // For expired jobs:
@@ -90,38 +79,13 @@ export default Vue.extend({
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": this.apiToken,
-      },
+        "Authorization": apiTokenStore.getApiToken(),
+      } as HeadersInit,
     }) as Response;
-
-    if (response.ok) {
-      const msg = await response.json();
-      this.jobs = msg.companyJobs.map((job: any) => {
-        return {
-          id: job.id,
-          role: job.role,
-          status: `Status: ${job.status}`,
-          description: job.description,
-          applicationLink: job.applicationLink,
-          pay: job.pay,
-          expiry: job.expiry,
-          jobType: job.jobType,
-          mode: job.mode,
-          studentDemographic: job.studentDemographic,
-        };
-      })
-    } else {
-      window.scrollTo(0, 10);
-      if (response.status === 401) {
-        setTimeout(() => {
-          this.$router.push("/login/company");
-        }, 1000);
-      }
-    }
 
     if (responseExpired.ok) {
       const msg = await responseExpired.json();
-        this.expiredJobs = msg.hiddenJobs.map((job: any) => {
+        expiredJobs = msg.hiddenJobs.map((job: any) => {
         return {
           id: job.id,
           role: job.role,
@@ -141,12 +105,18 @@ export default Vue.extend({
       });
       if (response.status === 401) {
         setTimeout(() => {
-          this.$router.push("/login/company");
+          router.push("/login");
         }, 1000);
       }
     }
-  },
-
 });
+
+const goToCompanyJobAdd = () => {
+  router.push('/company/jobs/add');
+};
+
+const goToCompanyManageJobs = () => {
+  router.push('/company/jobs/manage');
+};
 </script>
 

@@ -1,57 +1,54 @@
 <template>
-  <StudentViewTemplate notLoggedIn disableBack>
-  <ErrorBox>
-    <h1>Under Maintenance</h1>
-    <p>
-      Jobs Board is currently undergoing an extended period of maintenance.
-    </p>
-    <p>
-      We apologise for any inconveniences caused and we aim to have it up and running as soon as possible.
-    </p>
-  </ErrorBox>
-  <h1>Jobs for UNSW CSE Students</h1>
-  <div class="buttonBox">
-    <StandardButton>
-    <Button @callback="toStudentLogin" disabled>
-      Student
-    </Button>
-    </StandardButton>
-    <StandardButton>
-    <Button @callback="toCompanyLogin" disabled>
-      Company
-    </Button>
-    </StandardButton>
-  </div>
+  <StudentViewTemplate
+    notLoggedIn
+    disableBack
+  >
+    <ErrorBox>
+      <h1>Under Maintenance</h1>
+      <p>
+        Jobs Board is currently undergoing an extended period of maintenance.
+      </p>
+      <p>
+        We apologise for any inconveniences caused and we aim to have it up and running as soon as possible.
+      </p>
+    </ErrorBox>
+    <h1>Jobs for UNSW CSE Students</h1>
+    <div class='buttonBox'>
+      <StandardButton>
+        <Button @callback='toStudentLogin'>
+          Student
+        </Button>
+      </StandardButton>
+      <StandardButton>
+        <Button @callback='toCompanyLogin'>
+          Company
+        </Button>
+      </StandardButton>
+    </div>
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-property-decorator";
-import StudentViewTemplate from "@/components/StudentViewTemplate.vue";
-import Button from "@/components/buttons/button.vue";
-import StandardButton from "@/components/buttons/StandardButton.vue";
-import ErrorBox from "@/components/ErrorBox.vue";
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
-export default Vue.extend({
-  name: "LoginPage",
-  components: {
-    StudentViewTemplate,
-    Button,
-    StandardButton,
-    ErrorBox,
-  },
-  methods: {
-    toStudentLogin() {
-      this.$router.push("/login/student");
-    },
-    toCompanyLogin() {
-      this.$router.push("/login/company");
-    }
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  }
+import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
+import Button from '@/components/buttons/button.vue';
+import StandardButton from '@/components/buttons/StandardButton.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
+
+const router = useRouter();
+
+const toStudentLogin = () => {
+  router.push('/login/student');
+};
+const toCompanyLogin = () => {
+  router.push('/login/company');
+};
+
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
 });
 </script>
 
