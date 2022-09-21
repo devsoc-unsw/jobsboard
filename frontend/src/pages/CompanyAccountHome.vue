@@ -1,48 +1,68 @@
 <template>
   <LoggedInTemplate>
-  <StudentViewTemplate>
-    <Breadcrumbs />
-    <div class="px-[10%]">
-      <h1 class="font-bold text-5xl text-jb-headings text-left leading-[72px] m-0 mt-4">
-        Welcome Back! &nbsp;👋
-      </h1>
-      <p class="text-lg text-jb-subheadings text-left">
-        Accelerate your search for talented job applicants today with us!
-      </p>
-      <h1 class="font-bold text-4xl text-[#1a324e] mt-4 text-center leading-[72px]">
-        Manage your Jobs
-      </h1>
-      <p class="text-lg text-jb-subheadings text-center">
-        Add a new job post with our “Post Job” profile card to your board or manage your existing jobs by double clicking on the profile card of any active jobs listed.
-      </p>
-      
-      <div class="w-[700px] m-auto mt-8">
-        <!-- Board select dropdown -->
-        <div class="text-left flex ml-2">
-          <font-awesome-icon icon="bars" class="text-2xl" />
-          <div>
-            <select name="boards" id="board" class="bg-[#F6F9FC] ml-4 font-bold text-lg" v-model="boardStatus">
-              <option value="postedJobs">Posted Jobs</option>
-              <option value="expiredJobs ">Expired Jobs</option>
-            </select>
+    <StudentViewTemplate>
+      <Breadcrumbs />
+      <div class='px-[10%]'>
+        <h1 class='font-bold text-5xl text-jb-headings text-left leading-[72px] m-0 mt-4'>
+          Welcome Back! &nbsp;👋
+        </h1>
+        <p class='text-lg text-jb-subheadings text-left'>
+          Accelerate your search for talented job applicants today with us!
+        </p>
+        <h1 class='font-bold text-4xl text-[#1a324e] mt-4 text-center leading-[72px]'>
+          Manage your Jobs
+        </h1>
+        <p class='text-lg text-jb-subheadings text-center'>
+          Add a new job post with our “Post Job” profile card to your board or manage your existing jobs by double clicking on the profile card of any active jobs listed.
+        </p>
+
+        <div class='w-[700px] m-auto mt-8'>
+          <!-- Board select dropdown -->
+          <div class='text-left flex ml-2'>
+            <font-awesome-icon
+              icon='bars'
+              class='text-2xl'
+            />
+            <div>
+              <select
+                id='board'
+                v-model='boardStatus'
+                name='boards'
+                class='bg-[#F6F9FC] ml-4 font-bold text-lg'
+              >
+                <option value='postedJobs'>
+                  Posted Jobs
+                </option>
+                <option value='expiredJobs '>
+                  Expired Jobs
+                </option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Board -->
-      <JobBoard :jobList="boardStatus === 'postedJobs' ? jobs : expiredJobs" :listName="boardStatus" />
+        <!-- Board -->
+        <JobBoard
+          :jobList='boardStatus === "postedJobs" ? jobs : expiredJobs'
+          :listName='boardStatus'
+        />
 
-      <h1 class="font-bold text-4xl text-jb-headings text-center leading-[72px] mt-14">Curious about our other Partners?</h1>
-        <p class="text-lg text-jb-subheadings mb-8 text-center">
+        <h1 class='font-bold text-4xl text-jb-headings text-center leading-[72px] mt-14'>
+          Curious about our other Partners?
+        </h1>
+        <p class='text-lg text-jb-subheadings mb-8 text-center'>
           Check out our other
-          <a href="https://www.csesoc.unsw.edu.au/sponsors" target="__blank" >
-            <span class="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered">
+          <a
+            href='https://www.csesoc.unsw.edu.au/sponsors'
+            target='__blank'
+          >
+            <span class='text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered'>
               sponsors
             </span>
             .
           </a>
         </p>
-    </div>
-  </StudentViewTemplate>
+      </div>
+    </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
@@ -59,7 +79,7 @@ const router = useRouter();
 
 let jobs = ref([]);
 let expiredJobs = ref([]);
-const boardStatus = ref("postedJobs");
+const boardStatus = ref('postedJobs');
 const apiTokenStore = useApiTokenStore();
 
 onMounted(async () => {
@@ -67,25 +87,25 @@ onMounted(async () => {
   document.title = useRoute().meta.title;
 
   const response = await fetch(`${config.apiRoot}/companyjobs`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": apiTokenStore.getApiToken(),
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
       } as HeadersInit,
     }) as Response;
 
     // For expired jobs:
     const responseExpired = await fetch(`${config.apiRoot}/job/company/hidden`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": apiTokenStore.getApiToken(),
+        'Content-Type': 'application/json',
+        'Authorization': apiTokenStore.getApiToken(),
       } as HeadersInit,
     }) as Response;
 
     if (responseExpired.ok) {
       const msg = await responseExpired.json();
-        expiredJobs = msg.hiddenJobs.map((job: any) => {
+        expiredJobs.value = msg.hiddenJobs.map((job: any) => {
         return {
           id: job.id,
           role: job.role,
@@ -97,15 +117,15 @@ onMounted(async () => {
           mode: job.mode,
           studentDemographic: job.studentDemographic,
         };
-      })
+      });
     } else {
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
       if (response.status === 401) {
         setTimeout(() => {
-          router.push("/login");
+          router.push('/login');
         }, 1000);
       }
     }

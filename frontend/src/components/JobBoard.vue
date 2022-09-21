@@ -1,35 +1,38 @@
 <template>
-  <div class="w-[700px] border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-64">
-    <div :key="listName" class="bg-white h-full grid grid-cols-3 rounded-xl overflow-y-scroll md:grid-cols-1">
-      <div v-if="listName === 'postedJobs'">
+  <div class='w-[700px] border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-64'>
+    <div
+      :key='listName'
+      class='bg-white h-full grid grid-cols-3 rounded-xl overflow-y-scroll md:grid-cols-1'
+    >
+      <div v-if='listName === "postedJobs"'>
         <PostJobCard />
       </div>
-      <JobProfileCard 
-        v-for="job in jobList"  
-        :key="job.key"
-        :jobID="job.id"
-        :role="job.role"
-        :pay="job.pay"
-        :jobType="job.jobType"
-        :mode="job.mode"
-        :expiry="job.expiry"
-        :studentDemographic="job.studentDemographic"
-        :listName="listName"
-        />
+      <JobProfileCard
+        v-for='job in jobList'
+        :key='job.key'
+        :jobID='job.id'
+        :role='job.role'
+        :pay='job.pay'
+        :jobType='job.jobType'
+        :mode='job.mode'
+        :expiry='job.expiry'
+        :studentDemographic='job.studentDemographic'
+        :listName='listName'
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import JobProfileCard from "@/components/JobProfileCard.vue"
-import PostJobCard from "@/components/PostJobCard.vue"
+import { Component, Vue } from 'vue-property-decorator';
+import JobProfileCard from '@/components/JobProfileCard.vue';
+import PostJobCard from '@/components/PostJobCard.vue';
 
 export default Vue.extend({
-  name: "JobBoard",
+  name: 'JobBoard',
   components: {
     JobProfileCard,
-    PostJobCard
+    PostJobCard,
   },
   props: {
     jobList: Object,
@@ -39,7 +42,7 @@ export default Vue.extend({
 </script>
 <style scoped lang="scss">
 ::-webkit-scrollbar {
-  width: 18px;    
+  width: 18px;
 }
 
 ::-webkit-scrollbar-track {
@@ -54,7 +57,7 @@ export default Vue.extend({
 ::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: white;
-    border-radius: 15px;    
+    border-radius: 15px;
     box-shadow: inset 0 0 10px 10px #E0DFDF;
     border: solid 6px transparent;
 }
