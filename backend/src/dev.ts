@@ -39,7 +39,7 @@ export async function seedDB(activeEntities: any[]) {
   job1.role = "Software Engineer and Reliability";
   job1.description = "Doing software engineer things and SRE things";
   job1.applicationLink = "https://sampleapplication.link";
-  job1.approved = true;
+  job1.approved = false;
   job1.hidden = false;
   job1.company = company;
   job1.mode = JobMode.Remote;
@@ -55,7 +55,7 @@ export async function seedDB(activeEntities: any[]) {
   job2.role = "Software Engineer";
   job2.description = "Doing software engineer things";
   job2.applicationLink = "mailto:example@example.com";
-  job2.approved = true;
+  job2.approved = false;
   job2.hidden = false;
   job2.company = company;
   job2.mode = JobMode.Remote;
@@ -71,7 +71,7 @@ export async function seedDB(activeEntities: any[]) {
   job3.role = "Mechanical Engineer";
   job3.description = "Doing mechanical engineer things";
   job3.applicationLink = "https://sampleapplication.net";
-  job3.approved = true;
+  job3.approved = false;
   job3.company = company;
   job3.mode = JobMode.Hybrid;
   job3.studentDemographic = [StudentDemographic.FinalYear, StudentDemographic.Penultimate];
@@ -87,7 +87,7 @@ export async function seedDB(activeEntities: any[]) {
   job4.description = "Computer science and software engineering are both degrees";
   job4.applicationLink = "https://sampleapplicationlink.net";
   job4.company = company;
-  job4.approved = true;
+  job4.approved = false;
   job4.mode = JobMode.Remote;
   job4.studentDemographic = [StudentDemographic.All];
   job4.jobType = JobType.Intern;
@@ -95,7 +95,6 @@ export async function seedDB(activeEntities: any[]) {
   job4.wamRequirements = WamRequirements.HD;
   job4.additionalInfo = "";
   job4.isPaid = true;
-  job4.approved = true; 
   job4.expiry = new Date('2030-01-10');
 
   const job5 = new Job();
@@ -103,7 +102,7 @@ export async function seedDB(activeEntities: any[]) {
   job5.description = "React masters only";
   job5.applicationLink = "https://sampleapplicationlink.net";
   job5.company = company;
-  job5.approved = true;
+  job5.approved = false;
   job5.expiry = new Date('2035-01-01');
   job5.mode = JobMode.Remote;
   job5.studentDemographic = [StudentDemographic.All];
@@ -118,7 +117,7 @@ export async function seedDB(activeEntities: any[]) {
   job6.description = "Java is not poggers";
   job6.applicationLink = "https://sampleapplicationlink.net";
   job6.company = company;
-  job6.approved = true;
+  job6.approved = false;
   job6.expiry = new Date('2030-01-10');
   job6.mode = JobMode.Remote;
   job6.studentDemographic = [StudentDemographic.All];
