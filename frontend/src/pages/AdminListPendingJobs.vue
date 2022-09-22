@@ -1,23 +1,43 @@
 <template>
   <LoggedInTemplate>
     <StudentViewTemplate>
+      <FadeTransition>
+        <Toast
+          v-if='successMsg + errorMsg !== ""'
+          :isSuccess='successMsg !== ""'
+          :message='successMsg !== "" ? successMsg : errorMsg'
+          />
+      </FadeTransition>
       <Breadcrumbs />
-      <div class='contentBox'>
+      <div class='w-11/12 max-w-2xl mx-auto'>
         <h1>Pending Job Requests</h1>
         <div v-if='jobs.length === 1'>
-          {{ jobs.length }} Pending Job Found
+          {{ jobs.length }} Pending Job
         </div>
         <div v-else>
-          {{ jobs.length }} Pending Jobs Found
+          {{ jobs.length }} Pending Jobs
         </div>
+        <Loading v-if='isLoading'/>
         <SingleJobManage
-          v-for='job in jobs'
+          v-for='(job, index) in jobs'
           :key='job.key'
+          :company='job.company.name'
+          :location='job.company.location'
           :jobID='job.id'
           :role='job.role'
-          :company='job.company.name'
           :description='job.description'
           :applicationLink='job.applicationLink'
+          :expiryDate='job.expiry'
+          :isPaidPosition='job.isPaid.toString()'
+          :jobType='job.jobType'
+          :jobMode='job.mode'
+          :workingRights='job.workingRights'
+          :studentDemographic='job.studentDemographic'
+          :wamRequirements='job.wamRequirements'
+          :additionalInfo='job.additionalInfo'
+          @removePendingJob='removePendingJob(index)'
+          @successMsg='onSuccess'
+          @errorMsg='onError'
         />
       </div>
     </StudentViewTemplate>
@@ -33,15 +53,19 @@ import SingleJobManage from '@/components/SingleJobManage.vue';
 import config from '@/config/config';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import Toast from '@/components/Toast.vue';
+import FadeTransition from '@/components/FadeTransition.vue';
+import Loading from '@/components/Loading.vue'
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const error = ref<boolean>(false);
+const isLoading = ref<boolean>(true);
+const successMsg = ref<string>('');
 const errorMsg = ref<string>('');
+
 // TODO: associate a type with this!
 const jobs = ref<any>([]);
-const success = ref<boolean>(false);
 
 onMounted(async () => {
   // Change the page title
@@ -55,13 +79,13 @@ onMounted(async () => {
     } as HeadersInit,
   });
 
+  isLoading.value = false;
+
   if (response.ok) {
     const msg = await response.json();
     apiTokenStore.setApiToken(msg.token);
-    success.value = true;
     jobs.value = msg.pendingJobs;
   } else {
-    error.value = true;
     window.scrollTo(0, 10);
     if (response.status == 401) {
       errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
@@ -74,18 +98,20 @@ onMounted(async () => {
   }
 });
 
+const removePendingJob = (index: Number) => {
+  jobs.value.splice(index, 1)
+}
+
+const onSuccess = (message: string) => {
+  successMsg.value = message
+  setTimeout(() => { successMsg.value = '' }, 3000)
+}
+
+const onError = (message: string) => {
+  errorMsg.value = message
+  setTimeout(() => { errorMsg.value = '' }, 3000)
+}
 </script>
 
 <style scoped lang="scss">
-.contentBox {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media screen and (min-width: 900px) {
-  .contentBox {
-    width: 85%;
-  }
-}
 </style>
