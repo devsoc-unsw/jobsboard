@@ -186,7 +186,20 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         return await AppDataSource
           .getRepository(Job)
           .createQueryBuilder()
-          .select(["Job.id", "Job.role", "Job.description", "Job.applicationLink"])
+          .select([
+            "Job.id",
+            "Job.role",
+            "Job.description",
+            "Job.applicationLink",
+            "Job.mode",
+            "Job.studentDemographic",
+            "Job.jobType",
+            "Job.workingRights",
+            "Job.additionalInfo",
+            "Job.wamRequirements",
+            "Job.isPaid",
+            "Job.expiry"
+          ])
           .where("Job.approved = :approved", { approved: false })
           .andWhere("Job.hidden = :hidden", { hidden: false })
           .getMany();
