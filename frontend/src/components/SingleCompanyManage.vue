@@ -21,7 +21,7 @@
       <br>
       <br>
       <GreenStandardButton>
-        <Button @callback='verifyCompany'>
+        <Button @callback='verifyCompany' class='p-4 m-4'>
           Verify
         </Button>
       </GreenStandardButton>
