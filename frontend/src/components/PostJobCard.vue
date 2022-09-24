@@ -7,7 +7,7 @@
         </p>
         <div
           class='flex justify-center items-center bg-white w-16 h-16 rounded-full cursor-pointer justify-self-center'
-          @click='() => $router.push("/company/jobs/add")'
+          @click='() => router.push("/company/jobs/add")'
         >
           <font-awesome-icon
             icon='plus'
@@ -20,12 +20,10 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { useRouter }  from 'vue-router';
 
-export default Vue.extend({
-  name: 'PostJobCard',
-});
+const router = useRouter();
 </script>
 
 <style scoped lang="scss">

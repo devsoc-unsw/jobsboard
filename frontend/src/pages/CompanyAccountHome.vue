@@ -74,6 +74,7 @@ import config from '@/config/config';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import JobBoard from '@/components/JobBoard.vue';
 
 const router = useRouter();
 

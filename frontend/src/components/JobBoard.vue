@@ -23,23 +23,17 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+<script setup lang="ts">
 import JobProfileCard from '@/components/JobProfileCard.vue';
 import PostJobCard from '@/components/PostJobCard.vue';
 
-export default Vue.extend({
-  name: 'JobBoard',
-  components: {
-    JobProfileCard,
-    PostJobCard,
-  },
-  props: {
-    jobList: Object,
-    listName: String,
-  },
+const props = defineProps({ 
+  jobList: Object,
+  listName: String,
 });
 </script>
+
+
 <style scoped lang="scss">
 ::-webkit-scrollbar {
   width: 18px;
