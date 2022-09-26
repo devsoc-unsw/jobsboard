@@ -9,6 +9,65 @@ import { Job } from "./entity/job";
 import { Statistics } from "./entity/statistics";
 import Secrets from "./secrets";
 import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from "./types/job-field";
+import { AdminAccountInterface, CompanyAccountInterface } from "./tests/test-types";
+import testdata from "./tests/default_test_data.json";
+
+const CreateAdminAccounts = async (admins: AdminAccountInterface[]) => {
+  admins.forEach(async admin => {
+    const adminAccount = new AdminAccount();
+    adminAccount.username = admin.username;
+    adminAccount.hash = Secrets.hash(admin.password);
+    await AppDataSource.manager.save(adminAccount);
+  });
+} 
+
+const ProcessCompanyAccounts = (companies: CompanyAccountInterface[]) => {
+  let res: Record<string, CompanyAccount> = {};
+  companies.forEach(company => {
+    const companyAccount = new CompanyAccount();
+    companyAccount.username = company.username;
+    companyAccount.hash = Secrets.hash(company.password);
+    companyAccount.verified = company.verified;
+    const newCompany = new Company();
+    newCompany.name = company.name;
+    newCompany.location = company.location;
+    newCompany.jobs = [];
+    companyAccount.company = newCompany;
+    res[company.username] = companyAccount;
+  });
+  return res;
+}
+
+const ProcessNewJobs = (companyAccs: Record<string, CompanyAccount>) => {
+  testdata.jobs.forEach(job => {
+    const newJob = new Job();
+    newJob.role = job.role;
+    newJob.description = job.description;
+    newJob.applicationLink = job.application_link;
+    newJob.approved = job.approved;
+    newJob.hidden = job.hidden;
+    newJob.mode = job.mode as JobMode;
+    newJob.studentDemographic = job.student_demographic as StudentDemographic[];
+    newJob.jobType = job.type as JobType;
+    newJob.workingRights = job.working_rights as WorkingRights[];
+    newJob.wamRequirements = job.wam_requirements as WamRequirements;
+    newJob.additionalInfo = job.additional_info;
+    newJob.isPaid = job.paid;
+    newJob.expiry = new Date(job.expiry);
+    companyAccs[job.company_username].company.jobs.push(newJob);
+  });
+}
+
+const CreateTestObjectsFromJSON = async () => {
+  await CreateAdminAccounts(testdata.admins);
+  
+  let companyAccs = ProcessCompanyAccounts(testdata.companies);
+  ProcessNewJobs(companyAccs);
+  
+  for (const company_username in companyAccs) {
+    await AppDataSource.manager.save(companyAccs[company_username]);
+  }
+}
 
 export async function seedDB(activeEntities: any[]) {
   Logger.Info("SEEDING DATABASE");
@@ -17,7 +76,7 @@ export async function seedDB(activeEntities: any[]) {
     Logger.Info("Clearing all tables.");
     await AppDataSource.synchronize(true);
   }
-
+  
   // create dummy admin account
   const adminAccount = new AdminAccount();
   adminAccount.username = "admin";
@@ -280,6 +339,8 @@ export async function seedDB(activeEntities: any[]) {
   stats1.year = 2000;
   stats1.numJobPosts = 7;
   await AppDataSource.manager.save(stats1);
+  
+  await CreateTestObjectsFromJSON();
   
   Logger.Info("FINISHED SEEDING");
 }
