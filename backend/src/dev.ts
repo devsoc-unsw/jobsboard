@@ -64,8 +64,8 @@ const CreateTestObjectsFromJSON = async () => {
   let companyAccs = ProcessCompanyAccounts(testdata.companies);
   ProcessNewJobs(companyAccs);
   
-  for (const company_username in companyAccs) {
-    await AppDataSource.manager.save(companyAccs[company_username]);
+  for (const companyUsername in companyAccs) {
+    await AppDataSource.manager.save(companyAccs[companyUsername]);
   }
 }
 
