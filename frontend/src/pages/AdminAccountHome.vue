@@ -105,7 +105,7 @@
         </div>
 
         <!-- Post Job as Company -->
-        <div class='flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card'>
+        <div class='flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card mb-10'>
           <h3 class='text-2xl font-bold text-jb-headings'>
             Post job as Company
           </h3>
