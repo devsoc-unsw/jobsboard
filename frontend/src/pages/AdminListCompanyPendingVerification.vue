@@ -2,7 +2,7 @@
   <LoggedInTemplate>
     <StudentViewTemplate>
       <Breadcrumbs />
-      <div style='display: flex; flex-direction: column; padding: 0 2rem 0 2rem; align-items: center'>
+      <div class='flex flex-col px-8 items-center'>
         <Alert
           :alertType='alertType'
           :alertMsg='alertMsg'

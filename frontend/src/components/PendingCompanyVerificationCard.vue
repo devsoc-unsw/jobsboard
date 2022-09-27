@@ -1,18 +1,17 @@
 <template>
   <div
-    class='flex flex-col py-6 px-8 mb-8 shadow-card rounded-md w-[75%] sm:flex-wrap
-        transform transition duration-200 hover:scale-105'
+    class='flex flex-col py-6 px-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105'
   >
-    <div style='display: flex; flex-direction: row; align-items: center'>
+    <div class='flex flex-row items-center'>
       <img v-if='logo' :src='logo' alt='company logo' />
-      <div class='flex flex-col text-left' style='width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>
+      <div class='flex flex-col text-left w-full truncate'>
         <h2 class='font-bold text-jb-headings text-xl'>
           {{ companyName }}
         </h2>
         <h3 class='text-jb-subheadings text-lg'>
           {{ location }}
         </h3>
-        <div style='width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+        <div class='w-4/5 truncate'>
           {{ description }}
         </div>
       </div>
