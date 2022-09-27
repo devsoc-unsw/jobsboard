@@ -20,11 +20,12 @@
       {{ description }}
       <br>
       <br>
-      <GreenStandardButton>
-        <Button @callback='verifyCompany' class='p-4 m-4'>
-          Verify
-        </Button>
-      </GreenStandardButton>
+      <button
+        class='btn btn-green w-36 h-10 p-2 my-2'
+        @click='verifyCompany'
+      >
+        Verify
+      </button>
     </div>
   </div>
 </template>
@@ -34,8 +35,6 @@ import { ref } from 'vue';
 import SuccessBox from '@/components/SuccessBox.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 import config from '@/config/config';
-import Button from '@/components/buttons/button.vue';
-import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
 
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';

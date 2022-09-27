@@ -1,21 +1,19 @@
 <template>
-  <div class='modalWrapper'>
-    <Modal
-      v-if='modalVisible'
-      :jobTitle='role'
-      :jobDescription='description'
-      :applicationLink='applicationLink'
-      :expiryDate='expiryDate'
-      :isPaidPosition='isPaidPosition'
-      :jobType='jobType'
-      :jobMode='jobMode'
-      :workingRights='workingRights'
-      :studentDemographic='studentDemographic'
-      :wamRequirements='wamRequirements'
-      :additionalInfo='additionalInfo'
-      @closeCallback='closeJobModal()'
-    />
-  </div>
+  <Modal
+    v-if='modalVisible'
+    :jobTitle='role'
+    :jobDescription='description'
+    :applicationLink='applicationLink'
+    :expiryDate='expiryDate'
+    :isPaidPosition='isPaidPosition'
+    :jobType='jobType'
+    :jobMode='jobMode'
+    :workingRights='workingRights'
+    :studentDemographic='studentDemographic'
+    :wamRequirements='wamRequirements'
+    :additionalInfo='additionalInfo'
+    @closeCallback='closeJobModal()'
+  />
   <br>
   <div>
     <button
@@ -48,29 +46,28 @@
         </p>
       </div>
       <div class='sm:flex mx-auto'>
-        <GreenStandardButton>
-          <Button @click.stop='approveJob' class='drop-shadow p-2 m-2'>
-            Approve
-          </Button>
-        </GreenStandardButton>
-        <RedStandardButton>
-          <Button @click.stop='rejectJob' class='drop-shadow p-2 m-2'>
-            Reject
-          </Button>
-        </RedStandardButton>
+        <button
+          class='btn btn-green w-36 h-10 p-2 my-2'
+          @click.stop='approveJob'
+        >
+          Approve
+        </button>
+        <button
+          class='btn btn-red w-36 h-10 p-2 my-2'
+          @click.stop='rejectJob'
+        >
+          Reject
+        </button>
       </div>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, onUnmounted, ref } from 'vue';
+import { defineProps, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
 import config from '@/config/config';
-import Button from '@/components/buttons/button.vue';
-import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
-import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
 import Modal from '@/components/Modal.vue';
 
 const router = useRouter();
@@ -158,10 +155,6 @@ const rejectJob = async () => {
   }
 };
 
-onUnmounted(() => {
-  close();
-});
-
 const showJobModal = async () => {
   modalVisible.value = true;
 };
@@ -172,14 +165,4 @@ const closeJobModal = async () => {
 </script>
 
 <style scoped lang="scss">
-.modalWrapper {
-  text-align: left;
-}
-.modalHeading {
-  font-size: 1.5rem;
-  font-weight: 1000;
-}
-.modalGroup {
-  padding: 0.5rem;
-}
 </style>

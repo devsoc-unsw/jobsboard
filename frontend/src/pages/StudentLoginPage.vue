@@ -71,14 +71,12 @@
           Company Login
         </router-link>
       </p>
-      <Button
-        type='submit'
-        class='bg-jb-textlink rounded-md w-40 h-11 my-4 p-2 text-white font-bold text-base
-               border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-        @click='performLogin()'
+      <button
+        class='btn btn-blue-filled w-40 h-11 my-4 p-2'
+        @click='performLogin'
       >
         Log In
-      </Button>
+      </button>
     </div>
   </StudentViewTemplate>
 </template>
@@ -90,7 +88,6 @@ import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
 import config from '@/config/config';
-import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const apiTokenStore = useApiTokenStore();
