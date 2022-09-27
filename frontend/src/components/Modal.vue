@@ -72,7 +72,7 @@
                 />
                 Application Expiry Date:&nbsp;
                 <span class='text-base leading-relaxed text-gray-500 dark:text-gray-400'>
-                  {{ expiryDate }}
+                  {{ new Date(expiryDate).toLocaleDateString() }}
                 </span>
               </h3>
               <h3 class='text-l font-medium text-gray-900 dark:text-white'>
