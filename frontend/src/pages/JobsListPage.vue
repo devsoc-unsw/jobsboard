@@ -40,7 +40,7 @@ import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import JobListingMinimal from '@/components/JobListingMinimal.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import InfiniteScrollTrigger from '@/components/InfiniteScrollTrigger.vue';
+import InfiniteScrollTrigger from '@/animations/InfiniteScrollTrigger.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import config from '@/config/config';
 

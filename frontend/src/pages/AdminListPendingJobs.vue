@@ -10,14 +10,16 @@
       </FadeTransition>
       <Breadcrumbs />
       <div class='w-11/12 max-w-2xl mx-auto'>
-        <h1>Pending Job Requests</h1>
-        <div v-if='jobs.length === 1'>
+        <h1 class='text-3xl text-jb-headings font-bold mt-0 mb-2 md:mt-10'>
+          Pending Job Requests
+        </h1>
+        <h3 v-if='jobs.length === 1' class='text-base text-jb-subheadings'>
           {{ jobs.length }} Pending Job
-        </div>
-        <div v-else>
+        </h3>
+        <h3 v-else class='text-base text-jb-subheadings'>
           {{ jobs.length }} Pending Jobs
-        </div>
-        <Loading v-if='isLoading'/>
+        </h3>
+        <TransitionLoading v-if='isLoading'/>
         <SingleJobManage
           v-for='(job, index) in jobs'
           :key='job.key'
@@ -55,7 +57,7 @@ import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Toast from '@/components/Toast.vue';
 import FadeTransition from '@/components/FadeTransition.vue';
-import Loading from '@/components/Loading.vue'
+import TransitionLoading from '@/animations/TransitionLoading.vue'
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
