@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class='flex flex-col min-h-full'>
+    <div class='flex flex-col relative min-h-full pb-72'>
       <div class='relative'>
         <Header class='header' />
       </div>
@@ -138,7 +138,7 @@
           />
         </div>
       </div>
-      <NewFooter />
+      <Footer />
     </div>
   </main>
 </template>
@@ -150,7 +150,7 @@ import { useApiTokenStore } from '@/store/apiToken';
 import Blob from '@/assets/misc/Blob.svg';
 import CsesocLogoSmall from '@/assets/logos/CsesocLogoSmall.svg';
 import Header from '@/components/Header.vue';
-import NewFooter from '@/components/NewFooter.vue';
+import Footer from '@/components/Footer.vue';
 import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
 

@@ -1,23 +1,10 @@
 <template>
   <div class='viewport'>
-    <!-- <div class="header" v-if="loggedIn">
-      <div class="logoutDiv">
-          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
-            Log Out
-        <br/>
-      </div>
-      <img class="main-logo" :src="logo" />
-    </div>
-    <div v-if="!loggedIn">
-      <img class="main-logo" :src="logo" />
-    </div> -->
     <Header />
     <div class='homeBox'>
       <slot />
     </div>
-    <div class='footer'>
-      <NewFooter />
-    </div>
+    <Footer />
   </div>
 </template>
 
@@ -25,7 +12,7 @@
 import { useApiTokenStore } from '@/store/apiToken';
 import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
-import NewFooter from '@/components/NewFooter.vue';
+import Footer from '@/components/Footer.vue';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
@@ -44,11 +31,6 @@ const logOut = () => {
 </script>
 
 <style lang="scss">
-div {
-  flex-direction: row;
-  color: $black;
-}
-
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
@@ -94,6 +76,9 @@ input, textarea {
     margin-bottom: 0;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 18rem;
   }
 }
 
@@ -113,11 +98,6 @@ input, textarea {
   padding: 2rem;
 }
 
-.footer {
-  margin-top: auto;
-  float: below;
-}
-
 .paddedIcon {
   padding-right: 0.75rem;
 }
@@ -128,6 +108,9 @@ input, textarea {
   margin-right: auto;
   padding: 0;
   width: 100%;
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 18rem;
 }
 .header {
   margin-top: 5rem;

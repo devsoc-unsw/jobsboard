@@ -8,7 +8,7 @@
         :isOpen='isAlertOpen'
         :handleClose='() => { isAlertOpen = false }'
       />
-      <div class='flex flex-row justify-center h-screen px-8'>
+      <div class='flex flex-row justify-center h-screen px-8 mb-10'>
         <div class='flex flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:hidden'>
           <h2
             class='font-bold text-xl text-jb-headings'
