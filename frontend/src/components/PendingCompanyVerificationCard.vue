@@ -3,7 +3,7 @@
     class='flex flex-col py-6 px-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105'
   >
     <div class='flex flex-row items-center'>
-      <img v-if='logo' :src='logo' alt='company logo' />
+      <img v-if='logo' class='h-12' :src='logo' alt='company logo' />
       <div class='flex flex-col text-left w-full truncate'>
         <h2 class='font-bold text-jb-headings text-xl'>
           {{ companyName }}
