@@ -2,20 +2,34 @@
   <LoggedInTemplate>
     <StudentViewTemplate>
       <Breadcrumbs />
-      <div style='display: flex; flex-direction: column; padding: 0 5rem 5rem 5rem;'>
+      <div style='display: flex; flex-direction: column; padding: 0 5rem 0 5rem;'>
         <h1 class='text-jb-headings font-bold text-3xl mt-10 mb-4'>
           Pending Company Verifications
         </h1>
         <p class='text-jb-subheadings mb-12'>
-          Please ensure that the company is legitimate before verifying.
+          <!-- todo: fix grandma -->
+          There are currently {{ companies.length }} pending verification.
         </p>
         <!-- insert cards here -->
         <PendingCompanyVerificationCard
           companyName='Google'
           location='Sydney'
-          description='is gud company'
+          description='is gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud company'
           :companyAccountID=1
         />
+        <PendingCompanyVerificationCard
+          companyName='Google'
+          location='Sydney'
+          description='is gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud company'
+          :companyAccountID=1
+        />
+        <PendingCompanyVerificationCard
+          companyName='Google'
+          location='Sydney'
+          description='is gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud companyis gud company'
+          :companyAccountID=1
+        />
+
       </div>
     </StudentViewTemplate>
   </LoggedInTemplate>

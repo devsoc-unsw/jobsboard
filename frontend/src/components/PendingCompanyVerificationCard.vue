@@ -1,16 +1,32 @@
 <template>
   <div
-    class='flex flex-row p-4 shadow-card rounded-md w-full sm:flex-wrap
+    class='flex flex-col p-4 mb-8 shadow-card rounded-md w-full sm:flex-wrap
         transform transition duration-200 hover:scale-105'
   >
     <div class='flex flex-col text-left'>
-      <h2>{{ companyName }}</h2>
-      <h2>{{ location }}</h2>
-      <h2>{{ description }}</h2>
+      <h2 class='font-bold text-jb-headings text-xl'>
+        {{ companyName }}
+      </h2>
+      <h3 class='text-jb-subheadings text-md'>
+        {{ location }}
+      </h3>
+      <div style='width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+        {{ description }}
+      </div>
     </div>
-    <div style='display: flex; flex-direction: column; margin-left: auto; justify-content: space-between'>
-      <button style='background-color: green; color: white'>approve</button>
-      <button style='background-color: red; color: white'>reject</button>
+    <div style='display: flex; flex-direction: row; margin: 0 auto; margin-top: 2rem;'>
+        <button
+          class='bg-jb-warning rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
+               shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
+        >
+          Reject
+        </button>
+        <button
+          class='bg-jb-textlink rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
+               shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
+        >
+          Approve
+        </button>
     </div>
   </div>
 </template>
