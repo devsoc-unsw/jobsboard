@@ -1,32 +1,28 @@
 <template>
   <div
-    class='flex flex-col p-4 mb-8 shadow-card rounded-md w-full sm:flex-wrap
+    class='flex flex-col py-6 px-8 mb-8 shadow-card rounded-md w-[75%] sm:flex-wrap
         transform transition duration-200 hover:scale-105'
   >
-    <div class='flex flex-col text-left'>
-      <h2 class='font-bold text-jb-headings text-xl'>
-        {{ companyName }}
-      </h2>
-      <h3 class='text-jb-subheadings text-md'>
-        {{ location }}
-      </h3>
-      <div style='width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
-        {{ description }}
+    <div style='display: flex; flex-direction: row; align-items: center'>
+      <img v-if='logo' :src='logo' alt='company logo' />
+      <div class='flex flex-col text-left' style='width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;'>
+        <h2 class='font-bold text-jb-headings text-xl'>
+          {{ companyName }}
+        </h2>
+        <h3 class='text-jb-subheadings text-lg'>
+          {{ location }}
+        </h3>
+        <div style='width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis'>
+          {{ description }}
+        </div>
       </div>
-    </div>
-    <div style='display: flex; flex-direction: row; margin: 0 auto; margin-top: 2rem;'>
-        <button
-          class='bg-jb-warning rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
-               shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-        >
-          Reject
-        </button>
-        <button
-          class='bg-jb-textlink rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
-               shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-        >
-          Approve
-        </button>
+      <button
+        class='bg-jb-accept-button rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
+              shadow-btn duration-200 ease-linear cursor-pointer hover:shadow-btn-hovered'
+        @click='verifyCompany'
+      >
+        Approve
+      </button>
     </div>
   </div>
 </template>
@@ -40,11 +36,13 @@ import { useApiTokenStore } from '@/store/apiToken';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
+const emit = defineEmits(['removePendingCompany', 'triggerAlert']);
 
 const props = defineProps({
   companyName: String,
   location: String,
   description: String,
+  logo: String,
   companyAccountID: Number,
 });
 
@@ -57,32 +55,26 @@ const verifyCompany = async () => {
     } as HeadersInit,
   });
 
-  // if (response.ok) {
-  //   const msg = await response.json();
-  //   apiTokenStore.setApiToken(msg.token);
-  //   success.value = true;
-  //   successMsg.value = 'Company successfully verified!';
-  //   close();
-  // } else {
-  //   error.value = true;
-  //   window.scrollTo(0, 10);
-  //   if (response.status === 401) {
-  //     errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
-  //     setTimeout(() => {
-  //       router.push('/login');
-  //     }, 3000);
-  //   } else {
-  //     errorMsg.value = 'Error in processing verification. Please try again later.';
-  //   }
-  // }
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    emit('removePendingCompany');
+    emit('triggerAlert', 'success', 'Company verfied!');
+  } else {
+    if (response.status === 401) {
+      emit(
+        'triggerAlert',
+        'error',
+        'You are not authorized to perform this action. Redirecting to login page.'
+      );
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
+    } else {
+      emit('triggerAlert', 'Error in processing verification. Please try again later.');
+    }
+  }
 };
-
-// function close() {
-//   setTimeout(() => {
-//     this.$destroy();
-//     this.$el.parentNode!.removeChild(this.$el);
-//   }, 5000);
-// }
 </script>
 
 <style scoped lang="scss">

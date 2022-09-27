@@ -19,6 +19,7 @@ module.exports = {
         'jb-background': '#f6f9fc',
         'jb-blue': '#2c8bf4',
         'jb-btn-hovered': '#1f7ade',
+        'jb-accept-button': '#388e3c',
       },
       colors: {
         'jb-headings': '#0c3149',
