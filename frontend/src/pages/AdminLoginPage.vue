@@ -57,8 +57,7 @@
       </div>
 
       <button
-        class='bg-jb-textlink rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
-               shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
+        class='btn btn-blue-filled w-28 h-11 p-2'
         @click='performAdminLogin'
       >
         Log In

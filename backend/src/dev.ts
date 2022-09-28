@@ -9,6 +9,65 @@ import { Job } from './entity/job';
 import { Statistics } from './entity/statistics';
 import Secrets from './secrets';
 import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from './types/job-field';
+import { AdminAccountInterface, CompanyAccountInterface } from './tests/test-types';
+import testdata from './tests/default_test_data.json';
+
+const CreateAdminAccounts = async (admins: AdminAccountInterface[]) => {
+  admins.forEach(async (admin) => {
+    const adminAccount = new AdminAccount();
+    adminAccount.username = admin.username;
+    adminAccount.hash = Secrets.hash(admin.password);
+    await AppDataSource.manager.save(adminAccount);
+  });
+};
+
+const ProcessCompanyAccounts = (companies: CompanyAccountInterface[]) => {
+  const res: Record<string, CompanyAccount> = {};
+  companies.forEach((company) => {
+    const companyAccount = new CompanyAccount();
+    companyAccount.username = company.username;
+    companyAccount.hash = Secrets.hash(company.password);
+    companyAccount.verified = company.verified;
+    const newCompany = new Company();
+    newCompany.name = company.name;
+    newCompany.location = company.location;
+    newCompany.jobs = [];
+    companyAccount.company = newCompany;
+    res[company.username] = companyAccount;
+  });
+  return res;
+};
+
+const ProcessNewJobs = (companyAccs: Record<string, CompanyAccount>) => {
+  testdata.jobs.forEach((job) => {
+    const newJob = new Job();
+    newJob.role = job.role;
+    newJob.description = job.description;
+    newJob.applicationLink = job.application_link;
+    newJob.approved = job.approved;
+    newJob.hidden = job.hidden;
+    newJob.mode = job.mode as JobMode;
+    newJob.studentDemographic = job.student_demographic as StudentDemographic[];
+    newJob.jobType = job.type as JobType;
+    newJob.workingRights = job.working_rights as WorkingRights[];
+    newJob.wamRequirements = job.wam_requirements as WamRequirements;
+    newJob.additionalInfo = job.additional_info;
+    newJob.isPaid = job.paid;
+    newJob.expiry = new Date(job.expiry);
+    companyAccs[job.company_username].company.jobs.push(newJob);
+  });
+};
+
+const CreateTestObjectsFromJSON = async () => {
+  await CreateAdminAccounts(testdata.admins);
+
+  const companyAccs = ProcessCompanyAccounts(testdata.companies);
+  ProcessNewJobs(companyAccs);
+
+  for (const companyUsername in companyAccs) {
+    await AppDataSource.manager.save(companyAccs[companyUsername]);
+  }
+};
 
 export async function seedDB(activeEntities: any[]) {
   Logger.Info('SEEDING DATABASE');
@@ -18,6 +77,7 @@ export async function seedDB(activeEntities: any[]) {
     await AppDataSource.synchronize(true);
   }
 
+  // The data below is used for backend testing. DO NOT REMOVE.
   // create dummy admin account
   const adminAccount = new AdminAccount();
   adminAccount.username = 'admin';
@@ -39,7 +99,7 @@ export async function seedDB(activeEntities: any[]) {
   job1.role = 'Software Engineer and Reliability';
   job1.description = 'Doing software engineer things and SRE things';
   job1.applicationLink = 'https://sampleapplication.link';
-  job1.approved = true;
+  job1.approved = false;
   job1.hidden = false;
   job1.company = company;
   job1.mode = JobMode.Remote;
@@ -55,7 +115,7 @@ export async function seedDB(activeEntities: any[]) {
   job2.role = 'Software Engineer';
   job2.description = 'Doing software engineer things';
   job2.applicationLink = 'mailto:example@example.com';
-  job2.approved = true;
+  job2.approved = false;
   job2.hidden = false;
   job2.company = company;
   job2.mode = JobMode.Remote;
@@ -71,7 +131,7 @@ export async function seedDB(activeEntities: any[]) {
   job3.role = 'Mechanical Engineer';
   job3.description = 'Doing mechanical engineer things';
   job3.applicationLink = 'https://sampleapplication.net';
-  job3.approved = true;
+  job3.approved = false;
   job3.company = company;
   job3.mode = JobMode.Hybrid;
   job3.studentDemographic = [StudentDemographic.FinalYear, StudentDemographic.Penultimate];
@@ -87,7 +147,7 @@ export async function seedDB(activeEntities: any[]) {
   job4.description = 'Computer science and software engineering are both degrees';
   job4.applicationLink = 'https://sampleapplicationlink.net';
   job4.company = company;
-  job4.approved = true;
+  job4.approved = false;
   job4.mode = JobMode.Remote;
   job4.studentDemographic = [StudentDemographic.All];
   job4.jobType = JobType.Intern;
@@ -95,7 +155,6 @@ export async function seedDB(activeEntities: any[]) {
   job4.wamRequirements = WamRequirements.HD;
   job4.additionalInfo = '';
   job4.isPaid = true;
-  job4.approved = true;
   job4.expiry = new Date('2030-01-10');
 
   const job5 = new Job();
@@ -103,7 +162,7 @@ export async function seedDB(activeEntities: any[]) {
   job5.description = 'React masters only';
   job5.applicationLink = 'https://sampleapplicationlink.net';
   job5.company = company;
-  job5.approved = true;
+  job5.approved = false;
   job5.expiry = new Date('2035-01-01');
   job5.mode = JobMode.Remote;
   job5.studentDemographic = [StudentDemographic.All];
@@ -118,7 +177,7 @@ export async function seedDB(activeEntities: any[]) {
   job6.description = 'Java is not poggers';
   job6.applicationLink = 'https://sampleapplicationlink.net';
   job6.company = company;
-  job6.approved = true;
+  job6.approved = false;
   job6.expiry = new Date('2030-01-10');
   job6.mode = JobMode.Remote;
   job6.studentDemographic = [StudentDemographic.All];
@@ -271,6 +330,8 @@ export async function seedDB(activeEntities: any[]) {
   stats1.year = 2000;
   stats1.numJobPosts = 7;
   await AppDataSource.manager.save(stats1);
+
+  await CreateTestObjectsFromJSON();
 
   Logger.Info('FINISHED SEEDING');
 }

@@ -39,11 +39,12 @@
         </label>
       </div>
 
-      <Button @callback='performCompanyPasswordForgot'>
-        <p class='p-4 text-white'>
-          Forgot Password
-        </p>
-      </Button>
+      <button
+        class='btn btn-blue-filled w-40 h-11 my-4 p-2'
+        @click='performCompanyPasswordForgot'
+      >
+        Forgot Password
+      </button>
 
       <div class='flex flex-row justify-evenly items-center pt-12 w-1/4 sm:flex-col xl:w-2/5 md:w-1/2'>
         <p class='flex flex-col text-jb-subheadings pb-0 sm:pb-4'>
@@ -76,7 +77,6 @@ import { useRoute } from 'vue-router';
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
-import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config

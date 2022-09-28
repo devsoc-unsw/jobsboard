@@ -65,7 +65,10 @@
             <span class='text-jb-textlink font-bold'> company is legitimate </span>
             before verifying.
           </p>
-          <Button @callback='() => { router.push(`/admin/companies/pending`) }'>
+          <button
+            class='btn btn-blue-filled h-14 p-4'
+            @click='() => { router.push(`/admin/companies/pending`) }'
+          >
             <font-awesome-icon
               icon='user-shield'
               class='text-white'
@@ -77,7 +80,7 @@
               icon='angle-right'
               class='text-white'
             />
-          </Button>
+          </button>
         </div>
 
         <!-- Job Verification -->
@@ -89,7 +92,10 @@
             Please ensure that all job posts complies with the
             <span class='text-jb-textlink font-bold'> Australian Fair Work Act 2009</span>.
           </p>
-          <Button @callback='() => { router.push(`/admin/jobs/pending`) }'>
+          <button
+            class='btn btn-blue-filled h-14 p-4'
+            @click='() => { router.push(`/admin/jobs/pending`) }'
+          >
             <font-awesome-icon
               icon='briefcase'
               class='text-white'
@@ -101,11 +107,11 @@
               icon='angle-right'
               class='text-white'
             />
-          </Button>
+          </button>
         </div>
 
         <!-- Post Job as Company -->
-        <div class='flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card'>
+        <div class='flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card mb-10'>
           <h3 class='text-2xl font-bold text-jb-headings'>
             Post job as Company
           </h3>
@@ -114,7 +120,10 @@
             <span class='text-jb-textlink font-bold'> post on behalf of a company</span>.
             Ensure that you have their explicit permission before doing so.
           </p>
-          <Button @callback='() => { router.push(`/admin/jobs/post`) }'>
+          <button
+            class='btn btn-blue-filled h-14 p-4'
+            @click='() => { router.push(`/admin/jobs/post`) }'
+          >
             <font-awesome-icon
               icon='briefcase'
               class='text-white'
@@ -126,7 +135,7 @@
               icon='angle-right'
               class='text-white'
             />
-          </Button>
+          </button>
         </div>
       </div>
     </StudentViewTemplate>
@@ -139,7 +148,6 @@ import { useRoute, useRouter } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import config from '@/config/config';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import Button from '@/components/buttons/button.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { useApiTokenStore } from '@/store/apiToken';
