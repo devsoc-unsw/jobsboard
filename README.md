@@ -58,6 +58,8 @@ Navigate to the `/backend` folder and create a `.env` file with the following co
 
 > *To view which containers you would like to build/start, refer to `/docker-compose.yml`*
 
+>*When developing locally, always remember to change the `apiRoot` in `frontend/src/config/config.ts` to `localhost`. When pr is ready for submission, change it back to the production or staging `apiRoot`*
+
 ### Pushing
 Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
 

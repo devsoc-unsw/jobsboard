@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class='flex flex-col min-h-full'>
+    <div class='flex flex-col relative min-h-full pb-72'>
       <div class='relative'>
         <Header class='header' />
       </div>
@@ -35,12 +35,14 @@
           <button
             class='bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-0 mr-6
                     hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:mt-2'
+            @click='() => router.push("/login/student")'
           >
             Explore
           </button>
           <button
             class='bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8 mt-0 mr-6
                     hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg sm:mt-2'
+            @click='() => router.push("/login/company")'
           >
             Advertise
           </button>
@@ -93,7 +95,7 @@
             <button
               class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
                      shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-              @click='companyRegister'
+              @click='() => router.push("/signup/company")'
             >
               Join Us
             </button>
@@ -102,6 +104,7 @@
             <button
               class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 mb-0 sm:mb-10
                      shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
+              @click='() => router.push("/login/company")'
             >
               Post a Job
             </button>
@@ -135,7 +138,7 @@
           />
         </div>
       </div>
-      <NewFooter />
+      <Footer />
     </div>
   </main>
 </template>
@@ -147,7 +150,7 @@ import { useApiTokenStore } from '@/store/apiToken';
 import Blob from '@/assets/misc/Blob.svg';
 import CsesocLogoSmall from '@/assets/logos/CsesocLogoSmall.svg';
 import Header from '@/components/Header.vue';
-import NewFooter from '@/components/NewFooter.vue';
+import Footer from '@/components/Footer.vue';
 import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
 
@@ -168,10 +171,6 @@ const scrollToTop = () => {
     top: 0,
     behavior: 'smooth',
   });
-};
-
-const companyRegister = () => {
-  router.push('/signup/company');
 };
 
 const toGithubRepo = () => {

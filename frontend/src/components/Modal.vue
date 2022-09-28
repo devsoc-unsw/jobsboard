@@ -9,7 +9,7 @@
     >
       <div class='flex p-4 w-full max-w-3xl m-auto h-full'>
         <!-- Modal content -->
-        <div class='relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[80%] my-auto'>
+        <div class='relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[80%] my-auto overflow-scroll'>
           <!-- Modal header -->
           <div class='flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600'>
             <h2 class='text-xl font-medium text-gray-900 dark:text-white'>
