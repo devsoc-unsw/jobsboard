@@ -13,17 +13,19 @@
       </p>
     </ErrorBox>
     <h1>Jobs for UNSW CSE Students</h1>
-    <div class='buttonBox'>
-      <StandardButton>
-        <Button @callback='toStudentLogin'>
-          Student
-        </Button>
-      </StandardButton>
-      <StandardButton>
-        <Button @callback='toCompanyLogin'>
-          Company
-        </Button>
-      </StandardButton>
+    <div class='flex justify-around max-w-sm mx-auto my-8'>
+      <button
+        class='btn btn-blue-filled w-40 h-11 p-2'
+        @click='toStudentLogin'
+      >
+        Student
+      </button>
+      <button
+        class='btn btn-blue-filled w-40 h-11 p-2'
+        @click='toCompanyLogin'
+      >
+        Company
+      </button>
     </div>
   </StudentViewTemplate>
 </template>
@@ -31,10 +33,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
-import Button from '@/components/buttons/button.vue';
-import StandardButton from '@/components/buttons/StandardButton.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 
 const router = useRouter();
