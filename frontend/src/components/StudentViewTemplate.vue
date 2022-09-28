@@ -6,10 +6,8 @@
         <div class='contentWidth'>
           <slot />
         </div>
-        <div class='footer'>
-          <NewFooter />
-        </div>
       </div>
+      <Footer />
     </div>
   </div>
 </template>
@@ -18,7 +16,7 @@
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
-import NewFooter from '@/components/NewFooter.vue';
+import Footer from '@/components/Footer.vue';
 import { useApiTokenStore } from '@/store/apiToken';
 
 const router = useRouter();
@@ -57,7 +55,9 @@ onMounted(async () => {
 .stretchyPage {
   display: flex;
   flex-flow: column;
-  min-height: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 18rem;
 }
 
 .navButtons {

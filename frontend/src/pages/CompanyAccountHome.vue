@@ -62,10 +62,16 @@
       <div>
         <h1>Welcome!</h1>
         <div class='buttonBox'>
-          <button @callback='() => router.push(`/company/jobs/add`)'>
+          <button
+            class='btn btn-blue w-40 h-11 p-2 my-4'
+            @click='() => router.push(`/company/jobs/add`)'
+          >
             Post Jobs
           </button>
-          <button @callback='() => router.push(`/company/jobs/manage`)'>
+          <button
+            class='btn btn-blue w-40 h-11 p-2 my-4'
+            @click='() => router.push(`/company/jobs/manage`)'
+          >
             Manage Jobs
           </button>
         </div>

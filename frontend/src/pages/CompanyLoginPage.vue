@@ -92,14 +92,12 @@
         </router-link>
       </p>
 
-      <Button
-        type='submit'
-        class='bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base
-               border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-        @click='performCompanyLogin()'
+      <button
+        class='btn btn-blue-filled w-40 h-11 p-2'
+        @click='performCompanyLogin'
       >
         Log In
-      </Button>
+      </button>
     </div>
   </StudentViewTemplate>
 </template>
@@ -109,7 +107,6 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
-import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Alert from '@/components/Alert.vue';
 
