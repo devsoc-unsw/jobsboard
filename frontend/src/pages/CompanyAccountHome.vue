@@ -5,16 +5,18 @@
       <div>
         <h1>Welcome!</h1>
         <div class='buttonBox'>
-          <StandardButton>
-            <Button @callback='goToCompanyJobAdd'>
-              Post Jobs
-            </Button>
-          </StandardButton>
-          <StandardButton>
-            <Button @callback='goToCompanyManageJobs'>
-              Manage Jobs
-            </Button>
-          </StandardButton>
+          <button
+            class='btn btn-blue w-40 h-11 p-2 my-4'
+            @click='goToCompanyJobAdd'
+          >
+            Post Jobs
+          </button>
+          <button
+            class='btn btn-blue w-40 h-11 p-2 my-4'
+            @click='goToCompanyManageJobs'
+          >
+            Manage Jobs
+          </button>
         </div>
       </div>
     </StudentViewTemplate>
@@ -26,8 +28,6 @@ import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import Button from '@/components/buttons/button.vue';
-import StandardButton from '@/components/buttons/StandardButton.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const router = useRouter();

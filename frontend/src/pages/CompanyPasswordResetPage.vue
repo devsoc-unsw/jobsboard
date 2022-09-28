@@ -61,14 +61,12 @@
         </label>
       </div>
 
-      <Button
-        class='mt-3'
-        @callback='performCompanyPasswordReset()'
+      <button
+        class='btn btn-blue-filled w-40 h-11 my-4 p-2'
+        @click='performCompanyPasswordReset'
       >
-        <p class='p-4 text-white'>
-          Reset Password
-        </p>
-      </Button>
+        Reset Password
+      </button>
     </main>
   </StudentViewTemplate>
 </template>
@@ -79,7 +77,6 @@ import { useRoute, useRouter } from 'vue-router';
 
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
-import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
