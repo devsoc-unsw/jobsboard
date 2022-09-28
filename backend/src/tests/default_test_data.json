@@ -67,7 +67,7 @@
       "mode": "hybrid",
       "student_demographic": ["final_year"],
       "type": "grad",
-      "working_rights": ["aus_stud_visa, nz_ctz_and_perm_res"],
+      "working_rights": ["aus_stud_visa", "nz_ctz_and_perm_res"],
       "wam_requirements": "D",
       "additional_info": "Lorem ipsum 🤪  dolor sit amet, consectetur adipiscing elit.",
       "paid": true,
