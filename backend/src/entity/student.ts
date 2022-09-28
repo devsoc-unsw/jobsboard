@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Student {
@@ -8,7 +8,7 @@ export class Student {
   @Column({ unique: true })
   public zID: string;
 
-  @Column({ type: "text", default: "no token set" })
+  @Column({ type: 'text', default: 'no token set' })
   public latestValidToken: string;
 
   @CreateDateColumn()

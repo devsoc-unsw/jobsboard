@@ -6,8 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
-} from "typeorm";
-import { Company } from "./company";
+} from 'typeorm';
+import { Company } from './company';
 
 @Entity()
 export class CompanyAccount {
@@ -20,9 +20,9 @@ export class CompanyAccount {
   @Column()
   public hash: string;
 
-  @OneToOne((_) => Company, company => company.companyAccount, {
+  @OneToOne((_) => Company, (company) => company.companyAccount, {
     cascade: true,
-    onDelete: "CASCADE",
+    onDelete: 'CASCADE',
   })
   @JoinColumn()
   public company: Company;
@@ -32,10 +32,10 @@ export class CompanyAccount {
   })
   public verified: boolean;
 
-  @Column({ type: "text", default: "no token set" })
+  @Column({ type: 'text', default: 'no token set' })
   public latestValidToken: string;
 
-  @Column({ type: "text", default: "no token set" })
+  @Column({ type: 'text', default: 'no token set' })
   public latestValidResetToken: string;
 
   @CreateDateColumn()

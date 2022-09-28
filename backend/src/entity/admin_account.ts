@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class AdminAccount {
@@ -11,7 +11,7 @@ export class AdminAccount {
   @Column()
   public hash: string;
 
-  @Column({ type: "text", default: "no token set" })
+  @Column({ type: 'text', default: 'no token set' })
   public latestValidToken: string;
 
   @CreateDateColumn()

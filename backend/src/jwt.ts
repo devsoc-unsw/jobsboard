@@ -1,4 +1,4 @@
-import Secrets from "./secrets";
+import Secrets from './secrets';
 
 export default class JWT {
   public static create(raw: object): string {
