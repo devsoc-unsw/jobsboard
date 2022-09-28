@@ -36,7 +36,7 @@
           :description='job.description'
           :applicationLink='job.applicationLink'
           :expiryDate='job.expiry'
-          :isPaidPosition='job.isPaid.toString()'
+          :isPaidPosition='job.isPaid'
           :jobType='job.jobType'
           :jobMode='job.mode'
           :workingRights='job.workingRights'
