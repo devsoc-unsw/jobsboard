@@ -55,9 +55,7 @@ onMounted(async () => {
 .stretchyPage {
   display: flex;
   flex-flow: column;
-  min-height: 100vh;
-  position: relative;
-  padding-bottom: 18rem;
+  min-height: 100%;
 }
 
 .navButtons {

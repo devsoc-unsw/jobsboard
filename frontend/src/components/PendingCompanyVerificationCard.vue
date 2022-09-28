@@ -5,10 +5,10 @@
     <div class='flex flex-row items-center'>
       <img v-if='logo' class='h-12' :src='logo' alt='company logo' />
       <div class='flex flex-col text-left w-full truncate'>
-        <h2 class='font-bold text-jb-headings text-xl'>
+        <h2 class='font-bold text-jb-headings text-xl truncate'>
           {{ companyName }}
         </h2>
-        <h3 class='text-jb-subheadings text-lg'>
+        <h3 class='text-jb-subheadings text-lg truncate'>
           {{ location }}
         </h3>
         <div class='w-4/5 truncate'>
