@@ -29,6 +29,10 @@ module.exports = {
         'jb-textlink-hovered': '#1f7ade',
         'jb-tags': '#ebecf0',
         'jb-warning': '#ec3c2a',
+        'jb-blue': '#3a76f8',
+        'jb-green': '#259e3b',
+        'jb-red': '#eb5837',
+        'jb-dark-blue': '#0743c5',
       },
       rotate: {
         '220': '220deg'

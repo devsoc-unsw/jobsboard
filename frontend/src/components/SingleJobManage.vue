@@ -1,110 +1,96 @@
 <template>
-  <div ref='jobCard'>
-    <div v-if='success'>
-      <br>
-      <SuccessBox>
-        {{ successMsg }}
-      </SuccessBox>
-    </div>
-    <div v-if='error'>
-      <br>
-      <ErrorBox>
-        {{ errorMsg }}
-      </ErrorBox>
-    </div>
-    <div class='modalWrapper'>
-      <Modal
-        v-if='modalVisible'
-        @closeCallback='closeJobModal()'
-      >
-        <div class='modalGroup'>
-          <div class='modalHeading'>
-            Role:
-          </div>
-          {{ props.role }}
-        </div>
-
-        <div class='modalGroup'>
-          <div class='modalHeading'>
-            Job Description:
-          </div>
-          <JobDescriptionView :description='description' />
-        </div>
-        <div class='modalGroup'>
-          <div class='modalHeading'>
-            Application Link:
-          </div>
-          <a :href='applicationLink'>
-            {{ props.applicationLink }}
-          </a>
-        </div>
-      </Modal>
-    </div>
+  <div>
+    <Modal
+      v-if='modalVisible'
+      :jobTitle='role'
+      :jobDescription='description'
+      :applicationLink='applicationLink'
+      :expiryDate='expiryDate'
+      :isPaidPosition='isPaidPosition'
+      :jobType='jobType'
+      :jobMode='jobMode'
+      :workingRights='workingRights'
+      :studentDemographic='studentDemographic'
+      :wamRequirements='wamRequirements'
+      :additionalInfo='additionalInfo'
+      @closeCallback='closeJobModal()'
+    />
     <br>
-    <div v-if='!success'>
-      <JobListingMinimal
-        :jobID='jobID'
-        :role='role'
-        :company='company'
-        :description='description'
-        :actAsLink='actAsLink'
+    <div>
+      <button
+        class='flex flex-row p-4 shadow-card rounded-md w-full sm:flex-wrap
+        transform transition duration-200 hover:scale-105 bg-white'
+        @click='showJobModal'
       >
-        <StandardButton>
-          <Button @callback='showJobModal'>
-            Preview
-          </Button>
-        </StandardButton>
-        <GreenStandardButton>
-          <Button @callback='approveJob'>
+        <!-- TODO: to be replaced with company logo -->
+        <img
+          src='../assets/companies/googleLogo.png'
+          class='h-auto max-w-[100px] max-h-[90px] mr-8 self-center'
+        >
+        <div class='flex flex-col text-left pt-3 grow min-w-[200px]'>
+          <h2 class='font-bold text-jb-headings'>
+            {{ role }}
+          </h2>
+          <p>
+            <font-awesome-icon
+              icon='building'
+              class='h-4 mr-1'
+            />
+            {{ company }}
+          </p>
+          <p>
+            <font-awesome-icon
+              icon='location-dot'
+              class='h-4 mr-1'
+            />
+            {{ location }}
+          </p>
+        </div>
+        <div class='sm:flex mx-auto'>
+          <button
+            class='btn btn-green w-36 h-10 p-2 my-2'
+            @click.stop='approveJob'
+          >
             Approve
-          </Button>
-        </GreenStandardButton>
-        <RedStandardButton>
-          <Button @callback='rejectJob'>
+          </button>
+          <button
+            class='btn btn-red w-36 h-10 p-2 my-2'
+            @click.stop='rejectJob'
+          >
             Reject
-          </Button>
-        </RedStandardButton>
-      </JobListingMinimal>
+          </button>
+        </div>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineProps, onUnmounted, ref } from 'vue';
+  import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import JobListingMinimal from '@/components/JobListingMinimal.vue';
-import SuccessBox from '@/components/SuccessBox.vue';
-import ErrorBox from '@/components/ErrorBox.vue';
 import config from '@/config/config';
-import Button from '@/components/buttons/button.vue';
-import StandardButton from '@/components/buttons/StandardButton.vue';
-import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
-import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
 import Modal from '@/components/Modal.vue';
-import JobDescriptionView from '@/components/JobDescriptionView.vue';
-
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
-
 const props = defineProps({
-  role: String,
   company: String,
-  description: String,
+  location: String,
   jobID: Number,
+  role: String,
+  description: String,
   applicationLink: String,
+  expiryDate: String,
+  isPaidPosition: String,
+  jobType: String,
+  jobMode: String,
+  workingRights: Array,
+  studentDemographic: Array,
+  wamRequirements: String,
+  additionalInfo: String,
 });
-
-const success = ref<boolean>(false);
-const successMsg = ref<string>('');
-const error = ref<boolean>(false);
-const errorMsg = ref<string>('');
-const actAsLink = ref<boolean>(false);
 const modalVisible = ref<boolean>(false);
-const modalContent = ref<string>('');
-
-const jobCard = ref(null);
-
+const emit = defineEmits(['removePendingJob', 'successMsg', 'errorMsg']);
 const approveJob = async () => {
   const response = await fetch(
     `${config.apiRoot}/job/${props.jobID}/approve`,
@@ -116,28 +102,25 @@ const approveJob = async () => {
       } as HeadersInit,
     },
   );
-
   if (response.ok) {
     const msg = await response.json();
     apiTokenStore.setApiToken(msg.token);
-    success.value = true;
-    successMsg.value = 'Job successfully approved!';
-    error.value = false;
-    close();
+    emit('removePendingJob');
+    emit('successMsg', 'Job successfully approved!');
+    emit('errorMsg', '');
   } else {
-    error.value = true;
     window.scrollTo(0, 10);
     if (response.status === 401) {
-      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      emit('errorMsg', 'You are not authorized to perform this action. Redirecting to login page.');
+      emit('successMsg', '');
       setTimeout(() => {
         router.push('/login');
       }, 3000);
     } else {
-      errorMsg.value = 'Error in processing approval. Please try again later.';
+      emit('errorMsg', 'Error in processing approval. Please try again later.');
     }
   }
 };
-
 const rejectJob = async () => {
   const response = await fetch(
     `${config.apiRoot}/job/${props.jobID}/reject`,
@@ -149,58 +132,29 @@ const rejectJob = async () => {
       } as HeadersInit,
     },
   );
-
   if (response.ok) {
     const msg = await response.json();
     apiTokenStore.setApiToken(msg.token);
-    success.value = true;
-    successMsg.value = 'Job successfully rejected!';
-    error.value = false;
-    close();
+    emit('removePendingJob');
+    emit('successMsg', 'Job successfully rejected!');
   } else {
-    error.value = true;
     if (response.status === 401) {
-      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      emit('errorMsg', 'You are not authorized to perform this action. Redirecting to login page.');
       setTimeout(() => {
         router.push('/login');
       }, 3000);
     } else {
-      errorMsg.value = 'Error in processing rejection. Please try again later.';
+      emit('errorMsg', 'Error in processing rejection. Please try again later.');
     }
   }
 };
-
-onUnmounted(() => {
-  close();
-});
-
-// function close() {
-//   setTimeout(() => {
-//     this.$destroy();
-//     this.$el.parentNode!.removeChild(this.$el);
-//   }, 5000);
-// }
-
 const showJobModal = async () => {
   modalVisible.value = true;
-  modalContent.value = 'Test.';
 };
-
 const closeJobModal = async () => {
   modalVisible.value = false;
-  modalContent.value = '';
 };
 </script>
 
 <style scoped lang="scss">
-.modalWrapper {
-  text-align: left;
-}
-.modalHeading {
-  font-size: 1.5rem;
-  font-weight: 1000;
-}
-.modalGroup {
-  padding: 0.5rem;
-}
 </style>
