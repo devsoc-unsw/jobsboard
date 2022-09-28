@@ -66,3 +66,12 @@ Log in to your preferred container registry via command line and run `docker-com
 ### API Docs
 After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/). 
 When adding, modifying or removing routes from `backend/src/index.ts`, update the documentation at `backend/src/docs/openapi.json` accordingly to by following the existing format.
+
+### Code Style & Linting
+#### Frontend
+
+#### Backend
+- Run `yarn run lint` to see both style and linting issues in `.ts` files within the `backend` directory at once **(recommended)**
+- Run `yarn run lint:fix` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
+- Run `yarn run prettier` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
+- Run `yarn run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier`
