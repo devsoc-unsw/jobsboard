@@ -1,14 +1,15 @@
 <template>
   <LoggedInTemplate>
     <StudentViewTemplate>
+      <FadeTransition>
+        <Toast
+          v-if='isToastOpen'
+          :isSuccess='toastType === "success"'
+          :message='toastMsg'
+        />
+      </FadeTransition>
       <Breadcrumbs />
       <div class='flex flex-col px-8 items-center'>
-        <Alert
-          :alertType='alertType'
-          :alertMsg='alertMsg'
-          :isOpen='isAlertOpen'
-          :handleClose='() => { isAlertOpen = false }'
-        />
         <h1 class='text-jb-headings font-bold text-3xl mt-10 mb-4'>
           Pending Company Verifications
         </h1>
@@ -36,7 +37,8 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import Alert from '@/components/Alert.vue';
+import Toast from '@/components/Toast.vue';
+import FadeTransition from '@/components/FadeTransition.vue';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import PendingCompanyVerificationCard from '@/components/PendingCompanyVerificationCard.vue';
 import config from '@/config/config';
@@ -46,9 +48,9 @@ import Breadcrumbs from '@/components/Breadcrumbs.vue';
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
-const alertType = ref<string>('');
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
+const toastType = ref<string>('');
+const toastMsg = ref<string>('');
+const isToastOpen = ref<boolean>(false);
 
 const companies = ref<any>([]);
 
@@ -57,10 +59,11 @@ const removePendingCompany = (index: Number) => {
 };
 
 const triggerAlert = (type: string, msg: string) => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  alertType.value = type;
-  alertMsg.value = msg;
-  isAlertOpen.value = true;
+  // window.scrollTo({ top: 0, behavior: 'smooth' });
+  toastType.value = type;
+  toastMsg.value = msg;
+  isToastOpen.value = true;
+  setTimeout(() => { isToastOpen.value = false }, 3000);
 }
 
 onMounted(async () => {
@@ -83,17 +86,16 @@ onMounted(async () => {
     apiTokenStore.setApiToken(msg.token);
     companies.value = msg.pendingCompanyVerifications;
   } else {
-    alertType.value = 'error';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toastType.value = 'error';
     if (response.status === 401) {
-      alertMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
-      isAlertOpen.value = true;
+      toastMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      isToastOpen.value = true;
       setTimeout(() => {
         router.push('/login');
       }, 3000);
     } else {
-      alertMsg.value = 'Failed to get pending companies.';
-      isAlertOpen.value = true;
+      toastMsg.value = 'Failed to get pending companies.';
+      isToastOpen.value = true;
     }
   }
 });

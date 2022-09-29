@@ -70,7 +70,7 @@ const verifyCompany = async () => {
         router.push('/login');
       }, 3000);
     } else {
-      emit('triggerAlert', 'Error in processing verification. Please try again later.');
+      emit('triggerAlert', 'error', 'Error in processing verification. Please try again later.');
     }
   }
 };
