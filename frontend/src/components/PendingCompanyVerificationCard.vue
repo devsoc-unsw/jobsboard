@@ -1,6 +1,7 @@
 <template>
   <div
-    class='flex flex-col py-6 px-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105'
+    class='flex flex-col p-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105 cursor-pointer'
+    @click='$emit("triggerModal", companyName, location, description)'
   >
     <div class='flex flex-row items-center'>
       <img v-if='logo' class='h-12' :src='logo' alt='company logo' />
@@ -11,14 +12,11 @@
         <h3 class='text-jb-subheadings text-lg truncate'>
           {{ location }}
         </h3>
-        <div class='w-4/5 truncate'>
-          {{ description }}
-        </div>
       </div>
       <button
         class='bg-jb-accept-button rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
               shadow-btn duration-200 ease-linear cursor-pointer hover:shadow-btn-hovered'
-        @click='verifyCompany'
+        @click.stop='verifyCompany'
       >
         Approve
       </button>
@@ -35,7 +33,7 @@ import { useApiTokenStore } from '@/store/apiToken';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
-const emit = defineEmits(['removePendingCompany', 'triggerAlert']);
+const emit = defineEmits(['removePendingCompany', 'triggerAlert', 'triggerModal']);
 
 const props = defineProps({
   companyName: String,

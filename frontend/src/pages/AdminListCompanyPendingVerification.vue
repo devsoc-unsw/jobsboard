@@ -9,6 +9,49 @@
         />
       </FadeTransition>
       <Breadcrumbs />
+      <div v-if='isModalShown'>
+        <!-- Modal backdrop -->
+        <div class='opacity-25 fixed inset-0 z-40 bg-black' />
+        <!-- Modal -->
+        <div
+          tabindex='-1'
+          class='overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'
+        >
+          <div class='relative p-4 w-1/2 mx-auto max-w-full'>
+            <!-- Modal content -->
+            <div class='relative bg-white rounded-lg bg-gray-700'>
+              <!-- Modal header -->
+              <div class='flex flex-col justify-between items-left p-5 rounded-t border-b border-gray-600'>
+                <h2 class='text-xl font-medium text-white text-left mb-4'>
+                  {{ currentCompanyShown }}
+                </h2>
+                <div class='flex flex-row items-center'>
+                  <font-awesome-icon
+                    icon='location-dot'
+                    class='h-4 mr-4 text-white'
+                  />
+                  <h3 class='text-lg font-medium text-white text-left'>
+                    {{ currentCompanyLocation }}
+                  </h3>
+                </div>
+              </div>
+              <!-- Modal body -->
+              <div class='flex w-full p-6 text-white'>
+                <p v-html='currentCompanyDescription' />
+              </div>
+              <!-- Modal footer -->
+              <div class='flex flex-row justify-end p-6 space-x-2 rounded-b border-t border-gray-600'>
+                <button
+                  class='bg-jb-textlink rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered'
+                  @click='() => isModalShown = false'
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class='flex flex-col px-8 items-center'>
         <h1 class='text-jb-headings font-bold text-3xl mt-10 mb-4'>
           Pending Company Verifications
@@ -27,6 +70,7 @@
           :logo='company.company.logo'
           @removePendingCompany='removePendingCompany(index)'
           @triggerAlert='triggerAlert'
+          @triggerModal='triggerModal'
         />
       </div>
     </StudentViewTemplate>
@@ -52,6 +96,11 @@ const toastType = ref<string>('');
 const toastMsg = ref<string>('');
 const isToastOpen = ref<boolean>(false);
 
+const isModalShown = ref<boolean>(false);
+const currentCompanyShown = ref<string>('');
+const currentCompanyLocation = ref<string>('');
+const currentCompanyDescription = ref<string>('');
+
 const companies = ref<any>([]);
 
 const removePendingCompany = (index: Number) => {
@@ -64,7 +113,14 @@ const triggerAlert = (type: string, msg: string) => {
   toastMsg.value = msg;
   isToastOpen.value = true;
   setTimeout(() => { isToastOpen.value = false }, 3000);
-}
+};
+
+const triggerModal = (companyName: string, location: string, companyDescription: string) => {
+  isModalShown.value = true;
+  currentCompanyShown.value = companyName;
+  currentCompanyLocation.value = location;
+  currentCompanyDescription.value = companyDescription;
+};
 
 onMounted(async () => {
   // Change the page title
