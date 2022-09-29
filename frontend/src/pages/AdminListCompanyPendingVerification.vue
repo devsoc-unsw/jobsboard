@@ -57,7 +57,7 @@
           Pending Company Verifications
         </h1>
         <p class='text-jb-subheadings mb-12'>
-          There {{ companies.length === 1 ? 'is': 'are' }} 
+          There {{ companies.length === 1 ? 'is': 'are' }}
           currently {{ companies.length }} pending verification(s).
         </p>
         <PendingCompanyVerificationCard
@@ -103,7 +103,7 @@ const currentCompanyDescription = ref<string>('');
 
 const companies = ref<any>([]);
 
-const removePendingCompany = (index: Number) => {
+const removePendingCompany = (index: number) => {
   companies.value.splice(index, 1);
 };
 
@@ -112,7 +112,7 @@ const triggerAlert = (type: string, msg: string) => {
   toastType.value = type;
   toastMsg.value = msg;
   isToastOpen.value = true;
-  setTimeout(() => { isToastOpen.value = false }, 3000);
+  setTimeout(() => { isToastOpen.value = false; }, 3000);
 };
 
 const triggerModal = (companyName: string, location: string, companyDescription: string) => {

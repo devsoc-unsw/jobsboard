@@ -4,7 +4,12 @@
     @click='$emit("triggerModal", companyName, location, description)'
   >
     <div class='flex flex-row items-center'>
-      <img v-if='logo' class='h-12' :src='logo' alt='company logo' />
+      <img
+        v-if='logo'
+        class='h-12'
+        :src='logo'
+        alt='company logo'
+      />
       <div class='flex flex-col text-left w-full truncate'>
         <h2 class='font-bold text-jb-headings text-xl truncate'>
           {{ companyName }}
@@ -62,7 +67,7 @@ const verifyCompany = async () => {
       emit(
         'triggerAlert',
         'error',
-        'You are not authorized to perform this action. Redirecting to login page.'
+        'You are not authorized to perform this action. Redirecting to login page.',
       );
       setTimeout(() => {
         router.push('/login');
