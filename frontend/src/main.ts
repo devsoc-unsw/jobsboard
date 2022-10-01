@@ -21,6 +21,9 @@ import {
   faAddressCard,
   faUser,
   faCircleInfo,
+  faBars,
+  faUserGroup,
+  faTrashAlt,
   faBell,
   faXmark,
   faLocationDot,
@@ -28,6 +31,7 @@ import {
   faAngleRight,
   faBriefcase,
   faHouse,
+  faPlus,
   faCloudUpload,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -54,6 +58,10 @@ library.add(faLink as IconDefinition);
 library.add(faAddressCard as IconDefinition);
 library.add(faUser as IconDefinition);
 library.add(faCircleInfo as IconDefinition);
+library.add(faBars as IconDefinition);
+library.add(faUserGroup as IconDefinition);
+library.add(faLocationDot as IconDefinition);
+library.add(faTrashAlt as IconDefinition);
 library.add(faBell as IconDefinition);
 library.add(faXmark as IconDefinition);
 library.add(faLocationDot as IconDefinition);
@@ -61,6 +69,7 @@ library.add(faUserShield as IconDefinition);
 library.add(faAngleRight as IconDefinition);
 library.add(faBriefcase as IconDefinition);
 library.add(faHouse as IconDefinition);
+library.add(faPlus as IconDefinition);
 library.add(faCloudUpload as IconDefinition);
 
 const app = createApp(App);
