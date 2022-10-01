@@ -76,9 +76,6 @@ input, textarea {
     margin-bottom: 0;
     margin-left: auto;
     margin-right: auto;
-    position: relative;
-    min-height: 100vh;
-    padding-bottom: 18rem;
   }
 }
 
@@ -108,9 +105,6 @@ input, textarea {
   margin-right: auto;
   padding: 0;
   width: 100%;
-  position: relative;
-  min-height: 100vh;
-  padding-bottom: 18rem;
 }
 .header {
   margin-top: 5rem;
