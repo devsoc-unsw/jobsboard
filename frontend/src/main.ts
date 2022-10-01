@@ -27,7 +27,8 @@ import {
   faUserShield,
   faAngleRight,
   faBriefcase,
-  faHouse
+  faHouse,
+  faCloudUpload,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -60,6 +61,7 @@ library.add(faUserShield as IconDefinition);
 library.add(faAngleRight as IconDefinition);
 library.add(faBriefcase as IconDefinition);
 library.add(faHouse as IconDefinition);
+library.add(faCloudUpload as IconDefinition);
 
 const app = createApp(App);
 app.use(router);

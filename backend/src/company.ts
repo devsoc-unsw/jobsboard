@@ -760,6 +760,72 @@ export default class CompanyFunctions {
       next,
     );
   }
+  
+  public static async UploadLogo(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+
+      const companyAccountID = req.companyAccountID;
+      
+      // check if the required parameters are provided
+      Helpers.requireParameters(companyAccountID);
+      Helpers.requireParameters(req.body.logo);
+  
+      Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
+  
+      await AppDataSource
+        .createQueryBuilder()
+        .update(Company)
+        .set({ 
+          logo: req.body.logo
+        })
+        .where("id = :id", { id: companyAccountID })
+        .execute()
+      
+      Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
+      
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+    
+  };
+
+  public static async GetCompanyLogoStatus(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      const companyLogo = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource.getRepository(Company)
+          .createQueryBuilder()
+          .select(["Company.logo"])
+          .where("Company.id = :id", { id: parseInt(req.companyAccountID, 10) })
+          .getOne();
+      }, `Failed to find logo for COMPANY=${req.companyAccountID}.`);
+
+      if (!companyLogo) {
+        return {
+          status: 404,
+          msg: undefined
+        } as IResponseWithStatus;  
+      }
+
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+  };
 
   public static async UpdateCompanyDetails(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
@@ -791,43 +857,6 @@ export default class CompanyFunctions {
           .execute();
 
         Logger.Info(`COMPANY=${companyAccountID} successfully updated it's details`);
-
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
-      () => {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
-      next,
-    );
-  }
-
-  public static async UploadLogo(this: void, req: any, res: Response, next: NextFunction) {
-    await Helpers.catchAndLogError(
-      res,
-      async () => {
-        const companyAccountID = req.companyAccountID;
-
-        // check if the required parameters are provided
-        Helpers.requireParameters(companyAccountID);
-        Helpers.requireParameters(req.body.logo);
-
-        Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
-
-        await AppDataSource.createQueryBuilder()
-          .update(Company)
-          .set({
-            logo: req.body.logo,
-          })
-          .where('id = :id', { id: companyAccountID })
-          .execute();
-
-        Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
 
         return {
           status: 200,
