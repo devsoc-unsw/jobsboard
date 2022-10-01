@@ -19,7 +19,7 @@
         >
           <div class='relative p-4 w-1/2 mx-auto max-w-full'>
             <!-- Modal content -->
-            <div class='relative bg-white rounded-lg bg-gray-700'>
+            <div class='relative rounded-lg bg-gray-700'>
               <!-- Modal header -->
               <div class='flex flex-col justify-between items-left p-5 rounded-t border-b border-gray-600'>
                 <h2 class='text-xl font-medium text-white text-left mb-4'>
