@@ -18,28 +18,28 @@
               <font-awesome-icon
                 icon='suitcase'
                 class='text-black'
-                size='lg'
+                size='1x'
               />
             </div>
             <div>
               <font-awesome-icon
                 icon='location-dot'
                 class='text-black ml-0.5'
-                size='lg'
+                size='1x'
               />
             </div>
             <div>
               <font-awesome-icon
                 icon='user-group'
                 class='text-black'
-                size='lg'
+                size='1x'
               />
             </div>
             <div>
               <font-awesome-icon
                 icon='circle-dollar-to-slot'
                 class='text-black'
-                size='lg'
+                size='1x'
               />
             </div>
           </div>
@@ -61,7 +61,7 @@
         </div>
 
         <p class='text-[#1a324e] text-sm text-center mt-4'>
-          Expiry Date: {{ expiryDate() }}
+          Expiry Date: {{ new Date(expiry).toLocaleDateString() }}
         </p>
       </div>
     </div>
@@ -78,7 +78,7 @@
         <font-awesome-icon
           icon='trash-alt'
           class='text-[#FF7060]'
-          size='md'
+          size='1x'
           :class='{ hover: isHovering }'
         />
       </div>
@@ -109,21 +109,19 @@ const props = defineProps({
   pay: Boolean,
   jobType: String,
   mode: String,
-  expiry: String,
-  studentDemographic: Array,
-  jobList: Object,
-  expiredList: Object,
+  expiry: {
+    type: String,
+    default: '',
+  },
+  studentDemographic: Object,
   listName: String,
 });
+console.log(props);
 
 const apiToken = useApiTokenStore().getApiToken();
 const isHovering = ref(false);
 const jobTypeObject = JobType;
 const jobModeObject = JobMode;
-
-const expiryDate = () => {
-  props.expiry?.slice(0, 10).replace(/-/gi, '/');
-};
 
 const deleteJob = async () => {
   const uri = `${config.apiRoot}/company/job/${props.jobID}`;

@@ -523,6 +523,7 @@ export default class CompanyFunctions {
               'Job.applicationLink',
               'Job.approved',
               'Job.hidden',
+              'Job.expiry',
               'Job.mode',
               'Job.studentDemographic',
               'Job.jobType',
@@ -549,6 +550,14 @@ export default class CompanyFunctions {
             description: job.description,
             applicationLink: job.applicationLink,
             status: jobStatus,
+            additionalInfo: job.additionalInfo,
+            expiry: job.expiry,
+            mode: job.mode,
+            studentDemographic: job.studentDemographic,
+            jobType: job.jobType,
+            workingRights: job.workingRights,
+            wamRequirements: job.wamRequirements,
+            isPaid: job.isPaid,
           };
         });
 
