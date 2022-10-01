@@ -1,5 +1,5 @@
 <template>
-  <div class='absolute bottom-0 flex flex-row justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-col text-white'>
+  <div class='flex flex-row justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-col text-white'>
     <div>
       <img
         class='inline pt-4 pr-4 pl-4 w-1/2 lg:w-2/3 sm:w-1/2'

@@ -31,7 +31,8 @@ import {
   faAngleRight,
   faBriefcase,
   faHouse,
-  faPlus
+  faPlus,
+  faCloudUpload,
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -69,6 +70,7 @@ library.add(faAngleRight as IconDefinition);
 library.add(faBriefcase as IconDefinition);
 library.add(faHouse as IconDefinition);
 library.add(faPlus as IconDefinition);
+library.add(faCloudUpload as IconDefinition);
 
 const app = createApp(App);
 app.use(router);

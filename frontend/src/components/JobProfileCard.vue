@@ -1,9 +1,24 @@
 <template>
   <div>
+    <Modal
+      v-if='modalVisible'
+      :jobTitle='role'
+      :jobDescription='description'
+      :applicationLink='applicationLink'
+      :expiryDate='expiry'
+      :isPaidPosition='pay'
+      :jobType='jobType'
+      :jobMode='mode'
+      :workingRights='workingRights'
+      :studentDemographic='studentDemographic'
+      :wamRequirements='wamRequirements'
+      :additionalInfo='additionalInfo'
+      @closeCallback='closeJobModal()'
+    />
     <div
       class='relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer px-6'
       :class='{ boxHover: isHovering }'
-      @click='() => { router.push("/company/jobs/manage") }'
+      @click='() => { modalVisible = true }'
       @mouseenter='isHovering = true'
       @mouseleave='isHovering = false'
     >
@@ -100,13 +115,14 @@ import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
 import config from '@/config/config';
 import { JobType, JobMode } from '@/constants/job-fields';
+import Modal from '@/components/Modal.vue';
 
 const router = useRouter();
 
 const props = defineProps({
   jobID: Number,
   role: String,
-  pay: Boolean,
+  pay: String,
   jobType: String,
   mode: String,
   expiry: {
@@ -114,12 +130,20 @@ const props = defineProps({
     default: '',
   },
   studentDemographic: Object,
+  description: String,
+  applicationLink: String,
+  workingRights: Array,
+  studentDemographic: Array,
+  wamRequirements: String,
+  additionalInfo: String,
   listName: String,
 });
-console.log(props);
 
+console.log(props);
 const apiToken = useApiTokenStore().getApiToken();
 const isHovering = ref(false);
+const modalVisible = ref(false);
+const modalContent = ref('');
 const jobTypeObject = JobType;
 const jobModeObject = JobMode;
 
@@ -134,7 +158,7 @@ const deleteJob = async () => {
   });
   const receivedResponse = response as Response;
   if (receivedResponse.ok && props.listName === 'postedJobs') {
-    closeModal();
+    closeJobModal();
   } else {
     if (response.status === 401) {
       setTimeout(() => {
@@ -144,12 +168,9 @@ const deleteJob = async () => {
   }
 };
 
-const closeModal = () => {
-  location.reload();
-  // setTimeout(() => {
-  //   this.$destroy();
-  //   this.$el.parentNode!.removeChild(this.$el);
-  // }, 100);
+const closeJobModal = async () => {
+  modalVisible.value = false;
+  modalContent.value = '';
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class='flex flex-col relative min-h-full pb-72'>
+    <div class='flex flex-col min-h-full'>
       <div class='relative'>
         <Header class='header' />
       </div>
@@ -138,8 +138,8 @@
           />
         </div>
       </div>
-      <Footer />
     </div>
+    <Footer />
   </main>
 </template>
 

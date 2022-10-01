@@ -14,11 +14,16 @@
         :key='job.key'
         :jobID='job.id'
         :role='job.role'
-        :pay='job.pay'
+        :pay='job.isPaidPosition'
         :jobType='job.jobType'
         :mode='job.mode'
         :expiry='job.expiry'
         :studentDemographic='job.studentDemographic'
+        :description='job.description'
+        :applicationLink='job.applicationLink'
+        :workingRights='job.workingRights'
+        :wamRequirements='job.wamRequirements'
+        :additionalInfo='job.additionalInfo'
         :listName='listName'
       />
     </div>
@@ -33,6 +38,7 @@ const props = defineProps({
   jobList: Object,
   listName: String,
 });
+console.log(props)
 </script>
 
 <style scoped lang="scss">
