@@ -17,49 +17,53 @@
         :handleClose='() => { isAlertOpen = false }'
       />
 
-      <!-- zId Input -->
-      <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
-        <input
-          id='zID'
-          v-model='zID'
-          name='zID'
-          type='text'
-          class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
-          required
-          @keyup.enter='performLogin()'
-        >
-        <label
-          for='zID'
-          class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
-        >
-          zID
-        </label>
-      </div>
+      <form class="flex justify-center items-center flex-col w-full">
+        <!-- zId Input -->
+        <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
+          <input
+            id='zID'
+            v-model='zID'
+            name='zID'
+            type='text'
+            class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
+            autocomplete="username"
+            required
+            @keyup.enter='performLogin()'
+          >
+          <label
+            for='zID'
+            class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
+          >
+            zID
+          </label>
+        </div>
 
-      <!-- Password Input -->
-      <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
-        <input
-          id='password'
-          v-model='password'
-          name='password'
-          type='password'
-          class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
-          required
-          @keyup.enter='performLogin()'
-        >
-        <label
-          for='password'
-          class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
-        >
-          Password
-        </label>
-      </div>
+        <!-- Password Input -->
+        <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
+          <input
+            id='password'
+            v-model='password'
+            name='password'
+            type='password'
+            class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
+            autocomplete="current-password"
+            required
+            @keyup.enter='performLogin()'
+          >
+          <label
+            for='password'
+            class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
+          >
+            Password
+          </label>
+        </div>
+      </form>
 
       <p class='text-lg text-jb-subheadings text-center'>
         Not a student?
