@@ -15,28 +15,28 @@
         <!-- Modal -->
         <div
           tabindex='-1'
-          class='overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'
+          class='flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'
         >
           <div class='relative p-4 w-1/2 mx-auto max-w-full'>
             <!-- Modal content -->
-            <div class='relative rounded-lg bg-gray-700'>
+            <div class='relative rounded-lg bg-white text-jb-subheadings'>
               <!-- Modal header -->
               <div class='flex flex-col justify-between items-left p-5 rounded-t border-b border-gray-600'>
-                <h2 class='text-xl font-medium text-white text-left mb-4'>
+                <h2 class='text-xl text-left mb-4 text-jb-headings font-bold'>
                   {{ currentCompanyShown }}
                 </h2>
                 <div class='flex flex-row items-center'>
                   <font-awesome-icon
                     icon='location-dot'
-                    class='h-4 mr-4 text-white'
+                    class='h-4 mr-4'
                   />
-                  <h3 class='text-lg font-medium text-white text-left'>
+                  <h3 class='text-lg font-medium text-left'>
                     {{ currentCompanyLocation }}
                   </h3>
                 </div>
               </div>
               <!-- Modal body -->
-              <div class='flex w-full p-6 text-white'>
+              <div class='flex w-full p-6'>
                 <p v-html='currentCompanyDescription' />
               </div>
               <!-- Modal footer -->
