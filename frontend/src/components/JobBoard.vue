@@ -1,33 +1,33 @@
 <template>
   <div
-    class="w-[700px] border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-64"
+    class='w-[700px] border-4 border-[#75B2F5] h-[600px] m-auto rounded-xl place-items-center mt-4 md:w-64'
   >
     <div
-      :key="listName"
-      class="bg-white h-full grid grid-cols-3 rounded-xl overflow-y-scroll md:grid-cols-1"
+      :key='listName'
+      class='bg-white h-full grid grid-cols-3 rounded-xl overflow-y-scroll md:grid-cols-1'
     >
-      <div v-if="listName === 'postedJobs'">
+      <div v-if='listName === "postedJobs"'>
         <PostJobCard />
       </div>
       <JobProfileCard
-        v-for="job in jobList"
-        :key="job.key"
-        :jobID="job.id"
-        :role="job.role"
-        :pay="job.pay"
-        :jobType="job.jobType"
-        :mode="job.mode"
-        :expiry="job.expiry"
-        :studentDemographic="job.studentDemographic"
-        :listName="listName"
+        v-for='job in jobList'
+        :key='job.key'
+        :jobID='job.id'
+        :role='job.role'
+        :pay='job.pay'
+        :jobType='job.jobType'
+        :mode='job.mode'
+        :expiry='job.expiry'
+        :studentDemographic='job.studentDemographic'
+        :listName='listName'
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import JobProfileCard from "@/components/JobProfileCard.vue";
-import PostJobCard from "@/components/PostJobCard.vue";
+import JobProfileCard from '@/components/JobProfileCard.vue';
+import PostJobCard from '@/components/PostJobCard.vue';
 
 const props = defineProps({
   jobList: Object,
