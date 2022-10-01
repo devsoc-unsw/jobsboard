@@ -70,22 +70,12 @@
       </div>
       <div class="px-[10%]">
         <h1
-          class="font-bold text-5xl text-jb-headings text-left leading-[72px] m-0 mt-4"
+          class="font-bold text-5xl text-jb-headings text-center leading-[72px] m-0 mt-4"
         >
           Welcome Back! &nbsp;👋
         </h1>
-        <p class="text-lg text-jb-subheadings text-left">
-          Accelerate your search for talented job applicants today with us!
-        </p>
-        <h1
-          class="font-bold text-4xl text-[#1a324e] mt-4 text-center leading-[72px]"
-        >
-          Manage your Jobs
-        </h1>
         <p class="text-lg text-jb-subheadings text-center">
-          Add a new job post with our “Post Job” profile card to your board or
-          manage your existing jobs by double clicking on the profile card of
-          any active jobs listed.
+          Accelerate your search for talented job applicants today with us!
         </p>
 
         <div class="w-[700px] m-auto mt-8">
