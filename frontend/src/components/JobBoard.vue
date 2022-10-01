@@ -38,7 +38,6 @@ const props = defineProps({
   jobList: Object,
   listName: String,
 });
-console.log(props)
 </script>
 
 <style scoped lang="scss">

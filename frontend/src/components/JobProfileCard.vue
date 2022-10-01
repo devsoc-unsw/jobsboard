@@ -139,7 +139,6 @@ const props = defineProps({
   listName: String,
 });
 
-console.log(props);
 const apiToken = useApiTokenStore().getApiToken();
 const isHovering = ref(false);
 const modalVisible = ref(false);

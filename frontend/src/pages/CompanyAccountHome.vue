@@ -174,7 +174,6 @@ const getCompanyJobs = async () => {
 
   if (response.ok) {
     const msg = await response.json();
-    console.log('here', msg);
     jobs.value = msg.companyJobs.map((job: any) => {
       return {
         id: job.id,
@@ -192,7 +191,6 @@ const getCompanyJobs = async () => {
         wamRequirements: job.wamRequirements,
       };
     });
-    console.log(jobs.value);
   } else {
     window.scrollTo({
       top: 0,
