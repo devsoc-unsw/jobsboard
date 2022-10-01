@@ -14,47 +14,52 @@
         :isOpen='isAlertOpen'
         :handleClose='() => { isAlertOpen = false }'
       />
-      <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
-        <input
-          id='username'
-          v-model='username'
-          name='username'
-          type='text'
-          class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
-          required
-          @keyup.enter='performAdminLogin()'
-        >
-        <label
-          for='username'
-          class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
-        >
-          Username
-        </label>
-      </div>
 
-      <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
-        <input
-          id='password'
-          v-model='password'
-          name='password'
-          type='password'
-          class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer'
-          required
-          @keyup.enter='performAdminLogin()'
-        >
-        <label
-          for='password'
-          class='transform transition-all absolute top-6 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-12
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
-        >
-          Password
-        </label>
-      </div>
+      <form class="flex flex-col justify-center items-center w-full">
+        <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
+          <input
+            id='username'
+            v-model='username'
+            name='username'
+            type='text'
+            class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
+            autocomplete="username"
+            required
+            @keyup.enter='performAdminLogin()'
+          >
+          <label
+            for='username'
+            class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
+          >
+            Username
+          </label>
+        </div>
+
+        <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
+          <input
+            id='password'
+            v-model='password'
+            name='password'
+            type='password'
+            class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer'
+            autocomplete="current-password"
+            required
+            @keyup.enter='performAdminLogin()'
+          >
+          <label
+            for='password'
+            class='transform transition-all absolute top-6 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-12
+                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
+          >
+            Password
+          </label>
+        </div>
+      </form>
 
       <button
         class='btn btn-blue-filled w-28 h-11 p-2'
