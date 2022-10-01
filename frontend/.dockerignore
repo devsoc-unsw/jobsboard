@@ -1,14 +1,4 @@
-# ignore node_modules
 node_modules
-
-# ignore dotenv
-*.env
-
-# ignore compiled javascript code
+dev.dockerfile
+Dockerfile
 dist
-
-# ignore mochawesome generated files
-mochawesome-report
-
-# ignore secrets directory
-secrets

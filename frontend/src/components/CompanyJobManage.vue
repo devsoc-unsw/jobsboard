@@ -36,17 +36,18 @@
         </div>
         <br>
         <div class='companyHeading'>
-          <green-standard-button>
-            <Button @click='showJobModal'>
-              Show
-            </Button>
-          </green-standard-button>
-
-          <red-standard-button>
-            <Button @click='deleteJob'>
-              Delete
-            </Button>
-          </red-standard-button>
+          <button
+            class='btn btn-green'
+            @click='showJobModal'
+          >
+            Show
+          </button>
+          <button
+            class='btn btn-red'
+            @click='deleteJob'
+          >
+            Delete
+          </button>
         </div>
       </div>
       <slot />
@@ -58,8 +59,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import GreenStandardButton from '@/components/buttons/GreenStandardButton.vue';
-import RedStandardButton from '@/components/buttons/RedStandardButton.vue';
 import Modal from '@/components/Modal.vue';
 import config from '@/config/config';
 const apiTokenStore = useApiTokenStore();

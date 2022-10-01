@@ -68,11 +68,12 @@
 
       <!-- Company Logo Upload -->
       <!-- TODO: figure out logic for this  -->
-      <StandardButton>
-        <Button @callback='performSignup'>
-          Sign Up
-        </Button>
-      </StandardButton>
+      <button
+        class='btn btn-blue-filled w-40 h-11 p-2'
+        @click='performSignup'
+      >
+        Sign Up
+      </button>
       <br>
       <br>
       Already have an account? <router-link to='/login/company'>
@@ -90,8 +91,6 @@ import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 import SuccessBox from '@/components/SuccessBox.vue';
 import config from '@/config/config';
-import StandardButton from '@/components/buttons/StandardButton.vue';
-import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 const router = useRouter();

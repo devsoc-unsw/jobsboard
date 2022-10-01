@@ -1,9 +1,9 @@
-FROM node:18.10-alpine
+FROM node:18.8.0-alpine
 
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
 RUN yarn install --frozen-lockfile
-COPY "./" "/app/"
-RUN yarn build
+COPY "./" "/app"
+EXPOSE 3001
 
-CMD sleep 15 && yarn travis:test
+ENTRYPOINT [ "yarn", "dev" ]
