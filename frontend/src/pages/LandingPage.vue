@@ -24,12 +24,14 @@
             <button
               class='bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                       hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg'
+              @click='() => { router.push("/login/student") }'
             >
               Explore
             </button>
             <button
               class='bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                       hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg'
+              @click='() => { router.push("/login/company") }'
             >
               Advertise
             </button>
@@ -63,6 +65,7 @@
         <span
           class='text-jb-textlink font-bold transition-colors duration-200 ease-linear
                     cursor-pointer hover:text-jb-textlink-hovered'
+          @click='() => { router.push("/login/student") }'
         >
           here
         </span>
@@ -83,7 +86,12 @@
       <p class='text-lg text-jb-subheadings my-4 mx-16 sm:mx-0'>
         Are you a company looking to advertise with us? We'd absolutely love to hear from you.
         In the meantime, you can also check out
-        <span class='text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered'>other companies</span>
+        <span 
+          class='text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered'
+          @click='toSponsorsPage'
+        >
+          other companies
+        </span>
         that have partnered with us.
       </p>
       <div class='flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col sm:gap-4'>
@@ -91,7 +99,7 @@
           <button
             class='bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0
                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-            @click='companyRegister'
+            @click='() => { router.push("/signup/company") }'
           >
             Join Us
           </button>
@@ -100,6 +108,7 @@
           <button
             class='bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0 mb-0 sm:mb-10
                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
+            @click='() => { router.push("/login/company") }'
           >
             Post a Job
           </button>
@@ -133,7 +142,7 @@
         />
       </div>
     </div>
-    <NewFooter />
+    <Footer />
   </main>
 </template>
 
@@ -170,6 +179,11 @@ const scrollToTop = () => {
 const toGithubRepo = () => {
   window.open('https://github.com/csesoc/jobs-board');
 };
+
+const toSponsorsPage = () => {
+  window.open('https://www.csesoc.unsw.edu.au/sponsors');
+};
+
 </script>
 
 <style scoped lang="scss">
