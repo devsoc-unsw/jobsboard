@@ -180,7 +180,22 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         const pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
           return await AppDataSource.getRepository(Job)
             .createQueryBuilder()
-            .select(['Job.id', 'Job.role', 'Job.description', 'Job.applicationLink'])
+            .select([
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.applicationLink',
+              'Job.approved',
+              'Job.hidden',
+              'Job.expiry',
+              'Job.mode',
+              'Job.studentDemographic',
+              'Job.jobType',
+              'Job.workingRights',
+              'Job.wamRequirements',
+              'Job.additionalInfo',
+              'Job.isPaid',
+            ])
             .where('Job.approved = :approved', { approved: false })
             .andWhere('Job.hidden = :hidden', { hidden: false })
             .getMany();
