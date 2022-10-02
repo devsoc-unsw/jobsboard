@@ -15,7 +15,7 @@
         :handleClose='() => { isAlertOpen = false }'
       />
 
-      <form class="flex flex-col justify-center items-center w-full">
+      <form class='flex flex-col justify-center items-center w-full'>
         <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
           <input
             id='username'
@@ -23,7 +23,7 @@
             name='username'
             type='text'
             class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
-            autocomplete="username"
+            autocomplete='username'
             required
             @keyup.enter='performAdminLogin()'
           >
@@ -45,7 +45,7 @@
             name='password'
             type='password'
             class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer'
-            autocomplete="current-password"
+            autocomplete='current-password'
             required
             @keyup.enter='performAdminLogin()'
           >
