@@ -94,6 +94,7 @@
               <ul class='list-disc list-inside'>
                 <li
                   v-for='workingRight in workingRights'
+                  :key='workingRight'
                 >
                   {{
                     workingRightsObject[
@@ -114,6 +115,7 @@
               <ul class='list-disc list-inside'>
                 <li
                   v-for='student in studentDemographic'
+                  :key='student'
                 >
                   {{
                     studentDemographicObject[
@@ -179,11 +181,11 @@ const props = defineProps({
     default: '',
   },
   workingRights: {
-    type: Array,
+    type: Array<any>,
     default: () => ([]),
   },
   studentDemographic: {
-    type: Array,
+    type: Array<any>,
     default: () => ([]),
   },
   wamRequirements: {

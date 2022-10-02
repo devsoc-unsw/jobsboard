@@ -2,7 +2,7 @@
   <LoggedInTemplate>
     <StudentViewTemplate loggedIn>
       <Breadcrumbs class='w-4/5 mx-0' />
-      <JobDecscriptionModal
+      <JobDescriptionModal
         v-if='modalVisible'
         :jobTitle='role'
         :jobDescription='description'

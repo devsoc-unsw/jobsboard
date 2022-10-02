@@ -401,7 +401,7 @@ import { QuillEditor } from '@vueup/vue-quill';
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import JobDescriptionModal from '@/components/JobDescriptionModal.vue';
+import JobDescriptionModal from '@/components/modals/JobDescriptionModal.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
