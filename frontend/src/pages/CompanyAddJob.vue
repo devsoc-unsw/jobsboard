@@ -2,7 +2,7 @@
   <LoggedInTemplate>
     <StudentViewTemplate loggedIn>
       <Breadcrumbs />
-      <Modal
+      <JobDescriptionModal
         v-if='modalVisible'
         :jobTitle='role'
         :jobDescription='description'
@@ -401,7 +401,7 @@ import { QuillEditor } from '@vueup/vue-quill';
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import Modal from '@/components/Modal.vue';
+import JobDescriptionModal from '@/components/JobDescriptionModal.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
