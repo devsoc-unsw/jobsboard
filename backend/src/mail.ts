@@ -1,29 +1,25 @@
-import { Request, Response } from "express";
-import nodemailer from "nodemailer";
+import { Request, Response } from 'express';
+import nodemailer from 'nodemailer';
 // import dotenv from "dotenv";
 // import EmailTemplates from "email-templates";
 
-import { AppDataSource } from "./index";
+import { AppDataSource } from './index';
 
 // libraries
-import Logger from "./logging";
-import Helpers from "./helpers";
+import Logger from './logging';
+import Helpers from './helpers';
 
 // entities
-import { MailRequest } from "./entity/mail_request";
+import { MailRequest } from './entity/mail_request';
 
 export default class MailFunctions {
-  public static async SendTestEmail(_: Request, res: Response) {
+  public static async SendTestEmail(this: void, _: Request, res: Response) {
     try {
-      const mailAddingSuccessful = await MailFunctions.AddMailToQueue(
-        "",
-        "Scheduled emailing",
-        `Message contents.`
-      );
+      const mailAddingSuccessful = await MailFunctions.AddMailToQueue('', 'Scheduled emailing', `Message contents.`);
       if (mailAddingSuccessful) {
-        Logger.Info("Successfully scheduled email request.");
+        Logger.Info('Successfully scheduled email request.');
       } else {
-        Logger.Error("Failed to schedule email.");
+        Logger.Error('Failed to schedule email.');
       }
       res.sendStatus(200);
     } catch (error) {
@@ -33,7 +29,7 @@ export default class MailFunctions {
 
   public static async InitMailQueueScheduler(limitOfEmailsPerDay: number) {
     if (limitOfEmailsPerDay <= 0) {
-      throw new Error("Limit of emails per day cannot be less than or equal to zero.");
+      throw new Error('Limit of emails per day cannot be less than or equal to zero.');
     }
 
     // get mail .env
@@ -56,11 +52,11 @@ export default class MailFunctions {
       requireTLS: true,
     };
     const mailTransporter = nodemailer.createTransport(transportOptions);
-    if (process.env.NODE_ENV === "production") {
-      mailTransporter.verify((error, _) => {
+    if (process.env.NODE_ENV === 'production') {
+      mailTransporter.verify((error: Error, _: boolean) => {
         if (error) {
           Logger.Error(`Mail verification unsuccessful. Reason: ${error}`);
-          throw new Error("Failed to initialise mail service.");
+          throw new Error('Failed to initialise mail service.');
         }
       });
     }
@@ -68,28 +64,33 @@ export default class MailFunctions {
       try {
         const mailRequest = await Helpers.doSuccessfullyOrFail(async () => {
           return await AppDataSource.getRepository(MailRequest)
-          .createQueryBuilder()
-          .where("MailRequest.sent = :sent", { sent: false })
-          .orderBy("MailRequest.createdAt", "ASC")
-          .getOne();
+            .createQueryBuilder()
+            .where('MailRequest.sent = :sent', { sent: false })
+            .orderBy('MailRequest.createdAt', 'ASC')
+            .getOne();
         }, `No mail request to send`);
-        if (process.env.NODE_ENV === "production") {
-          mailTransporter.sendMail({
-            from: mailRequest.sender,
-            to: mailRequest.recipient,
-            subject: mailRequest.subject,
-            text: mailRequest.content,
-            html: mailRequest.content,
-          }, () => Logger.Info(`Successfully sent EMAIL=${mailRequest.id}`));
+        if (process.env.NODE_ENV === 'production') {
+          mailTransporter.sendMail(
+            {
+              from: mailRequest.sender,
+              to: mailRequest.recipient,
+              subject: mailRequest.subject,
+              text: mailRequest.content,
+              html: mailRequest.content,
+            },
+            () => Logger.Info(`Successfully sent EMAIL=${mailRequest.id}`),
+          );
         } else {
-          Logger.Info(`NODE_ENV is not production (currently ${process.env.NODE_ENV}), therefore no email will be sent. Here is the email that would have been sent:
+          Logger.Info(`NODE_ENV is not production (currently ${
+            process.env.NODE_ENV
+          }), therefore no email will be sent. Here is the email that would have been sent:
                       ${JSON.stringify(mailRequest)}`);
         }
         await AppDataSource.createQueryBuilder()
-        .update(MailRequest)
-        .set({ sent: true })
-        .where("id = :id", { id: mailRequest.id })
-        .execute();
+          .update(MailRequest)
+          .set({ sent: true })
+          .where('id = :id', { id: mailRequest.id })
+          .execute();
       } catch (error) {
         // Couldn't find mail to send.
         return;
@@ -126,8 +127,8 @@ export default class MailFunctions {
       newMailRequest.subject = subject;
       newMailRequest.content = content;
 
-      await AppDataSource.manager.save(newMailRequest); 
-      Logger.Info("[DEBUG] Saved user mail request");
+      await AppDataSource.manager.save(newMailRequest);
+      Logger.Info('[DEBUG] Saved user mail request');
 
       // send a copy of this email to the admin
       const newMailRequestForAdmin: MailRequest = new MailRequest();
@@ -142,12 +143,12 @@ export default class MailFunctions {
       `;
 
       await AppDataSource.manager.save(newMailRequestForAdmin);
-      Logger.Info("[DEBUG] Saved admin mail request");
+      Logger.Info('[DEBUG] Saved admin mail request');
 
       // send a copy of this email to the csesoc admin
       const newMailRequestForCsesocAdmin: MailRequest = new MailRequest();
       newMailRequestForCsesocAdmin.sender = process.env.MAIL_USERNAME;
-      newMailRequestForCsesocAdmin.recipient = "careers@csesoc.org.au";
+      newMailRequestForCsesocAdmin.recipient = 'careers@csesoc.org.au';
       newMailRequestForCsesocAdmin.subject = subject;
       newMailRequestForCsesocAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
 
@@ -157,7 +158,7 @@ export default class MailFunctions {
       `;
 
       await AppDataSource.manager.save(newMailRequestForCsesocAdmin);
-      Logger.Info("[DEBUG] Saved CSESoc admin mail request");
+      Logger.Info('[DEBUG] Saved CSESoc admin mail request');
 
       return true;
     } catch (error) {

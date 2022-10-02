@@ -1,6 +1,15 @@
-import { Column, Entity, OneToOne, OneToMany, JoinColumn, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { Job } from "./job";
-import { CompanyAccount } from "./company_account";
+import {
+  Column,
+  Entity,
+  OneToOne,
+  OneToMany,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Job } from './job';
+import { CompanyAccount } from './company_account';
 
 @Entity()
 export class Company {
@@ -14,30 +23,30 @@ export class Company {
   public location: string;
 
   @Column({
-    default: "No company description",
+    default: 'No company description',
     length: 4096,
   })
   public description: string;
-  
+
   @Column({
-    type: "bytea",
-    nullable: true
+    type: 'bytea',
+    nullable: true,
   })
-  public logo: Buffer; 
-  
+  public logo: Buffer;
+
   @Column({
     default: false,
   })
   public sponsor: boolean;
 
-  @OneToMany(_ => Job, job => job.company, {
+  @OneToMany((_) => Job, (job) => job.company, {
     cascade: true,
-    onDelete: "CASCADE",
+    onDelete: 'CASCADE',
   })
   @JoinColumn()
   public jobs: Job[];
 
-  @OneToOne(_ => CompanyAccount, companyAccount => companyAccount.company)
+  @OneToOne((_) => CompanyAccount, (companyAccount) => companyAccount.company)
   public companyAccount: CompanyAccount;
 
   @CreateDateColumn()

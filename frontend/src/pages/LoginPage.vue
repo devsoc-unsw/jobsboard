@@ -13,54 +13,41 @@
       </p>
     </ErrorBox>
     <h1>Jobs for UNSW CSE Students</h1>
-    <div class='buttonBox'>
-      <StandardButton>
-        <Button
-          disabled
-          @callback='toStudentLogin'
-        >
-          Student
-        </Button>
-      </StandardButton>
-      <StandardButton>
-        <Button
-          disabled
-          @callback='toCompanyLogin'
-        >
-          Company
-        </Button>
-      </StandardButton>
+    <div class='flex justify-around max-w-sm mx-auto my-8'>
+      <button
+        class='btn btn-blue-filled w-40 h-11 p-2'
+        @click='toStudentLogin'
+      >
+        Student
+      </button>
+      <button
+        class='btn btn-blue-filled w-40 h-11 p-2'
+        @click='toCompanyLogin'
+      >
+        Company
+      </button>
     </div>
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
-import Button from '@/components/buttons/button.vue';
-import StandardButton from '@/components/buttons/StandardButton.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 
-export default Vue.extend({
-  name: 'LoginPage',
-  components: {
-    StudentViewTemplate,
-    Button,
-    StandardButton,
-    ErrorBox,
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  },
-  methods: {
-    toStudentLogin() {
-      this.$router.push('/login/student');
-    },
-    toCompanyLogin() {
-      this.$router.push('/login/company');
-    },
-  },
+const router = useRouter();
+
+const toStudentLogin = () => {
+  router.push('/login/student');
+};
+const toCompanyLogin = () => {
+  router.push('/login/company');
+};
+
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
 });
 </script>
 

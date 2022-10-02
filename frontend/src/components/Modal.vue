@@ -7,18 +7,18 @@
       tabindex='-1'
       class='overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none'
     >
-      <div class='relative p-4 w-full max-w-full h-auto md:h-full'>
+      <div class='flex p-4 w-full max-w-3xl m-auto h-full'>
         <!-- Modal content -->
-        <div class='relative bg-white rounded-lg shadow dark:bg-gray-700'>
+        <div class='relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[80%] my-auto overflow-scroll'>
           <!-- Modal header -->
           <div class='flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600'>
-            <h2 class='text-xl font-medium text-gray-900 dark:text-white'>
+            <h2 class='text-xl font-bold text-gray-900 dark:text-white'>
               {{ jobTitle }}
             </h2>
             <button
               type='button'
               class='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
-              @click='modalClose'
+              @click='$emit("closeCallback")'
             >
               <svg
                 class='w-5 h-5'
@@ -72,7 +72,7 @@
                 />
                 Application Expiry Date:&nbsp;
                 <span class='text-base leading-relaxed text-gray-500 dark:text-gray-400'>
-                  {{ expiryDate }}
+                  {{ new Date(expiryDate).toLocaleDateString() }}
                 </span>
               </h3>
               <h3 class='text-l font-medium text-gray-900 dark:text-white'>
@@ -148,10 +148,9 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-property-decorator';
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 
-export default Vue.extend({
+export default ({
   name: 'Modal',
   props: {
     jobTitle: {
@@ -211,11 +210,6 @@ export default Vue.extend({
       WamObject: WamRequirements,
       WrObject: WorkingRights,
     };
-  },
-  methods: {
-    modalClose() {
-      this.$emit('closeCallback');
-    },
   },
 });
 </script>

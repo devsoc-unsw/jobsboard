@@ -1,33 +1,38 @@
 <template>
   <main>
-    <div class="relative h-[80vh] overflow-hidden flex flex-col justify-center">
+    <div class="relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]">
       <img :src="BigBlob" class="absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2" />
       <Header class="absolute top-0" style="background: transparent;" />
       <div class="flex justify-around align-middle w-3/5 mx-auto gap-7">
-        <div class="flex flex-col text-left">
+        <div class="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
           <p class="text-lg text-white">CSESoc presents</p>
           <h1 class="text-[#143A6C] font-bold text-6xl leading-[72px] m-0">Jobs Board</h1>
           <p class="text-lg text-white mt-3">Connecting UNSW students with top employers since 2018.</p>
-          <div class="justify-start flex gap-5 mt-4">
+          <div class="justify-start flex gap-5 mt-4 sm:justify-center sm:flex-wrap">
             <button 
-              class="bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8
+              class="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                       hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
             >
               Explore
             </button>
             <button 
-              class="bg-[#264c79] rounded-xl shadow-md text-white text-lg font-bold py-[3px] px-8
+              class="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                       hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
             >
               Advertise
             </button>
           </div>
         </div>
-        <img width="200" :src="Logo" />
+        <img 
+          alt="Jobsboard" 
+          width="200"
+          :src="JobsboardLogo" 
+          class="sm:hidden"
+        />
       </div>
     </div>
     <!-- Sponsors -->
-    <div class="w-3/5 mb-12 mx-auto">
+    <div class="w-3/5 my-12 mx-auto">
       <h3 class="font-bold text-3xl mb-0 text-jb-headings">Our Sponsors</h3>
       <p class="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
         We aim to give you a pleasant student working experience by partnering up with only the best.
@@ -63,7 +68,7 @@
         <span class="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered">other companies</span> 
         that have partnered with us.
       </p>
-      <div class="flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col">
+      <div class="flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col sm:gap-4">
         <div>
           <button 
             class="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0 
@@ -107,55 +112,39 @@
   </main>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import BigBlob from "@/assets/misc/BigBlob.svg";
 import SmallBlob from "@/assets/misc/SmallBlob.svg";
 import JobsboardLogo from "@/assets/logos/JobsboardLogo.png";
 import Header from '@/components/Header.vue';
-import NewFooter from '@/components/NewFooter.vue';
+import Footer from '@/components/Footer.vue';
 import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
 import GoogleLogo from '@/assets/companies/googleLogo.png';
 
-export default Vue.extend({
-  name: 'StudentLoginPage',
-  components: {
-    Header,
-    NewFooter,
-    FeaturedJobCard,
-    SponsorCarousel,
-  },
-  data() {
-    return {
-      GoogleLogo: GoogleLogo,
-      BigBlob: BigBlob,
-      SmallBlob: SmallBlob,
-      Logo: JobsboardLogo,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
-    this.$store.dispatch('clearApiToken');
-  },
-  methods: {
-    scrollToTop() {
-      window.scrollTo({
-        left: 0,
-        top: 0,
-        behavior: 'smooth',
-      });
-    },
-    companyRegister() {
-      this.$router.push('/signup/company');
-    },
-    toGithubRepo() {
-      window.open('https://github.com/csesoc/jobs-board');
-    },
-  },
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
 });
+
+const scrollToTop = () => {
+  window.scrollTo({
+    left: 0,
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
+const toGithubRepo = () => {
+  window.open('https://github.com/csesoc/jobs-board');
+};
 </script>
 
 <style scoped lang="scss">

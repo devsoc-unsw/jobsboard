@@ -61,97 +61,82 @@
         </label>
       </div>
 
-      <Button
-        class='mt-3'
-        @callback='performCompanyPasswordReset()'
+      <button
+        class='btn btn-blue-filled w-40 h-11 my-4 p-2'
+        @click='performCompanyPasswordReset'
       >
-        <p class='p-4 text-white'>
-          Reset Password
-        </p>
-      </Button>
+        Reset Password
+      </button>
     </main>
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-// libs
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-// components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
-import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
 import config from '@/config/config';
 
-export default Vue.extend({
-  name: 'PasswordResetPage',
-  components: {
-    StudentViewTemplate,
-    Alert,
-    Button,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      newPassword: '',
-      confirmPassword: '',
-      alertType: '',
-      alertMsg: '',
-      isAlertOpen: false,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  },
-  methods: {
-    async performCompanyPasswordReset() {
-      if (this.newPassword !== this.confirmPassword) {
-        this.alertType = 'error';
-        this.alertMsg = 'Passwords do not match. Please try again.';
-        this.isAlertOpen = true;
-      } else {
-        const response = await fetch(`${config.apiRoot}/company/password-reset`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': this.$route.params.token,
-          },
-          // mode: "no-cors",
-          body: JSON.stringify({
-            'newPassword': this.newPassword,
-          }),
-        });
+const router = useRouter();
 
-        if (response.ok) {
-          window.scrollTo(0, 10);
-          this.alertType = 'success';
-          this.isAlertOpen = true;
-          this.alertMsg = 'Your password has been successfully been reset. Redirecting you to the login page...';
-          setTimeout(() => {
-            this.$router.push('/login');
-          }, 5000);
-        } else {
-          window.scrollTo(0, 10);
-          this.isAlertOpen = true;
-          this.alertType = 'error';
-          if (response.status === 400) {
-            this.alertMsg = 'Please try again. Password reset failed.';
-          } else if (response.status === 401) {
-            this.alertMsg = 'Token may be invalid or expired. Redirecting to login page.';
-            setTimeout(() => {
-              this.$router.push('/login/company');
-            }, 3000);
-          } else {
-            this.alertMsg = 'There was an error when trying to reset your password. Please try again.';
-          }
-        }
+const newPassword = ref<string>('');
+const confirmPassword = ref<string>('');
+const alertType = ref<string>('');
+const alertMsg = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+
+const performCompanyPasswordReset = async () => {
+  if (newPassword.value !== confirmPassword.value) {
+    alertType.value = 'error';
+    alertMsg.value = 'Passwords do not match. Please try again.';
+    isAlertOpen.value = true;
+  } else {
+    const response = await fetch(`${config.apiRoot}/company/password-reset`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': useRoute().params.token,
+      } as HeadersInit,
+      // mode: "no-cors",
+      body: JSON.stringify({
+        'newPassword': newPassword.value,
+      }),
+    });
+
+    if (response.ok) {
+      window.scrollTo(0, 10);
+      alertType.value = 'success';
+      isAlertOpen.value = true;
+      alertMsg.value = 'Your password has been successfully been reset. Redirecting you to the login page...';
+      setTimeout(() => {
+        router.push('/login');
+      }, 5000);
+    } else {
+      window.scrollTo(0, 10);
+      isAlertOpen.value = true;
+      alertType.value = 'error';
+      if (response.status === 400) {
+        alertMsg.value = 'Please try again. Password reset failed.';
+      } else if (response.status === 401) {
+        alertMsg.value = 'Token may be invalid or expired. Redirecting to login page.';
+        setTimeout(() => {
+          router.push('/login/company');
+        }, 3000);
+      } else {
+        alertMsg.value = 'There was an error when trying to reset your password. Please try again.';
       }
-    },
-  },
+    }
+  }
+};
+
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
 });
 </script>
 

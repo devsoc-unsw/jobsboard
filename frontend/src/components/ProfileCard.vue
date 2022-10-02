@@ -45,15 +45,12 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
-export default Vue.extend({
-  name: 'ProfileCard',
-  props: {
-    member: {
-      type: Object,
-      default: () => ({}),
-    },
+<script setup lang="ts">
+
+const props = defineProps({
+  member: {
+    type: Object,
+    required: true,
   },
 });
 </script>

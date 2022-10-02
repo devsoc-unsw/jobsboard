@@ -1,0 +1,94 @@
+{
+  "admins": [
+    {
+      "username": "admin-1",
+      "password": "admin"
+    }
+  ],
+  "companies": [
+    {
+      "username": "test-company-basic",
+      "password": "test1",
+      "verified": true,
+      "name": "Basic Company",
+      "location": "Sydney"
+    },
+    {
+      "username": "test-company-long-name",
+      "password": "test2",
+      "verified": false,
+      "name": "Incorporated Limited Professional Programmers Company Started by Programmers for Programmers",
+      "location": "Hong Kong"
+    }
+  ],
+  "jobs": [
+    {
+      "title": "approved | short description | no additional info | no non-ascii characters",
+      "company_username": "test-company-basic",
+      "role": "TypeScript Developer",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "application_link": "https://sampleapplication.link",
+      "approved": true,
+      "hidden": false,
+      "mode": "hybrid",
+      "student_demographic": ["all"],
+      "type": "intern",
+      "working_rights": ["aus_ctz", "aus_stud_visa", "nz_ctz_and_perm_res"],
+      "wam_requirements": "D",
+      "additional_info": "",
+      "paid": true,
+      "expiry": "2024-04-23"
+    },
+    {
+      "title": "approved | medium description | medium additional info | has non-ascii characters",
+      "company_username": "test-company-basic",
+      "role": "Java Developer",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed 😋 sed lorem faucibus, iaculis ligula vel, tristique ex. Aenean ac mauris et sem condimentum tincidunt. Nam faucibus ultrices lectus et semper. In 👌 semper tellus vel enim placerat, ac hendrerit felis tristique. Etiam a eros tincidunt, interdum enim et, iaculis nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere 😃 cubilia curae;",
+      "application_link": "https://sampleapplication.link",
+      "approved": true,
+      "hidden": false,
+      "mode": "hybrid",
+      "student_demographic": ["penultimate"],
+      "type": "intern",
+      "working_rights": ["nz_ctz_and_perm_res"],
+      "wam_requirements": "D",
+      "additional_info": "Nulla at 😋 neque ac nisl ornare laoreet vitae sed sem. Donec mollis lacus id ipsum luctus tempor. Vestibulum eget pulvinar mi. Interdum et malesuada fames ac ante ipsum primis in faucibus. Integer in bibendum metus. Vestibulum ante 🤨 ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+      "paid": true,
+      "expiry": "2024-04-23"
+    },
+    {
+      "title": "approved | long description | short additional info | has non-ascii characters",
+      "company_username": "test-company-basic",
+      "role": "Scratch Developer",
+      "description": "Donec luctus posuere turpis, et fermentum 🤪 lacus vestibulum in. Morbi ut ante ipsum. Sed erat tellus, faucibus sed lorem ut, ullamcorper efficitur turpis. Duis ac euismod orci. Nulla 🤪 quis ante elit. Duis dapibus libero sed lacinia pellentesque. Aenean a venenatis dui, ultricies posuere nunc. Vivamus vel sollicitudin risus. Suspendisse nec odio a mauris euismod cursus. Morbi viverra eleifend erat, nec commodo 🤪 orci commodo eu. Curabitur sollicitudin congue ultricies. Phasellus egestas nibh consequat mi pretium, nec rhoncus nibh laoreet.",
+      "application_link": "https://sampleapplication.link",
+      "approved": true,
+      "hidden": false,
+      "mode": "hybrid",
+      "student_demographic": ["final_year"],
+      "type": "grad",
+      "working_rights": ["aus_stud_visa", "nz_ctz_and_perm_res"],
+      "wam_requirements": "D",
+      "additional_info": "Lorem ipsum 🤪  dolor sit amet, consectetur adipiscing elit.",
+      "paid": true,
+      "expiry": "2024-04-23"
+    },
+    {
+      "title": "approved | long description | medium additional info | no non-ascii characters",
+      "company_username": "test-company-basic",
+      "role": "Scala Developer",
+      "description": "Aliquam sit amet augue vitae ligula imperdiet gravida. Donec eu neque dignissim, feugiat sapien id, dapibus odio. Suspendisse volutpat justo massa, at accumsan erat semper quis. Vestibulum malesuada lacus quis ligula aliquam, a laoreet sem aliquam. Mauris mattis faucibus tortor at sagittis. Integer porta est tellus, eget vehicula risus imperdiet vitae. Phasellus egestas at sapien vel sagittis. Nulla rhoncus, diam nec egestas eleifend, augue ex rutrum erat, dignissim tempor magna nulla vitae dui. Pellentesque molestie molestie aliquet. Donec efficitur ullamcorper est in sagittis.",
+      "application_link": "https://sampleapplication.link",
+      "approved": true,
+      "hidden": false,
+      "mode": "hybrid",
+      "student_demographic": ["final_year"],
+      "type": "grad",
+      "working_rights": ["no_wr"],
+      "wam_requirements": "D",
+      "additional_info": "Sed ac dignissim ipsum, vitae volutpat arcu. Morbi in fringilla est. Proin fringilla fermentum ligula. Etiam eleifend, diam a tincidunt gravida, massa enim sagittis tellus, sit amet sollicitudin nisi lorem sed odio. Duis et mi convallis dui vestibulum ullamcorper.",
+      "paid": true,
+      "expiry": "2024-04-23"
+    }
+  ]
+}

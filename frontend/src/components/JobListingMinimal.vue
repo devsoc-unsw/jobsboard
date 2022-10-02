@@ -2,7 +2,7 @@
   <!-- TODO: replace router push with window.open instead? -->
   <button
     class='flex flex-row mb-4 items-center p-4 shadow-card rounded-md w-full md:flex-col'
-    @click='() => { $router.push({ name: "job", params: { jobID: jobId } }) }'
+    @click='routeToJob'
   >
     <!-- TODO: to be replaced with company logo -->
     <font-awesome-icon
@@ -19,33 +19,27 @@
   </button>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
 
-export default Vue.extend({
-  name: 'JobsList',
-  components: {},
-  props: {
-    jobId: {
-      type: Number,
-      default: 0,
-    },
-    role: {
-      type: String,
-      default: '',
-    },
-    company: {
-      type: String,
-      default: '',
-    },
-    location: {
-      type: String,
-      default: '',
-    },
-    // TODO: add company logo
-  },
+const router = useRouter();
+
+const props = defineProps({
+  jobID: Number,
+  role: String,
+  company: String,
+  location: String,
+  // TODO: add company logo
 });
 
+const routeToJob = () => {
+  router.push({
+    name: 'job',
+    params: {
+      jobID: props.jobID,
+    },
+  });
+};
 </script>
 
 <style scoped lang="scss">

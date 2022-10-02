@@ -1,5 +1,5 @@
-import fs from "fs";
-import Logger from "./logging";
+import fs from 'fs';
+import Logger from './logging';
 
 export default class Config {
   public static getSecret(name: string) {
@@ -13,4 +13,4 @@ export default class Config {
       }
     }
   }
-};
+}

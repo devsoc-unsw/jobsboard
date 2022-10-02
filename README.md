@@ -58,9 +58,20 @@ Navigate to the `/backend` folder and create a `.env` file with the following co
 
 > *To view which containers you would like to build/start, refer to `/docker-compose.yml`*
 
+>*When developing locally, always remember to change the `apiRoot` in `frontend/src/config/config.ts` to `localhost`. When pr is ready for submission, change it back to the production or staging `apiRoot`*
+
 ### Pushing
 Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
 
 ### API Docs
 After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/). 
 When adding, modifying or removing routes from `backend/src/index.ts`, update the documentation at `backend/src/docs/openapi.json` accordingly to by following the existing format.
+
+### Code Style & Linting
+#### Frontend
+
+#### Backend
+- Run `yarn run lint` to see both style and linting issues in `.ts` files within the `backend` directory at once **(recommended)**
+- Run `yarn run lint:fix` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
+- Run `yarn run prettier` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
+- Run `yarn run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier`

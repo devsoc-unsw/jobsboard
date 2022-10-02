@@ -4,14 +4,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
-
-export default Vue.extend({
-  name: 'App',
-  components: {
-  },
-});
+<script setup lang="ts">
 </script>
 
 <style lang="scss">

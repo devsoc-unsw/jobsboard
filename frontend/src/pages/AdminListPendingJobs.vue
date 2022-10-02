@@ -1,97 +1,115 @@
 <template>
   <LoggedInTemplate>
     <StudentViewTemplate>
+      <FadeTransition>
+        <Toast
+          v-if='successMsg + errorMsg !== ""'
+          :isSuccess='successMsg !== ""'
+          :message='successMsg !== "" ? successMsg : errorMsg'
+        />
+      </FadeTransition>
       <Breadcrumbs />
-      <div class='contentBox'>
-        <h1>Pending Job Requests</h1>
-        <div v-if='jobs.length === 1'>
-          {{ jobs.length }} Pending Job Found
-        </div>
-        <div v-else>
-          {{ jobs.length }} Pending Jobs Found
-        </div>
+      <div class='w-11/12 max-w-2xl mx-auto'>
+        <h1 class='text-3xl text-jb-headings font-bold mt-0 mb-2 md:mt-10'>
+          Pending Job Requests
+        </h1>
+        <h3
+          v-if='jobs.length === 1'
+          class='text-base text-jb-subheadings'
+        >
+          {{ jobs.length }} Pending Job
+        </h3>
+        <h3
+          v-else
+          class='text-base text-jb-subheadings'
+        >
+          {{ jobs.length }} Pending Jobs
+        </h3>
+        <TransitionLoading v-if='isLoading' />
         <SingleJobManage
-          v-for='job in jobs'
+          v-for='(job, index) in jobs'
           :key='job.key'
+          :company='job.company.name'
+          :location='job.company.location'
           :jobID='job.id'
           :role='job.role'
-          :company='job.company.name'
           :description='job.description'
           :applicationLink='job.applicationLink'
+          :expiryDate='job.expiry'
+          :isPaidPosition='job.isPaid'
+          :jobType='job.jobType'
+          :jobMode='job.mode'
+          :workingRights='job.workingRights'
+          :studentDemographic='job.studentDemographic'
+          :wamRequirements='job.wamRequirements'
+          :additionalInfo='job.additionalInfo'
+          @removePendingJob='removePendingJob(index)'
+          @successMsg='onSuccess'
+          @errorMsg='onError'
         />
       </div>
     </StudentViewTemplate>
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
+import { ref, onMounted } from 'vue';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import SingleJobManage from '@/components/SingleJobManage.vue';
 import config from '@/config/config';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
-
-export default Vue.extend({
-  name: 'AdminListPendingJobs',
-  components: {
-    StudentViewTemplate,
-    SingleJobManage,
-    LoggedInTemplate,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      error: false,
-      errorMsg: '',
-      jobs: [],
-      success: false,
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-
-    const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': this.apiToken,
-      },
-    });
-
-    if (response.ok) {
-      const msg = await response.json();
-      this.$store.dispatch('setApiToken', msg.token);
-      this.success = true;
-      this.jobs = msg.pendingJobs;
+import Toast from '@/components/Toast.vue';
+import FadeTransition from '@/components/FadeTransition.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
+const isLoading = ref<boolean>(true);
+const successMsg = ref<string>('');
+const errorMsg = ref<string>('');
+// TODO: associate a type with this!
+const jobs = ref<any>([]);
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  const response = await fetch(`${config.apiRoot}/admin/jobs/pending`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
+  isLoading.value = false;
+  if (response.ok) {
+    const msg = await response.json();
+    apiTokenStore.setApiToken(msg.token);
+    jobs.value = msg.pendingJobs;
+  } else {
+    window.scrollTo(0, 10);
+    if (response.status == 401) {
+      errorMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login');
+      }, 3000);
     } else {
-      this.error = true;
-      window.scrollTo(0, 10);
-      if (response.status == 401) {
-        this.errorMsg = 'You are not authorized to perform this action. Redirecting to login page.';
-        setTimeout(() => {
-          this.$router.push('/login');
-        }, 3000);
-      } else {
-        this.errorMsg = 'Failed to get pending jobs.';
-      }
+      errorMsg.value = 'Failed to get pending jobs.';
     }
-  },
+  }
 });
+const removePendingJob = (index: number) => {
+  jobs.value.splice(index, 1);
+};
+const onSuccess = (message: string) => {
+  successMsg.value = message;
+  setTimeout(() => { successMsg.value = ''; }, 3000);
+};
+const onError = (message: string) => {
+  errorMsg.value = message;
+  setTimeout(() => { errorMsg.value = ''; }, 3000);
+};
 </script>
 
 <style scoped lang="scss">
-.contentBox {
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media screen and (min-width: 900px) {
-  .contentBox {
-    width: 85%;
-  }
-}
 </style>

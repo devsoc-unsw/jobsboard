@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <br>
     <div class='companyStandout'>
@@ -76,4 +76,4 @@ export default class CompanyStandout extends Vue {
   font-weight: 100;
   font-size: 1rem;
 }
-</style>
+</style> -->

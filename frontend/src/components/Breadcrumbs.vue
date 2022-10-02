@@ -25,32 +25,30 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'Breadcrumbs',
-  data() {
-    return {
-      breadcrumbList: [],
-    };
-  },
-  watch: {
-    '$route'() {
-      this.updateList();
-    },
-  },
-  mounted() {
-    this.updateList();
-  },
-  methods: {
-    routeTo(idx : number) {
-      if (this.breadcrumbList[idx].link) {
-        this.$router.push(this.breadcrumbList[idx].link);
-      }
-    },
-    updateList() {
-      this.breadcrumbList = this.$route.meta.breadcrumb;
-    },
-  },
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
+const breadcrumbList = ref();
+
+onMounted(() => {
+  updateList();
+});
+
+watch(route, () => {
+  updateList();
+});
+
+const routeTo = (idx: number) => {
+  if (breadcrumbList.value[idx].link) {
+    router.push(breadcrumbList.value[idx].link);
+  }
+};
+
+const updateList = () => {
+  breadcrumbList.value = route.meta.breadcrumb;
 };
 </script>
 

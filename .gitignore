@@ -20,4 +20,4 @@ settings.json
 db-data
 
 #ignore DS_Store file
-DS_Store
+.DS_Store

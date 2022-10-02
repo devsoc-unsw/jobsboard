@@ -1,13 +1,14 @@
 <template>
   <LoggedInTemplate>
     <StudentViewTemplate>
+      <Breadcrumbs />
       <Alert
         alertType='error'
         :alertMsg='alertMsg'
         :isOpen='isAlertOpen'
         :handleClose='() => { isAlertOpen = false }'
       />
-      <div class='flex flex-row justify-center h-screen px-8'>
+      <div class='flex flex-row justify-center h-screen px-8 mb-10'>
         <div class='flex flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:hidden'>
           <h2
             class='font-bold text-xl text-jb-headings'
@@ -23,7 +24,7 @@
             <JobListingMinimal
               v-for='job in jobs'
               :key='job.key'
-              :jobId='job.id'
+              :jobID='job.id'
               :role='job.role'
               :company='company'
               :location='location'
@@ -42,7 +43,7 @@
               <button
                 class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
               shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered'
-                @click='() => window.open(applicationLink)'
+                @click='openLink'
               >
                 Apply
               </button>
@@ -77,7 +78,7 @@
                   icon='suitcase'
                   class='mr-5 w-7'
                 />
-                <b>Job Type:</b> {{ JobTypeObject[jobType] }}
+                <b>Job Type:</b> {{ jobTypeObject[jobType] }}
               </span>
               <span class='mb-1'>
                 <font-awesome-icon
@@ -98,7 +99,8 @@
                   icon='graduation-cap'
                   class='mr-5 w-7'
                 />
-                <b>Required WAM:</b> {{ WamObject[wamRequirements] }}
+                <b>Required WAM:</b>
+                {{ wamRequirementsObject[wamRequirements] }}
               </span>
               <span class='mb-1'>
                 <font-awesome-icon
@@ -119,7 +121,13 @@
                   <li
                     v-for='workingRight in workingRights'
                     :key='workingRight'
-                  >{{ WrObject[workingRight] }}</li>
+                  >
+                    {{
+                      workingRightsObject[
+                        workingRight as keyof typeof workingRightsObject
+                      ]
+                    }}
+                  </li>
                 </ul>
               </span>
               <span class='mb-1'>
@@ -141,7 +149,12 @@
                   <li
                     v-for='studentType in studentDemographic'
                     :key='studentType'
-                  >{{ StuDemoObject[studentType] }}</li>
+                  >
+                    {{ studentDemographicObject[
+                      studentType as keyof typeof studentDemographicObject
+                    ]
+                    }}
+                  </li>
                 </ul>
               </span>
             </div>
@@ -184,152 +197,144 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
+import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
+
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import JobListingMinimal from '@/components/JobListingMinimal.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import config from '@/config/config';
 import Alert from '@/components/Alert.vue';
-import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
-export default Vue.extend({
-  name: 'JobsListPage',
-  components: {
-    StudentViewTemplate,
-    JobListingMinimal,
-    LoggedInTemplate,
-    Alert,
-  },
-  data() {
-    return {
-      jobID: this.$route.query.job,
-      companyID: '',
-      role: '',
-      company: '',
-      companyDescription: '',
-      description: '',
-      jobs: [],
-      location: '',
-      applicationLink: '',
-      jobMode: '',
-      studentDemographic: [],
-      jobType: '',
-      workingRights: [],
-      additionalInfo: '',
-      wamRequirements: '',
-      isPaid: true,
-      expiryDate: '',
-      alertMsg: '',
-      isAlertOpen: false,
-      jobInfoReady: false,
-      jobModeObject: JobMode,
-      StuDemoObject: StudentDemographic,
-      JobTypeObject: JobType,
-      WamObject: WamRequirements,
-      WrObject: WorkingRights,
-      isJobDescriptionShown: true,
-    };
-  },
-  watch: {
-    '$route.params.jobID': function () {
-      this.fetchJob();
-    },
-  },
-  async mounted() {
-    this.fetchJob();
-  },
-  methods: {
-    async fetchJob() {
-      if (this.$store.getters.getApiToken === undefined) {
-        this.$router.push('/login');
-        return;
-      }
+const router = useRouter();
+const route = useRoute();
+const apiTokenStore = useApiTokenStore();
 
-      const jobID = this.$route.params.jobID;
+const companyID = ref<string>('');
+const role = ref<string>('');
+const company = ref<string>('');
+const companyDescription = ref<string>('');
+const description = ref<string>('');
+const jobs = ref<any[]>([]);
+const location = ref<string>('');
+const applicationLink = ref<string>('');
+const jobMode = ref<keyof typeof JobMode>('hybrid');
+const jobModeObject = ref<typeof JobMode>(JobMode);
+const studentDemographic = ref<keyof typeof StudentDemographic>('all');
+const studentDemographicObject = ref<typeof StudentDemographic>(
+  StudentDemographic,
+);
+const jobType = ref<keyof typeof JobType>('intern');
+const jobTypeObject = ref<typeof JobType>(JobType);
+const workingRights = ref<keyof typeof WorkingRights>('all');
+const workingRightsObject = ref<typeof WorkingRights>(WorkingRights);
+const wamRequirements = ref<keyof typeof WamRequirements>('none');
+const wamRequirementsObject = ref<typeof WamRequirements>(WamRequirements);
+const additionalInfo = ref<string>('');
+const isPaid = ref<boolean>(true);
+const expiryDate = ref<string>('');
+const alertMsg = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+const jobInfoReady = ref<boolean>(false);
+const isJobDescriptionShown = ref<boolean>(true);
 
-      // load the jobs using the api token
-      const response = await fetch(`${config.apiRoot}/job/${jobID}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.$store.getters.getApiToken,
-        },
-      });
+const fetchJob = async () => {
+  // determine whether there is an API key present and redirect if not present
+  if (apiTokenStore.getApiToken() === undefined) {
+    router.push('/login');
+    return;
+  }
 
-      /*
-      if (msg.token) {
-        this.$store.dispatch("setApiToken", msg.token);
-      }
-      */
-      if (response.ok) {
-        const msg = await response.json();
+  const jobID = route.params.jobID;
 
-        // Change the page title
-        document.title = `${msg.job.role} | ${msg.job.company.name} | Jobs Board`;
+  // load the jobs using the api token
+  const response = await fetch(`${config.apiRoot}/job/${jobID}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
 
-        this.role = msg.job.role;
-        this.company = msg.job.company.name;
-        this.description = msg.job.description;
-        this.companyDescription = msg.job.company.description;
-        this.location = msg.job.company.location;
-        this.companyID = msg.job.company.id;
-        this.applicationLink = msg.job.applicationLink;
-        this.jobMode = msg.job.mode;
-        this.studentDemographic = msg.job.studentDemographic;
-        this.jobType = msg.job.jobType;
-        this.workingRights = msg.job.workingRights;
-        this.additionalInfo = msg.job.additionalInfo === ''
-          ? '<p>This company has not provided any additional information.</p>' : msg.job.additionalInfo;
-        this.wamRequirements = msg.job.wamRequirements;
-        this.isPaid = msg.job.isPaid;
-        this.expiryDate = msg.job.expiry;
-      } else {
-        this.isAlertOpen = true;
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        if (response.status === 401) {
-          this.alertMsg = 'Login expired. Redirecting to login page.';
-          setTimeout(() => {
-            this.$router.push('/login/company');
-          }, 3000);
-        } else {
-          this.alertMsg = 'Unable to load jobs at this time. Please try again later.';
-        }
-      }
+  if (response.ok) {
+    const msg = await response.json();
 
-      const jobResponse = await fetch(`${config.apiRoot}/company/${this.companyID}/jobs`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.$store.getters.getApiToken,
-        },
-      });
+    // Change the page title
+    document.title = `${msg.job.role} | ${msg.job.company.name} | Jobs Board`;
 
-      /*
-      if (companyJobMsg.token) {
-        this.$store.dispatch("setApiToken", companyJobMsg.token);
-      }
-      */
-      if (jobResponse.ok) {
-        const companyJobMsg = await jobResponse.json();
-        // TODO(ad-t): Fix below, as it will always be true
-        this.jobs = companyJobMsg.companyJobs.filter((job) => {
-          const jobResultID = parseInt(job.id, 10);
-          const currentJobID = parseInt(jobID, 10);
-          return jobResultID !== currentJobID;
-        });
-      } else {
-        this.isAlertOpen = true;
-        this.alertMsg = 'Unable to load company jobs at this time. Please try again later.';
-      }
+    role.value = msg.job.role;
+    company.value = msg.job.company.name;
+    description.value = msg.job.description;
+    companyDescription.value = msg.job.company.description;
+    location.value = msg.job.company.location;
+    companyID.value = msg.job.company.id;
+    applicationLink.value = msg.job.applicationLink;
+    jobMode.value = msg.job.mode;
+    studentDemographic.value = msg.job.studentDemographic;
+    jobType.value = msg.job.jobType;
+    workingRights.value = msg.job.workingRights;
+    additionalInfo.value = msg.job.additionalInfo === ''
+      ? '<p>This company has not provided any additional information.</p>'
+      : msg.job.additionalInfo;
+    wamRequirements.value = msg.job.wamRequirements;
+    isPaid.value = msg.job.isPaid;
+    expiryDate.value = msg.job.expiry;
+  } else {
+    isAlertOpen.value = true;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    if (response.status === 401) {
+      alertMsg.value = 'Login expired. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login/company');
+      }, 3000);
+    } else {
+      alertMsg.value = 'Unable to load jobs at this time. Please try again later.';
+    }
+  }
 
-      this.jobInfoReady = true;
-    },
-  },
+  const jobResponse = await fetch(`${config.apiRoot}/company/${companyID.value}/jobs`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
+
+  if (jobResponse.ok) {
+    const companyJobMsg = await jobResponse.json();
+    // TODO(ad-t): Fix below, as it will always be true
+    jobs.value = companyJobMsg.companyJobs.filter((job: any) => {
+      const jobResultID = parseInt(job.id, 10);
+      const currentJobID = parseInt(jobID as string, 10);
+      return jobResultID !== currentJobID;
+    });
+  } else {
+    isAlertOpen.value = true;
+    alertMsg.value = 'Unable to load company jobs at this time. Please try again later.';
+  }
+
+  jobInfoReady.value = true;
+};
+
+onMounted(() => {
+  fetchJob();
 });
+
+watch(route, () => {
+  fetchJob();
+});
+
+
+const openLink = () => {
+  window.open(applicationLink.value, '_blank');
+};
 </script>
 
 <style scoped lang="scss">

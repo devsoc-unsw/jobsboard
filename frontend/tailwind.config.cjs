@@ -1,7 +1,7 @@
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {
-  content: ['./public/index.html', './src/**/*.{vue,js,ts}'],
+  content: ['./index.html', './src/**/*.{vue,js,ts}'],
   media: false,
   theme: {
     screens: {
@@ -19,6 +19,7 @@ module.exports = {
         'jb-background': '#f6f9fc',
         'jb-blue': '#2c8bf4',
         'jb-btn-hovered': '#1f7ade',
+        'jb-accept-button': '#388e3c',
       },
       colors: {
         'jb-headings': '#0c3149',
@@ -28,6 +29,10 @@ module.exports = {
         'jb-textlink-hovered': '#1f7ade',
         'jb-tags': '#ebecf0',
         'jb-warning': '#ec3c2a',
+        'jb-blue': '#3a76f8',
+        'jb-green': '#259e3b',
+        'jb-red': '#eb5837',
+        'jb-dark-blue': '#0743c5',
       },
       rotate: {
         '220': '220deg'
