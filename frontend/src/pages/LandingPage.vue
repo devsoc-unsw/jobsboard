@@ -1,5 +1,12 @@
 <template>
   <main>
+    <FadeTransition>
+      <RecruitmentModal 
+        v-if="showRecruitmentModal"
+        :isRecuritmentOpen=false
+        @closeCallback='closeModal'
+      />
+    </FadeTransition>
     <div class='relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]'>
       <img
         :src='BigBlob'
@@ -128,6 +135,13 @@
         <button
           class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
                   hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
+          @click='showModal'
+        >
+          Join the Team
+        </button>
+        <button
+          class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
+                  hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
           @click='toGithubRepo'
         >
           Source Code
@@ -147,9 +161,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
+import RecruitmentModal from '@/components/modals/RecruitmentModal.vue';
+import FadeTransition from '@/components/FadeTransition.vue';
 import BigBlob from '@/assets/misc/BigBlob.svg';
 import SmallBlob from '@/assets/misc/SmallBlob.svg';
 import JobsboardLogo from '@/assets/logos/JobsboardLogo.png';
@@ -161,6 +177,8 @@ import GoogleLogo from '@/assets/companies/googleLogo.png';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
+
+const showRecruitmentModal = ref(false);
 
 onMounted(() => {
   // Change the page title
@@ -182,6 +200,14 @@ const toGithubRepo = () => {
 
 const toSponsorsPage = () => {
   window.open('https://www.csesoc.unsw.edu.au/sponsors');
+};
+
+const showModal = () => {
+  showRecruitmentModal.value = true;
+};
+
+const closeModal = () => {
+  showRecruitmentModal.value = false;
 };
 
 </script>
