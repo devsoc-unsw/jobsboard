@@ -11,7 +11,10 @@
           class='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
           @click='$emit("closeCallback")'
         >
-          <font-awesome-icon icon="xmark" size="2x" />
+          <font-awesome-icon
+            icon='xmark'
+            size='2x'
+          />
         </button>
       </div>
       <!-- Modal body -->
@@ -21,22 +24,22 @@
           As such, we are always on the look out for keen-minded individuals who are as passionate about the project as we are.
           If you have experience in the following, do consider applying.
         </p>
-        <div class="flex w-full justify-center gap-28 py-5">
+        <div class='flex w-full justify-center gap-28 py-5'>
           <div>
-            <p class="font-bold text-jb-headings text-xl">
+            <p class='font-bold text-jb-headings text-xl'>
               Frontend
             </p>
-            <ul class="text-left ml-5">
+            <ul class='text-left ml-5'>
               <li>VueJs</li>
               <li>TailwindCSS</li>
               <li>TypeScript</li>
             </ul>
           </div>
           <div>
-            <p class="font-bold text-jb-headings text-xl">
+            <p class='font-bold text-jb-headings text-xl'>
               Backend
             </p>
-            <ul class="text-left ml-5">
+            <ul class='text-left ml-5'>
               <li>TypeScript</li>
               <li>Postgresql</li>
             </ul>
@@ -50,7 +53,7 @@
           <span
             class='text-jb-textlink font-bold transition-colors duration-200 ease-linear
                   cursor-pointer hover:text-jb-textlink-hovered'
-            @click="toVueAssessment"
+            @click='toVueAssessment'
           >
             here
           </span>
@@ -58,16 +61,16 @@
         </p>
 
         <div
-          v-if="!props.isRecuritmentOpen"
+          v-if='!props.isRecuritmentOpen'
         >
-          <p class="font-bold text-center bg-yellow-300 p-3 rounded-md mt-2">
+          <p class='font-bold text-center bg-yellow-300 p-3 rounded-md mt-2'>
             Unfortunately, we are not accepting applications at the moment. But don't worry as Projects does rolling recruitments
             so check back again later.
           </p>
         </div>
         <div
           v-else
-          class="flex justify-center w-full"
+          class='flex justify-center w-full'
         >
           <button
             class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
@@ -83,18 +86,18 @@
 </template>
 
 <script setup lang="ts">
-import Modal from '@/components/modals/Modal.vue'
+import Modal from '@/components/modals/Modal.vue';
 
 const props = defineProps({
-  isRecuritmentOpen: Boolean
+  isRecuritmentOpen: Boolean,
 });
 
 const toVueAssessment = () => {
-  window.open("https://github.com/csesoc/vue-frontend-assessment");
+  window.open('https://github.com/csesoc/vue-frontend-assessment');
 };
 
 const toChaos = () => {
-  window.open("");
+  window.open('');
 };
 </script>
 

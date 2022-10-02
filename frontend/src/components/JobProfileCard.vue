@@ -129,7 +129,6 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  studentDemographic: Object,
   description: String,
   applicationLink: String,
   workingRights: Array,

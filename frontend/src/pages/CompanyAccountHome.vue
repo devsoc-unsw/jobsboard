@@ -43,7 +43,9 @@
                     accept='.jpg, .png'
                     type='file'
                     class='hidden'
-                    @change='(e) => logo = (e.target as HTMLInputElement).files![0]'
+                    @change='(e) => {
+                      logo = (e.target as HTMLInputElement).files![0]
+                    }'
                   >
                 </label>
               </div>

@@ -11,7 +11,10 @@
           class='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
           @click='$emit("closeCallback")'
         >
-          <font-awesome-icon icon="xmark" size="2x" />
+          <font-awesome-icon
+            icon='xmark'
+            size='2x'
+          />
         </button>
       </div>
       <!-- Modal body -->
@@ -64,7 +67,11 @@
             />
             Applicant's WAM:&nbsp;
             <span class='text-base leading-relaxed text-gray-500 dark:text-gray-400'>
-              {{ wamRequirementsObject[wamRequirements as keyof typeof wamRequirementsObject] }}
+              {{
+                wamRequirementsObject[
+                  wamRequirements as keyof typeof wamRequirementsObject
+                ]
+              }}
             </span>
           </h3>
           <h3 class='text-l font-medium text-gray-900 dark:text-white'>
@@ -87,7 +94,13 @@
               <ul class='list-disc list-inside'>
                 <li
                   v-for='workingRight in workingRights'
-                >{{ workingRightsObject[workingRight as keyof typeof workingRightsObject] }}</li>
+                >
+                  {{
+                    workingRightsObject[
+                      workingRight as keyof typeof workingRightsObject
+                    ]
+                  }}
+                </li>
               </ul>
             </span>
           </h3>
@@ -101,7 +114,13 @@
               <ul class='list-disc list-inside'>
                 <li
                   v-for='student in studentDemographic'
-                >{{ studentDemographicObject[student as keyof typeof studentDemographicObject] }}</li>
+                >
+                  {{
+                    studentDemographicObject[
+                      student as keyof typeof studentDemographicObject
+                    ]
+                  }}
+                </li>
               </ul>
             </span>
           </h3>
@@ -126,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue';
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 import Modal from '@/components/modals/Modal.vue';
 
@@ -185,7 +204,9 @@ const jobModeObject = ref<typeof JobMode>(JobMode);
 const jobTypeObject = ref<typeof JobType>(JobType);
 const wamRequirementsObject = ref<typeof WamRequirements>(WamRequirements);
 const workingRightsObject = ref<typeof WorkingRights>(WorkingRights);
-const studentDemographicObject = ref<typeof StudentDemographic>(StudentDemographic);
+const studentDemographicObject = ref<typeof StudentDemographic>(
+  StudentDemographic,
+);
 </script>
 
 <style scoped lang="scss">
