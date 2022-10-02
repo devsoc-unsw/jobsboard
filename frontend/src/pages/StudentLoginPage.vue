@@ -17,7 +17,7 @@
         :handleClose='() => { isAlertOpen = false }'
       />
 
-      <form class="flex justify-center items-center flex-col w-full">
+      <form class='flex justify-center items-center flex-col w-full'>
         <!-- zId Input -->
         <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
           <input
@@ -26,7 +26,7 @@
             name='zID'
             type='text'
             class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
-            autocomplete="username"
+            autocomplete='username'
             required
             @keyup.enter='performLogin()'
           >
@@ -49,7 +49,7 @@
             name='password'
             type='password'
             class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
-            autocomplete="current-password"
+            autocomplete='current-password'
             required
             @keyup.enter='performLogin()'
           >
