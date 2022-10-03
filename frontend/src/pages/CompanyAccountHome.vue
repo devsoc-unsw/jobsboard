@@ -29,7 +29,7 @@
                 >
                   <img
                     v-if='logo'
-                    class='h-48'
+                    class='h-60'
                     :src='preview'
                   />
                   <div
