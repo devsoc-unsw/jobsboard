@@ -86,7 +86,7 @@
       <p class='text-lg text-jb-subheadings my-4 mx-16 sm:mx-0'>
         Are you a company looking to advertise with us? We'd absolutely love to hear from you.
         In the meantime, you can also check out
-        <span 
+        <span
           class='text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered'
           @click='toSponsorsPage'
         >
