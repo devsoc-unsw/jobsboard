@@ -115,7 +115,11 @@ const triggerAlert = (type: string, msg: string) => {
   setTimeout(() => { isToastOpen.value = false; }, 3000);
 };
 
-const triggerModal = (companyName: string, location: string, companyDescription: string) => {
+const triggerModal = (
+  companyName: string,
+  location: string,
+  companyDescription: string,
+) => {
   isModalShown.value = true;
   currentCompanyShown.value = companyName;
   currentCompanyLocation.value = location;

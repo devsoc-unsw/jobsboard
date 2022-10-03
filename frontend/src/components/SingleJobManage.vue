@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Modal
+    <JobDescriptionModal
       v-if='modalVisible'
       :jobTitle='role'
       :jobDescription='description'
@@ -66,11 +66,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
 import config from '@/config/config';
-import Modal from '@/components/Modal.vue';
+import JobDescriptionModal from '@/components/modals/JobDescriptionModal.vue';
+
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 const props = defineProps({
