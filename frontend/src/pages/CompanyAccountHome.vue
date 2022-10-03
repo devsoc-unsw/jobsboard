@@ -27,7 +27,13 @@
                 <label
                   class='flex flex-col justify-center items-center w-full h-64 rounded-lg border-2 border-dashed cursor-pointer bg-white border-gray-600 hover:border-gray-500 hover:bg-gray-100'
                 >
+                  <img
+                    v-if='logo'
+                    class='h-60'
+                    :src='preview'
+                  />
                   <div
+                    v-else
                     class='flex flex-col justify-center items-center pt-5 pb-6'
                   >
                     <font-awesome-icon
@@ -43,10 +49,8 @@
                     accept='.jpg, .png'
                     type='file'
                     class='hidden'
-                    @change='(e) => {
-                      logo = (e.target as HTMLInputElement).files![0]
-                    }'
-                  >
+                    @change='updateLogo'
+                  />
                 </label>
               </div>
               <!-- Modal footer -->
@@ -152,6 +156,7 @@ let expiredJobs = ref([]);
 const boardStatus = ref('postedJobs');
 const isModalShown = ref<boolean>(false);
 const logo = ref<any>(null);
+const preview = ref<any>(null);
 
 onMounted(async () => {
   // Change the page title
@@ -208,6 +213,11 @@ const toBase64 = (file: any) => {
     reader.onload = () => resolve(reader.result);
     reader.onerror = error => reject(error);
   });
+};
+
+const updateLogo = (e: Event) => {
+  logo.value = (e.target as HTMLInputElement).files![0];
+  preview.value = URL.createObjectURL(logo.value);
 };
 
 const checkCompanyLogoStatus = async () => {
