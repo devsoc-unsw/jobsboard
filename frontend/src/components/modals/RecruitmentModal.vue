@@ -30,8 +30,8 @@
               Frontend
             </p>
             <ul class='text-left ml-5'>
-              <li>VueJs</li>
-              <li>TailwindCSS</li>
+              <li>VueJS</li>
+              <li>Tailwind CSS</li>
               <li>TypeScript</li>
             </ul>
           </div>
@@ -41,7 +41,7 @@
             </p>
             <ul class='text-left ml-5'>
               <li>TypeScript</li>
-              <li>Postgresql</li>
+              <li>PostgreSQL</li>
             </ul>
           </div>
         </div>
