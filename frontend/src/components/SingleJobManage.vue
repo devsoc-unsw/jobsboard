@@ -18,8 +18,7 @@
     <br>
     <div>
       <button
-        class='flex flex-row p-4 shadow-card rounded-md w-full sm:flex-wrap
-        transform transition duration-200 hover:scale-105 bg-white'
+        class='flex flex-row p-4 shadow-card rounded-md w-full sm:flex-wrap hover-anim bg-white'
         @click='showJobModal'
       >
         <!-- TODO: to be replaced with company logo -->

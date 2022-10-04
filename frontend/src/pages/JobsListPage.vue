@@ -8,21 +8,86 @@
           {{ errorMsg }}
         </ErrorBox>
       </div>
-      <div class='jobsBox'>
-        <div class='resultsFound'>
-          <div v-if='jobs.length === 1'>
-            {{ jobs.length }} Job Found
+      <div class="max-w-4xl m-auto px-6">
+        <h3 class="text-xl text-left">
+          Still struggling to find a job...
+        </h3>
+        <h1 class="text-3xl my-2 font-extrabold text-jb-headings text-left">
+          Explore Our Curated List of Jobs
+        </h1>
+        <h3 class="text-xl my-3 mb-8 text-left">
+          We know that finding a job can be tough sometimes.
+          Which is why we've partnered up with only the best
+          companies to bring you the best opportunities.
+        </h3>
+        <div class="flex justify-between items-stretch md:flex-col md:items-center mb-8">
+          <BenefitCard
+            title="All jobs are paid"
+            description="Student's welfare is always our 
+              top priority,which is why we ensure that 
+              all jobs that you see here are paid."
+            icon="money-bills"
+            iconColor=""
+            class="w-64 md:w-auto md:my-3"
+          />
+          <BenefitCard
+            title="Complete Transparency"
+            description="We aim to give you as much information
+              as possible about the job upfront like whether or
+              not a job is suitable for an international student."
+            icon="code"
+            iconColor=""
+            class="w-64 md:w-auto md:my-3"
+          />
+          <BenefitCard
+            title="Amazing Partners"
+            description="Our Careers team work round the clock to
+              partner up with amazing companies in order to provide
+              you with the best selection of jobs."
+            icon="people-group"
+            iconColor=""
+            class="w-64 md:w-auto md:my-3"
+          />
+        </div>
+      
+        <div class="flex items-center my-8 justify-between">
+          <div class="flex items-center">
+            <font-awesome-icon icon="clipboard"/>
+            <p class="ml-2 font-bold">0 Jobs Found</p>
           </div>
-          <div class='jobContainer'>
-            <JobListingMinimal
-              v-for='job in jobs'
-              :key='job.key'
-              class='jobItems'
-              :jobID='job.id'
-              :role='job.role'
-              :company='job.company.name'
-              :location='job.company.location'
+          <div class="relative">
+            <font-awesome-icon
+              icon="magnifying-glass"
+              class="flex absolute inset-y-0 my-auto left-0 items-center pl-3 pointer-events-none"
             />
+            <input
+              type="text"
+              placeholder="Search"
+              class="border border-gray-300 block p-2 pl-10 w-56 rounded-md"
+            >
+          </div>
+        </div>
+      </div>
+      <div class="max-w-6xl m-auto px-6">
+        <div class=''>
+          <div class='resultsFound'>
+            <div v-if='jobs.length === 1'>
+              {{ jobs.length }} Job Found
+            </div>
+            <div class='flex flex-wrap justify-center'>
+              <JobCard
+                v-for='job in jobs'
+                :key='job.key'
+                :jobID='job.id'
+                :imagePath='GoogleLogo'
+                :jobTitle='job.company.name'
+                :jobRole='job.role'
+                :jobType='job.jobType'
+                :jobLocation='job.company.location'
+                :jobMode='job.mode'
+                class="w-60"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -37,12 +102,14 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
-import JobListingMinimal from '@/components/JobListingMinimal.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import InfiniteScrollTrigger from '@/animations/InfiniteScrollTrigger.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import config from '@/config/config';
+import JobCard from '@/components/JobCard.vue';
+import GoogleLogo from '@/assets/companies/googleLogo.png';
+import BenefitCard from '@/components/BenefitCard.vue';
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
@@ -100,18 +167,18 @@ const loadMoreJobs = async () => {
 </script>
 
 <style scoped lang="scss">
-.jobsBox {
+/* .jobsBox {
   width: 75%;
   margin: auto;
-}
+} */
 
-.jobContainer {
+/* .jobContainer {
   display: grid;
   align-items: stretch;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-auto-rows: 1fr;
   grid-gap: 10px;
-}
+} */
 
 .resultsFound {
   font-weight: 100;
