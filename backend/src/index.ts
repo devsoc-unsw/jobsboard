@@ -191,13 +191,6 @@ app.post(
   Middleware.genericLoggingMiddleware,
 );
 
-app.get(
-  '/company/password-reset-token/:username',
-  cors(corsOptions),
-  CompanyFunctions.GetPasswordResetToken,
-  Middleware.genericLoggingMiddleware,
-);
-
 app.put(
   '/company/password-reset',
   cors(corsOptions),
