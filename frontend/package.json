@@ -17,24 +17,24 @@
         "@fortawesome/free-solid-svg-icons": "6.2.0",
         "@fortawesome/vue-fontawesome": "3.0.1",
         "@vueup/vue-quill": "1.0.0-beta.10",
-        "autoprefixer": "10.4.11",
+        "autoprefixer": "10.4.12",
         "eslint-plugin-node": "11.1.0",
         "eslint-plugin-vue": "9.6.0",
-        "pinia": "2.0.22",
-        "postcss": "8.4.16",
+        "pinia": "2.0.23",
+        "postcss": "8.4.17",
         "tailwindcss": "3.1.8",
-        "vue": "3.2.39",
+        "vue": "3.2.40",
         "vue-router": "4.1.5"
     },
     "devDependencies": {
         "@types/node": "18.7.14",
         "@typescript-eslint/eslint-plugin": "5.39.0",
         "@typescript-eslint/parser": "5.39.0",
-        "@vitejs/plugin-vue": "3.1.0",
+        "@vitejs/plugin-vue": "3.1.2",
         "eslint": "8.25.0",
         "sass": "1.55.0",
-        "typescript": "4.8.3",
-        "vite": "3.1.2",
+        "typescript": "4.8.4",
+        "vite": "3.1.6",
         "vue-tsc": "0.40.13"
     }
 }
