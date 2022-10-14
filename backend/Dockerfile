@@ -1,4 +1,4 @@
-FROM node:18.10-alpine as builder
+FROM node:18.11-alpine as builder
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
 RUN yarn install --frozen-lockfile
@@ -6,7 +6,7 @@ COPY ./ .
 
 RUN yarn build
 
-FROM node:18.10-alpine as runner
+FROM node:18.11-alpine as runner
 ENV NODE_ENV production
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
