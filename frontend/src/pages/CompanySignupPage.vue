@@ -49,8 +49,7 @@
             v-model='username'
             name='username'
             autocomplete='username'
-            type='email'
-            pattern='.+@email\.com'
+            type='text'
             class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer'
             required
             @keyup.enter='performSignup()'
