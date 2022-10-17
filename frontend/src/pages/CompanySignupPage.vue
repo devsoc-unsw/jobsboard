@@ -7,25 +7,26 @@
       </h1>
 
       <!-- Disclaimer Box -->
-      <div v-if='!isAlertOpen'>
-        <div class='h-full flex flex-col justify-center items-center'>
-          <div class='w-3/5 xs:w-2/3 sm:w-3/4 md:w-4/5 xl:5/6'>
-            <div class='bg-orange-100 border-t-4 border-orange-500 rounded-b px-5 py-4 shadow-md lg:mx-[15%] my-4'>
-              <div class='flex'>
-                <div class='py-1'>
-                  <font-awesome-icon
-                    icon='circle-info'
-                    size='lg'
-                  />
-                </div>
-                <div class='mx-[2%] text-left break-words overflow-hidden'>
-                  <p class='font-bold text-lg sm:text-lg'>
-                    Important note before signing up
-                  </p>
-                  <p class='text-base text-lg sm:text-base'>
-                    We recommend using a generic email alias rather than an individualised company email, e.g. recruiting@company.com.au rather than firstname.lastname@company.com.au
-                  </p>
-                </div>
+      <div
+        v-if='!isAlertOpen'
+        class='h-full flex flex-col justify-center items-center mb-6'
+      >
+        <div class='w-3/5 xs:w-2/3 sm:w-3/4 md:w-4/5 xl:5/6'>
+          <div class='bg-orange-100 border-t-4 border-orange-500 rounded-b px-5 py-4 shadow-md lg:mx-[15%] my-4'>
+            <div class='flex'>
+              <div class='py-1'>
+                <font-awesome-icon
+                  icon='circle-info'
+                  size='lg'
+                />
+              </div>
+              <div class='mx-[2%] text-left break-words overflow-hidden'>
+                <p class='font-bold text-lg sm:text-lg'>
+                  Important note before signing up
+                </p>
+                <p class='text-lg sm:text-base'>
+                  We recommend using a generic email alias rather than an individualised company email, e.g. recruiting@company.com.au rather than firstname.lastname@company.com.au
+                </p>
               </div>
             </div>
           </div>
@@ -204,6 +205,11 @@ const validateInput = () => {
     alertType.value = 'error';
     alertMsg.value = 'Email cannot be empty. Please try again.';
     return false;
+  } else if (!username.value.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
+    isAlertOpen.value = true;
+    alertType.value = 'error';
+    alertMsg.value = 'Please enter a valid email address.';
+    return false;
   } else if (password.value === '') {
     isAlertOpen.value = true;
     alertType.value = 'error';
@@ -213,10 +219,12 @@ const validateInput = () => {
     isAlertOpen.value = true;
     alertType.value = 'error';
     alertMsg.value = 'Confirm password input cannot be empty. Please try again';
+    return false;
   } else if (password.value !== confirmPassword.value) {
     isAlertOpen.value = true;
     alertType.value = 'error';
     alertMsg.value = 'Passwords do not match. Please try again';
+    return false;
   } else if (name.value === '') {
     isAlertOpen.value = true;
     alertType.value = 'error';
