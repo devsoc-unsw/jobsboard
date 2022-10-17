@@ -53,7 +53,7 @@
         <div class="flex items-center my-8 justify-between">
           <div class="flex items-center">
             <font-awesome-icon icon="clipboard"/>
-            <p class="ml-2 font-bold">0 Jobs Found</p>
+            <p class="ml-2 font-bold">{{ filteredJobs.length }} Jobs Found</p>
           </div>
           <div class="relative">
             <font-awesome-icon
@@ -64,6 +64,7 @@
               type="text"
               placeholder="Search"
               class="border border-gray-300 block p-2 pl-10 w-56 rounded-md"
+              v-model="query"
             >
           </div>
         </div>
@@ -76,7 +77,7 @@
             </div>
             <div class='flex flex-wrap justify-center'>
               <JobCard
-                v-for='job in jobs'
+                v-for='job in filteredJobs'
                 :key='job.key'
                 :jobID='job.id'
                 :imagePath='GoogleLogo'
@@ -87,6 +88,12 @@
                 :jobMode='job.mode'
                 class="w-60"
               />
+              <h2 v-if="filteredJobs.length === 0 && query.length !== 0">
+                No jobs found with that query
+              </h2>
+              <h2 v-else-if="filteredJobs.length === 0">
+                No jobs available
+              </h2>
             </div>
           </div>
         </div>
@@ -98,7 +105,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
@@ -117,6 +124,7 @@ const apiTokenStore = useApiTokenStore();
 const error = ref<boolean>(false);
 const errorMsg = ref<string>('');
 const jobs = ref<any[]>([]);
+const query = ref<string>('');
 const loadMoreJobsLock = ref<boolean>(false);
 
 onMounted(() => {
@@ -164,22 +172,26 @@ const loadMoreJobs = async () => {
   }
   loadMoreJobsLock.value = false;
 };
+
+const getValue = (object: any, path: string): any => {
+    if (!path) return object;
+    const properties = path.split('.');
+    const indexKey = properties.shift() || ''
+    return getValue(object[indexKey], properties.join('.'))
+}
+
+const filteredJobs = computed(() => {
+  const searchKeys = ['role', 'jobType', 'company.name', 'company.location']
+  return jobs.value.filter(job => {
+    return searchKeys.some(key => {
+      return getValue(job, key).toLowerCase().includes(query.value)
+    })
+  })
+})
+
 </script>
 
 <style scoped lang="scss">
-/* .jobsBox {
-  width: 75%;
-  margin: auto;
-} */
-
-/* .jobContainer {
-  display: grid;
-  align-items: stretch;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 1fr;
-  grid-gap: 10px;
-} */
-
 .resultsFound {
   font-weight: 100;
   margin-bottom: 2rem;
