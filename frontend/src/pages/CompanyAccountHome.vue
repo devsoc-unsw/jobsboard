@@ -31,7 +31,7 @@
                     v-if='logo'
                     class='h-60'
                     :src='preview'
-                  />
+                  >
                   <div
                     v-else
                     class='flex flex-col justify-center items-center pt-5 pb-6'
@@ -50,7 +50,7 @@
                     type='file'
                     class='hidden'
                     @change='updateLogo'
-                  />
+                  >
                 </label>
               </div>
               <!-- Modal footer -->

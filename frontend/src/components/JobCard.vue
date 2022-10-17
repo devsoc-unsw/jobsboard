@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class='flex flex-col rounded-lg m-4 shadow-card hover-anim'
     @click='() => router.push(`/job/${jobID}`)'
   >
@@ -23,25 +23,34 @@
         :key='idx'
         class='flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base'
       >
-        {{ workingRightsObject[tag as keyof typeof workingRightsObject]}}
+        {{ workingRightsObject[tag as keyof typeof workingRightsObject] }}
       </div>
     </div>
-    
-    <div class="flex items-center mx-4 my-1">
-      <font-awesome-icon class="w-4" icon='clock'/>
-      <p class="ml-2">
+
+    <div class='flex items-center mx-4 my-1'>
+      <font-awesome-icon
+        class='w-4'
+        icon='clock'
+      />
+      <p class='ml-2'>
         {{ jobTypeObject[jobType as keyof typeof jobTypeObject] }}
       </p>
     </div>
-    <div class="flex items-center mx-4 my-1">
-      <font-awesome-icon class="w-4" icon='location-dot'/>
-      <p class="ml-2">
+    <div class='flex items-center mx-4 my-1'>
+      <font-awesome-icon
+        class='w-4'
+        icon='location-dot'
+      />
+      <p class='ml-2'>
         {{ jobLocation }}
       </p>
     </div>
-    <div class="flex items-center mx-4 my-1 mb-4">
-      <font-awesome-icon class="w-4" icon='address-card'/>
-      <p class="ml-2">
+    <div class='flex items-center mx-4 my-1 mb-4'>
+      <font-awesome-icon
+        class='w-4'
+        icon='address-card'
+      />
+      <p class='ml-2'>
         {{ jobModeObject[jobMode as keyof typeof jobModeObject] }}
       </p>
     </div>
@@ -66,7 +75,7 @@
   const props = defineProps({
     jobID: {
       type: Number,
-      required: true
+      required: true,
     },
     jobTitle: {
       type: String,
@@ -95,10 +104,10 @@
     jobMode: {
       type: String,
       required: true,
-    }
+    },
   });
 
-  
+
 </script>
 
 <style scoped lang="scss">

@@ -8,68 +8,70 @@
           {{ errorMsg }}
         </ErrorBox>
       </div>
-      <div class="max-w-4xl m-auto px-6">
-        <h3 class="text-xl text-left">
+      <div class='max-w-4xl m-auto px-6'>
+        <h3 class='text-xl text-left'>
           Still struggling to find a job...
         </h3>
-        <h1 class="text-3xl my-2 font-extrabold text-jb-headings text-left">
+        <h1 class='text-3xl my-2 font-extrabold text-jb-headings text-left'>
           Explore Our Curated List of Jobs
         </h1>
-        <h3 class="text-xl my-3 mb-8 text-left">
+        <h3 class='text-xl my-3 mb-8 text-left'>
           We know that finding a job can be tough sometimes.
           Which is why we've partnered up with only the best
           companies to bring you the best opportunities.
         </h3>
-        <div class="flex justify-between items-stretch md:flex-col md:items-center mb-8">
+        <div class='flex justify-between items-stretch md:flex-col md:items-center mb-8'>
           <BenefitCard
-            title="All jobs are paid"
-            description="Student's welfare is always our 
-              top priority,which is why we ensure that 
-              all jobs that you see here are paid."
-            icon="money-bills"
-            iconColor=""
-            class="w-64 md:w-auto md:my-3"
+            title='All jobs are paid'
+            description="Student's welfare is always our
+              top priority,which is why we ensure that
+              all jobs that you see here are paid.'
+            icon='money-bills"
+            iconColor=''
+            class='w-64 md:w-auto md:my-3'
           />
           <BenefitCard
-            title="Complete Transparency"
-            description="We aim to give you as much information
+            title='Complete Transparency'
+            description='We aim to give you as much information
               as possible about the job upfront like whether or
-              not a job is suitable for an international student."
-            icon="code"
-            iconColor=""
-            class="w-64 md:w-auto md:my-3"
+              not a job is suitable for an international student.'
+            icon='code'
+            iconColor=''
+            class='w-64 md:w-auto md:my-3'
           />
           <BenefitCard
-            title="Amazing Partners"
-            description="Our Careers team work round the clock to
+            title='Amazing Partners'
+            description='Our Careers team work round the clock to
               partner up with amazing companies in order to provide
-              you with the best selection of jobs."
-            icon="people-group"
-            iconColor=""
-            class="w-64 md:w-auto md:my-3"
+              you with the best selection of jobs.'
+            icon='people-group'
+            iconColor=''
+            class='w-64 md:w-auto md:my-3'
           />
         </div>
-      
-        <div class="flex items-center my-8 justify-between sm:flex-wrap sm:justify-center">
-          <div class="flex items-center sm:mb-4">
-            <font-awesome-icon icon="clipboard"/>
-            <p class="ml-2 font-bold">{{ filteredJobs.length }} Jobs Found</p>
+
+        <div class='flex items-center my-8 justify-between sm:flex-wrap sm:justify-center'>
+          <div class='flex items-center sm:mb-4'>
+            <font-awesome-icon icon='clipboard' />
+            <p class='ml-2 font-bold'>
+              {{ filteredJobs.length }} Jobs Found
+            </p>
           </div>
-          <div class="relative">
+          <div class='relative'>
             <font-awesome-icon
-              icon="magnifying-glass"
-              class="flex absolute inset-y-0 my-auto left-0 items-center pl-3 pointer-events-none"
+              icon='magnifying-glass'
+              class='flex absolute inset-y-0 my-auto left-0 items-center pl-3 pointer-events-none'
             />
             <input
-              type="text"
-              placeholder="Search"
-              class="border border-gray-300 block p-2 pl-10 w-56 rounded-md"
-              v-model="query"
+              v-model='query'
+              type='text'
+              placeholder='Search'
+              class='border border-gray-300 block p-2 pl-10 w-56 rounded-md'
             >
           </div>
         </div>
       </div>
-      <div class="max-w-6xl m-auto px-6">
+      <div class='max-w-6xl m-auto px-6'>
         <TransitionLoading v-if='isLoading' />
         <div class='flex flex-wrap justify-center'>
           <div class='flex flex-wrap sm:justify-center'>
@@ -84,16 +86,19 @@
               :jobTag='job.workingRights'
               :jobLocation='job.company.location'
               :jobMode='job.mode'
-              class="w-60"
+              class='w-60'
             />
           </div>
-          <div class="max-w-4xl my-16 px-6 text-center" v-if="filteredJobs.length === 0 && !isLoading">
-            <h2 class="text-3xl my-2 font-extrabold text-jb-headings">
+          <div
+            v-if='filteredJobs.length === 0 && !isLoading'
+            class='max-w-4xl my-16 px-6 text-center'
+          >
+            <h2 class='text-3xl my-2 font-extrabold text-jb-headings'>
               Sorry, it doesn't seem like we have any jobs right now
             </h2>
-            <h3 class="text-xl my-6">
+            <h3 class='text-xl my-6'>
               Jobs listed here are usually posted by the company itself. We do not post any jobs
-              without the explicit approval of the company. Please ensure your search query is correct 
+              without the explicit approval of the company. Please ensure your search query is correct
               or check back soon.
             </h3>
           </div>
@@ -179,17 +184,17 @@ const loadMoreJobs = async () => {
 const getValue = (object: any, path: string): any => {
     if (!path) return object;
     const properties = path.split('.');
-    const indexKey = properties.shift() || ''
-    return getValue(object[indexKey], properties.join('.'))
-}
+    const indexKey = properties.shift() || '';
+    return getValue(object[indexKey], properties.join('.'));
+};
 
 const filteredJobs = computed(() => {
   const searchKeys = ['role', 'jobType', 'company.name', 'company.location', 'mode'];
   return jobs.value.filter(job => {
     return searchKeys.some(key => {
-      return getValue(job, key).toLowerCase().includes(query.value)
-    })
-  })
-})
+      return getValue(job, key).toLowerCase().includes(query.value);
+    });
+  });
+});
 
 </script>
