@@ -2,7 +2,7 @@
     <div class='text-left'>
         <font-awesome-icon :icon='icon'/>
         <br>
-        <b>{{ title }}</b>
+        <h1 class='text-xl text-jb-headings font-bold mb-2'>{{ title }}</h1>
         <p>{{ description }}</p>
     </div>
 </template>

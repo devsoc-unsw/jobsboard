@@ -93,8 +93,8 @@
             </h2>
             <h3 class="text-xl my-6">
               Jobs listed here are usually posted by the company itself. We do not post any jobs
-              without the explicit approval of the company. You are seeing this because our previous
-              job posts have expired. Please check back soon.
+              without the explicit approval of the company. Please ensure your search query is correct 
+              or check back soon.
             </h3>
           </div>
         </div>
