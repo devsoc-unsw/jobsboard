@@ -71,21 +71,23 @@
       </div>
       <div class="max-w-6xl m-auto px-6">
         <TransitionLoading v-if='isLoading' />
-        <div class='flex flex-wrap'>
-          <JobCard
-            v-for='job in filteredJobs'
-            :key='job.key'
-            :jobID='job.id'
-            :imagePath='GoogleLogo'
-            :jobTitle='job.company.name'
-            :jobRole='job.role'
-            :jobType='job.jobType'
-            :jobTag='job.studentDemographic'
-            :jobLocation='job.company.location'
-            :jobMode='job.mode'
-            class="w-60"
-          />
-          <div class="max-w-4xl my-16 px-6 text-left" v-if="filteredJobs.length === 0 && !isLoading">
+        <div class='flex flex-wrap justify-center'>
+          <div class='flex flex-wrap'>
+            <JobCard
+              v-for='job in filteredJobs'
+              :key='job.key'
+              :jobID='job.id'
+              :imagePath='GoogleLogo'
+              :jobTitle='job.company.name'
+              :jobRole='job.role'
+              :jobType='job.jobType'
+              :jobTag='job.studentDemographic'
+              :jobLocation='job.company.location'
+              :jobMode='job.mode'
+              class="w-60"
+            />
+          </div>
+          <div class="max-w-4xl my-16 px-6 text-center" v-if="filteredJobs.length === 0 && !isLoading">
             <h2 class="text-3xl my-2 font-extrabold text-jb-headings">
               Sorry, it doesn't seem like we have any jobs right now
             </h2>
@@ -158,7 +160,6 @@ const loadMoreJobs = async () => {
   if (response.ok) {
     const msg = await response.json();
     jobs.value = [...jobs.value, ...msg.jobs];
-    console.log(jobs.value);
   } else {
     error.value = true;
     window.scrollTo(0, 10);
@@ -183,7 +184,7 @@ const getValue = (object: any, path: string): any => {
 }
 
 const filteredJobs = computed(() => {
-  const searchKeys = ['role', 'jobType', 'company.name', 'company.location']
+  const searchKeys = ['role', 'jobType', 'company.name', 'company.location', 'mode'];
   return jobs.value.filter(job => {
     return searchKeys.some(key => {
       return getValue(job, key).toLowerCase().includes(query.value)
