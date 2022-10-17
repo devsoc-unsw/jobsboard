@@ -1,5 +1,8 @@
 <template>
-  <div class='flex flex-col rounded-lg m-4 shadow-card hover-anim'>
+  <div 
+    class='flex flex-col rounded-lg m-4 shadow-card hover-anim'
+    @click='() => router.push(`/job/${jobID}`)'
+  >
     <div class='flex mx-5'>
       <img
         :src='imagePath'
@@ -8,11 +11,21 @@
       >
     </div>
     <h3 class='text-xl text-left font-bold mx-4 mb-4'>
-      {{ jobTitle }}
-    </h3>
-    <h3 class='text-l text-left font-bold mx-4 mb-3'>
       {{ jobRole }}
     </h3>
+    <h3 class='text-l text-left font-bold mx-4'>
+      {{ jobTitle }}
+    </h3>
+
+    <div class='flex flex-row m-0 items-center mx-4 my-2 xs:flex-col'>
+      <div
+        v-for='(tag, idx) in jobTag'
+        :key='idx'
+        class='flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base'
+      >
+        {{ tag }}
+      </div>
+    </div>
     
     <div class="flex items-center mx-4 my-1">
       <font-awesome-icon class="w-4" icon='clock'/>
@@ -42,7 +55,12 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import { JobType } from '@/constants/job-fields';
+import router from '@/router';
   const props = defineProps({
+    jobID: {
+      type: Number,
+      required: true
+    },
     jobTitle: {
       type: String,
       required: true,
@@ -53,6 +71,10 @@
     },
     jobType: {
       type: String,
+      required: true,
+    },
+    jobTag: {
+      type: Array,
       required: true,
     },
     jobLocation: {

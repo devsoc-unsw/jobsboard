@@ -71,7 +71,7 @@
       </div>
       <div class="max-w-6xl m-auto px-6">
         <TransitionLoading v-if='isLoading' />
-        <div class='flex flex-wrap justify-center'>
+        <div class='flex flex-wrap'>
           <JobCard
             v-for='job in filteredJobs'
             :key='job.key'
@@ -80,6 +80,7 @@
             :jobTitle='job.company.name'
             :jobRole='job.role'
             :jobType='job.jobType'
+            :jobTag='job.studentDemographic'
             :jobLocation='job.company.location'
             :jobMode='job.mode'
             class="w-60"
@@ -157,6 +158,7 @@ const loadMoreJobs = async () => {
   if (response.ok) {
     const msg = await response.json();
     jobs.value = [...jobs.value, ...msg.jobs];
+    console.log(jobs.value);
   } else {
     error.value = true;
     window.scrollTo(0, 10);
