@@ -81,7 +81,7 @@
               :jobTitle='job.company.name'
               :jobRole='job.role'
               :jobType='job.jobType'
-              :jobTag='job.studentDemographic'
+              :jobTag='job.workingRights'
               :jobLocation='job.company.location'
               :jobMode='job.mode'
               class="w-60"

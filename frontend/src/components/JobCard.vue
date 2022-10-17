@@ -17,13 +17,13 @@
       {{ jobTitle }}
     </h3>
 
-    <div class='flex flex-row m-0 items-center mx-4 my-2 xs:flex-col xs:items-start'>
+    <div class='flex flex-wrap flex-row m-0 items-center mx-4 my-2 xs:flex-col xs:items-start'>
       <div
         v-for='(tag, idx) in jobTag'
         :key='idx'
         class='flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base'
       >
-        {{ tag }}
+        {{ workingRightsObject[tag as keyof typeof workingRightsObject]}}
       </div>
     </div>
     
@@ -42,7 +42,7 @@
     <div class="flex items-center mx-4 my-1 mb-4">
       <font-awesome-icon class="w-4" icon='address-card'/>
       <p class="ml-2">
-        {{ jobMode }}
+        {{ jobModeObject[jobMode as keyof typeof jobModeObject] }}
       </p>
     </div>
 
@@ -54,8 +54,15 @@
 
 <script setup lang="ts">
   import { ref } from 'vue';
-  import { JobType } from '@/constants/job-fields';
-import router from '@/router';
+  import { JobType, WorkingRights, JobMode } from '@/constants/job-fields';
+  import router from '@/router';
+
+  const workingRightsObject = ref<typeof WorkingRights>(
+    WorkingRights,
+  );
+  const jobTypeObject = ref<typeof JobType>(JobType);
+  const jobModeObject = ref<typeof JobMode>(JobMode);
+
   const props = defineProps({
     jobID: {
       type: Number,
@@ -91,7 +98,7 @@ import router from '@/router';
     }
   });
 
-  const jobTypeObject = ref<typeof JobType>(JobType);
+  
 </script>
 
 <style scoped lang="scss">

@@ -6,8 +6,8 @@ export const JobMode = {
 
 export const StudentDemographic = {
   penultimate: "Penultimate Students",
-  final_year: "Final Year Student",
-  all: "All",
+  final_year: "Final Year Students",
+  all: "All Students",
 };
 
 export const JobType = {
@@ -17,10 +17,10 @@ export const JobType = {
 
 export const WorkingRights = {
   aus_ctz: "Australian Citizen",
-  aus_perm_res:  "Australian Permanent Resident",
+  aus_perm_res:  "Australian PR",
   aus_stud_visa:  "Australian Student Visa", 
-  aus_temp_grad_visa: "Australian Temporary Grad Visa",
-  nz_ctz_and_perm_res: "NZ Citizen/Permanent Resident",
+  aus_temp_grad_visa: "Australian Temp Grad Visa",
+  nz_ctz_and_perm_res: "NZ Citizen/PR",
   no_wr: "No Working Rights",
   all: "All",
 };
