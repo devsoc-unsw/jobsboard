@@ -70,31 +70,29 @@
         </div>
       </div>
       <div class="max-w-6xl m-auto px-6">
-        <div class=''>
-          <div class='resultsFound'>
-            <div v-if='jobs.length === 1'>
-              {{ jobs.length }} Job Found
-            </div>
-            <div class='flex flex-wrap justify-center'>
-              <JobCard
-                v-for='job in filteredJobs'
-                :key='job.key'
-                :jobID='job.id'
-                :imagePath='GoogleLogo'
-                :jobTitle='job.company.name'
-                :jobRole='job.role'
-                :jobType='job.jobType'
-                :jobLocation='job.company.location'
-                :jobMode='job.mode'
-                class="w-60"
-              />
-              <h2 v-if="filteredJobs.length === 0 && query.length !== 0">
-                No jobs found with that query
-              </h2>
-              <h2 v-else-if="filteredJobs.length === 0">
-                No jobs available
-              </h2>
-            </div>
+        <TransitionLoading v-if='isLoading' />
+        <div class='flex flex-wrap justify-center'>
+          <JobCard
+            v-for='job in filteredJobs'
+            :key='job.key'
+            :jobID='job.id'
+            :imagePath='GoogleLogo'
+            :jobTitle='job.company.name'
+            :jobRole='job.role'
+            :jobType='job.jobType'
+            :jobLocation='job.company.location'
+            :jobMode='job.mode'
+            class="w-60"
+          />
+          <div class="max-w-4xl my-16 px-6 text-left" v-if="filteredJobs.length === 0 && !isLoading">
+            <h2 class="text-3xl my-2 font-extrabold text-jb-headings">
+              Sorry, it doesn't seem like we have any jobs right now
+            </h2>
+            <h3 class="text-xl my-6">
+              Jobs listed here are usually posted by the company itself. We do not post any jobs
+              without the explicit approval of the company. You are seeing this because our previous
+              job posts have expired. Please check back soon.
+            </h3>
           </div>
         </div>
       </div>
@@ -117,6 +115,7 @@ import config from '@/config/config';
 import JobCard from '@/components/JobCard.vue';
 import GoogleLogo from '@/assets/companies/googleLogo.png';
 import BenefitCard from '@/components/BenefitCard.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
@@ -126,6 +125,7 @@ const errorMsg = ref<string>('');
 const jobs = ref<any[]>([]);
 const query = ref<string>('');
 const loadMoreJobsLock = ref<boolean>(false);
+const isLoading = ref<boolean>(true);
 
 onMounted(() => {
   // Change the page title
@@ -153,7 +153,7 @@ const loadMoreJobs = async () => {
       'Authorization': apiTokenStore.getApiToken(),
     } as HeadersInit,
   });
-
+  isLoading.value = false;
   if (response.ok) {
     const msg = await response.json();
     jobs.value = [...jobs.value, ...msg.jobs];
@@ -190,11 +190,3 @@ const filteredJobs = computed(() => {
 })
 
 </script>
-
-<style scoped lang="scss">
-.resultsFound {
-  font-weight: 100;
-  margin-bottom: 2rem;
-}
-
-</style>
