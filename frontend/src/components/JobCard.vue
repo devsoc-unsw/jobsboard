@@ -17,7 +17,7 @@
       {{ jobTitle }}
     </h3>
 
-    <div class='flex flex-row m-0 items-center mx-4 my-2 xs:flex-col'>
+    <div class='flex flex-row m-0 items-center mx-4 my-2 xs:flex-col xs:items-start'>
       <div
         v-for='(tag, idx) in jobTag'
         :key='idx'

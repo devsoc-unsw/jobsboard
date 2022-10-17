@@ -50,8 +50,8 @@
           />
         </div>
       
-        <div class="flex items-center my-8 justify-between">
-          <div class="flex items-center">
+        <div class="flex items-center my-8 justify-between sm:flex-wrap sm:justify-center">
+          <div class="flex items-center sm:mb-4">
             <font-awesome-icon icon="clipboard"/>
             <p class="ml-2 font-bold">{{ filteredJobs.length }} Jobs Found</p>
           </div>
@@ -72,7 +72,7 @@
       <div class="max-w-6xl m-auto px-6">
         <TransitionLoading v-if='isLoading' />
         <div class='flex flex-wrap justify-center'>
-          <div class='flex flex-wrap'>
+          <div class='flex flex-wrap sm:justify-center'>
             <JobCard
               v-for='job in filteredJobs'
               :key='job.key'
