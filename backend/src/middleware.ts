@@ -174,4 +174,10 @@ export default class Middleware {
       throw new Error('Incorrect account type');
     }
   }
+  
+  public static privateRouteWrapper(this: void, req: any, res: Response, next: NextFunction) {
+    if (process.env.NODE_ENV === 'development') {
+      next();
+    } 
+  }
 }

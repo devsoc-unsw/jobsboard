@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-// import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 
@@ -182,6 +181,7 @@ app.post(
 app.get(
   '/company/password-reset-token/:username',
   cors(corsOptions),
+  Middleware.privateRouteWrapper,
   CompanyFunctions.GetPasswordResetToken,
   Middleware.genericLoggingMiddleware,
 );
