@@ -10,7 +10,6 @@ declare module 'vue-router' {
 // pages
 const LandingPage = () => import("@/pages/LandingPage.vue");
 const PageNotFoundPage = () => import("@/pages/PageNotFound.vue");
-const LoginPage = () => import("@/pages/LoginPage.vue");
 const StudentLoginPage = () => import("@/pages/StudentLoginPage.vue");
 const CompanyLoginPage = () => import("@/pages/CompanyLoginPage.vue");
 const CompanySignupPage = () => import("@/pages/CompanySignupPage.vue");
@@ -132,16 +131,6 @@ export default createRouter({
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/company/home' },
         { name: 'Post Job' }
-      ]
-    }
-  }, {
-    path: "/login",
-    component: LoginPage,
-    meta: {
-      title: "Login | Jobs Board",
-      breadcrumb: [
-        { name: 'Home', link: '/' },
-        { name: 'Login' }
       ]
     }
   }, {
