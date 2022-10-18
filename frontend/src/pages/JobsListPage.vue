@@ -25,8 +25,8 @@
             title='All jobs are paid'
             description="Student's welfare is always our
               top priority,which is why we ensure that
-              all jobs that you see here are paid.'
-            icon='money-bills"
+              all jobs that you see here are paid."
+            icon='money-bills'
             iconColor=''
             class='w-64 md:w-auto md:my-3'
           />
