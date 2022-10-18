@@ -5,7 +5,7 @@ import { createPinia } from 'pinia';
 import './style/tailwind.scss';
 
 // set up fontawesome
-import { library, IconDefinition } from '@fortawesome/fontawesome-svg-core'
+import { library, IconDefinition, Icon } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faBuilding,
@@ -33,6 +33,12 @@ import {
   faHouse,
   faPlus,
   faCloudUpload,
+  faMoneyBills,
+  faCode,
+  faPeopleGroup,
+  faClock,
+  faClipboard,
+  faMagnifyingGlass
 } from "@fortawesome/free-solid-svg-icons";
 
 import {
@@ -64,13 +70,19 @@ library.add(faLocationDot as IconDefinition);
 library.add(faTrashAlt as IconDefinition);
 library.add(faBell as IconDefinition);
 library.add(faXmark as IconDefinition);
-library.add(faLocationDot as IconDefinition);
 library.add(faUserShield as IconDefinition);
 library.add(faAngleRight as IconDefinition);
 library.add(faBriefcase as IconDefinition);
 library.add(faHouse as IconDefinition);
 library.add(faPlus as IconDefinition);
 library.add(faCloudUpload as IconDefinition);
+library.add(faMoneyBills as IconDefinition);
+library.add(faCode as IconDefinition);
+library.add(faPeopleGroup as IconDefinition);
+library.add(faClock as IconDefinition);
+library.add(faClipboard as IconDefinition);
+library.add(faMagnifyingGlass as IconDefinition);
+
 
 const app = createApp(App);
 app.use(router);
