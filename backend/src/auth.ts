@@ -1,9 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  // Connection,
-  getConnection,
-  getRepository,
-} from 'typeorm';
 
 import { AppDataSource } from './index';
 
