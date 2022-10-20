@@ -80,10 +80,35 @@
       </p>
       <div class='flex justify-between items-center my-12'>
         <FeaturedJobCard
-          jobTitle='STEP Intern, 2022 Summer'
-          jobDescription='The Student Training in Engineering Program (STEP) aims to bridge the gap between academic studies and a professional internship.'
-          :jobTag='["AU/NZ Citizens", "Internationals"]'
-          :imagePath='GoogleLogo'
+          jobTitle='Software Development Engineer'
+          jobDescription="We're looking for the next generation of Canvanauts! Be part of 
+          Canva's AAGE award-winning Summer Internship Program and get the opportunity to 
+          do meaningful work..."
+          :jobTag='["AU/NZ Citizens", "Australian PR", "Internationals"]'
+          :imagePath='PearlerLogo'
+        />
+        <FeaturedJobCard
+          jobTitle='2023 Software Development Graduate'
+          jobDescription="Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. 
+          You will build software for Amazon's rapid fulfillment businesses for use across the globe."
+          :jobTag='["AU/NZ Citizens", "Australian PR"]'
+          :imagePath='awsLogo'
+        />
+        <FeaturedJobCard
+          jobTitle='Software Engineer, 2023 Graduate'
+          jobDescription="Want the freedom to be creative? How about the time and 
+          resources to make them a reality? Yes? Great. We build software for the world's most accomplished thinkers.
+          That means we need our own team..."
+          :jobTag='["AU/NZ Citizens", "Australian PR"]'
+          :imagePath='AtlassianLogo'
+        />
+        <FeaturedJobCard
+          jobTitle='Security Engineering Intern (Summer 22/23)'
+          jobDescription="We're looking for the next generation of Canvanauts! Be part of 
+          Canva's AAGE award-winning Summer Internship Program and get the opportunity to 
+          do meaningful work and..."
+          :jobTag='["AU/NZ Citizens", "Australian PR", "Internationals"]'
+          :imagePath='CanvaLogo'
         />
       </div>
 
@@ -173,7 +198,10 @@ import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
-import GoogleLogo from '@/assets/companies/googleLogo.png';
+import awsLogo from '@/assets/companies/awsLogo.png';
+import AtlassianLogo from '@/assets/companies/AtlassianLogo.png';
+import CanvaLogo from '@/assets/companies/CanvaLogo.png'
+import PearlerLogo from '@/assets/companies/PearlerLogo.png'
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
