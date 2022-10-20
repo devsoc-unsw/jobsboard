@@ -325,6 +325,13 @@ const fetchJob = async () => {
 
 onMounted(() => {
   fetchJob();
+
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, 100);
 });
 
 watch(route, () => {
