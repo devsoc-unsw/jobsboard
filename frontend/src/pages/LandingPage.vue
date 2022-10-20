@@ -200,7 +200,7 @@ import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
 import awsLogo from '@/assets/companies/awsLogo.png';
 import AtlassianLogo from '@/assets/companies/atlassianLogo.png';
-import CanvaLogo from '@/assets/companies/CanvaLogo.png'
+import CanvaLogo from '@/assets/companies/canvaLogo.png'
 import PearlerLogo from '@/assets/companies/PearlerLogo.png'
 
 const apiTokenStore = useApiTokenStore();
