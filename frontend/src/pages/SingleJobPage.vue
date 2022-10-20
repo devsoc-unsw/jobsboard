@@ -1,7 +1,7 @@
 <template>
   <LoggedInTemplate>
     <StudentViewTemplate>
-      <Breadcrumbs />
+      <Breadcrumbs id='breadcrumb' />
       <Alert
         alertType='error'
         :alertMsg='alertMsg'
@@ -338,4 +338,7 @@ const openLink = () => {
 </script>
 
 <style scoped lang="scss">
+  #breadcrumb {
+    margin-left: 2rem;
+  }
 </style>

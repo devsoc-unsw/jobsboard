@@ -1,7 +1,6 @@
 <template>
   <LoggedInTemplate>
     <StudentViewTemplate>
-      <Breadcrumbs />
       <div v-if='error'>
         <br>
         <ErrorBox>
@@ -9,6 +8,7 @@
         </ErrorBox>
       </div>
       <div class='max-w-4xl m-auto px-6'>
+        <Breadcrumbs id='breadcrumb'/>
         <h3 class='text-xl text-left'>
           Still struggling to find a job...
         </h3>
@@ -198,3 +198,9 @@ const filteredJobs = computed(() => {
 });
 
 </script>
+
+<style scoped lang='scss'>
+  #breadcrumb {
+    margin-left: 0;
+  }
+</style>

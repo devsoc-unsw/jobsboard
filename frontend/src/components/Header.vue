@@ -1,10 +1,10 @@
 <template>
   <div
-    class='flex justify-evenly items-center py-11 px-[5%]
+    class='flex justify-evenly items-center py-4 px-[5%]
            bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]'
   >
     <img
-      class='w-[15%] cursor-pointer xl:w-[20%] lg:w-[17%] md:w-[20%] sm:w-[40%]'
+      class='w-[10%] cursor-pointer xl:w-[15%] lg:w-[17%] md:w-[20%] sm:w-[25%]'
       :src='logo'
       alt='CSESoc'
       @click='() => { router.push(`/`) }'
@@ -24,7 +24,7 @@
       <div v-if='apiToken === undefined'>
         <button
           class='bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
-                 py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
+                 py-[2px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg'
           @click='() => { router.push(`/login/student`) }'
         >
