@@ -1911,7 +1911,7 @@ vue-tsc@1.0.8:
     "@volar/vue-language-core" "1.0.8"
     "@volar/vue-typescript" "1.0.8"
 
-vue3-carousel@^0.2.4:
+vue3-carousel@0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.2.4.tgz#03f2ea3c07acfc9aa71ccdc1ca89d1482e73bb2b"
   integrity sha512-6QtXKMIzzLj7zCPTky50d5nxRLxuvH6OPtfRn41NkejkX5hov6G2ZdxEfWXO20f7MyW2nbIdAqNjw3dGTvJn4g==
