@@ -227,8 +227,8 @@ onMounted(() => {
 const featuredJob = [
   {
     id: 0,
-    jobTitle: 'Software Development Engineer',
-    jobDescription: 'We\'re looking for the next generation of Canvanauts! Be part of Canva\'s AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work...',
+    jobTitle: 'Full Stack Software Engineer',
+    jobDescription: 'We\'re looking for an outcome-oriented person who is motivated to see great engineering help innovate on product. You love working with other engineers and are excited to be part of an engaged...',
     jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
     imagePath: PearlerLogo,
   },
