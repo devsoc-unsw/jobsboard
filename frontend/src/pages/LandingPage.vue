@@ -14,7 +14,7 @@
       >
       <Header
         class='absolute top-0'
-        style='{background: transparent}'
+        style='background: transparent'
       />
       <div class='flex justify-around align-middle w-3/5 mx-auto gap-7'>
         <div class='flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold'>
