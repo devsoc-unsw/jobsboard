@@ -14,7 +14,7 @@
       >
       <Header
         class='absolute top-0'
-        style='background: transparent;'
+        style='{background: transparent}'
       />
       <div class='flex justify-around align-middle w-3/5 mx-auto gap-7'>
         <div class='flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold'>
@@ -79,33 +79,36 @@
         .
       </p>
       <div class=' my-12 w-full'>
-        <Carousel 
-          :items-to-show="1" 
-          :wrap-around="true"
-          :breakpoints="{
+        <Carousel
+          :items-to-show='1'
+          :wrap-around='true'
+          :breakpoints='{
             // 900px and up
             900: {
               itemsToShow: 2.5,
-              snapAlign: 'center',
+              snapAlign: "center",
             },
             // 1024px and up
             1024: {
               itemsToShow: 3,
-              snapAlign: 'center',
+              snapAlign: "center",
             },
             // 1400px and up
             1400: {
               itemsToShow: 3.95,
-              snapAlign: 'center',
-            }
-          }"
+              snapAlign: "center",
+            },
+          }'
         >
-          <Slide v-for="job in featuredJob" :key="job.id">
+          <Slide
+            v-for='job in featuredJob'
+            :key='job.id'
+          >
             <FeaturedJobCard
-              :jobTitle=job.jobTitle
-              :jobDescription=job.jobDescription
-              :jobTag=job.jobTag
-              :imagePath=job.imagePath
+              :jobTitle='job.jobTitle'
+              :jobDescription='job.jobDescription'
+              :jobTag='job.jobTag'
+              :imagePath='job.imagePath'
             />
           </Slide>
           <template #addons>
@@ -192,13 +195,12 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
-import 'vue3-carousel/dist/carousel.css'
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import 'vue3-carousel/dist/carousel.css';
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 
 import RecruitmentModal from '@/components/modals/RecruitmentModal.vue';
 import FadeTransition from '@/components/FadeTransition.vue';
 import BigBlob from '@/assets/misc/BigBlob.svg';
-import SmallBlob from '@/assets/misc/SmallBlob.svg';
 import JobsboardLogo from '@/assets/logos/JobsboardLogo.png';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
@@ -206,8 +208,8 @@ import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
 import awsLogo from '@/assets/companies/awsLogo.png';
 import AtlassianLogo from '@/assets/companies/atlassianLogo.png';
-import CanvaLogo from '@/assets/companies/canvaLogo.png'
-import PearlerLogo from '@/assets/companies/PearlerLogo.png'
+import CanvaLogo from '@/assets/companies/canvaLogo.png';
+import PearlerLogo from '@/assets/companies/PearlerLogo.png';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
@@ -226,32 +228,32 @@ const featuredJob = [
   {
     id: 0,
     jobTitle: 'Software Development Engineer',
-    jobDescription: "We're looking for the next generation of Canvanauts! Be part of Canva's AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work...",
-    jobTag: ["AU/NZ Citizens", "Australian PR", "Internationals"],
-    imagePath: PearlerLogo
+    jobDescription: 'We\'re looking for the next generation of Canvanauts! Be part of Canva\'s AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work...',
+    jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
+    imagePath: PearlerLogo,
   },
   {
     id: 1,
     jobTitle: '2023 Software Development Graduate',
-    jobDescription: "Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. You will build software for Amazon's rapid fulfillment businesses for use across the globe.",
-    jobTag: ["AU/NZ Citizens", "Australian PR"],
-    imagePath: awsLogo
+    jobDescription: 'Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. You will build software for Amazon\'s rapid fulfillment businesses for use across the globe.',
+    jobTag: ['AU/NZ Citizens', 'Australian PR'],
+    imagePath: awsLogo,
   },
   {
     id: 2,
     jobTitle: 'Software Engineer, 2023 Graduate',
-    jobDescription: "Want the freedom to be creative? How about the time and resources to make them a reality? Yes? Great. We build software for the world's most accomplished thinkers.That means we need our own team...",
-    jobTag: ["AU/NZ Citizens", "Australian PR"],
-    imagePath: AtlassianLogo
+    jobDescription: 'Want the freedom to be creative? How about the time and resources to make them a reality? Yes? Great. We build software for the world\'s most accomplished thinkers.That means we need our own team...',
+    jobTag: ['AU/NZ Citizens', 'Australian PR'],
+    imagePath: AtlassianLogo,
   },
   {
     id: 3,
     jobTitle: 'Security Engineering Intern (Summer 22/23)',
-    jobDescription: "We're looking for the next generation of Canvanauts! Be part of Canva's AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work and...",
-    jobTag: ["AU/NZ Citizens", "Australian PR", "Internationals"],
-    imagePath: CanvaLogo
+    jobDescription: 'We\'re looking for the next generation of Canvanauts! Be part of Canva\'s AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work and...',
+    jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
+    imagePath: CanvaLogo,
   },
-]
+];
 
 const scrollToTop = () => {
   window.scrollTo({

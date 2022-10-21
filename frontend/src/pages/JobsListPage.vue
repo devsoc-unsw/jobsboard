@@ -8,7 +8,7 @@
         </ErrorBox>
       </div>
       <div class='max-w-4xl m-auto px-6'>
-        <Breadcrumbs id='breadcrumb'/>
+        <Breadcrumbs id='breadcrumb' />
         <h3 class='text-xl text-left'>
           Still struggling to find a job...
         </h3>
@@ -23,9 +23,9 @@
         <div class='flex justify-between items-stretch md:flex-col md:items-center mb-8'>
           <BenefitCard
             title='All jobs are paid'
-            description="Student's welfare is always our
+            description='Student&apos;s welfare is always our
               top priority,which is why we ensure that
-              all jobs that you see here are paid."
+              all jobs that you see here are paid.'
             icon='money-bills'
             iconColor=''
             class='w-64 md:w-auto md:my-3'

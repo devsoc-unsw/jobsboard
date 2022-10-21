@@ -205,7 +205,9 @@ const validateInput = () => {
     alertType.value = 'error';
     alertMsg.value = 'Email cannot be empty. Please try again.';
     return false;
-  } else if (!username.value.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
+  } else if (!username.value.match(
+      /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+    )) {
     isAlertOpen.value = true;
     alertType.value = 'error';
     alertMsg.value = 'Please enter a valid email address.';

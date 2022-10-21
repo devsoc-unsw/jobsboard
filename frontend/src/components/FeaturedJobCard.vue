@@ -1,13 +1,14 @@
 <template>
-  <div class='flex flex-col justify-between w-[300px] shadow-card mb-4 rounded-lg min-h-[550px] bg-white relative hover-anim'
+  <div
+    class='flex flex-col justify-between w-[300px] shadow-card mb-4 rounded-lg min-h-[550px] bg-white relative hover-anim'
     @click='() => router.push(`/login/student`)'
   >
     <div>
       <div class='flex justify-center min-w-0 mx-5'>
         <img
-        :src='imagePath'
-        class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
-        alt='sponsor logo'
+          :src='imagePath'
+          class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
+          alt='sponsor logo'
         >
       </div>
       <h3 class='text-xl font-bold mx-4 mb-4'>
@@ -33,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
