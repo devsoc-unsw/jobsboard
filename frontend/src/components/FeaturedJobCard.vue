@@ -23,9 +23,10 @@
           {{ tag }}
         </div>
       </div>
-      <p class='text-base m-0 py-4 px-5 text-left text-jb-placeholder h-[200px] overflow-hidden text-ellipsis'>
-        {{ jobDescription }}
-      </p>
+      <p 
+        class='text-base m-0 py-4 px-5 text-left text-jb-placeholder h-[200px] overflow-hidden text-ellipsis'
+        v-html='jobDescription'
+      />
     </div>
     <div class='flex-justify-center mt-5'>
       <button>Learn More</button>
