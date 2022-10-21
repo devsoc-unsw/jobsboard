@@ -78,38 +78,41 @@
         </span>
         .
       </p>
-      <div class='flex justify-between items-center my-12'>
-        <FeaturedJobCard
-          jobTitle='Software Development Engineer'
-          jobDescription="We're looking for the next generation of Canvanauts! Be part of 
-          Canva's AAGE award-winning Summer Internship Program and get the opportunity to 
-          do meaningful work..."
-          :jobTag='["AU/NZ Citizens", "Australian PR", "Internationals"]'
-          :imagePath='PearlerLogo'
-        />
-        <FeaturedJobCard
-          jobTitle='2023 Software Development Graduate'
-          jobDescription="Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. 
-          You will build software for Amazon's rapid fulfillment businesses for use across the globe."
-          :jobTag='["AU/NZ Citizens", "Australian PR"]'
-          :imagePath='awsLogo'
-        />
-        <FeaturedJobCard
-          jobTitle='Software Engineer, 2023 Graduate'
-          jobDescription="Want the freedom to be creative? How about the time and 
-          resources to make them a reality? Yes? Great. We build software for the world's most accomplished thinkers.
-          That means we need our own team..."
-          :jobTag='["AU/NZ Citizens", "Australian PR"]'
-          :imagePath='AtlassianLogo'
-        />
-        <FeaturedJobCard
-          jobTitle='Security Engineering Intern (Summer 22/23)'
-          jobDescription="We're looking for the next generation of Canvanauts! Be part of 
-          Canva's AAGE award-winning Summer Internship Program and get the opportunity to 
-          do meaningful work and..."
-          :jobTag='["AU/NZ Citizens", "Australian PR", "Internationals"]'
-          :imagePath='CanvaLogo'
-        />
+      <div class=' my-12 w-full'>
+        <Carousel 
+          :items-to-show="1" 
+          :wrap-around="true"
+          :breakpoints="{
+            // 900px and up
+            900: {
+              itemsToShow: 2.5,
+              snapAlign: 'center',
+            },
+            // 1024px and up
+            1024: {
+              itemsToShow: 3,
+              snapAlign: 'center',
+            },
+            // 1400px and up
+            1400: {
+              itemsToShow: 3.95,
+              snapAlign: 'center',
+            }
+          }"
+        >
+          <Slide v-for="job in featuredJob" :key="job.id">
+            <FeaturedJobCard
+              :jobTitle=job.jobTitle
+              :jobDescription=job.jobDescription
+              :jobTag=job.jobTag
+              :imagePath=job.imagePath
+            />
+          </Slide>
+          <template #addons>
+            <Navigation />
+            <Pagination />
+          </template>
+        </carousel>
       </div>
 
       <h3 class='font-bold text-3xl mb-0 text-jb-headings'>
@@ -189,6 +192,9 @@
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+
 import RecruitmentModal from '@/components/modals/RecruitmentModal.vue';
 import FadeTransition from '@/components/FadeTransition.vue';
 import BigBlob from '@/assets/misc/BigBlob.svg';
@@ -213,6 +219,39 @@ onMounted(() => {
   document.title = useRoute().meta.title;
   apiTokenStore.clearApiToken();
 });
+
+// vue3-carousel requires an array of objects to be passed in as the v-for.
+// To be replaced with featured job data from the backend.
+const featuredJob = [
+  {
+    id: 0,
+    jobTitle: 'Software Development Engineer',
+    jobDescription: "We're looking for the next generation of Canvanauts! Be part of Canva's AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work...",
+    jobTag: ["AU/NZ Citizens", "Australian PR", "Internationals"],
+    imagePath: PearlerLogo
+  },
+  {
+    id: 1,
+    jobTitle: '2023 Software Development Graduate',
+    jobDescription: "Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. You will build software for Amazon's rapid fulfillment businesses for use across the globe.",
+    jobTag: ["AU/NZ Citizens", "Australian PR"],
+    imagePath: awsLogo
+  },
+  {
+    id: 2,
+    jobTitle: 'Software Engineer, 2023 Graduate',
+    jobDescription: "Want the freedom to be creative? How about the time and resources to make them a reality? Yes? Great. We build software for the world's most accomplished thinkers.That means we need our own team...",
+    jobTag: ["AU/NZ Citizens", "Australian PR"],
+    imagePath: AtlassianLogo
+  },
+  {
+    id: 3,
+    jobTitle: 'Security Engineering Intern (Summer 22/23)',
+    jobDescription: "We're looking for the next generation of Canvanauts! Be part of Canva's AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work and...",
+    jobTag: ["AU/NZ Citizens", "Australian PR", "Internationals"],
+    imagePath: CanvaLogo
+  },
+]
 
 const scrollToTop = () => {
   window.scrollTo({
@@ -240,7 +279,7 @@ const closeModal = () => {
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 main {
   width: 100vw;
   height: 100vh;
@@ -254,4 +293,52 @@ main {
   }
 }
 
+// Styling for the featured card carousel.
+.carousel__prev,
+.carousel__next {
+  width: 40px;
+  height: 40px;
+	background-color: #0c3149;
+  opacity: 0.4;
+  border-radius: 50%;
+  color: white;
+  transition: 0.15s linear;
+
+  &:hover {
+    color: white;
+    opacity: 1;
+  }
+}
+
+.carousel__next {
+  right: -30px;
+}
+.carousel__prev {
+  left: -30px;
+}
+
+.carousel__viewport {
+  perspective: 3000px;
+  padding-top: 10px;
+}
+
+.carousel__track {
+  transform-style: preserve-3d;
+}
+
+.carousel__slide {
+  transform: rotateY(-20deg) scale(0.9);
+}
+
+.carousel__slide--sliding {
+  transition: 0.5s;
+}
+
+.carousel__slide--active ~ .carousel__slide {
+  transform: rotateY(20deg) scale(0.9);
+}
+
+.carousel__slide--active {
+  transform: rotateY(0) scale(1);
+}
 </style>

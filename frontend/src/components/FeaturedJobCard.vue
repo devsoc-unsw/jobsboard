@@ -1,5 +1,5 @@
 <template>
-  <div class='flex flex-col justify-between w-[300px] shadow-card rounded-lg mr-7 min-h-[550px] relative hover-anim'
+  <div class='flex flex-col justify-between w-[300px] shadow-card mb-4 rounded-lg min-h-[550px] bg-white relative hover-anim'
     @click='() => router.push(`/login/student`)'
   >
     <div>
@@ -22,7 +22,7 @@
           {{ tag }}
         </div>
       </div>
-      <p class='text-base m-0 py-4 px-5 text-left text-jb-placeholder max-h-[250px]'>
+      <p class='text-base m-0 py-4 px-5 text-left text-jb-placeholder max-h-[250px] text-ellipsis'>
         {{ jobDescription }}
       </p>
     </div>
