@@ -10,6 +10,7 @@ import Logger from './logging';
 
 const paginatedJobLimit = 10;
 
+
 export default class StudentFunctions {
   /*
   public static async GetAllActiveJobs(req: any, res: Response, next: NextFunction) {
