@@ -1,12 +1,12 @@
-import { createApp, VueElement } from 'vue';
+import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
 import './style/tailwind.scss';
 
 // set up fontawesome
-import { library, IconDefinition, Icon } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library, IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faBuilding,
   faChevronLeft,
@@ -38,13 +38,15 @@ import {
   faPeopleGroup,
   faClock,
   faClipboard,
-  faMagnifyingGlass
-} from "@fortawesome/free-solid-svg-icons";
+  faMagnifyingGlass,
+  faEye,
+  faEyeSlash,
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
   faGithub,
   faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
+} from '@fortawesome/free-brands-svg-icons';
 
 // set up pinia
 const pinia = createPinia();
@@ -82,10 +84,12 @@ library.add(faPeopleGroup as IconDefinition);
 library.add(faClock as IconDefinition);
 library.add(faClipboard as IconDefinition);
 library.add(faMagnifyingGlass as IconDefinition);
+library.add(faEye as IconDefinition);
+library.add(faEyeSlash as IconDefinition);
 
 
 const app = createApp(App);
 app.use(router);
 app.use(pinia);
-app.component('font-awesome-icon', FontAwesomeIcon)
+app.component('FontAwesomeIcon', FontAwesomeIcon);
 app.mount('#app');
