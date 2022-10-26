@@ -23,7 +23,7 @@
           {{ tag }}
         </div>
       </div>
-      <p 
+      <p
         class='text-base m-0 py-4 px-5 text-left text-jb-placeholder h-[200px] overflow-hidden text-ellipsis'
         v-html='jobDescription'
       />
@@ -39,24 +39,24 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-  const props = defineProps({
-    jobTitle: {
-      type: String,
-      required: true,
-    },
-    jobDescription: {
-      type: String,
-      required: true,
-    },
-    jobTag: {
-      type: Array,
-      required: true,
-    },
-    imagePath: {
-      type: String,
-      required: true,
-    },
-  });
+defineProps({
+  jobTitle: {
+    type: String,
+    required: true,
+  },
+  jobDescription: {
+    type: String,
+    required: true,
+  },
+  jobTag: {
+    type: Array,
+    required: true,
+  },
+  imagePath: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <style scoped lang="scss">

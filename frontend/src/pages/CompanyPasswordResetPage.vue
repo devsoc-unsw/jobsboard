@@ -81,14 +81,16 @@ import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
 import config from '@/config/config';
+import { useApiTokenStore } from '@/store/apiToken';
 
 const router = useRouter();
 
-const newPassword = ref<string>('');
-const confirmPassword = ref<string>('');
-const alertType = ref<string>('');
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
+const newPassword = ref('');
+const confirmPassword = ref('');
+const alertType = ref('');
+const alertMsg = ref('');
+const isAlertOpen = ref(false);
+const apiTokenStore = useApiTokenStore();
 
 const performCompanyPasswordReset = async () => {
   if (newPassword.value !== confirmPassword.value) {
@@ -100,8 +102,8 @@ const performCompanyPasswordReset = async () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': useRoute().params.token,
-      } as HeadersInit,
+        'Authorization': apiTokenStore.getApiToken(),
+      },
       // mode: "no-cors",
       body: JSON.stringify({
         'newPassword': newPassword.value,

@@ -416,23 +416,23 @@ const editorOptions = {
   },
 };
 
-const role = ref<string>('');
-const description = ref<any>('');
-const applicationLink = ref<string>('');
-const expiryDate = ref<string>('');
-const isPaidPosition = ref<string>('');
-const jobType = ref<string>('');
-const jobMode = ref<string>('');
+const role = ref('');
+const description = ref('');
+const applicationLink = ref('');
+const expiryDate = ref('');
+const isPaidPosition = ref('');
+const jobType = ref('');
+const jobMode = ref('');
 const workingRights = ref<string[]>([]);
 const studentDemographic = ref<string[]>([]);
-const wamRequirements = ref<string>('');
-const additionalInfo = ref<any>('');
-const alertType = ref<string>('');
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
-const modalVisible= ref<boolean>(false);
+const wamRequirements = ref('');
+const additionalInfo = ref('');
+const alertType = ref('');
+const alertMsg = ref('');
+const isAlertOpen = ref(false);
+const modalVisible= ref(false);
 const verifiedCompanies = ref<any>({});
-const selectedCompanyID = ref<string>('');
+const selectedCompanyID = ref('');
 
 onMounted(async () => {
   // Change the page title
@@ -443,9 +443,9 @@ onMounted(async () => {
     `${config.apiRoot}/admin/companies`, {
       method: 'get',
       headers: {
-        'content-type': 'application/json',
-        'authorization': apiTokenStore.getApiToken(),
-      } as HeadersInit,
+        'Content-Type': 'application/json',
+        Authorization: apiTokenStore.getApiToken(),
+      },
       // mode: "no-cors",
     },
   );
@@ -501,8 +501,8 @@ const submitJobPost = async () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiTokenStore.getApiToken(),
-      } as HeadersInit,
+        Authorization: apiTokenStore.getApiToken(),
+      },
       // mode: "no-cors",
       body: JSON.stringify({
         role: role.value,

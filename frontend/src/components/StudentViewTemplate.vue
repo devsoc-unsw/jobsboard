@@ -32,7 +32,7 @@ const props = defineProps({
 onMounted(async () => {
   if (props.notLoggedIn === true) {
     return;
-  } else if (apiTokenStore.getApiToken() === undefined) {
+  } else if (!apiTokenStore.getApiToken()) {
     router.push('/');
   }
 });

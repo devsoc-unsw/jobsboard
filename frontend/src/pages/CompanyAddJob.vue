@@ -423,21 +423,21 @@ const editorOptions = {
   },
 };
 
-const role = ref<string>('');
-const description = ref<any>('');
-const applicationLink = ref<string>('');
-const alertType = ref<string>('');
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
-const modalVisible = ref<boolean>(false);
-const expiryDate = ref<string>('');
-const isPaidPosition = ref<string>('');
-const jobType = ref<string>('');
-const jobMode = ref<string>('');
+const role = ref('');
+const description = ref('');
+const applicationLink = ref('');
+const alertType = ref('');
+const alertMsg = ref('');
+const isAlertOpen = ref(false);
+const modalVisible = ref(false);
+const expiryDate = ref('');
+const isPaidPosition = ref('');
+const jobType = ref('');
+const jobMode = ref('');
 const workingRights = ref<string[]>([]);
 const studentDemographic = ref<string[]>([]);
-const wamRequirements = ref<string>('');
-const additionalInfo = ref<any>('');
+const wamRequirements = ref('');
+const additionalInfo = ref('');
 
 onMounted(() => {
   // Change the page title
@@ -454,8 +454,8 @@ const submitJobPost = async () => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
     // mode: "no-cors",
     body: JSON.stringify({
       role: role.value,

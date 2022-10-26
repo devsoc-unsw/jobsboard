@@ -110,7 +110,7 @@ const showPassword = () => {
   hidePassword.value = !hidePassword.value;
 };
 
-const isAlertOpen = ref<boolean>(false);
+const isAlertOpen = ref(false);
 
 onMounted(async () => {
   // Change the page title

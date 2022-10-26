@@ -56,12 +56,12 @@ import moon from '@/assets/misc/moon.svg';
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const apiToken = ref<string | undefined>(apiTokenStore.getApiToken());
+const apiToken = ref(apiTokenStore.getApiToken());
 
 onMounted(async () => {
   setTimeout(() => {
     if (!apiTokenStore.getApiToken()) {
-      apiToken.value = undefined;
+      apiToken.value = '';
     }
   }, 10);
 });

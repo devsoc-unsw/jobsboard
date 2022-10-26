@@ -128,12 +128,12 @@ import TransitionLoading from '@/animations/TransitionLoading.vue';
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const error = ref<boolean>(false);
-const errorMsg = ref<string>('');
+const error = ref(false);
+const errorMsg = ref('');
 const jobs = ref<any[]>([]);
-const query = ref<string>('');
-const loadMoreJobsLock = ref<boolean>(false);
-const isLoading = ref<boolean>(true);
+const query = ref('');
+const loadMoreJobsLock = ref(false);
+const isLoading = ref(true);
 
 onMounted(() => {
   // Change the page title
@@ -158,8 +158,8 @@ const loadMoreJobs = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
   isLoading.value = false;
   if (response.ok) {

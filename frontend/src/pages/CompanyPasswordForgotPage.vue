@@ -82,10 +82,10 @@ import Breadcrumbs from '@/components/Breadcrumbs.vue';
 // config
 import config from '@/config/config';
 
-const email = ref<string>('');
-const alertType = ref<string>('');
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
+const email = ref('');
+const alertType = ref('');
+const alertMsg = ref('');
+const isAlertOpen = ref(false);
 
 const performCompanyPasswordForgot = async () => {
   const response = await fetch(`${config.apiRoot}/company/forgot-password`, {

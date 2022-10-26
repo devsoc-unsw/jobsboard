@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 
-const props = defineProps({
+defineProps({
   member: {
     type: Object,
     required: true,

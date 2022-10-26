@@ -15,7 +15,7 @@ const apiTokenStore = useApiTokenStore();
 const apiToken = apiTokenStore.getApiToken();
 
 onMounted(() => {
-  if (apiToken === undefined) {
+  if (!apiToken) {
     setTimeout(() => {
       router.push('/login');
     }, 3000);

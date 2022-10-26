@@ -89,7 +89,7 @@ const props = defineProps({
   wamRequirements: String,
   additionalInfo: String,
 });
-const modalVisible = ref<boolean>(false);
+const modalVisible = ref(false);
 const emit = defineEmits(['removePendingJob', 'successMsg', 'errorMsg']);
 const approveJob = async () => {
   const response = await fetch(
@@ -98,8 +98,8 @@ const approveJob = async () => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiTokenStore.getApiToken(),
-      } as HeadersInit,
+        Authorization: apiTokenStore.getApiToken(),
+      },
     },
   );
   if (response.ok) {
@@ -128,8 +128,8 @@ const rejectJob = async () => {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiTokenStore.getApiToken(),
-      } as HeadersInit,
+        Authorization: apiTokenStore.getApiToken(),
+      },
     },
   );
   if (response.ok) {
