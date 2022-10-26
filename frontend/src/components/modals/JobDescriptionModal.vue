@@ -151,7 +151,7 @@ import { ref } from 'vue';
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 import Modal from '@/components/modals/Modal.vue';
 
-const props = defineProps({
+defineProps({
   jobTitle: {
     type: String,
     default: '',

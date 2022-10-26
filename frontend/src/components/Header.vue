@@ -21,7 +21,7 @@
           Coming soon
         </span>
       </div>
-      <div v-if='apiToken === undefined'>
+      <div v-if='!apiToken'>
         <button
           class='bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[2px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
@@ -31,7 +31,7 @@
           Log In
         </button>
       </div>
-      <div v-else-if='apiToken'>
+      <div v-else>
         <button
           class='bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]

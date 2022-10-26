@@ -70,7 +70,7 @@
   const jobTypeObject = ref(JobType);
   const jobModeObject = ref(JobMode);
 
-  const props = defineProps({
+  defineProps({
     jobID: {
       type: Number,
       required: true,
