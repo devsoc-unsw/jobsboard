@@ -154,7 +154,7 @@ const apiTokenStore = useApiTokenStore();
 let jobs = ref([]);
 let expiredJobs = ref([]);
 const boardStatus = ref('postedJobs');
-const isModalShown = ref<boolean>(false);
+const isModalShown = ref(false);
 const logo = ref<any>(null);
 const preview = ref<any>(null);
 
