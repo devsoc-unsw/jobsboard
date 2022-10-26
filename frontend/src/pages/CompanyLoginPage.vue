@@ -47,7 +47,7 @@
             id='password'
             v-model='password'
             name='password'
-            type='password'
+            :type='hidePassword ? "password" : "text"'
             class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
             autocomplete='current-password'
             required
@@ -62,6 +62,11 @@
           >
             Password
           </label>
+          <font-awesome-icon
+            :icon='hidePassword ? "eye-slash" : "eye"'
+            class='text-jb-placeholder hover:text-black duration-500 cursor-pointer absolute right-[15px] top-1/2 -translate-y-1/2'
+            @click='showPassword'
+          />
         </div>
       </form>
 
@@ -121,15 +126,20 @@ import { useApiTokenStore } from '@/store/apiToken';
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const username = ref<string>('');
-const password = ref<string>('');
-let isAlertOpen = ref<boolean>(false);
+const username = ref('');
+const password = ref('');
+const hidePassword = ref(true);
+let isAlertOpen = ref(false);
 
 onMounted(async () => {
   // Change the page title
   document.title = useRoute().meta.title;
   apiTokenStore.clearApiToken();
 });
+
+const showPassword = () => {
+  hidePassword.value = !hidePassword.value;
+};
 
 const performCompanyLogin = async () => {
   const response = await fetch(
