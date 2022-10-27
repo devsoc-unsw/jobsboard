@@ -11,6 +11,7 @@
     "express": "^4.17.1",
     "fast-levenshtein": "^3.0.0",
     "functional-red-black-tree": "^1.0.1",
+    "fuse.js": "^6.6.2",
     "helmet": "^6.0.0",
     "json-stable-stringify-without-jsonify": "^1.0.1",
     "ldapts": "^4.0.0",
