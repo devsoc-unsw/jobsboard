@@ -111,6 +111,15 @@ const members = [
     gh: 'https://github.com/avijits01',
     photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
   },
+  {
+    name: 'Adrian Tan',
+    title: '2022 Subcomittee Member',
+    involvement: 'Frontend',
+    funFact: 'Passionate about exploring outdoors 🗻 and taking photos 📸',
+    in: 'https://www.linkedin.com/in/adriantan09/',
+    gh: 'https://github.com/adriantan09',
+    photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
+  },
 ];
 
 onMounted(() => {
