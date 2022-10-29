@@ -77,11 +77,20 @@ const members = [
   },
   {
     name: 'Matthew Liu',
-    title: '2022 Subcomittee Member',
+    title: '2022 Subcommittee Member & 2023 Jobsboard Director',
     involvement: 'Backend',
     funFact: 'Aspiring software engineer particularly interested working with the backend. My wildest dream would be to see Arsenal win the Champions League.',
     in: 'https://www.linkedin.com/in/matthew-liu-cs/',
     gh: 'https://github.com/matth3wliuu',
+    photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
+  },
+  {
+    name: 'Gabriel Ting',
+    title: '2022 Subcommittee Member & 2023 Jobsboard Director',
+    involvement: 'Frontend',
+    funFact: 'I love circles 🟣 and squares 🟪',
+    in: 'https://www.linkedin.com/in/gabriel-ting/',
+    gh: 'https://github.com/gtangelo',
     photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
   },
   {
