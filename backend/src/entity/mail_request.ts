@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class MailRequest {
@@ -12,14 +12,14 @@ export class MailRequest {
   public recipient: string;
 
   @Column({
-    type: "text",
-    default: ""
+    type: 'text',
+    default: '',
   })
   public subject: string;
 
   @Column({
-    type: "text",
-    default: ""
+    type: 'text',
+    default: '',
   })
   public content: string;
 

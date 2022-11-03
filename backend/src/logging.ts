@@ -1,6 +1,6 @@
-import winston from "winston";
-import { Logs } from "./entity/logs";
-import { AppDataSource } from "./index"
+import winston from 'winston';
+import { Logs } from './entity/logs';
+import { AppDataSource } from './index';
 
 export default class Logger {
   public static Init(): void {
@@ -9,25 +9,23 @@ export default class Logger {
         winston.format.timestamp(),
         winston.format.printf((i) => `[${i.level}] ${i.timestamp} - ${i.message}`),
       ),
-      transports: [
-        new winston.transports.Console(),
-      ],
+      transports: [new winston.transports.Console()],
     });
   }
 
   public static Info(msg: string): void {
-    Logger.loggerFunc("info", msg);
+    Logger.loggerFunc('info', msg);
   }
 
   public static Warn(msg: string): void {
-    Logger.loggerFunc("warn", msg);
+    Logger.loggerFunc('warn', msg);
   }
 
   public static Error(msg: string): void {
-    Logger.loggerFunc("error", msg);
+    Logger.loggerFunc('error', msg);
   }
 
-  private static loggerName: string = "logger";
+  private static loggerName = 'logger';
   private static logger: winston.Logger;
 
   // this is intentionally async and it's not used with an await so as not to
