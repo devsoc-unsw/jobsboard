@@ -38,4 +38,9 @@
     @apply border-l-[5px] border-l-jb-dark-blue text-jb-dark-blue bg-white shadow-md
       hover:bg-jb-dark-blue hover:text-white
   }
+
+  .hover-anim {
+    @apply transform transition duration-200 hover:scale-105 cursor-pointer
+  }
+
 }

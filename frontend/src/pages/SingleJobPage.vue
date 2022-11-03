@@ -1,7 +1,7 @@
 <template>
   <LoggedInTemplate>
     <StudentViewTemplate>
-      <Breadcrumbs />
+      <Breadcrumbs id='breadcrumb' />
       <Alert
         alertType='error'
         :alertMsg='alertMsg'
@@ -325,6 +325,13 @@ const fetchJob = async () => {
 
 onMounted(() => {
   fetchJob();
+
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, 100);
 });
 
 watch(route, () => {
@@ -338,4 +345,7 @@ const openLink = () => {
 </script>
 
 <style scoped lang="scss">
+  #breadcrumb {
+    margin-left: 2rem;
+  }
 </style>
