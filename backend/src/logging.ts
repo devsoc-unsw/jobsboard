@@ -30,15 +30,19 @@ export default class Logger {
 
   // this is intentionally async and it's not used with an await so as not to
   // become blocking to the functions calling it
-  private static loggerFunc(lvl: string, msg: string) {
+  private static async loggerFunc(lvl: string, msg: string) {
     Logger.logger.log({
       level: lvl,
       message: msg,
     });
-
+  
     // write the log
-    // const log = new Logs();
-    // log.what = msg;
-    // await AppDataSource.manager.save(log);
+    await AppDataSource
+      .createQueryBuilder()
+      .insert()
+      .into(Logs)
+      .values([{ what: msg }])
+      .execute();
+    
   }
 }
