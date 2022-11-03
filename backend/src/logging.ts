@@ -37,8 +37,8 @@ export default class Logger {
     });
 
     // write the log
-    const log = new Logs();
-    log.what = msg;
-    await AppDataSource.manager.save(log);
+    // const log = new Logs();
+    // log.what = msg;
+    // await AppDataSource.manager.save(log);
   }
 }
