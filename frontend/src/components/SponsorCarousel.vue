@@ -22,7 +22,7 @@
         <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
             class='select-none pointer-events-none object-contain w-full'
-            :src='MicrosoftLogo'
+            :src='PearlerLogo'
             loading='lazy'
             alt='sponsor logo'
           >
@@ -72,7 +72,7 @@
         <div class='grow-1 shrink-1 basis-[200px] min-w-0 m-5'>
           <img
             class='select-none pointer-events-none object-contain w-full'
-            :src='MicrosoftLogo'
+            :src='PearlerLogo'
             loading='lazy'
             alt='sponsor logo'
           >
@@ -107,28 +107,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
 import GoogleLogo from '@/assets/companies/googleLogo.png';
 import AmazonLogo from '@/assets/companies/amazonLogo.png';
-import MicrosoftLogo from '@/assets/companies/microsoftLogo.svg';
+import PearlerLogo from '@/assets/companies/PearlerLogo.png';
 import CanvaLogo from '@/assets/companies/canvaLogo.png';
 import JaneStreetLogo from '@/assets/companies/janeStreetLogo.png';
 import AtlassianLogo from '@/assets/companies/atlassianLogo.png';
-
-export default Vue.extend({
-  name: 'SponsorCarousel',
-  data() {
-    return {
-      MicrosoftLogo: MicrosoftLogo,
-      GoogleLogo: GoogleLogo,
-      AmazonLogo: AmazonLogo,
-      CanvaLogo: CanvaLogo,
-      JaneStreetLogo: JaneStreetLogo,
-      AtlassianLogo: AtlassianLogo,
-    };
-  },
-});
 </script>
 
 <style scoped lang="scss">

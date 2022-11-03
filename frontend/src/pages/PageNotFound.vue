@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate not-logged-in>
+  <StudentViewTemplate notLoggedIn>
     <main class='flex flex-col items-center justify-center min-h-full w-full'>
       <img
         class='filter invert w-1/5 mt-10 mb-16 md:w-3/5 sm:w-1/2 xs:w-3/5'
@@ -27,31 +27,21 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import StudentViewTemplate from '../components/StudentViewTemplate.vue';
-import Logo from '@/assets/logos/csesocgreyblue.png';
 import Robot from '@/assets/misc/404_Robot.png';
 
-export default Vue.extend({
-  name: 'PageNotFound',
-  components: {
-    StudentViewTemplate,
-  },
-  data() {
-    return {
-      Logo: Logo,
-      Robot: Robot,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
+const router = useRouter();
 
-    setTimeout(() => {
-      this.$router.push('/');
-    }, 5000);
-  },
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+
+  setTimeout(() => {
+    router.push('/');
+  }, 5000);
 });
 </script>
 

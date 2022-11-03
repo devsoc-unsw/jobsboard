@@ -1,7 +1,12 @@
-import Vue from "vue";
-import App from "./App.vue";
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import { createPinia } from 'pinia';
+import './style/tailwind.scss';
 
-import { library, IconDefinition } from "@fortawesome/fontawesome-svg-core";
+// set up fontawesome
+import { library, IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
   faBuilding,
   faChevronLeft,
@@ -16,23 +21,35 @@ import {
   faAddressCard,
   faUser,
   faCircleInfo,
+  faBars,
+  faUserGroup,
+  faTrashAlt,
   faBell,
   faXmark,
   faLocationDot,
   faUserShield,
   faAngleRight,
   faBriefcase,
-  faHouse
-} from "@fortawesome/free-solid-svg-icons";
+  faHouse,
+  faPlus,
+  faCloudUpload,
+  faMoneyBills,
+  faCode,
+  faPeopleGroup,
+  faClock,
+  faClipboard,
+  faMagnifyingGlass,
+  faEye,
+  faEyeSlash,
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
   faGithub,
   faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+} from '@fortawesome/free-brands-svg-icons';
 
-import store from "./store/store";
-import './style/tailwind.scss';
+// set up pinia
+const pinia = createPinia();
 
 library.add(faBuilding as IconDefinition);
 library.add(faChevronLeft as IconDefinition);
@@ -49,22 +66,30 @@ library.add(faLink as IconDefinition);
 library.add(faAddressCard as IconDefinition);
 library.add(faUser as IconDefinition);
 library.add(faCircleInfo as IconDefinition);
+library.add(faBars as IconDefinition);
+library.add(faUserGroup as IconDefinition);
+library.add(faLocationDot as IconDefinition);
+library.add(faTrashAlt as IconDefinition);
 library.add(faBell as IconDefinition);
 library.add(faXmark as IconDefinition);
-library.add(faLocationDot as IconDefinition);
 library.add(faUserShield as IconDefinition);
 library.add(faAngleRight as IconDefinition);
 library.add(faBriefcase as IconDefinition);
 library.add(faHouse as IconDefinition);
+library.add(faPlus as IconDefinition);
+library.add(faCloudUpload as IconDefinition);
+library.add(faMoneyBills as IconDefinition);
+library.add(faCode as IconDefinition);
+library.add(faPeopleGroup as IconDefinition);
+library.add(faClock as IconDefinition);
+library.add(faClipboard as IconDefinition);
+library.add(faMagnifyingGlass as IconDefinition);
+library.add(faEye as IconDefinition);
+library.add(faEyeSlash as IconDefinition);
 
-Vue.component("font-awesome-icon", FontAwesomeIcon);
 
-Vue.config.productionTip = false;
-
-import router from "./router";
-
-const app = new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
+const app = createApp(App);
+app.use(router);
+app.use(pinia);
+app.component('FontAwesomeIcon', FontAwesomeIcon);
+app.mount('#app');

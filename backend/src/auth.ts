@@ -1,9 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  // Connection,
-  getConnection,
-  getRepository,
-} from 'typeorm';
 
 import { AppDataSource } from './index';
 
@@ -35,8 +30,8 @@ export { IToken, AccountType };
 
 export default class Auth {
   // Student-based authentication functions
-  public static async AuthenticateStudent(req: Request, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async AuthenticateStudent(this: void, req: Request, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const msg = req.body;
@@ -95,8 +90,8 @@ export default class Auth {
   }
 
   // Company-based authentication functions
-  public static async AuthenticateCompany(req: Request, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async AuthenticateCompany(this: void, req: Request, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const msg = { username: req.body.username, password: req.body.password };
@@ -146,8 +141,8 @@ export default class Auth {
   }
 
   // admin-based authentication functions
-  public static async AuthenticateAdmin(req: Request, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async AuthenticateAdmin(this: void, req: Request, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const msg = { username: req.body.username, password: req.body.password };
@@ -198,36 +193,6 @@ export default class Auth {
 
   // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
-    // inclusions list for beta testing
-    /*
-     *
-      Arsham	Emad	        z5313115
-      Luke	Fisk-Lennon	z5169800
-      Angeni	Bai	        z5169778
-      Shrey	Somaiya	        z5257343
-      Gordon	Zhong	        z5258720
-      An Thy	Tran	        z5255918
-      Max	Wo	        z5215628
-     */
-    const betaTesters = [
-      'z5060214',
-      'z5313115',
-      'z5169800',
-      'z5169778',
-      'z5257343',
-      'z5258720',
-      'z5255918',
-      'z5215628',
-    ];
-
-    if (process.env.RESTRICTED_LOGINS === 'true') {
-      Logger.Info('Restricted logins ENABLED');
-      if (!betaTesters.includes(zID)) {
-        Logger.Info(`REJECTED login from STUDENT=${zID} as they are not a beta tester.`);
-        return false;
-      }
-    }
-
     if (process.env.NODE_ENV !== 'development') {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
         // check if it matches the zID format, throw otherwise.

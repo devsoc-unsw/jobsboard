@@ -12,7 +12,7 @@ import { Student } from './entity/student';
 import { CompanyAccount } from './entity/company_account';
 
 export default class Middleware {
-  public static genericLoggingMiddleware(req: Request, resp: Response, next: NextFunction): void {
+  public static genericLoggingMiddleware(this: void, req: Request, resp: Response, next: NextFunction): void {
     Logger.Info(`${req.method} ${resp.statusCode} - ${req.path}`);
     if (next) {
       next();
@@ -38,7 +38,7 @@ export default class Middleware {
     return jwt;
   }
 
-  public static async authenticateStudentMiddleware(req: any, res: Response, next: NextFunction) {
+  public static async authenticateStudentMiddleware(this: void, req: any, res: Response, next: NextFunction) {
     try {
       // get JWT for student
       const rawJWT = req.get('Authorization');
@@ -84,7 +84,7 @@ export default class Middleware {
     }
   }
 
-  public static authenticateCompanyMiddleware(req: any, res: Response, next: NextFunction) {
+  public static authenticateCompanyMiddleware(this: void, req: any, res: Response, next: NextFunction) {
     try {
       // get JWT
       const jwt = JWT.get(req.get('Authorization'));
@@ -109,7 +109,7 @@ export default class Middleware {
     }
   }
 
-  public static authenticateAdminMiddleware(req: any, res: Response, next: NextFunction) {
+  public static authenticateAdminMiddleware(this: void, req: any, res: Response, next: NextFunction) {
     try {
       // get JWT
       const jwt: IToken = JWT.get(req.get('Authorization'));
@@ -131,7 +131,12 @@ export default class Middleware {
     }
   }
 
-  public static async authenticateResetPasswordRequestMiddleware(req: any, res: Response, next: NextFunction) {
+  public static async authenticateResetPasswordRequestMiddleware(
+    this: void,
+    req: any,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       const jwtString = req.get('Authorization');
       const jwt: IToken = JWT.get(req.get('Authorization'));
@@ -168,5 +173,11 @@ export default class Middleware {
       Logger.Error('Attempted to authenticate with incorrect account type');
       throw new Error('Incorrect account type');
     }
+  }
+  
+  public static privateRouteWrapper(this: void, req: any, res: Response, next: NextFunction) {
+    if (process.env.NODE_ENV === 'development') {
+      next();
+    } 
   }
 }

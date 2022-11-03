@@ -15,8 +15,8 @@ import Logger from './logging';
 import { Brackets } from 'typeorm';
 
 export default class AdminFunctions {
-  public static async ApproveJobRequest(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async ApproveJobRequest(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Admin ID=${req.adminID} attempting to approve JOB=${req.params.jobID}`);
@@ -72,7 +72,7 @@ export default class AdminFunctions {
           .where('year = :year', { year: jobCreatedYear })
           .execute();
 
-        MailFunctions.AddMailToQueue(
+        await MailFunctions.AddMailToQueue(
           jobToApprove.company.companyAccount.username,
           'CSESoc Jobs Board - Job Post request approved',
           `
@@ -102,8 +102,8 @@ export default class AdminFunctions {
     );
   }
 
-  public static async RejectJobRequest(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async RejectJobRequest(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
@@ -142,7 +142,7 @@ export default class AdminFunctions {
           .where('id = :id', { id: jobToReject.id })
           .execute();
 
-        MailFunctions.AddMailToQueue(
+        await MailFunctions.AddMailToQueue(
           jobToReject.company.companyAccount.username,
           'CSESoc Jobs Board - Job Post request rejected',
           `
@@ -172,15 +172,30 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetPendingJobs(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetPendingJobs(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`ADMIN=${req.adminID} attempting to query pending jobs`);
         const pendingJobs = await Helpers.doSuccessfullyOrFail(async () => {
           return await AppDataSource.getRepository(Job)
             .createQueryBuilder()
-            .select(['Job.id', 'Job.role', 'Job.description', 'Job.applicationLink'])
+            .select([
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.applicationLink',
+              'Job.approved',
+              'Job.hidden',
+              'Job.expiry',
+              'Job.mode',
+              'Job.studentDemographic',
+              'Job.jobType',
+              'Job.workingRights',
+              'Job.wamRequirements',
+              'Job.additionalInfo',
+              'Job.isPaid',
+            ])
             .where('Job.approved = :approved', { approved: false })
             .andWhere('Job.hidden = :hidden', { hidden: false })
             .getMany();
@@ -212,8 +227,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetPendingCompanyVerifications(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetPendingCompanyVerifications(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`ADMIN=${req.adminID} attempting to query pending companies`);
@@ -255,8 +270,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async VerifyCompanyAccount(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async VerifyCompanyAccount(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`);
@@ -275,7 +290,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .execute();
 
         // send an email confirming that the account has been verified
-        MailFunctions.AddMailToQueue(
+        await MailFunctions.AddMailToQueue(
           pendingCompany.username,
           'CSESoc Jobs Board - Success! Your account has been verified',
           `
@@ -323,8 +338,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async ListAllCompaniesAsAdmin(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async ListAllCompaniesAsAdmin(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Admin ID=${req.adminID} attempting to query all companies`);
@@ -369,8 +384,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async CreateJobOnBehalfOfExistingCompany(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async CreateJobOnBehalfOfExistingCompany(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const companyID = req.params.companyID;
@@ -449,7 +464,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         // mark this job as one that the admin has created
         newJob.adminCreated = true;
 
-        MailFunctions.AddMailToQueue(
+        await MailFunctions.AddMailToQueue(
           process.env.MAIL_USERNAME,
           'CSESoc Jobs Board - CSESoc has created a job on your behalf',
           `
@@ -468,7 +483,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`);
 
         // check to see if that job is queryable
-        const newJobQueryVerification = await Helpers.doSuccessfullyOrFail(async () => {
+        await Helpers.doSuccessfullyOrFail(async () => {
           return await AppDataSource.getRepository(Job)
             .createQueryBuilder()
             .where('Job.id = :id', { id: newJobID })
@@ -494,8 +509,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetNumVerifiedCompanies(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetNumVerifiedCompanies(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Retrieving the number of verified companies as ADMIN=${req.adminID}`);
@@ -528,8 +543,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async getNumApprovedJobPosts(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async getNumApprovedJobPosts(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(
@@ -605,8 +620,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetAllHiddenJobs(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetAllHiddenJobs(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const adminID = req.adminID;

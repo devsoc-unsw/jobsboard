@@ -21,13 +21,26 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: dev.dockerfile
     image: webpersonal.azurecr.io/jb-frontend:latest
+    volumes:
+      - ./frontend/src:/app/src
+    ports:
+      - "3001:3001"
+    expose:
+      - 3001
+  frontend-prod:
+    build:
+      context: ./frontend
+    image: webpersonal.azurecr.io/jb-frontend:latest
+    volumes:
+      - ./frontend/src:/app/src
     ports:
       - "8081:80"
     expose:
       - 8081
   db:
-    image: postgres:14.3-alpine # this is the image that we want to run (aka app)
+    image: postgres:14.5-alpine # this is the image that we want to run (aka app)
     restart: always
     ports:
       - "5432:5432" # we want to expose port `5432` on our computer and map it to 5432 in the container
@@ -39,7 +52,6 @@ services:
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
     volumes:
       - db-data:/var/lib/postgresql/data # mounting a local folder into the container
-      
   test:
     build:
       dockerfile: Dockerfile.test

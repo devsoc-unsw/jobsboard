@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate not-logged-in>
+  <StudentViewTemplate notLoggedIn>
     <Breadcrumbs />
     <main class='h-full flex flex-col justify-center items-center py-16'>
       <h1 class='text-jb-headings font-bold text-3xl'>
@@ -11,10 +11,10 @@
 
       <!-- Success/Error Alert -->
       <Alert
-        :alert-type='alertType'
-        :alert-msg='alertMsg'
-        :is-open='isAlertOpen'
-        :handle-close='() => { isAlertOpen = false }'
+        :alertType='alertType'
+        :alertMsg='alertMsg'
+        :isOpen='isAlertOpen'
+        :handleClose='() => { isAlertOpen = false }'
       />
 
       <!-- Email Input -->
@@ -39,11 +39,12 @@
         </label>
       </div>
 
-      <Button @callback='performCompanyPasswordForgot'>
-        <p class='p-4 text-white'>
-          Forgot Password
-        </p>
-      </Button>
+      <button
+        class='btn btn-blue-filled w-40 h-11 my-4 p-2'
+        @click='performCompanyPasswordForgot'
+      >
+        Forgot Password
+      </button>
 
       <div class='flex flex-row justify-evenly items-center pt-12 w-1/4 sm:flex-col xl:w-2/5 md:w-1/2'>
         <p class='flex flex-col text-jb-subheadings pb-0 sm:pb-4'>
@@ -69,75 +70,60 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-// libs
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
-import Button from '@/components/buttons/button.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
 import config from '@/config/config';
 
-export default Vue.extend({
-  name: 'PasswordForgotPage',
-  components: {
-    StudentViewTemplate,
-    Button,
-    Breadcrumbs,
-    Alert,
-  },
-  data() {
-    return {
-      email: '',
-      alertType: '',
-      alertMsg: '',
-      isAlertOpen: false,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  },
-  methods: {
-    async performCompanyPasswordForgot() {
-      const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          'username': this.email,
-        }),
-      });
+const email = ref<string>('');
+const alertType = ref<string>('');
+const alertMsg = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
 
-      if (response.ok) {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        this.alertType = 'success';
-        this.isAlertOpen = true;
-        this.alertMsg = 'An email will be sent shortly. Please check your inbox.';
-      } else {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        this.alertType = 'error';
-        this.isAlertOpen = true;
-        if (response.status === 400) {
-          this.alertMsg = 'Could not find a company account with that email. Please try again.';
-        } else {
-          this.alertMsg = 'Email failed to send. Please try again.';
-        }
-      }
+const performCompanyPasswordForgot = async () => {
+  const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  },
+    // mode: "no-cors",
+    body: JSON.stringify({
+      'username': email.value,
+    }),
+  });
+
+  if (response.ok) {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    alertType.value = 'success';
+    isAlertOpen.value = true;
+    alertMsg.value = 'An email will be sent shortly. Please check your inbox.';
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    alertType.value = 'error';
+    isAlertOpen.value = true;
+    if (response.status === 400) {
+      alertMsg.value = 'Could not find a company account with that email. Please try again.';
+    } else {
+      alertMsg.value = 'Email failed to send. Please try again.';
+    }
+  }
+};
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
 });
 </script>
 

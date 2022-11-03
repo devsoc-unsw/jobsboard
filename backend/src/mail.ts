@@ -13,7 +13,7 @@ import Helpers from './helpers';
 import { MailRequest } from './entity/mail_request';
 
 export default class MailFunctions {
-  public static async SendTestEmail(_: Request, res: Response) {
+  public static async SendTestEmail(this: void, _: Request, res: Response) {
     try {
       const mailAddingSuccessful = await MailFunctions.AddMailToQueue('', 'Scheduled emailing', `Message contents.`);
       if (mailAddingSuccessful) {
@@ -53,7 +53,7 @@ export default class MailFunctions {
     };
     const mailTransporter = nodemailer.createTransport(transportOptions);
     if (process.env.NODE_ENV === 'production') {
-      mailTransporter.verify((error, _) => {
+      mailTransporter.verify((error: Error, _: boolean) => {
         if (error) {
           Logger.Error(`Mail verification unsuccessful. Reason: ${error}`);
           throw new Error('Failed to initialise mail service.');

@@ -14,12 +14,11 @@ import MailFunctions from './mail';
 import Logger from './logging';
 import { AccountType, IToken } from './auth';
 import JWT from './jwt';
-import { Statistics } from './entity/statistics';
 import { Brackets } from 'typeorm';
 
 export default class CompanyFunctions {
-  public static async GetCompanyInfo(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetCompanyInfo(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`);
@@ -51,8 +50,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async GetJobsFromCompany(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetJobsFromCompany(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`STUDENT=${req.studentZID} getting jobs for COMPANY=${req.params.companyID}`);
@@ -101,8 +100,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async CreateCompany(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async CreateCompany(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         // verify input paramters
@@ -152,7 +151,7 @@ export default class CompanyFunctions {
         Logger.Info(`Created company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`);
 
         // await conn.manager.save(newCompanyAccount);
-        MailFunctions.AddMailToQueue(
+        await MailFunctions.AddMailToQueue(
           newCompanyAccount.username,
           'Thank you for adding your company to the CSESoc Jobs Board',
           `
@@ -180,8 +179,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async CreateJob(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async CreateJob(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         if (req.companyAccountID === undefined) {
@@ -271,7 +270,7 @@ export default class CompanyFunctions {
             .getOne();
         }, `Failed to fetch the newly created JOB=${newJobID}`);
 
-        MailFunctions.AddMailToQueue(
+        await MailFunctions.AddMailToQueue(
           companyAccount.username,
           'CSESoc Jobs Board - Job Post request submitted',
           `
@@ -304,7 +303,7 @@ export default class CompanyFunctions {
     );
   }
 
-  public static GetCompanyHiddenJobs(req: any, res: Response, next: NextFunction) {
+  public static GetCompanyHiddenJobs(this: void, req: any, res: Response, next: NextFunction) {
     Helpers.catchAndLogError(
       res,
       async () => {
@@ -394,8 +393,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async EditJob(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async EditJob(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const companyId = req.companyAccountID;
@@ -504,8 +503,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async GetAllJobsFromCompany(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetAllJobsFromCompany(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`);
@@ -524,6 +523,7 @@ export default class CompanyFunctions {
               'Job.applicationLink',
               'Job.approved',
               'Job.hidden',
+              'Job.expiry',
               'Job.mode',
               'Job.studentDemographic',
               'Job.jobType',
@@ -550,6 +550,14 @@ export default class CompanyFunctions {
             description: job.description,
             applicationLink: job.applicationLink,
             status: jobStatus,
+            additionalInfo: job.additionalInfo,
+            expiry: job.expiry,
+            mode: job.mode,
+            studentDemographic: job.studentDemographic,
+            jobType: job.jobType,
+            workingRights: job.workingRights,
+            wamRequirements: job.wamRequirements,
+            isPaid: job.isPaid,
           };
         });
 
@@ -573,8 +581,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async MarkJobPostRequestAsDeleted(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async MarkJobPostRequestAsDeleted(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`);
@@ -616,8 +624,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async SendResetPasswordEmail(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async SendResetPasswordEmail(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         // check for required params
@@ -644,7 +652,7 @@ export default class CompanyFunctions {
           .where('id = :id', { id: companyAccountUsernameSearchResult.id })
           .execute();
 
-        MailFunctions.AddMailToQueue(
+        await MailFunctions.AddMailToQueue(
           receipientEmail,
           'JobsBoard Password Reset Request',
           `
@@ -674,8 +682,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async GetPasswordResetToken(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetPasswordResetToken(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const username = req.params.username;
@@ -711,8 +719,8 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async PasswordReset(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async PasswordReset(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         // check if required parameters are supplied
@@ -761,9 +769,75 @@ export default class CompanyFunctions {
       next,
     );
   }
+  
+  public static async UploadLogo(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
 
-  public static async UpdateCompanyDetails(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+      const companyAccountID = req.companyAccountID;
+      
+      // check if the required parameters are provided
+      Helpers.requireParameters(companyAccountID);
+      Helpers.requireParameters(req.body.logo);
+  
+      Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
+  
+      await AppDataSource
+        .createQueryBuilder()
+        .update(Company)
+        .set({ 
+          logo: req.body.logo
+        })
+        .where("id = :id", { id: companyAccountID })
+        .execute()
+      
+      Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
+      
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+    
+  };
+
+  public static async GetCompanyLogoStatus(req: any, res: Response, next: NextFunction) {
+    Helpers.catchAndLogError(res, async () => {
+      const companyLogo = await Helpers.doSuccessfullyOrFail(async () => {
+        return await AppDataSource.getRepository(Company)
+          .createQueryBuilder()
+          .select(["Company.logo"])
+          .where("Company.id = :id", { id: parseInt(req.companyAccountID, 10) })
+          .getOne();
+      }, `Failed to find logo for COMPANY=${req.companyAccountID}.`);
+
+      if (!companyLogo) {
+        return {
+          status: 404,
+          msg: undefined
+        } as IResponseWithStatus;  
+      }
+
+      return {
+        status: 200,
+        msg: undefined
+      } as IResponseWithStatus;
+
+    }, () => {
+      return {
+        status: 400,
+        msg: undefined
+      } as IResponseWithStatus;
+    }, next);
+  };
+
+  public static async UpdateCompanyDetails(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const companyAccountID = req.companyAccountID;
@@ -792,43 +866,6 @@ export default class CompanyFunctions {
           .execute();
 
         Logger.Info(`COMPANY=${companyAccountID} successfully updated it's details`);
-
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
-      () => {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
-      next,
-    );
-  }
-
-  public static async UploadLogo(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
-      res,
-      async () => {
-        const companyAccountID = req.companyAccountID;
-
-        // check if the required parameters are provided
-        Helpers.requireParameters(companyAccountID);
-        Helpers.requireParameters(req.body.logo);
-
-        Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
-
-        await AppDataSource.createQueryBuilder()
-          .update(Company)
-          .set({
-            logo: req.body.logo,
-          })
-          .where('id = :id', { id: companyAccountID })
-          .execute();
-
-        Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
 
         return {
           status: 200,

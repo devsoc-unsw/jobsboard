@@ -1,29 +1,11 @@
-# frontend
+# Jobs Board
+## By [Adam Tizzone](https://github.com/ad-t)
 
-## Project setup
-```
-yarn install
-```
+# Build
+Run `docker-compose build` to build all containers, or `docker-compose build [container-name]` for a specific container specified in the compose file.
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+# Push
+Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
 
-### Compiles and minifies for production
-```
-yarn run build
-```
 
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[API docs - available when the api is started](http://localhost:8080/docs/)

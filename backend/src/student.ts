@@ -51,8 +51,8 @@ export default class StudentFunctions {
   }
   */
 
-  public static async GetPaginatedJobs(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetPaginatedJobs(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const offset: number = req.params.offset;
@@ -113,8 +113,8 @@ export default class StudentFunctions {
     );
   }
 
-  public static async GetJob(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetJob(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
@@ -166,8 +166,8 @@ export default class StudentFunctions {
     );
   }
 
-  public static async GetFeaturedJobs(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetFeaturedJobs(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Attempting to get featured jobs`);

@@ -1,23 +1,23 @@
 <template>
   <LoggedInTemplate>
-    <StudentViewTemplate logged-in>
+    <StudentViewTemplate loggedIn>
       <Breadcrumbs />
-      <Modal
+      <JobDescriptionModal
         v-if='modalVisible'
-        :job-title='role'
-        :job-description='description'
-        :application-link='applicationLink'
-        :expiry-date='expiryDate'
-        :is-paid-position='isPaidPosition'
-        :job-type='jobType'
-        :job-mode='jobMode'
-        :working-rights='workingRights'
-        :student-demographic='studentDemographic'
-        :wam-requirements='wamRequirements'
-        :additional-info='additionalInfo'
+        :jobTitle='role'
+        :jobDescription='description'
+        :applicationLink='applicationLink'
+        :expiryDate='expiryDate'
+        :isPaidPosition='isPaidPosition'
+        :jobType='jobType'
+        :jobMode='jobMode'
+        :workingRights='workingRights'
+        :studentDemographic='studentDemographic'
+        :wamRequirements='wamRequirements'
+        :additionalInfo='additionalInfo'
         @closeCallback='() => { modalVisible = false }'
       />
-      <div class='flex flex-col items-center w-4/5 mx-auto'>
+      <div class='flex flex-col items-center w-4/5 mx-auto mb-10'>
         <h1 class='text-jb-headings font-bold text-3xl mt-0 lg:mt-10'>
           Post a Job
         </h1>
@@ -56,10 +56,10 @@
           </div>
         </div>
         <Alert
-          :alert-type='alertType'
-          :alert-msg='alertMsg'
-          :is-open='isAlertOpen'
-          :handle-close='() => { isAlertOpen = false }'
+          :alertType='alertType'
+          :alertMsg='alertMsg'
+          :isOpen='isAlertOpen'
+          :handleClose='() => { isAlertOpen = false }'
         />
         <!-- input fields -->
         <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
@@ -76,9 +76,10 @@
           Job Description
         </h2>
         <quill-editor
-          v-model='description'
+          v-model:content='description'
           :value='description'
           :options='editorOptions'
+          contentType='html'
           :style='{ "background-color": "white", "width": "100%" }'
         />
         <h2 class='text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center'>
@@ -357,7 +358,7 @@
           Additional Information
         </h2>
         <quill-editor
-          v-model='additionalInfo'
+          v-model:content='additionalInfo'
           :value='additionalInfo'
           :options='{
             ...editorOptions,
@@ -367,6 +368,7 @@
         - Is your company able to sponsor the applicant"s visa if needed?`,
           }'
           :style='{ "background-color": "white", "width": "100%" }'
+          contentType='html'
         />
         <button
           class='border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered'
@@ -386,137 +388,135 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
 
+<script setup lang="ts">
 // libraries
-import { Vue } from 'vue-property-decorator';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { QuillEditor } from '@vueup/vue-quill';
 
-// QuillJs Related
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import { quillEditor } from 'vue-quill-editor';
 
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import Modal from '@/components/Modal.vue';
-import RichTextEditor from '@/components/RichTextEditor.vue';
+import JobDescriptionModal from '@/components/modals/JobDescriptionModal.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 
 // config
 import config from '@/config/config';
 
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
 
-export default Vue.extend({
-  name: 'CompanyAddJob',
-  components: {
-    StudentViewTemplate,
-    LoggedInTemplate,
-    Modal,
-    // eslint-disable-next-line vue/no-unused-components
-    RichTextEditor,
-    quillEditor,
-    Alert,
-    Breadcrumbs,
+const editorOptions = {
+  placeholder: 'Enter the job description...',
+  theme: 'snow',
+  modules: {
+    toolbar: [
+      [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
+      ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }],
+    ],
   },
-  data() {
-    return {
-      role: '',
-      description: '',
-      editorOptions: {
-        placeholder: 'Job Description',
-        theme: 'snow',
-        modules: {
-          toolbar: [
-            [{ 'font': [] }, { 'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike', { 'script': 'sub' }, { 'script': 'super' }, 'code-block', 'link'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'align': [] }],
-          ],
-        },
-      },
-      applicationLink: '',
-      expiryDate: '',
-      isPaidPosition: '',
-      jobType: '',
-      jobMode: '',
-      workingRights: [],
-      studentDemographic: [],
-      wamRequirements: '',
-      additionalInfo: '',
-      alertType: '',
-      alertMsg: '',
-      isAlertOpen: false,
-      apiToken: this.$store.getters.getApiToken,
-      modalVisible: false,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  },
-  methods: {
-    async submitJobPost() {
-      // create a date object using this value
-      let jobDate = new Date(this.expiryDate);
-      // set to the end of the set day
-      jobDate.setHours(23);
-      jobDate.setMinutes(59);
-      const response = await fetch(`${config.apiRoot}/jobs`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': this.apiToken,
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          role: this.role,
-          description: this.description,
-          applicationLink: this.applicationLink,
-          expiry: jobDate.valueOf(),
-          jobMode: this.jobMode,
-          studentDemographic: this.studentDemographic,
-          jobType: this.jobType,
-          workingRights: this.workingRights,
-          wamRequirements: this.wamRequirements,
-          additionalInfo: this.additionalInfo,
-          isPaid: this.isPaidPosition,
-        }),
-      });
+};
 
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch('setApiToken', msg.token);
-        this.alertType = 'success';
-        this.alertMsg = 'Job posted! This job will be made available to students shortly. Redirecting to your dashboard...';
-        this.isAlertOpen = true;
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        setTimeout(() => {
-          this.$router.push('/company/home');
-        }, 5000);
-      } else {
-        this.alertType = 'error';
-        if (response.status === 403) {
-          this.alertMsg = 'Failed to post job request as your account has not yet been verified.';
-        } else if (response.status === 401) {
-          this.alertMsg = 'Login expired. Redirecting to login page.';
-          setTimeout(() => {
-            this.$router.push('/login/company');
-          }, 3000);
-        } else {
-          this.alertMsg = 'Missing one or more fields. Please ensure that all fields are filled.';
-        }
-        this.isAlertOpen = true;
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-      }
-    },
-  },
+const role = ref<string>('');
+const description = ref<any>('');
+const applicationLink = ref<string>('');
+const alertType = ref<string>('');
+const alertMsg = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+const modalVisible = ref<boolean>(false);
+const expiryDate = ref<string>('');
+const isPaidPosition = ref<string>('');
+const jobType = ref<string>('');
+const jobMode = ref<string>('');
+const workingRights = ref<string[]>([]);
+const studentDemographic = ref<string[]>([]);
+const wamRequirements = ref<string>('');
+const additionalInfo = ref<any>('');
+
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
 });
 
+const submitJobPost = async () => {
+  // create a date object using this value
+  let jobDate = new Date(expiryDate.value);
+  // set to the end of the set day
+  jobDate.setHours(23);
+  jobDate.setMinutes(59);
+  const response = await fetch(`${config.apiRoot}/jobs`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+    // mode: "no-cors",
+    body: JSON.stringify({
+      role: role.value,
+      description: description.value,
+      applicationLink: applicationLink.value,
+      expiry: jobDate.valueOf(),
+      jobMode: jobMode.value,
+      studentDemographic: studentDemographic.value,
+      jobType: jobType.value,
+      workingRights: workingRights.value,
+      wamRequirements: wamRequirements.value,
+      additionalInfo: additionalInfo.value,
+      isPaid: isPaidPosition.value,
+    }),
+  });
+
+  if (response.ok) {
+    isAlertOpen.value = true;
+    alertType.value = 'success';
+    alertMsg.value = 'Job posted! This job will be made available to students shortly. Redirecting to your dashboard...';
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    setTimeout(() => {
+      router.push('/company/home');
+    }, 5000);
+  } else {
+    alertType.value = 'error';
+    if (response.status === 403) {
+      alertMsg.value = 'Failed to post job request as your account has not yet been verified.';
+    } else if (response.status === 401) {
+      alertMsg.value = 'Login expired. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login/company');
+      }, 3000);
+    } else {
+      alertMsg.value = 'Missing one or more fields. Please ensure that all fields are filled.';
+    }
+    isAlertOpen.value = true;
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+};
 </script>
+
+<style lang="scss">
+  /* Using css instead of tailwind to override the div from quill */
+  .ql-editor {
+    background-color: $white;
+    height: 40vh;
+    font-size: 12pt;
+  }
+
+  .ql-toolbar.ql-snow {
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    padding: 8px;
+    width: 100%;
+  }
+</style>

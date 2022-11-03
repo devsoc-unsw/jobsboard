@@ -1,5 +1,5 @@
 <template>
-  <StudentViewTemplate not-logged-in>
+  <StudentViewTemplate notLoggedIn>
     <Breadcrumbs />
     <div class='h-full flex flex-col justify-center items-center py-16'>
       <h1 class='font-bold text-3xl text-jb-headings'>
@@ -11,55 +11,64 @@
 
       <!-- Error Alert -->
       <Alert
-        alert-type='error'
-        alert-msg='Invalid credentials. Please try again.'
-        :is-open='isAlertOpen'
-        :handle-close='() => { isAlertOpen = false }'
+        alertType='error'
+        alertMsg='Invalid credentials. Please try again.'
+        :isOpen='isAlertOpen'
+        :handleClose='() => { isAlertOpen = false }'
       />
 
-      <!-- Email Input -->
-      <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
-        <input
-          id='email'
-          v-model='username'
-          name='email'
-          type='text'
-          class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer'
-          required
-          @keyup.enter='performCompanyLogin()'
-        >
-        <label
-          for='email'
-          class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
-        >
-          Email
-        </label>
-      </div>
+      <form class='flex justify-center items-center flex-col w-full'>
+        <!-- Email Input -->
+        <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
+          <input
+            id='email'
+            v-model='username'
+            name='email'
+            type='text'
+            class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer'
+            autocomplete='username'
+            required
+            @keyup.enter='performCompanyLogin()'
+          >
+          <label
+            for='email'
+            class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
+          >
+            Email
+          </label>
+        </div>
 
-      <!-- Password Input -->
-      <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
-        <input
-          id='password'
-          v-model='password'
-          name='password'
-          type='password'
-          class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
-          required
-          @keyup.enter='performCompanyLogin()'
-        >
-        <label
-          for='password'
-          class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
-        >
-          Password
-        </label>
-      </div>
+        <!-- Password Input -->
+        <div class='w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
+          <input
+            id='password'
+            v-model='password'
+            name='password'
+            :type='hidePassword ? "password" : "text"'
+            class='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
+            autocomplete='current-password'
+            required
+            @keyup.enter='performCompanyLogin()'
+          >
+          <label
+            for='password'
+            class='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
+                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
+                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
+                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
+          >
+            Password
+          </label>
+          <font-awesome-icon
+            :icon='hidePassword ? "eye-slash" : "eye"'
+            class='text-jb-placeholder hover:text-black duration-500 cursor-pointer absolute right-[15px] top-1/2 -translate-y-1/2'
+            @click='showPassword'
+          />
+        </div>
+      </form>
 
       <p class='text-lg text-jb-subheadings text-center my-2'>
         Not a company?
@@ -93,10 +102,8 @@
       </p>
 
       <button
-        type='submit'
-        class='bg-jb-textlink rounded-md w-40 h-11 p-2 text-white font-bold text-base
-               border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-        @click='performCompanyLogin()'
+        class='btn btn-blue-filled w-40 h-11 p-2'
+        @click='performCompanyLogin'
       >
         Log In
       </button>
@@ -104,10 +111,9 @@
   </StudentViewTemplate>
 </template>
 
-<script lang="ts">
-// libs
-import { Vue } from 'vue-property-decorator';
-
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 // components
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
@@ -115,55 +121,54 @@ import Alert from '@/components/Alert.vue';
 
 // config
 import config from '@/config/config';
+import { useApiTokenStore } from '@/store/apiToken';
 
-export default Vue.extend({
-  name: 'LoginPage',
-  components: {
-    StudentViewTemplate,
-    Breadcrumbs,
-    Alert,
-  },
-  data() {
-    return {
-      username: '',
-      password: '',
-      isAlertOpen: false,
-    };
-  },
-  async mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-    this.$store.dispatch('clearApiToken');
-  },
-  methods: {
-    async performCompanyLogin() {
-      const response = await fetch(`${config.apiRoot}/authenticate/company`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // mode: "no-cors",
-        body: JSON.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-      });
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      if (response.ok) {
-        const msg = await response.json();
-        this.$store.dispatch('setApiToken', msg.token);
-        this.isAlertOpen = false;
-        this.$router.push('/company/home');
-      } else {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        this.isAlertOpen = true;
-      }
-    },
-  },
+const username = ref('');
+const password = ref('');
+const hidePassword = ref(true);
+let isAlertOpen = ref(false);
+
+onMounted(async () => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+  apiTokenStore.clearApiToken();
 });
+
+const showPassword = () => {
+  hidePassword.value = !hidePassword.value;
+};
+
+const performCompanyLogin = async () => {
+  const response = await fetch(
+    `${config.apiRoot}/authenticate/company`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // mode: "no-cors",
+      body: JSON.stringify({
+        username: username.value,
+        password: password.value,
+      }),
+    });
+
+  if (response.ok) {
+    const msg = await response.json();
+    isAlertOpen.value = false;
+    apiTokenStore.setApiToken(msg.token);
+    router.push('/company/home');
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+    isAlertOpen.value = true;
+  }
+};
 </script>
 
 <style scoped lang="scss">

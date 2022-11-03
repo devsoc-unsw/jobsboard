@@ -1,0 +1,6 @@
+backend/ @csesoc/jobs-board-leads
+frontend/ @csesoc/jobs-board-leads
+
+.github/ @csesoc/technical
+renovate.json @csesoc/technical
+Dockerfile @csesoc/technical

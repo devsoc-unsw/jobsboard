@@ -1,32 +1,107 @@
 <template>
   <LoggedInTemplate>
-    <StudentViewTemplate disable-back>
-      <Breadcrumbs />
+    <StudentViewTemplate>
       <div v-if='error'>
         <br>
         <ErrorBox>
           {{ errorMsg }}
         </ErrorBox>
       </div>
-      <div class='jobsBox'>
-        <div class='resultsFound'>
-          <div v-if='jobs.length === 1'>
-            {{ jobs.length }} Job Found
+      <div class='max-w-4xl m-auto px-6'>
+        <Breadcrumbs id='breadcrumb' />
+        <h3 class='text-xl text-left'>
+          Still struggling to find a job...
+        </h3>
+        <h1 class='text-3xl my-2 font-extrabold text-jb-headings text-left'>
+          Explore Our Curated List of Jobs
+        </h1>
+        <h3 class='text-xl my-3 mb-8 text-left'>
+          We know that finding a job can be tough sometimes.
+          Which is why we've partnered up with only the best
+          companies to bring you the best opportunities.
+        </h3>
+        <div class='flex justify-between items-stretch md:flex-col md:items-center mb-8'>
+          <BenefitCard
+            title='All jobs are paid'
+            description='Student&apos;s welfare is always our
+              top priority,which is why we ensure that
+              all jobs that you see here are paid.'
+            icon='money-bills'
+            iconColor=''
+            class='w-64 md:w-auto md:my-3'
+          />
+          <BenefitCard
+            title='Complete Transparency'
+            description='We aim to give you as much information
+              as possible about the job upfront like whether or
+              not a job is suitable for an international student.'
+            icon='code'
+            iconColor=''
+            class='w-64 md:w-auto md:my-3'
+          />
+          <BenefitCard
+            title='Amazing Partners'
+            description='Our Careers team work round the clock to
+              partner up with amazing companies in order to provide
+              you with the best selection of jobs.'
+            icon='people-group'
+            iconColor=''
+            class='w-64 md:w-auto md:my-3'
+          />
+        </div>
+
+        <div class='flex items-center my-8 justify-between sm:flex-wrap sm:justify-center'>
+          <div class='flex items-center sm:mb-4'>
+            <font-awesome-icon icon='clipboard' />
+            <p class='ml-2 font-bold'>
+              {{ filteredJobs.length }} Jobs Found
+            </p>
           </div>
-          <div v-else>
-            {{ jobs.length }} Jobs Found
+          <div class='relative'>
+            <font-awesome-icon
+              icon='magnifying-glass'
+              class='flex absolute inset-y-0 my-auto left-0 items-center pl-3 pointer-events-none'
+            />
+            <input
+              v-model='query'
+              type='text'
+              placeholder='Search'
+              class='border border-gray-300 block p-2 pl-10 w-56 rounded-md'
+            >
           </div>
         </div>
-        <div class='jobContainer'>
-          <JobListingMinimal
-            v-for='job in jobs'
-            :key='job.key'
-            class='jobItems'
-            :job-id='job.id'
-            :role='job.role'
-            :company='job.company.name'
-            :location='job.company.location'
-          />
+      </div>
+      <div class='max-w-6xl m-auto px-6'>
+        <TransitionLoading v-if='isLoading' />
+        <div class='flex flex-wrap justify-center'>
+          <div class='flex flex-wrap sm:justify-center'>
+            <JobCard
+              v-for='job in filteredJobs'
+              :key='job.key'
+              :jobID='job.id'
+              :imagePath='GoogleLogo'
+              :jobTitle='job.company.name'
+              :jobRole='job.role'
+              :jobType='job.jobType'
+              :jobTag='job.workingRights'
+              :jobLocation='job.company.location'
+              :jobMode='job.mode'
+              class='w-60'
+            />
+          </div>
+          <div
+            v-if='filteredJobs.length === 0 && !isLoading'
+            class='max-w-4xl my-16 px-6 text-center'
+          >
+            <h2 class='text-3xl my-2 font-extrabold text-jb-headings'>
+              Sorry, it doesn't seem like we have any jobs right now
+            </h2>
+            <h3 class='text-xl my-6'>
+              Jobs listed here are usually posted by the company itself. We do not post any jobs
+              without the explicit approval of the company. Please ensure your search query is correct
+              or check back soon.
+            </h3>
+          </div>
         </div>
       </div>
       <InfiniteScrollTrigger @triggerIntersected='loadMoreJobs' />
@@ -35,118 +110,97 @@
   </LoggedInTemplate>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
-import JobListingMinimal from '@/components/JobListingMinimal.vue';
 import ErrorBox from '@/components/ErrorBox.vue';
 import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
-import InfiniteScrollTrigger from '@/components/InfiniteScrollTrigger.vue';
+import InfiniteScrollTrigger from '@/animations/InfiniteScrollTrigger.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import config from '@/config/config';
+import JobCard from '@/components/JobCard.vue';
+import GoogleLogo from '@/assets/companies/googleLogo.png';
+import BenefitCard from '@/components/BenefitCard.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
-export default Vue.extend({
-  name: 'JobsListPage',
-  components: {
-    StudentViewTemplate,
-    JobListingMinimal,
-    ErrorBox,
-    LoggedInTemplate,
-    InfiniteScrollTrigger,
-    Breadcrumbs,
-  },
-  data() {
-    return {
-      error: false,
-      errorMsg: '',
-      jobs: [],
-      loadMoreJobsLock: false,
-    };
-  },
-  mounted() {
-    // Change the page title
-    document.title = this.$route.meta.title;
-  },
-  methods: {
-    async loadMoreJobs() {
-      const sleep = (milliseconds: number) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds));
-      };
-      while (this.loadMoreJobsLock) {
-        await sleep(1000);
-      }
-      this.loadMoreJobsLock = true;
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
 
-      const response = await fetch(`${config.apiRoot}/jobs/${this.jobs.length}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': this.$store.getters.getApiToken,
-          },
-        });
+const error = ref<boolean>(false);
+const errorMsg = ref<string>('');
+const jobs = ref<any[]>([]);
+const query = ref<string>('');
+const loadMoreJobsLock = ref<boolean>(false);
+const isLoading = ref<boolean>(true);
 
-      /*
-      if (msg.token) {
-        this.$store.dispatch("setApiToken", msg.token);
-      }
-      */
-      if (response.ok) {
-        const msg = await response.json();
-        this.jobs = [...this.jobs, ...msg.jobs];
-      } else {
-        this.error = true;
-        window.scrollTo(0, 10);
-        if (response.status == 401) {
-          this.errorMsg = 'Login expired. Redirecting to login page.';
-          setTimeout(() => {
-            this.$router.push('/login/company');
-          }, 3000);
-        } else {
-          this.errorMsg = 'Unable to load jobs at this time. Please try again later.';
-        }
-        this.jobs = [];
-      }
-      this.loadMoreJobsLock = false;
-    },
-  },
+onMounted(() => {
+  // Change the page title
+  document.title = useRoute().meta.title;
+
+  loadMoreJobs();
 });
+
+const loadMoreJobs = async () => {
+  const sleep = (milliseconds: number) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+  };
+
+  while (loadMoreJobsLock.value == true) {
+    await sleep(1000);
+  }
+
+  loadMoreJobsLock.value = true;
+  // determine whether there is an API key present and redirect if not present
+  // load the jobs using the api token
+  const response = await fetch(`${config.apiRoot}/jobs/${jobs.value.length}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': apiTokenStore.getApiToken(),
+    } as HeadersInit,
+  });
+  isLoading.value = false;
+  if (response.ok) {
+    const msg = await response.json();
+    jobs.value = [...jobs.value, ...msg.jobs];
+  } else {
+    error.value = true;
+    window.scrollTo(0, 10);
+    if (response.status == 401) {
+      errorMsg.value = 'Login expired. Redirecting to login page.';
+      setTimeout(() => {
+        router.push('/login/company');
+      }, 3000);
+    } else {
+      errorMsg.value = 'Unable to load jobs at this time. Please try again later.';
+    }
+    jobs.value = [];
+  }
+  loadMoreJobsLock.value = false;
+};
+
+const getValue = (object: any, path: string): any => {
+    if (!path) return object;
+    const properties = path.split('.');
+    const indexKey = properties.shift() || '';
+    return getValue(object[indexKey], properties.join('.'));
+};
+
+const filteredJobs = computed(() => {
+  const searchKeys = ['role', 'jobType', 'company.name', 'company.location', 'mode'];
+  return jobs.value.filter(job => {
+    return searchKeys.some(key => {
+      return getValue(job, key).toLowerCase().includes(query.value);
+    });
+  });
+});
+
 </script>
 
-<style scoped lang="scss">
-.jobsBox {
-  width: 75%;
-  margin: auto;
-  /* padding: 2rem; */
-}
-
-@media screen and (min-width: 900px) {
-  .navbar {
-    width: 50%;
-    padding: 1.5rem;
+<style scoped lang='scss'>
+  #breadcrumb {
+    margin-left: 0;
   }
-  .searchBar {
-    margin-bottom: 0;
-  }
-  .content {
-    /* padding: 2rem; */
-  }
-  .contentWidth {
-    width: 70%;
-    margin: auto;
-  }
-}
-
-.jobContainer {
-  display: grid;
-  align-items: stretch;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-auto-rows: 1fr;
-  grid-gap: 10px;
-}
-
-.resultsFound {
-  font-weight: 100;
-  margin-bottom: 2rem;
-}
-
 </style>

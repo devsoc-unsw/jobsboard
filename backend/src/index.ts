@@ -1,10 +1,10 @@
 // modules
-import bodyParser from "body-parser";
-import cors from "cors";
-import dotenv from "dotenv";
-import express from "express";
-import swaggerUi from "swagger-ui-express";
-import helmet from "helmet";
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import helmet from 'helmet';
 
 import 'reflect-metadata';
 
@@ -143,21 +143,9 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-app.post(
-  '/authenticate/company',
-  cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
-  CompanyFunctions.UploadLogo,
-  Middleware.genericLoggingMiddleware,
-);
+app.post('/authenticate/company', cors(corsOptions), Auth.AuthenticateCompany, Middleware.genericLoggingMiddleware);
 
-app.put(
-  '/company/update/details',
-  cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
-  CompanyFunctions.UpdateCompanyDetails,
-  Middleware.genericLoggingMiddleware,
-);
+app.put('/company', cors(corsOptions), CompanyFunctions.CreateCompany, Middleware.genericLoggingMiddleware);
 
 app.put(
   '/company/update/logo',
@@ -187,6 +175,14 @@ app.post(
   '/company/forgot-password',
   cors(corsOptions),
   CompanyFunctions.SendResetPasswordEmail,
+  Middleware.genericLoggingMiddleware,
+);
+
+app.get(
+  '/company/password-reset-token/:username',
+  cors(corsOptions),
+  Middleware.privateRouteWrapper,
+  CompanyFunctions.GetPasswordResetToken,
   Middleware.genericLoggingMiddleware,
 );
 
@@ -248,6 +244,14 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
+app.get(
+  "/company/logo/status",
+  cors(corsOptions),
+  Middleware.authenticateCompanyMiddleware,
+  CompanyFunctions.GetCompanyLogoStatus,
+  Middleware.genericLoggingMiddleware
+);
+
 app.delete(
   '/company/job/:jobID',
   cors(corsOptions),
@@ -283,14 +287,13 @@ app.get(
 app.put(
   '/admin/company/:companyID/jobs',
   cors(corsOptions),
-  StudentFunctions.GetFeaturedJobs,
+  Middleware.authenticateAdminMiddleware,
+  AdminFunctions.CreateJobOnBehalfOfExistingCompany,
   Middleware.genericLoggingMiddleware,
 );
 
-/**
- * Comment/uncomment to enable/disable swagger docs and sending test emails.
- * Currently only works in development mode.
- */
+app.get('/featured-jobs', cors(corsOptions), StudentFunctions.GetFeaturedJobs, Middleware.genericLoggingMiddleware);
+
 if (process.env.NODE_ENV === 'development') {
   app.post('/email', MailFunctions.SendTestEmail);
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi));
@@ -303,7 +306,7 @@ app.listen(port, async () => {
     await AppDataSource.initialize();
   }
   if (process.env.NODE_ENV === 'production') {
-    MailFunctions.InitMailQueueScheduler(2000);
+    await MailFunctions.InitMailQueueScheduler(2000);
   }
   Logger.Info(`SERVER STARTED AT PORT=${port}`);
 });

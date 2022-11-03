@@ -1,12 +1,15 @@
-import Vue from "vue";
-import Router from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
-Vue.use(Router);
+declare module 'vue-router' {
+  interface RouteMeta {
+    title: string,
+    breadcrumb?: Object
+  }
+}
 
 // pages
 const LandingPage = () => import("@/pages/LandingPage.vue");
 const PageNotFoundPage = () => import("@/pages/PageNotFound.vue");
-const LoginPage = () => import("@/pages/LoginPage.vue");
 const StudentLoginPage = () => import("@/pages/StudentLoginPage.vue");
 const CompanyLoginPage = () => import("@/pages/CompanyLoginPage.vue");
 const CompanySignupPage = () => import("@/pages/CompanySignupPage.vue");
@@ -21,11 +24,10 @@ const AdminAccountHome = () => import("@/pages/AdminAccountHome.vue");
 const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
 const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
 const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
-const CompanyManageJobs = () => import("@/pages/CompanyManageJobs.vue");
 const TeamPage = () => import("@/pages/TeamPage.vue");
 
-export default new Router({
-  mode: "history",
+export default createRouter({
+  history: createWebHistory(),
   scrollBehavior: () => ({ y: 0 }),
   routes: [{
     path: "/login/student",
@@ -132,16 +134,6 @@ export default new Router({
       ]
     }
   }, {
-    path: "/login",
-    component: LoginPage,
-    meta: {
-      title: "Login | Jobs Board",
-      breadcrumb: [
-        { name: 'Home', link: '/' },
-        { name: 'Login' }
-      ]
-    }
-  }, {
     path: "/jobs",
     component: JobsListPage,
     meta: {
@@ -161,17 +153,6 @@ export default new Router({
         { name: 'Home', link: '/' },
         { name: 'Job List' , link: '/jobs' },
         { name: 'Job' }
-      ]
-    }
-  }, {
-    path: "/company/jobs/manage",
-    component: CompanyManageJobs,
-    meta: {
-      title: "Manage Jobs | Jobs Board",
-      breadcrumb: [
-        { name: 'Home', link: '/' },
-        { name: 'Dashboard', link: '/company/home' },
-        { name: 'Manage Jobs' }
       ]
     }
   }, {
@@ -213,7 +194,7 @@ export default new Router({
       title: "Home | Jobs Board",
     }
   }, {
-    path: "*",
+    path: "/:pathMatch(.*)*",
     component: PageNotFoundPage,
     meta: {
       title: "Page Not Found | Jobs Board",

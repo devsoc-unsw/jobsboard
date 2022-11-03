@@ -4,21 +4,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useApiTokenStore } from '@/store/apiToken';
 
-export default Vue.extend({
-  name: 'LoggedInTemplate',
-  data() {
-    return {
-      apiToken: this.$store.getters.getApiToken,
-    };
-  },
-  async mounted() {
-    if (this.apiToken === undefined) {
-      this.$router.push('/login');
-    }
-  },
+const router = useRouter();
+const apiTokenStore = useApiTokenStore();
+
+const apiToken = apiTokenStore.getApiToken();
+
+onMounted(() => {
+  if (apiToken === undefined) {
+    setTimeout(() => {
+      router.push('/login');
+    }, 3000);
+  }
 });
 </script>
 

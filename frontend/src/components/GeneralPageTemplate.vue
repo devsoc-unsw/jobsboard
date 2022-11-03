@@ -1,64 +1,36 @@
 <template>
   <div class='viewport'>
-    <!-- <div class="header" v-if="loggedIn">
-      <div class="logoutDiv">
-          <font-awesome-icon class="paddedIcon" icon="sign-out-alt" />
-            Log Out
-        <br/>
-      </div>
-      <img class="main-logo" :src="logo" />
-    </div>
-    <div v-if="!loggedIn">
-      <img class="main-logo" :src="logo" />
-    </div> -->
     <Header />
     <div class='homeBox'>
       <slot />
     </div>
-    <div class='footer'>
-      <NewFooter />
-    </div>
+    <Footer />
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-property-decorator';
-import logo from '@/assets/logos/csesocwhite.png';
+<script setup lang="ts">
+import { useApiTokenStore } from '@/store/apiToken';
+import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
-import NewFooter from '@/components/NewFooter.vue';
+import Footer from '@/components/Footer.vue';
 
-export default Vue.extend({
-  name: 'GeneralPageTemplate',
-  components: {
-    Header,
-    NewFooter,
-  },
-  props: {
-    loggedIn: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  data() {
-    return {
-      logo: logo,
-    };
-  },
-  methods: {
-    logOut() {
-      this.$store.dispatch('clearApiToken');
-      this.$router.push('/login/company');
-    },
+const apiTokenStore = useApiTokenStore();
+const router = useRouter();
+
+const props = defineProps({
+  loggedIn: {
+    type: Boolean,
+    default: false,
   },
 });
+
+const logOut = () => {
+  apiTokenStore.clearApiToken();
+  router.push('/login/company');
+};
 </script>
 
 <style lang="scss">
-div {
-  flex-direction: row;
-  color: $black;
-}
-
 input, textarea {
   font-weight: 100;
   border: 1px solid $blue;
@@ -121,11 +93,6 @@ input, textarea {
 .main-logo {
   width: 20%;
   padding: 2rem;
-}
-
-.footer {
-  margin-top: auto;
-  float: below;
 }
 
 .paddedIcon {
