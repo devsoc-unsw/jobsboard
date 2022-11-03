@@ -1,6 +1,19 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Company } from './company';
-import { JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements } from '../types/job-field';
+import {
+  JobMode,
+  StudentDemographic,
+  JobType,
+  WorkingRights,
+  WamRequirements,
+} from '../types/job-field';
 
 @Entity()
 export class Job {

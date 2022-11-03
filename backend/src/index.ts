@@ -64,7 +64,16 @@ if (process.env.NODE_ENV !== 'development') {
 
 app.options('*', cors(corsOptions));
 
-const activeEntities = [Company, CompanyAccount, Job, Student, AdminAccount, MailRequest, Logs, Statistics];
+const activeEntities = [
+  Company,
+  CompanyAccount,
+  Job,
+  Student,
+  AdminAccount,
+  MailRequest,
+  Logs,
+  Statistics,
+];
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -133,7 +142,12 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
-app.post('/authenticate/student', cors(corsOptions), Auth.AuthenticateStudent, Middleware.genericLoggingMiddleware);
+app.post(
+  '/authenticate/student',
+  cors(corsOptions),
+  Auth.AuthenticateStudent,
+  Middleware.genericLoggingMiddleware,
+);
 
 app.put(
   '/company/update/details',
@@ -143,9 +157,19 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-app.post('/authenticate/company', cors(corsOptions), Auth.AuthenticateCompany, Middleware.genericLoggingMiddleware);
+app.post(
+  '/authenticate/company',
+  cors(corsOptions),
+  Auth.AuthenticateCompany,
+  Middleware.genericLoggingMiddleware,
+);
 
-app.put('/company', cors(corsOptions), CompanyFunctions.CreateCompany, Middleware.genericLoggingMiddleware);
+app.put(
+  '/company',
+  cors(corsOptions),
+  CompanyFunctions.CreateCompany,
+  Middleware.genericLoggingMiddleware,
+);
 
 app.put(
   '/company/update/logo',
@@ -194,7 +218,12 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-app.post('/authenticate/admin', cors(corsOptions), Auth.AuthenticateAdmin, Middleware.genericLoggingMiddleware);
+app.post(
+  '/authenticate/admin',
+  cors(corsOptions),
+  Auth.AuthenticateAdmin,
+  Middleware.genericLoggingMiddleware,
+);
 
 app.patch(
   '/job/:jobID/approve',
@@ -245,11 +274,11 @@ app.get(
 );
 
 app.get(
-  "/company/logo/status",
+  '/company/logo/status',
   cors(corsOptions),
   Middleware.authenticateCompanyMiddleware,
   CompanyFunctions.GetCompanyLogoStatus,
-  Middleware.genericLoggingMiddleware
+  Middleware.genericLoggingMiddleware,
 );
 
 app.delete(
@@ -292,7 +321,12 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-app.get('/featured-jobs', cors(corsOptions), StudentFunctions.GetFeaturedJobs, Middleware.genericLoggingMiddleware);
+app.get(
+  '/featured-jobs',
+  cors(corsOptions),
+  StudentFunctions.GetFeaturedJobs,
+  Middleware.genericLoggingMiddleware,
+);
 
 if (process.env.NODE_ENV === 'development') {
   app.post('/email', MailFunctions.SendTestEmail);

@@ -26,6 +26,7 @@ export default class Logger {
   }
 
   private static loggerName = 'logger';
+
   private static logger: winston.Logger;
 
   // this is intentionally async and it's not used with an await so as not to
@@ -35,14 +36,12 @@ export default class Logger {
       level: lvl,
       message: msg,
     });
-  
+
     // write the log
-    await AppDataSource
-      .createQueryBuilder()
+    await AppDataSource.createQueryBuilder()
       .insert()
       .into(Logs)
       .values([{ what: msg }])
       .execute();
-    
   }
 }

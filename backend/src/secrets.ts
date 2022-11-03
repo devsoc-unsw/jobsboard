@@ -8,7 +8,7 @@ export default class Secrets {
 
     encrypted = Buffer.concat([encrypted, cipher.final()]);
 
-    return iv.toString('hex') + ':' + encrypted.toString('hex');
+    return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
   }
 
   public static decrypt(msg: string): string {
@@ -32,7 +32,9 @@ export default class Secrets {
   }
 
   private static algorithm = 'aes-256-cbc';
+
   // 256 bits
   private static key: Buffer = crypto.randomBytes(32);
+
   private static ivWidth = 16;
 }

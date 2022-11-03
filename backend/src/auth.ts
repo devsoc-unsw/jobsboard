@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { Client } from 'ldapts';
 import { AppDataSource } from './index';
 
-import { Client } from 'ldapts';
 import { AdminAccount } from './entity/admin_account';
 import { CompanyAccount } from './entity/company_account';
 import { Student } from './entity/student';
@@ -30,7 +30,12 @@ export { IToken, AccountType };
 
 export default class Auth {
   // Student-based authentication functions
-  public static async AuthenticateStudent(this: void, req: Request, res: Response, next: NextFunction) {
+  public static async AuthenticateStudent(
+    this: void,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -74,23 +79,25 @@ export default class Auth {
           return {
             status: 200,
             msg: {
-              token: token,
+              token,
             },
           } as IResponseWithStatus;
-        } else {
-          Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
-          throw new Error('Invalid credentials');
         }
+        Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
+        throw new Error('Invalid credentials');
       },
-      () => {
-        return { status: 400, msg: undefined } as IResponseWithStatus;
-      },
+      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
       next,
     );
   }
 
   // Company-based authentication functions
-  public static async AuthenticateCompany(this: void, req: Request, res: Response, next: NextFunction) {
+  public static async AuthenticateCompany(
+    this: void,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -98,15 +105,21 @@ export default class Auth {
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
         // check if account exists
-        const companyQuery = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(CompanyAccount)
-            .createQueryBuilder()
-            .where('CompanyAccount.username = :username', { username: msg.username })
-            .getOne();
-        }, `Couldn't find company with username: ${msg.username}`);
+        const companyQuery = await Helpers.doSuccessfullyOrFail(
+          async () =>
+            AppDataSource.getRepository(CompanyAccount)
+              .createQueryBuilder()
+              .where('CompanyAccount.username = :username', { username: msg.username })
+              .getOne(),
+          `Couldn't find company with username: ${msg.username}`,
+        );
         try {
-          if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
-            Logger.Info(`Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`);
+          if (
+            !Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
+          ) {
+            Logger.Info(
+              `Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`,
+            );
             throw new Error('Invalid credentials');
           }
           Logger.Info(`Successfully authenticated COMPANY=${msg.username}`);
@@ -126,22 +139,25 @@ export default class Auth {
           return {
             status: 200,
             msg: {
-              token: token,
+              token,
             },
           } as IResponseWithStatus;
         } catch (error) {
           return { status: 401, msg: undefined } as IResponseWithStatus;
         }
       },
-      () => {
-        return { status: 400, msg: undefined } as IResponseWithStatus;
-      },
+      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
       next,
     );
   }
 
   // admin-based authentication functions
-  public static async AuthenticateAdmin(this: void, req: Request, res: Response, next: NextFunction) {
+  public static async AuthenticateAdmin(
+    this: void,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -149,14 +165,18 @@ export default class Auth {
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
         // check if account exists
-        const adminQuery = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(AdminAccount)
-            .createQueryBuilder()
-            .where('AdminAccount.username = :username', { username: msg.username })
-            .getOne();
-        }, `Couldn't find admin account with username: ${msg.username}`);
+        const adminQuery = await Helpers.doSuccessfullyOrFail(
+          async () =>
+            AppDataSource.getRepository(AdminAccount)
+              .createQueryBuilder()
+              .where('AdminAccount.username = :username', { username: msg.username })
+              .getOne(),
+          `Couldn't find admin account with username: ${msg.username}`,
+        );
         try {
-          if (!Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
+          if (
+            !Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
+          ) {
             Logger.Info(`Failed to authenticate ADMIN=${msg.username} due to invalid credentials`);
             throw new Error('Invalid credentials');
           }
@@ -177,16 +197,14 @@ export default class Auth {
           return {
             status: 200,
             msg: {
-              token: token,
+              token,
             },
           } as IResponseWithStatus;
         } catch (error) {
           return { status: 401, msg: undefined } as IResponseWithStatus;
         }
       },
-      () => {
-        return { status: 400, msg: undefined } as IResponseWithStatus;
-      },
+      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
       next,
     );
   }
@@ -207,13 +225,11 @@ export default class Auth {
         const result = await client.bind(`${zID}@ad.unsw.edu.au`, password);
         Logger.Info(`Authentication state for STUDENT=${zID} IS=${result}`);
         return true;
-      } else {
-        // if unexpected characters are found, immediately reject
-        Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);
-        return false;
       }
-    } else {
-      return true;
+      // if unexpected characters are found, immediately reject
+      Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);
+      return false;
     }
+    return true;
   }
 }

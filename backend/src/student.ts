@@ -24,7 +24,7 @@ export default class StudentFunctions {
         .andWhere("Job.deleted = :deleted", { deleted: false })
         .getMany();
 
-      const fixedJobs = jobs.map((job) => { 
+      const fixedJobs = jobs.map((job) => {
         const newJob: any = {};
         newJob.applicationLink = job.applicationLink;
         newJob.company = job.company;
@@ -55,7 +55,7 @@ export default class StudentFunctions {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        const offset: number = req.params.offset;
+        const { offset } = req.params;
         Logger.Info(`STUDENT=${req.studentZID} getting paginated jobs with OFFSET=${offset}`);
         Helpers.requireParameters(offset);
 
@@ -101,14 +101,13 @@ export default class StudentFunctions {
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
+      () =>
+        ({
           status: 400,
           msg: {
             token: req.newJbToken,
           },
-        } as IResponseWithStatus;
-      },
+        } as IResponseWithStatus),
       next,
     );
   }
@@ -119,32 +118,34 @@ export default class StudentFunctions {
       async () => {
         Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
-        const jobInfo = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .select([
-              'company.name',
-              'company.location',
-              'company.description',
-              'Job.id',
-              'Job.role',
-              'Job.description',
-              'Job.applicationLink',
-              'Job.mode',
-              'Job.studentDemographic',
-              'Job.jobType',
-              'Job.workingRights',
-              'Job.additionalInfo',
-              'Job.wamRequirements',
-              'Job.isPaid',
-              'Job.expiry',
-            ])
-            .leftJoinAndSelect('Job.company', 'company')
-            .where('Job.approved = :approved', { approved: true })
-            .andWhere('Job.id = :id', { id: parseInt(req.params.jobID, 10) })
-            .andWhere('Job.deleted = :deleted', { deleted: false })
-            .getOne();
-        }, `Failed to find JOB=${req.params.jobID}`);
+        const jobInfo = await Helpers.doSuccessfullyOrFail(
+          async () =>
+            AppDataSource.getRepository(Job)
+              .createQueryBuilder()
+              .select([
+                'company.name',
+                'company.location',
+                'company.description',
+                'Job.id',
+                'Job.role',
+                'Job.description',
+                'Job.applicationLink',
+                'Job.mode',
+                'Job.studentDemographic',
+                'Job.jobType',
+                'Job.workingRights',
+                'Job.additionalInfo',
+                'Job.wamRequirements',
+                'Job.isPaid',
+                'Job.expiry',
+              ])
+              .leftJoinAndSelect('Job.company', 'company')
+              .where('Job.approved = :approved', { approved: true })
+              .andWhere('Job.id = :id', { id: parseInt(req.params.jobID, 10) })
+              .andWhere('Job.deleted = :deleted', { deleted: false })
+              .getOne(),
+          `Failed to find JOB=${req.params.jobID}`,
+        );
 
         return {
           status: 200,
@@ -154,14 +155,13 @@ export default class StudentFunctions {
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
+      () =>
+        ({
           status: 400,
           msg: {
             token: req.newJbToken,
           },
-        } as IResponseWithStatus;
-      },
+        } as IResponseWithStatus),
       next,
     );
   }
@@ -170,18 +170,20 @@ export default class StudentFunctions {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        Logger.Info(`Attempting to get featured jobs`);
-        let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
-          // TODO(ad-t): doesnt check fields of company, but that's ok for now
-          return await AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .select(['Job.id', 'Job.role', 'Job.description', 'Job.applicationLink'])
-            .where('Job.approved = :approved', { approved: true })
-            .where('Job.expiry > :expiry', { expiry: new Date() })
-            .andWhere('Job.hidden = :hidden', { hidden: false })
-            .leftJoinAndSelect('Job.company', 'company')
-            .getMany();
-        }, `Couldn't query for featured jobs`);
+        Logger.Info('Attempting to get featured jobs');
+        let featuredJobs = await Helpers.doSuccessfullyOrFail(
+          async () =>
+            // TODO(ad-t): doesnt check fields of company, but that's ok for now
+            AppDataSource.getRepository(Job)
+              .createQueryBuilder()
+              .select(['Job.id', 'Job.role', 'Job.description', 'Job.applicationLink'])
+              .where('Job.approved = :approved', { approved: true })
+              .where('Job.expiry > :expiry', { expiry: new Date() })
+              .andWhere('Job.hidden = :hidden', { hidden: false })
+              .leftJoinAndSelect('Job.company', 'company')
+              .getMany(),
+          "Couldn't query for featured jobs",
+        );
 
         // check if there are enough jobs to feature
         if (featuredJobs.length >= 4) {
@@ -209,18 +211,17 @@ export default class StudentFunctions {
           status: 200,
           msg: {
             token: req.newJbToken,
-            featuredJobs: featuredJobs,
+            featuredJobs,
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
+      () =>
+        ({
           status: 400,
           msg: {
             token: req.newJbToken,
           },
-        } as IResponseWithStatus;
-      },
+        } as IResponseWithStatus),
       next,
     );
   }

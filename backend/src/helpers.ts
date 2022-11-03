@@ -1,6 +1,12 @@
-import Logger from './logging';
 import { Response, NextFunction } from 'express';
-import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from './types/job-field';
+import Logger from './logging';
+import {
+  JobMode,
+  JobType,
+  StudentDemographic,
+  WamRequirements,
+  WorkingRights,
+} from './types/job-field';
 
 interface IResponseWithStatus {
   msg: any;
@@ -52,7 +58,12 @@ export default class Helpers {
     return result;
   }
 
-  public static async catchAndLogError(res: Response, func: Function, funcOnError: Function, next: NextFunction) {
+  public static async catchAndLogError(
+    res: Response,
+    func: Function,
+    funcOnError: Function,
+    next: NextFunction,
+  ) {
     let response: IResponseWithStatus;
     try {
       response = await func();
@@ -67,7 +78,7 @@ export default class Helpers {
         await res.status(response.status).send(response.msg);
       }
     } else {
-      Logger.Error(`Not performing any further action as headers are already sent.`);
+      Logger.Error('Not performing any further action as headers are already sent.');
     }
     if (next) {
       await next();
