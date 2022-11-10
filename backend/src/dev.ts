@@ -2,18 +2,14 @@ import 'reflect-metadata';
 
 import { AppDataSource } from './index';
 import Logger from './logging';
-import { AdminAccount } from './entity/admin_account';
-import { Company } from './entity/company';
-import { CompanyAccount } from './entity/company_account';
-import { Job } from './entity/job';
-import { Statistics } from './entity/statistics';
+import AdminAccount from './entity/admin_account';
+import Company from './entity/company';
+import CompanyAccount from './entity/company_account';
+import Job from './entity/job';
+import Statistics from './entity/statistics';
 import Secrets from './secrets';
 import {
-  JobMode,
-  JobType,
-  StudentDemographic,
-  WamRequirements,
-  WorkingRights,
+  JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights,
 } from './types/job-field';
 import { AdminAccountInterface, CompanyAccountInterface } from './tests/test-types';
 import testdata from './tests/default_test_data.json';
@@ -263,11 +259,7 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount3_job1.mode = JobMode.Remote;
   companyAccount3_job1.studentDemographic = [StudentDemographic.All];
   companyAccount3_job1.jobType = JobType.Intern;
-  companyAccount3_job1.workingRights = [
-    WorkingRights.AusCtz,
-    WorkingRights.AusPermRes,
-    WorkingRights.AusStudVisa,
-  ];
+  companyAccount3_job1.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
   companyAccount3_job1.wamRequirements = WamRequirements.HD;
   companyAccount3_job1.additionalInfo = '';
   companyAccount3_job1.isPaid = true;
@@ -284,11 +276,7 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount3_job2.mode = JobMode.Remote;
   companyAccount3_job2.studentDemographic = [StudentDemographic.All];
   companyAccount3_job2.jobType = JobType.Intern;
-  companyAccount3_job2.workingRights = [
-    WorkingRights.AusCtz,
-    WorkingRights.AusPermRes,
-    WorkingRights.AusStudVisa,
-  ];
+  companyAccount3_job2.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
   companyAccount3_job2.wamRequirements = WamRequirements.HD;
   companyAccount3_job2.additionalInfo = '';
   companyAccount3_job2.isPaid = true;
@@ -305,11 +293,7 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount3_job3.mode = JobMode.Remote;
   companyAccount3_job3.studentDemographic = [StudentDemographic.All];
   companyAccount3_job3.jobType = JobType.Intern;
-  companyAccount3_job3.workingRights = [
-    WorkingRights.AusCtz,
-    WorkingRights.AusPermRes,
-    WorkingRights.AusStudVisa,
-  ];
+  companyAccount3_job3.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
   companyAccount3_job3.wamRequirements = WamRequirements.HD;
   companyAccount3_job3.additionalInfo = '';
   companyAccount3_job3.isPaid = true;
@@ -327,11 +311,7 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount3_job4.mode = JobMode.Remote;
   companyAccount3_job4.studentDemographic = [StudentDemographic.All];
   companyAccount3_job4.jobType = JobType.Intern;
-  companyAccount3_job4.workingRights = [
-    WorkingRights.AusCtz,
-    WorkingRights.AusPermRes,
-    WorkingRights.AusStudVisa,
-  ];
+  companyAccount3_job4.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
   companyAccount3_job4.wamRequirements = WamRequirements.HD;
   companyAccount3_job4.additionalInfo = '';
   companyAccount3_job4.isPaid = true;

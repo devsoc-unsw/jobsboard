@@ -8,11 +8,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Job } from './job';
-import { CompanyAccount } from './company_account';
+import Job from './job';
+import CompanyAccount from './company_account';
 
 @Entity()
-export class Company {
+export default class Company {
   @PrimaryGeneratedColumn()
   public id: number;
 

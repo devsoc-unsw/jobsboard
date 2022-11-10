@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Statistics {
+export default class Statistics {
   @PrimaryColumn()
   public year: number;
 

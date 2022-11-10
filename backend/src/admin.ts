@@ -6,10 +6,10 @@ import {
 
 import { Brackets } from 'typeorm';
 import { AppDataSource } from './index';
-import { Job } from './entity/job';
-import { Company } from './entity/company';
-import { CompanyAccount } from './entity/company_account';
-import { Statistics } from './entity/statistics';
+import Job from './entity/job';
+import Company from './entity/company';
+import CompanyAccount from './entity/company_account';
+import Statistics from './entity/statistics';
 import Helpers, { IResponseWithStatus } from './helpers';
 import MailFunctions from './mail';
 import Logger from './logging';
@@ -134,10 +134,7 @@ export default class AdminFunctions {
         );
 
         jobToReject.company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder()
-            .relation(Company, 'companyAccount')
-            .of(jobToReject.company)
-            .loadOne(),
+          async () => AppDataSource.createQueryBuilder().relation(Company, 'companyAccount').of(jobToReject.company).loadOne(),
           `Failed to find company account owning JOB=${jobID}`,
         );
 
@@ -229,12 +226,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetPendingCompanyVerifications(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async GetPendingCompanyVerifications(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -275,18 +267,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async VerifyCompanyAccount(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async VerifyCompanyAccount(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        Logger.Info(
-          `Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`,
-        );
+        Logger.Info(`Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`);
         const pendingCompany = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder()
@@ -349,12 +334,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async ListAllCompaniesAsAdmin(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async ListAllCompaniesAsAdmin(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -364,11 +344,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             .createQueryBuilder()
             .where('CompanyAccount.verified = :verified', { verified: true })
             .getMany();
-          for (
-            let companyAccountIndex = 0;
-            companyAccountIndex < companyAccounts.length;
-            companyAccountIndex++
-          ) {
+          for (let companyAccountIndex = 0; companyAccountIndex < companyAccounts.length; companyAccountIndex++) {
             companyAccounts[companyAccountIndex].company = await AppDataSource.createQueryBuilder()
               .relation(CompanyAccount, 'company')
               .of(companyAccounts[companyAccountIndex])
@@ -400,12 +376,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async CreateJobOnBehalfOfExistingCompany(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async CreateJobOnBehalfOfExistingCompany(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -421,10 +392,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         // get it's associated company account to verify
         company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder()
-            .relation(Company, 'companyAccount')
-            .of(company)
-            .loadOne(),
+          async () => AppDataSource.createQueryBuilder().relation(Company, 'companyAccount').of(company).loadOne(),
           `Could not get the related company account for company ID=${company.id}`,
         );
 
@@ -507,16 +475,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         await AppDataSource.manager.save(company);
 
         const newJobID: number = company.jobs[company.jobs.length - 1].id;
-        Logger.Info(
-          `Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`,
-        );
+        Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`);
 
         // check to see if that job is queryable
         await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .where('Job.id = :id', { id: newJobID })
-            .getOne(),
+          async () => AppDataSource.getRepository(Job).createQueryBuilder().where('Job.id = :id', { id: newJobID }).getOne(),
           `Failed to fetch the newly created JOB=${newJobID}`,
         );
 
@@ -537,12 +500,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetNumVerifiedCompanies(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async GetNumVerifiedCompanies(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -558,9 +516,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         const numVerifiedCompanies = verifiedCompanies.length;
 
-        Logger.Info(
-          `Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`,
-        );
+        Logger.Info(`Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`);
 
         return {
           status: 200,
@@ -577,19 +533,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async getNumApprovedJobPosts(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async getNumApprovedJobPosts(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(
-          `Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
-            req.adminID
-          }`,
+          `Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`,
         );
 
         const yearToSearch = req.params.year;

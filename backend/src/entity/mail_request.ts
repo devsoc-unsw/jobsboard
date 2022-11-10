@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class MailRequest {
+export default class MailRequest {
   @PrimaryGeneratedColumn()
   public id: number;
 

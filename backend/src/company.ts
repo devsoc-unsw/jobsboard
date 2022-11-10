@@ -6,9 +6,9 @@ import {
 
 import { Brackets } from 'typeorm';
 import { AppDataSource } from './index';
-import { Company } from './entity/company';
-import { CompanyAccount } from './entity/company_account';
-import { Job } from './entity/job';
+import Company from './entity/company';
+import CompanyAccount from './entity/company_account';
+import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
 import Secrets from './secrets';
 import MailFunctions from './mail';
@@ -21,9 +21,7 @@ export default class CompanyFunctions {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        Logger.Info(
-          `STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`,
-        );
+        Logger.Info(`STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`);
         const companyInfo = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Company)
             .createQueryBuilder()
@@ -148,9 +146,7 @@ export default class CompanyFunctions {
 
         await AppDataSource.manager.save(newCompanyAccount);
 
-        Logger.Info(
-          `Created company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
-        );
+        Logger.Info(`Created company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`);
 
         // await conn.manager.save(newCompanyAccount);
         await MailFunctions.AddMailToQueue(
@@ -264,10 +260,7 @@ export default class CompanyFunctions {
         const newJobID: number = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
         Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
         await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .where('Job.id = :id', { id: newJobID })
-            .getOne(),
+          async () => AppDataSource.getRepository(Job).createQueryBuilder().where('Job.id = :id', { id: newJobID }).getOne(),
           `Failed to fetch the newly created JOB=${newJobID}`,
         );
 
@@ -345,9 +338,7 @@ export default class CompanyFunctions {
           `Failed to find jobs for COMPANY=${req.companyAccountID}`,
         );
 
-        Logger.Info(
-          `COMPANY_ACCOUNT=${req.companyID} successfully to retrieved all of its hidden jobs`,
-        );
+        Logger.Info(`COMPANY_ACCOUNT=${req.companyID} successfully to retrieved all of its hidden jobs`);
 
         return {
           status: 200,
@@ -368,10 +359,7 @@ export default class CompanyFunctions {
   }
 
   private static isJobUpdated(newJob: Job, jobInfo: any) {
-    const areArraysEquals = (a: any[], b: any[]) => Array.isArray(a)
-      && Array.isArray(b)
-      && a.length === b.length
-      && a.every((val, index) => val === b[index]);
+    const areArraysEquals = (a: any[], b: any[]) => Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
 
     if (!areArraysEquals(newJob.studentDemographic, jobInfo.studentDemographic)) {
       return false;
@@ -502,12 +490,7 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async GetAllJobsFromCompany(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async GetAllJobsFromCompany(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -584,18 +567,11 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async MarkJobPostRequestAsDeleted(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async MarkJobPostRequestAsDeleted(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        Logger.Info(
-          `COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`,
-        );
+        Logger.Info(`COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`);
         const jobToDelete = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Job)
             .createQueryBuilder()
@@ -633,21 +609,14 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async SendResetPasswordEmail(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async SendResetPasswordEmail(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         // check for required params
         const receipientEmail = req.body.username;
         Helpers.requireParameters(receipientEmail);
-        Logger.Info(
-          `Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`,
-        );
+        Logger.Info(`Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`);
         // check if company with provided username exists
         const companyAccountUsernameSearchResult = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(CompanyAccount)
@@ -697,12 +666,7 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async GetPasswordResetToken(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async GetPasswordResetToken(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -856,12 +820,7 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async UpdateCompanyDetails(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async UpdateCompanyDetails(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {

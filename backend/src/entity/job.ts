@@ -1,22 +1,13 @@
 import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
+  Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,
 } from 'typeorm';
-import { Company } from './company';
+import Company from './company';
 import {
-  JobMode,
-  StudentDemographic,
-  JobType,
-  WorkingRights,
-  WamRequirements,
+  JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements,
 } from '../types/job-field';
 
 @Entity()
-export class Job {
+export default class Job {
   @PrimaryGeneratedColumn()
   public id: number;
 

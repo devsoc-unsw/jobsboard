@@ -8,16 +8,11 @@ import Helpers from './helpers';
 
 import { AccountType, IToken } from './auth';
 
-import { Student } from './entity/student';
-import { CompanyAccount } from './entity/company_account';
+import Student from './entity/student';
+import CompanyAccount from './entity/company_account';
 
 export default class Middleware {
-  public static genericLoggingMiddleware(
-    this: void,
-    req: Request,
-    resp: Response,
-    next: NextFunction,
-  ): void {
+  public static genericLoggingMiddleware(this: void, req: Request, resp: Response, next: NextFunction): void {
     Logger.Info(`${req.method} ${resp.statusCode} - ${req.path}`);
     if (next) {
       next();
@@ -43,12 +38,7 @@ export default class Middleware {
     return jwt;
   }
 
-  public static async authenticateStudentMiddleware(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async authenticateStudentMiddleware(this: void, req: any, res: Response, next: NextFunction) {
     try {
       // get JWT for student
       const rawJWT = req.get('Authorization');
@@ -95,12 +85,7 @@ export default class Middleware {
     }
   }
 
-  public static authenticateCompanyMiddleware(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static authenticateCompanyMiddleware(this: void, req: any, res: Response, next: NextFunction) {
     try {
       // get JWT
       const jwt = JWT.get(req.get('Authorization'));
@@ -125,12 +110,7 @@ export default class Middleware {
     }
   }
 
-  public static authenticateAdminMiddleware(
-    this: void,
-    req: any,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static authenticateAdminMiddleware(this: void, req: any, res: Response, next: NextFunction) {
     try {
       // get JWT
       const jwt: IToken = JWT.get(req.get('Authorization'));

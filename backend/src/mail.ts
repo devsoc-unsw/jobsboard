@@ -10,7 +10,7 @@ import Logger from './logging';
 import Helpers from './helpers';
 
 // entities
-import { MailRequest } from './entity/mail_request';
+import MailRequest from './entity/mail_request';
 
 export default class MailFunctions {
   public static async SendTestEmail(this: void, _: Request, res: Response) {

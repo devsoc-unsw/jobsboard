@@ -3,9 +3,9 @@ import { Request, Response, NextFunction } from 'express';
 import { Client } from 'ldapts';
 import { AppDataSource } from './index';
 
-import { AdminAccount } from './entity/admin_account';
-import { CompanyAccount } from './entity/company_account';
-import { Student } from './entity/student';
+import AdminAccount from './entity/admin_account';
+import CompanyAccount from './entity/company_account';
+import Student from './entity/student';
 import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import Logger from './logging';
@@ -30,12 +30,7 @@ export { IToken, AccountType };
 
 export default class Auth {
   // Student-based authentication functions
-  public static async AuthenticateStudent(
-    this: void,
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async AuthenticateStudent(this: void, req: Request, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -92,12 +87,7 @@ export default class Auth {
   }
 
   // Company-based authentication functions
-  public static async AuthenticateCompany(
-    this: void,
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async AuthenticateCompany(this: void, req: Request, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -113,12 +103,8 @@ export default class Auth {
           `Couldn't find company with username: ${msg.username}`,
         );
         try {
-          if (
-            !Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
-          ) {
-            Logger.Info(
-              `Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`,
-            );
+          if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
+            Logger.Info(`Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`);
             throw new Error('Invalid credentials');
           }
           Logger.Info(`Successfully authenticated COMPANY=${msg.username}`);
@@ -151,12 +137,7 @@ export default class Auth {
   }
 
   // admin-based authentication functions
-  public static async AuthenticateAdmin(
-    this: void,
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async AuthenticateAdmin(this: void, req: Request, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -172,9 +153,7 @@ export default class Auth {
           `Couldn't find admin account with username: ${msg.username}`,
         );
         try {
-          if (
-            !Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
-          ) {
+          if (!Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
             Logger.Info(`Failed to authenticate ADMIN=${msg.username} due to invalid credentials`);
             throw new Error('Invalid credentials');
           }

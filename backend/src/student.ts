@@ -1,12 +1,16 @@
-import {
-  // Request,
-  Response,
-  NextFunction,
-} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { AppDataSource } from './index';
-import { Job } from './entity/job';
+import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
 import Logger from './logging';
+import {
+  JobMode,
+  StudentDemographic,
+  JobType,
+  WorkingRights,
+  WamRequirements,
+} from './types/job-field';
+import { JobBase, CompanyBase } from './interfaces/interfaces';
 
 const paginatedJobLimit = 10;
 
@@ -33,25 +37,40 @@ export default class StudentFunctions {
           .orderBy('job.expiry', 'ASC')
           .getMany();
 
-        const fixedJobs = jobs.map((job: Job) => {
-          const newCompany: any = {};
-          newCompany.name = job.company.name;
-          newCompany.description = job.company.description;
-          newCompany.location = job.company.location;
+        const fixedJobs: JobBase[] = jobs.map((job: Job) => {
+          const newCompany: CompanyBase = {
+            name: job.company.name,
+            description: job.company.description,
+            location: job.company.location,
+          };
 
-          const newJob: any = {};
-          newJob.applicationLink = job.applicationLink;
-          newJob.company = newCompany;
-          newJob.description = job.description;
-          newJob.role = job.role;
-          newJob.id = job.id;
-          newJob.mode = job.mode;
-          newJob.studentDemographic = job.studentDemographic;
-          newJob.jobType = job.jobType;
-          newJob.workingRights = job.workingRights;
-          newJob.additionalInfo = job.additionalInfo;
-          newJob.wamRequirements = job.wamRequirements;
-          newJob.isPaid = job.isPaid;
+          const newJob: {
+            applicationLink: string,
+            company: typeof newCompany,
+            description: string,
+            role: string,
+            id: number,
+            mode: JobMode,
+            studentDemographic: StudentDemographic[],
+            jobType: JobType,
+            workingRights: WorkingRights[],
+            additionalInfo: string,
+            wamRequirements: WamRequirements,
+            isPaid: boolean,
+          } = {
+            applicationLink: job.applicationLink,
+            company: newCompany,
+            description: job.description,
+            role: job.role,
+            id: job.id,
+            mode: job.mode,
+            studentDemographic: job.studentDemographic,
+            jobType: job.jobType,
+            workingRights: job.workingRights,
+            additionalInfo: job.additionalInfo,
+            wamRequirements: job.wamRequirements,
+            isPaid: job.isPaid,
+          };
           return newJob;
         });
         return {
@@ -77,33 +96,30 @@ export default class StudentFunctions {
       async () => {
         Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
-        const jobInfo = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .select([
-              'company.name',
-              'company.location',
-              'company.description',
-              'Job.id',
-              'Job.role',
-              'Job.description',
-              'Job.applicationLink',
-              'Job.mode',
-              'Job.studentDemographic',
-              'Job.jobType',
-              'Job.workingRights',
-              'Job.additionalInfo',
-              'Job.wamRequirements',
-              'Job.isPaid',
-              'Job.expiry',
-            ])
-            .leftJoinAndSelect('Job.company', 'company')
-            .where('Job.approved = :approved', { approved: true })
-            .andWhere('Job.id = :id', { id: parseInt(req.params.jobID, 10) })
-            .andWhere('Job.deleted = :deleted', { deleted: false })
-            .getOne(),
-          `Failed to find JOB=${req.params.jobID}`,
-        );
+        const jobInfo: Job = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .select([
+            'company.name',
+            'company.location',
+            'company.description',
+            'Job.id',
+            'Job.role',
+            'Job.description',
+            'Job.applicationLink',
+            'Job.mode',
+            'Job.studentDemographic',
+            'Job.jobType',
+            'Job.workingRights',
+            'Job.additionalInfo',
+            'Job.wamRequirements',
+            'Job.isPaid',
+            'Job.expiry',
+          ])
+          .leftJoinAndSelect('Job.company', 'company')
+          .where('Job.approved = :approved', { approved: true })
+          .andWhere('Job.id = :id', { id: parseInt(req.params.jobID, 10) })
+          .andWhere('Job.deleted = :deleted', { deleted: false })
+          .getOne();
 
         return {
           status: 200,
@@ -128,39 +144,34 @@ export default class StudentFunctions {
       res,
       async () => {
         Logger.Info('Attempting to get featured jobs');
-        let featuredJobs = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            // TODO(ad-t): doesnt check fields of company, but that's ok for now
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .select(['Job.id', 'Job.role', 'Job.description', 'Job.applicationLink'])
-              .where('Job.approved = :approved', { approved: true })
-              .where('Job.expiry > :expiry', { expiry: new Date() })
-              .andWhere('Job.hidden = :hidden', { hidden: false })
-              .leftJoinAndSelect('Job.company', 'company')
-              .getMany(),
-          "Couldn't query for featured jobs",
-        );
+        // TODO(ad-t): doesnt check fields of company, but that's ok for now
+        let jobs = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .select(['Job.id', 'Job.role', 'Job.description', 'Job.applicationLink'])
+          .where('Job.approved = :approved', { approved: true })
+          .where('Job.expiry > :expiry', { expiry: new Date() })
+          .andWhere('Job.hidden = :hidden', { hidden: false })
+          .leftJoinAndSelect('Job.company', 'company')
+          .getMany();
 
         // check if there are enough jobs to feature
-        if (featuredJobs.length >= 4) {
-          featuredJobs = featuredJobs.slice(0, 4);
+        if (jobs.length >= 4) {
+          jobs = jobs.slice(0, 4);
         } else {
-          featuredJobs = featuredJobs.slice(0, featuredJobs.length);
+          jobs = jobs.slice(0, jobs.length);
         }
 
-        // select and join company.name
-        featuredJobs = featuredJobs.map((job: Job) => {
-          // if no jobs are found, return null
+        const featuredJobs: JobBase[] = jobs.map((job: Job) => {
           if (job === null) {
             return null;
           }
-          const newJob: any = {};
-          newJob.id = job.id;
-          newJob.role = job.role;
-          newJob.description = job.description;
-          newJob.applicationLink = job.applicationLink;
-          newJob.company = job.company.name;
+          const newJob: JobBase = {
+            id: job.id,
+            role: job.role,
+            description: job.description,
+            applicationLink: job.applicationLink,
+            company: job.company,
+          };
           return newJob;
         });
 
