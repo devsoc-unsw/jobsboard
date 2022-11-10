@@ -18,8 +18,8 @@ export class Statistics {
   public numJobPosts: number;
 
   @CreateDateColumn()
-  createdAt: Date;
+    createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+    updatedAt: Date;
 }

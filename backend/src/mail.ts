@@ -67,12 +67,11 @@ export default class MailFunctions {
     setInterval(async () => {
       try {
         const mailRequest = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(MailRequest)
-              .createQueryBuilder()
-              .where('MailRequest.sent = :sent', { sent: false })
-              .orderBy('MailRequest.createdAt', 'ASC')
-              .getOne(),
+          async () => AppDataSource.getRepository(MailRequest)
+            .createQueryBuilder()
+            .where('MailRequest.sent = :sent', { sent: false })
+            .orderBy('MailRequest.createdAt', 'ASC')
+            .getOne(),
           'No mail request to send',
         );
         if (process.env.NODE_ENV === 'production') {

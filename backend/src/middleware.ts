@@ -57,11 +57,10 @@ export default class Middleware {
       Middleware.verifyAccountType(jwt.type, AccountType.Student);
       // verify that this token is the latest valid token for this account
       const studentQuery = await Helpers.doSuccessfullyOrFail(
-        async () =>
-          AppDataSource.getRepository(Student)
-            .createQueryBuilder()
-            .where('Student.zID = :zID', { zID: jwt.id })
-            .getOne(),
+        async () => AppDataSource.getRepository(Student)
+          .createQueryBuilder()
+          .where('Student.zID = :zID', { zID: jwt.id })
+          .getOne(),
         `Failed to find or create student record with zID=${jwt.id}`,
       );
       // check whether the tokens are equivalent
@@ -166,11 +165,10 @@ export default class Middleware {
       Middleware.verifyAccountType(jwt.type, AccountType.Company);
       // verify that this token is the latest valid token for this account
       const companyQuery = await Helpers.doSuccessfullyOrFail(
-        async () =>
-          AppDataSource.getRepository(CompanyAccount)
-            .createQueryBuilder()
-            .where('CompanyAccount.id = :id', { id: jwt.id })
-            .getOne(),
+        async () => AppDataSource.getRepository(CompanyAccount)
+          .createQueryBuilder()
+          .where('CompanyAccount.id = :id', { id: jwt.id })
+          .getOne(),
         `Failed to find company account with id=${jwt.id}`,
       );
       // check whether the tokens are equivalent

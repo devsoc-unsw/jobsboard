@@ -101,13 +101,12 @@ export default class StudentFunctions {
           },
         } as IResponseWithStatus;
       },
-      () =>
-        ({
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus),
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
@@ -119,31 +118,30 @@ export default class StudentFunctions {
         Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobInfo = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .select([
-                'company.name',
-                'company.location',
-                'company.description',
-                'Job.id',
-                'Job.role',
-                'Job.description',
-                'Job.applicationLink',
-                'Job.mode',
-                'Job.studentDemographic',
-                'Job.jobType',
-                'Job.workingRights',
-                'Job.additionalInfo',
-                'Job.wamRequirements',
-                'Job.isPaid',
-                'Job.expiry',
-              ])
-              .leftJoinAndSelect('Job.company', 'company')
-              .where('Job.approved = :approved', { approved: true })
-              .andWhere('Job.id = :id', { id: parseInt(req.params.jobID, 10) })
-              .andWhere('Job.deleted = :deleted', { deleted: false })
-              .getOne(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .select([
+              'company.name',
+              'company.location',
+              'company.description',
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.applicationLink',
+              'Job.mode',
+              'Job.studentDemographic',
+              'Job.jobType',
+              'Job.workingRights',
+              'Job.additionalInfo',
+              'Job.wamRequirements',
+              'Job.isPaid',
+              'Job.expiry',
+            ])
+            .leftJoinAndSelect('Job.company', 'company')
+            .where('Job.approved = :approved', { approved: true })
+            .andWhere('Job.id = :id', { id: parseInt(req.params.jobID, 10) })
+            .andWhere('Job.deleted = :deleted', { deleted: false })
+            .getOne(),
           `Failed to find JOB=${req.params.jobID}`,
         );
 
@@ -155,13 +153,12 @@ export default class StudentFunctions {
           },
         } as IResponseWithStatus;
       },
-      () =>
-        ({
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus),
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
@@ -215,13 +212,12 @@ export default class StudentFunctions {
           },
         } as IResponseWithStatus;
       },
-      () =>
-        ({
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus),
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }

@@ -106,11 +106,10 @@ export default class Auth {
         Helpers.requireParameters(msg.password);
         // check if account exists
         const companyQuery = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder()
-              .where('CompanyAccount.username = :username', { username: msg.username })
-              .getOne(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder()
+            .where('CompanyAccount.username = :username', { username: msg.username })
+            .getOne(),
           `Couldn't find company with username: ${msg.username}`,
         );
         try {
@@ -166,11 +165,10 @@ export default class Auth {
         Helpers.requireParameters(msg.password);
         // check if account exists
         const adminQuery = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(AdminAccount)
-              .createQueryBuilder()
-              .where('AdminAccount.username = :username', { username: msg.username })
-              .getOne(),
+          async () => AppDataSource.getRepository(AdminAccount)
+            .createQueryBuilder()
+            .where('AdminAccount.username = :username', { username: msg.username })
+            .getOne(),
           `Couldn't find admin account with username: ${msg.username}`,
         );
         try {

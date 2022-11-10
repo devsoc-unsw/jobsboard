@@ -39,8 +39,8 @@ export class CompanyAccount {
   public latestValidResetToken: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+    createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+    updatedAt: Date;
 }
