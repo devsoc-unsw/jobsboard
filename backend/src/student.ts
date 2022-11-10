@@ -11,46 +11,6 @@ import Logger from './logging';
 const paginatedJobLimit = 10;
 
 export default class StudentFunctions {
-  /*
-  public static async GetAllActiveJobs(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(res, async () => {
-      Logger.Info
-      const jobs = await getRepository(Job)
-        .createQueryBuilder()
-        .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
-        .leftJoinAndSelect("Job.company", "company")
-        .where("Job.approved = :approved", { approved: true })
-        .andWhere("Job.hidden = :hidden", { hidden: false })
-        .andWhere("Job.deleted = :deleted", { deleted: false })
-        .getMany();
-
-      const fixedJobs = jobs.map((job) => {
-        const newJob: any = {};
-        newJob.applicationLink = job.applicationLink;
-        newJob.company = job.company;
-        newJob.description = job.description;
-        newJob.role = job.role;
-        newJob.id = job.id;
-        return newJob;
-      });
-      return {
-        status: 200,
-        msg: {
-          token: req.newJbToken,
-          jobs: fixedJobs
-        }
-      } as IResponseWithStatus;
-    }, () => {
-      return {
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        }
-      } as IResponseWithStatus;
-    }, next);
-  }
-  */
-
   public static async GetPaginatedJobs(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
