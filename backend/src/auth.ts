@@ -30,7 +30,12 @@ export { IToken, AccountType };
 
 export default class Auth {
   // Student-based authentication functions
-  public static async AuthenticateStudent(this: void, req: Request, res: Response, next: NextFunction) {
+  public static async AuthenticateStudent(
+    this: void,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -87,7 +92,12 @@ export default class Auth {
   }
 
   // Company-based authentication functions
-  public static async AuthenticateCompany(this: void, req: Request, res: Response, next: NextFunction) {
+  public static async AuthenticateCompany(
+    this: void,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -137,23 +147,30 @@ export default class Auth {
   }
 
   // admin-based authentication functions
-  public static async AuthenticateAdmin(this: void, req: Request, res: Response, next: NextFunction) {
+  public static async AuthenticateAdmin(
+    this: void,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
+
         // check if account exists
-        const adminQuery = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(AdminAccount)
-            .createQueryBuilder()
-            .where('AdminAccount.username = :username', { username: msg.username })
-            .getOne(),
-          `Couldn't find admin account with username: ${msg.username}`,
-        );
+        const adminQuery = await AppDataSource.getRepository(AdminAccount)
+          .createQueryBuilder()
+          .where('AdminAccount.username = :username', { username: msg.username })
+          .getOne();
+
         try {
-          if (!Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
+          if (!Secrets.compareHash(
+            adminQuery.hash.valueOf(),
+            Secrets.hash(msg.password).valueOf(),
+          )) {
             Logger.Info(`Failed to authenticate ADMIN=${msg.username} due to invalid credentials`);
             throw new Error('Invalid credentials');
           }
