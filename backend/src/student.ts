@@ -1,8 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { AppDataSource } from './index';
 import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
 import Logger from './logging';
+
 import {
   JobMode,
   StudentDemographic,
@@ -10,12 +11,23 @@ import {
   WorkingRights,
   WamRequirements,
 } from './types/job-field';
-import { JobBase, CompanyBase } from './interfaces/interfaces';
+
+import {
+  JobBase, CompanyBase,
+  StudentPaginatedJobsRequest,
+  StudentGetJobReQuest,
+  StudentFeaturedJobsRequest,
+} from './interfaces/interfaces';
 
 const paginatedJobLimit = 10;
 
 export default class StudentFunctions {
-  public static async GetPaginatedJobs(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetPaginatedJobs(
+    this: void,
+    req: StudentPaginatedJobsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -33,7 +45,7 @@ export default class StudentFunctions {
           .andWhere('job.deleted = :deleted', { deleted: false })
           .andWhere('job.expiry > :expiry', { expiry: new Date() })
           .take(paginatedJobLimit)
-          .skip(offset)
+          .skip(parseInt(offset, 10))
           .orderBy('job.expiry', 'ASC')
           .getMany();
 
@@ -45,18 +57,18 @@ export default class StudentFunctions {
           };
 
           const newJob: {
-            applicationLink: string,
-            company: typeof newCompany,
-            description: string,
-            role: string,
-            id: number,
-            mode: JobMode,
-            studentDemographic: StudentDemographic[],
-            jobType: JobType,
-            workingRights: WorkingRights[],
-            additionalInfo: string,
-            wamRequirements: WamRequirements,
-            isPaid: boolean,
+            applicationLink: string;
+            company: typeof newCompany;
+            description: string;
+            role: string;
+            id: number;
+            mode: JobMode;
+            studentDemographic: StudentDemographic[];
+            jobType: JobType;
+            workingRights: WorkingRights[];
+            additionalInfo: string;
+            wamRequirements: WamRequirements;
+            isPaid: boolean;
           } = {
             applicationLink: job.applicationLink,
             company: newCompany,
@@ -90,7 +102,12 @@ export default class StudentFunctions {
     );
   }
 
-  public static async GetJob(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetJob(
+    this: void,
+    req: StudentGetJobReQuest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -139,7 +156,12 @@ export default class StudentFunctions {
     );
   }
 
-  public static async GetFeaturedJobs(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetFeaturedJobs(
+    this: void,
+    req: StudentFeaturedJobsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
