@@ -46,6 +46,7 @@ export default class Company {
   @JoinColumn()
   public jobs: Job[];
 
+  // ! this is a depdency cycle problem
   @OneToOne((_) => CompanyAccount, (companyAccount) => companyAccount.company)
   public companyAccount: CompanyAccount;
 
