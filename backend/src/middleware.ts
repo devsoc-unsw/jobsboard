@@ -1,15 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import JWT from './jwt';
 import Logger from './logging';
-
 import { AppDataSource } from './index';
-
-import Helpers from './helpers';
-
 import { AccountType, IToken } from './auth';
-
 import Student from './entity/student';
 import CompanyAccount from './entity/company_account';
+import { AuthoriseStudentRequest } from './interfaces/interfaces';
 
 export default class Middleware {
   public static genericLoggingMiddleware(
@@ -46,13 +42,11 @@ export default class Middleware {
 
   public static async authoriseStudentMiddleware(
     this: void,
-    req: any,
+    req: AuthoriseStudentRequest,
     res: Response,
     next: NextFunction,
   ) {
     try {
-      console.log('hello world!');
-      console.log(req);
       // get JWT for student
       const rawJWT = req.get('Authorization');
       const jwt: IToken = JWT.get(rawJWT);
