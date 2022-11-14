@@ -12,7 +12,12 @@ import Student from './entity/student';
 import CompanyAccount from './entity/company_account';
 
 export default class Middleware {
-  public static genericLoggingMiddleware(this: void, req: Request, resp: Response, next: NextFunction): void {
+  public static genericLoggingMiddleware(
+    this: void,
+    req: Request,
+    resp: Response,
+    next: NextFunction,
+  ): void {
     Logger.Info(`${req.method} ${resp.statusCode} - ${req.path}`);
     if (next) {
       next();
@@ -22,39 +27,44 @@ export default class Middleware {
   private static verifyTokenProperties(req: Request, jwt: IToken) {
     if (Date.now() - jwt.lastRequestTimestamp > 20 * 60 * 1000) {
       // token has expired, is now considered invalid
-      Logger.Info(`EXPIRED TOKEN=${jwt}`);
+      Logger.Info(`EXPIRED TOKEN=${jwt.toString()}`);
       throw new Error('Token has expired.');
     }
-    if (req.ip != jwt.ipAddress) {
+    if (req.ip !== jwt.ipAddress) {
       // TODO(ad-t): Investigate this - https://stackoverflow.com/questions/10849687/express-js-how-to-get-remote-client-address
-      Logger.Info(`MISMATCHED IP ADDRESS=${req.ip} COMPARED TO TOKEN=${jwt}`);
+      Logger.Info(`MISMATCHED IP ADDRESS=${req.ip} COMPARED TO TOKEN=${jwt.toString()}`);
       throw new Error('IP address has changed.');
     }
   }
 
   private static updateTokenProperties(req: Request, jwt: IToken): IToken {
     // TODO(ad-t)
-    jwt.lastRequestTimestamp = Date.now();
-    return jwt;
+    const updatedJwt = jwt;
+    updatedJwt.lastRequestTimestamp = Date.now();
+    return updatedJwt;
   }
 
-  public static async authenticateStudentMiddleware(this: void, req: any, res: Response, next: NextFunction) {
+  public static async authoriseStudentMiddleware(
+    this: void,
+    req: any,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
+      console.log('hello world!');
+      console.log(req);
       // get JWT for student
       const rawJWT = req.get('Authorization');
       const jwt: IToken = JWT.get(rawJWT);
       // ensure the token is of the correct type
       Middleware.verifyAccountType(jwt.type, AccountType.Student);
       // verify that this token is the latest valid token for this account
-      const studentQuery = await Helpers.doSuccessfullyOrFail(
-        async () => AppDataSource.getRepository(Student)
-          .createQueryBuilder()
-          .where('Student.zID = :zID', { zID: jwt.id })
-          .getOne(),
-        `Failed to find or create student record with zID=${jwt.id}`,
-      );
+      const studentQuery = await AppDataSource.getRepository(Student)
+        .createQueryBuilder()
+        .where('Student.zID = :zID', { zID: jwt.id })
+        .getOne();
       // check whether the tokens are equivalent
-      const tokenAsString = rawJWT as string;
+      const tokenAsString = rawJWT;
       if (tokenAsString !== studentQuery.latestValidToken) {
         // tokens don't match, therefore the token is invalid and authentication
         // is rejected
@@ -85,7 +95,12 @@ export default class Middleware {
     }
   }
 
-  public static authenticateCompanyMiddleware(this: void, req: any, res: Response, next: NextFunction) {
+  public static authoriseCompanyMiddleware(
+    this: void,
+    req: any,
+    res: Response,
+    next: NextFunction,
+  ) {
     try {
       // get JWT
       const jwt = JWT.get(req.get('Authorization'));
@@ -106,11 +121,11 @@ export default class Middleware {
       // if there are any errors, send a forbidden
       res.sendStatus(401);
       Middleware.genericLoggingMiddleware(req, res, undefined);
-      Logger.Error(`Authentication Middleware Error (company): ${error}`);
+      Logger.Error(`Authentication Middleware Error (company): ${error.toString()}`);
     }
   }
 
-  public static authenticateAdminMiddleware(this: void, req: any, res: Response, next: NextFunction) {
+  public static authoriseAdminMiddleware(this: void, req: any, res: Response, next: NextFunction) {
     try {
       // get JWT
       const jwt: IToken = JWT.get(req.get('Authorization'));
@@ -128,7 +143,7 @@ export default class Middleware {
       // send forbidden on any errors
       res.sendStatus(401);
       Middleware.genericLoggingMiddleware(req, res, undefined);
-      Logger.Error(`Authentication Middleware Error (admin): ${error}`);
+      Logger.Error(`Authentication Middleware Error (admin): ${error.toString()}`);
     }
   }
 
@@ -144,13 +159,10 @@ export default class Middleware {
 
       Middleware.verifyAccountType(jwt.type, AccountType.Company);
       // verify that this token is the latest valid token for this account
-      const companyQuery = await Helpers.doSuccessfullyOrFail(
-        async () => AppDataSource.getRepository(CompanyAccount)
-          .createQueryBuilder()
-          .where('CompanyAccount.id = :id', { id: jwt.id })
-          .getOne(),
-        `Failed to find company account with id=${jwt.id}`,
-      );
+      const companyQuery = await AppDataSource.getRepository(CompanyAccount)
+        .createQueryBuilder()
+        .where('CompanyAccount.id = :id', { id: jwt.id })
+        .getOne();
       // check whether the tokens are equivalent
       if ((jwtString as string) !== companyQuery.latestValidResetToken) {
         // tokens don't match, therefore the token is invalid and authentication
@@ -166,7 +178,7 @@ export default class Middleware {
       // if there are any errors, send a forbidden
       res.sendStatus(401);
       Middleware.genericLoggingMiddleware(req, res, undefined);
-      Logger.Error(`Authentication Middleware Error (reset password request): ${error}`);
+      Logger.Error(`Authentication Middleware Error (reset password request): ${error.toString()}`);
     }
   }
 

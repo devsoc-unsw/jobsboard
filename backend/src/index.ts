@@ -64,7 +64,16 @@ if (process.env.NODE_ENV !== 'development') {
 
 app.options('*', cors(corsOptions));
 
-const activeEntities = [Company, CompanyAccount, Job, Student, AdminAccount, MailRequest, Logs, Statistics];
+const activeEntities = [
+  Company,
+  CompanyAccount,
+  Job,
+  Student,
+  AdminAccount,
+  MailRequest,
+  Logs,
+  Statistics,
+];
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -88,7 +97,7 @@ async function bootstrap() {
 app.get(
   '/admin/jobs/pending',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.GetPendingJobs,
   Middleware.genericLoggingMiddleware,
 );
@@ -96,7 +105,7 @@ app.get(
 app.get(
   '/jobs/:offset',
   cors(corsOptions),
-  Middleware.authenticateStudentMiddleware,
+  Middleware.authoriseStudentMiddleware,
   StudentFunctions.GetPaginatedJobs,
   Middleware.genericLoggingMiddleware,
 );
@@ -104,7 +113,7 @@ app.get(
 app.get(
   '/job/:jobID',
   cors(corsOptions),
-  Middleware.authenticateStudentMiddleware,
+  Middleware.authoriseStudentMiddleware,
   StudentFunctions.GetJob,
   Middleware.genericLoggingMiddleware,
 );
@@ -112,7 +121,7 @@ app.get(
 app.get(
   '/job/company/hidden',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.GetCompanyHiddenJobs,
   Middleware.genericLoggingMiddleware,
 );
@@ -120,7 +129,7 @@ app.get(
 app.get(
   '/company/:companyID',
   cors(corsOptions),
-  Middleware.authenticateStudentMiddleware,
+  Middleware.authoriseStudentMiddleware,
   CompanyFunctions.GetCompanyInfo,
   Middleware.genericLoggingMiddleware,
 );
@@ -128,29 +137,44 @@ app.get(
 app.get(
   '/company/:companyID/jobs',
   cors(corsOptions),
-  Middleware.authenticateStudentMiddleware,
+  Middleware.authoriseStudentMiddleware,
   CompanyFunctions.GetJobsFromCompany,
   Middleware.genericLoggingMiddleware,
 );
 
-app.post('/authenticate/student', cors(corsOptions), Auth.AuthenticateStudent, Middleware.genericLoggingMiddleware);
+app.post(
+  '/authenticate/student',
+  cors(corsOptions),
+  Auth.AuthenticateStudent,
+  Middleware.genericLoggingMiddleware,
+);
 
 app.put(
   '/company/update/details',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.UpdateCompanyDetails,
   Middleware.genericLoggingMiddleware,
 );
 
-app.post('/authenticate/company', cors(corsOptions), Auth.AuthenticateCompany, Middleware.genericLoggingMiddleware);
+app.post(
+  '/authenticate/company',
+  cors(corsOptions),
+  Auth.AuthenticateCompany,
+  Middleware.genericLoggingMiddleware,
+);
 
-app.put('/company', cors(corsOptions), CompanyFunctions.CreateCompany, Middleware.genericLoggingMiddleware);
+app.put(
+  '/company',
+  cors(corsOptions),
+  CompanyFunctions.CreateCompany,
+  Middleware.genericLoggingMiddleware,
+);
 
 app.put(
   '/company/update/logo',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.UploadLogo,
   Middleware.genericLoggingMiddleware,
 );
@@ -158,7 +182,7 @@ app.put(
 app.put(
   '/jobs',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.CreateJob,
   Middleware.genericLoggingMiddleware,
 );
@@ -166,7 +190,7 @@ app.put(
 app.put(
   '/company/job/edit',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.EditJob,
   Middleware.genericLoggingMiddleware,
 );
@@ -194,12 +218,17 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-app.post('/authenticate/admin', cors(corsOptions), Auth.AuthenticateAdmin, Middleware.genericLoggingMiddleware);
+app.post(
+  '/authenticate/admin',
+  cors(corsOptions),
+  Auth.AuthenticateAdmin,
+  Middleware.genericLoggingMiddleware,
+);
 
 app.patch(
   '/job/:jobID/approve',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.ApproveJobRequest,
   Middleware.genericLoggingMiddleware,
 );
@@ -207,7 +236,7 @@ app.patch(
 app.patch(
   '/job/:jobID/reject',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.RejectJobRequest,
   Middleware.genericLoggingMiddleware,
 );
@@ -215,7 +244,7 @@ app.patch(
 app.get(
   '/admin/pending/companies',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.GetPendingCompanyVerifications,
   Middleware.genericLoggingMiddleware,
 );
@@ -223,7 +252,7 @@ app.get(
 app.patch(
   '/admin/company/:companyAccountID/verify',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.VerifyCompanyAccount,
   Middleware.genericLoggingMiddleware,
 );
@@ -231,7 +260,7 @@ app.patch(
 app.get(
   '/job/admin/hidden',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.GetAllHiddenJobs,
   Middleware.genericLoggingMiddleware,
 );
@@ -239,7 +268,7 @@ app.get(
 app.get(
   '/companyjobs',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.GetAllJobsFromCompany,
   Middleware.genericLoggingMiddleware,
 );
@@ -247,7 +276,7 @@ app.get(
 app.get(
   '/company/logo/status',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.GetCompanyLogoStatus,
   Middleware.genericLoggingMiddleware,
 );
@@ -255,7 +284,7 @@ app.get(
 app.delete(
   '/company/job/:jobID',
   cors(corsOptions),
-  Middleware.authenticateCompanyMiddleware,
+  Middleware.authoriseCompanyMiddleware,
   CompanyFunctions.MarkJobPostRequestAsDeleted,
   Middleware.genericLoggingMiddleware,
 );
@@ -263,7 +292,7 @@ app.delete(
 app.get(
   '/company/stats/verifiedCompanies',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.GetNumVerifiedCompanies,
   Middleware.genericLoggingMiddleware,
 );
@@ -271,7 +300,7 @@ app.get(
 app.get(
   '/job/stats/approvedJobPosts/:year',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.getNumApprovedJobPosts,
   Middleware.genericLoggingMiddleware,
 );
@@ -279,7 +308,7 @@ app.get(
 app.get(
   '/admin/companies',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.ListAllCompaniesAsAdmin,
   Middleware.genericLoggingMiddleware,
 );
@@ -287,12 +316,17 @@ app.get(
 app.put(
   '/admin/company/:companyID/jobs',
   cors(corsOptions),
-  Middleware.authenticateAdminMiddleware,
+  Middleware.authoriseAdminMiddleware,
   AdminFunctions.CreateJobOnBehalfOfExistingCompany,
   Middleware.genericLoggingMiddleware,
 );
 
-app.get('/featured-jobs', cors(corsOptions), StudentFunctions.GetFeaturedJobs, Middleware.genericLoggingMiddleware);
+app.get(
+  '/featured-jobs',
+  cors(corsOptions),
+  StudentFunctions.GetFeaturedJobs,
+  Middleware.genericLoggingMiddleware,
+);
 
 if (process.env.NODE_ENV === 'development') {
   app.post('/email', MailFunctions.SendTestEmail);
