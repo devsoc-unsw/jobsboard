@@ -1,4 +1,4 @@
-FROM node:19.0.1-alpine AS build
+FROM node:19.1.0-alpine AS build
 
 WORKDIR /app
 COPY ["./package.json", "./yarn.lock", "/app/"]
