@@ -77,7 +77,7 @@ const members = [
   },
   {
     name: 'Matthew Liu',
-    title: '2022 Subcomittee Member',
+    title: '2022 Subcommittee Member & 2023 Jobsboard Director',
     involvement: 'Backend',
     funFact: 'Aspiring software engineer particularly interested working with the backend. My wildest dream would be to see Arsenal win the Champions League.',
     in: 'https://www.linkedin.com/in/matthew-liu-cs/',
@@ -85,8 +85,17 @@ const members = [
     photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
   },
   {
+    name: 'Gabriel Ting',
+    title: '2022 Subcommittee Member & 2023 Jobsboard Director',
+    involvement: 'Frontend',
+    funFact: 'I love circles 🟣 and squares 🟪',
+    in: 'https://www.linkedin.com/in/gabriel-ting/',
+    gh: 'https://github.com/gtangelo',
+    photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
+  },
+  {
     name: 'Sunny Wang',
-    title: '2022 Subcomittee Member',
+    title: '2022 Subcommittee Member',
     involvement: 'Backend',
     funFact: '// TODO: write an interesting fact about yourself 😆😆',
     in: 'https://www.linkedin.com/in/sunny-wang-033a19206/',
@@ -95,7 +104,7 @@ const members = [
   },
   {
     name: 'Sam Yu',
-    title: '2022 Subcomittee Member',
+    title: '2022 Subcommittee Member',
     involvement: 'Frontend',
     funFact: 'Hello! When I am not doing work for university or Jobs Board I like to either go out and play badminton with my local club or spend my time watching netflix.',
     in: 'https://www.linkedin.com/in/jihaoy/',
@@ -104,11 +113,20 @@ const members = [
   },
   {
     name: 'Avijit Prasad',
-    title: '2022 Subcomittee Member',
+    title: '2022 Subcommittee Member',
     involvement: 'Backend',
     funFact: 'Fun Fact...',
     in: 'https://www.linkedin.com/in/avijits01/',
     gh: 'https://github.com/avijits01',
+    photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
+  },
+  {
+    name: 'Adrian Tan',
+    title: '2022 Subcommittee Member',
+    involvement: 'Frontend',
+    funFact: 'Passionate about exploring outdoors 🗻 and taking photos 📸',
+    in: 'https://www.linkedin.com/in/adriantan09/',
+    gh: 'https://github.com/adriantan09',
     photo: 'https://electralink.com/wp-content/uploads/2015/12/leadership-profile.png',
   },
 ];

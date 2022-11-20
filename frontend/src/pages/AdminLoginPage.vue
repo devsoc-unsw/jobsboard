@@ -1,7 +1,7 @@
 <template>
   <StudentViewTemplate notLoggedIn>
     <Breadcrumbs />
-    <main class='h-full flex flex-col justify-center items-center mb-16'>
+    <main class='h-full flex flex-col justify-center items-center py-16'>
       <h1 class='font-bold text-3xl mb-0 text-jb-headings'>
         Admin Login
       </h1>
