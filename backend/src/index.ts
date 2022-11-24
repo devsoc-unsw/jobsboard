@@ -110,6 +110,14 @@ app.get(
 );
 
 app.get(
+  '/student/job/:queryString',
+  cors(corsOptions),
+  Middleware.authenticateStudentMiddleware,
+  StudentFunctions.SearchJobs,
+  Middleware.genericLoggingMiddleware
+)
+
+app.get(
   '/job/company/hidden',
   cors(corsOptions),
   Middleware.authenticateCompanyMiddleware,
