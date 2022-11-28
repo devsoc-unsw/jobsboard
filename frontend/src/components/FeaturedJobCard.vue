@@ -23,7 +23,7 @@
           {{ tag }}
         </div>
       </div>
-      <p 
+      <p
         class='text-base m-0 py-4 px-5 text-left text-jb-placeholder h-[200px] overflow-hidden text-ellipsis'
         v-html='jobDescription'
       />
