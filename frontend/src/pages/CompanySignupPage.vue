@@ -167,7 +167,12 @@
           Company Login
         </router-link>
       </p>
+      <TransitionLoading
+        v-if='isLoading'
+        class='h-16'
+      />
       <button
+        v-else
         type='submit'
         class='bg-jb-textlink rounded-md w-40 h-11 my-4 p-2 text-white font-bold text-base
                border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
@@ -187,6 +192,7 @@ import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import config from '@/config/config';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Alert from '@/components/Alert.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 const router = useRouter();
 
@@ -198,6 +204,7 @@ const isAlertOpen = ref<boolean>(false);
 const alertType = ref<string>('error');
 const alertMsg = ref<string>('');
 const confirmPassword = ref<string>('');
+const isLoading = ref<boolean>(false);
 
 const validateInput = () => {
   if (username.value === '') {
@@ -242,7 +249,10 @@ const validateInput = () => {
 };
 
 const performSignup = async () => {
+  isLoading.value = true;
   if (!validateInput()) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    isLoading.value = false;
     return;
   }
   const response = await fetch(`${config.apiRoot}/company`, {
@@ -268,15 +278,16 @@ const performSignup = async () => {
     }, 5000);
   } else if (response.status === 409) {
     isAlertOpen.value = true;
-    window.scrollTo(0, 10);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     alertType.value = 'success';
     alertMsg.value = 'There already exists a company with this email. Please try again.';
   } else {
     isAlertOpen.value = true;
-    window.scrollTo(0, 10);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     alertType.value = 'error';
     alertMsg.value = 'Invalid email address. Please try again.';
   }
+  isLoading.value = false;
 };
 
 onMounted(() => {
