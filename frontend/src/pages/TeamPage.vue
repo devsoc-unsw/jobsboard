@@ -82,7 +82,7 @@ const members = [
     funFact: 'Aspiring software engineer particularly interested working with the backend. My wildest dream would be to see Arsenal win the Champions League.',
     in: 'https://www.linkedin.com/in/matthew-liu-cs/',
     gh: 'https://github.com/matth3wliuu',
-    photo: 'https://raw.githubusercontent.com/csesoc/jobs-board/JOB-129-update-team-page/frontend/src/assets/team/matt.png',
+    photo: 'https://i.imgur.com/GpvRH5G.png',
   },
   {
     name: 'Gabriel Ting',
@@ -100,7 +100,7 @@ const members = [
     funFact: 'I\'m not particularly great at anything but can make some pretty good overnight oats',
     in: 'https://www.linkedin.com/in/sunny-wang-033a19206/',
     gh: 'https://github.com/casio987',
-    photo: 'https://raw.githubusercontent.com/csesoc/jobs-board/JOB-129-update-team-page/frontend/src/assets/team/sunny.png',
+    photo: 'https://i.imgur.com/dgSVw0i.png',
   },
   {
     name: 'Sam Yu',
