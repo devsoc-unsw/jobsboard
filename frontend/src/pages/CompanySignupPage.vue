@@ -155,6 +155,45 @@
             Location
           </label>
         </div>
+
+        <!-- Company Logo Input -->
+        <div class='relative group mt-4 mb-6'>
+          <div class='mt-1 flex justify-center rounded-md border-4 border-dashed border-gray-300 hover:bg-gray-100 px-6 pt-5 pb-6 shadow-btn'>
+            <div class='space-y-1 text-center'>
+              <svg
+                class='mx-auto h-12 w-12 text-gray-400'
+                stroke='currentColor'
+                fill='none'
+                viewBox='0 0 48 48'
+                aria-hidden='true'
+              >
+                <path
+                  d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
+                  stroke-width='2'
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                />
+              </svg>
+              <div class='flex text-sm text-gray-600'>
+                <label
+                  for='logo'
+                  class='relative cursor-pointer rounded-md font-medium text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered'
+                >
+                  <span class='text-lg font-bold'>Upload logo</span>
+                  <input
+                    id='logo'
+                    name='logo'
+                    type='file'
+                    accept='image/jpeg, image/png, image/jpg'
+                    class='sr-only'
+                    required
+                    @keyup.enter='performSignup()'
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
 
       <p class='text-lg text-jb-subheadings text-center'>
@@ -204,6 +243,7 @@ const isAlertOpen = ref<boolean>(false);
 const alertType = ref<string>('error');
 const alertMsg = ref<string>('');
 const confirmPassword = ref<string>('');
+const logo = ref<string>('');
 const isLoading = ref<boolean>(false);
 
 const validateInput = () => {
@@ -243,6 +283,11 @@ const validateInput = () => {
     isAlertOpen.value = true;
     alertType.value = 'error';
     alertMsg.value = 'Company location cannot be empty. Please try again.';
+    return false;
+  } else if (logo.value === '') {
+    isAlertOpen.value = true;
+    alertType.value = 'error';
+    alertMsg.value = 'Logo cannot be empty. Please try again.';
     return false;
   }
   return true;
