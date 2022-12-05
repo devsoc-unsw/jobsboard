@@ -39,7 +39,12 @@
         </label>
       </div>
 
+      <TransitionLoading
+        v-if='isLoading'
+        class='h-16'
+      />
       <button
+        v-else
         class='btn btn-blue-filled w-40 h-11 my-4 p-2'
         @click='performCompanyPasswordForgot'
       >
@@ -78,6 +83,7 @@ import { useRoute } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 // config
 import config from '@/config/config';
@@ -86,8 +92,10 @@ const email = ref<string>('');
 const alertType = ref<string>('');
 const alertMsg = ref<string>('');
 const isAlertOpen = ref<boolean>(false);
+const isLoading = ref<boolean>(false);
 
 const performCompanyPasswordForgot = async () => {
+  isLoading.value = true;
   const response = await fetch(`${config.apiRoot}/company/forgot-password`, {
     method: 'POST',
     headers: {
@@ -120,6 +128,7 @@ const performCompanyPasswordForgot = async () => {
       alertMsg.value = 'Email failed to send. Please try again.';
     }
   }
+  isLoading.value = false;
 };
 onMounted(() => {
   // Change the page title
