@@ -24,7 +24,7 @@
           <BenefitCard
             title='All jobs are paid'
             description='Student&apos;s welfare is always our
-              top priority,which is why we ensure that
+              top priority, which is why we ensure that
               all jobs that you see here are paid.'
             icon='money-bills'
             iconColor=''
