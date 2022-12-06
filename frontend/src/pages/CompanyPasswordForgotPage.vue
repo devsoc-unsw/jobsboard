@@ -88,11 +88,11 @@ import TransitionLoading from '@/animations/TransitionLoading.vue';
 // config
 import config from '@/config/config';
 
-const email = ref<string>('');
-const alertType = ref<string>('');
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
-const isLoading = ref<boolean>(false);
+const email = ref('');
+const alertType = ref('');
+const alertMsg = ref('');
+const isAlertOpen = ref(false);
+const isLoading = ref(false);
 
 const performCompanyPasswordForgot = async () => {
   isLoading.value = true;

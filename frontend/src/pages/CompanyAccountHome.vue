@@ -154,7 +154,7 @@ const apiTokenStore = useApiTokenStore();
 let jobs = ref([]);
 let expiredJobs = ref([]);
 const boardStatus = ref('postedJobs');
-const isModalShown = ref<boolean>(false);
+const isModalShown = ref(false);
 const logo = ref<any>(null);
 const preview = ref<any>(null);
 
@@ -174,8 +174,8 @@ const getCompanyJobs = async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiTokenStore.getApiToken(),
-      } as HeadersInit,
+        Authorization: apiTokenStore.getApiToken(),
+      },
     },
   );
 
@@ -206,7 +206,7 @@ const getCompanyJobs = async () => {
   }
 };
 
-const toBase64 = (file: any) => {
+const toBase64 = (file: Blob) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -216,7 +216,7 @@ const toBase64 = (file: any) => {
 };
 
 const updateLogo = (e: Event) => {
-  logo.value = (e.target as HTMLInputElement).files![0];
+  logo.value = (e.target as HTMLInputElement).files?.[0];
   preview.value = URL.createObjectURL(logo.value);
 };
 
@@ -225,8 +225,8 @@ const checkCompanyLogoStatus = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
 
   if (!response.ok) {
@@ -244,8 +244,8 @@ const uploadLogo = async () => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
     body: JSON.stringify({
       logo: convertedFile,
     }),
@@ -260,8 +260,8 @@ const getHiddenJobs = async () => {
     headers: {
       'Content-Type': 'application/json',
       Authorization: apiTokenStore.getApiToken(),
-    } as HeadersInit,
-  })) as Response;
+    },
+  }));
 
   if (response.ok) {
     const msg = await response.json();

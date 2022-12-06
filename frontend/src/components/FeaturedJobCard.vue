@@ -39,24 +39,24 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-  const props = defineProps({
-    jobTitle: {
-      type: String,
-      required: true,
-    },
-    jobDescription: {
-      type: String,
-      required: true,
-    },
-    jobTag: {
-      type: Array,
-      required: true,
-    },
-    imagePath: {
-      type: String,
-      required: true,
-    },
-  });
+defineProps({
+  jobTitle: {
+    type: String,
+    required: true,
+  },
+  jobDescription: {
+    type: String,
+    required: true,
+  },
+  jobTag: {
+    type: Array,
+    required: true,
+  },
+  imagePath: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <style scoped lang="scss">

@@ -138,7 +138,7 @@ const props = defineProps({
   listName: String,
 });
 
-const apiToken = useApiTokenStore().getApiToken();
+const apiTokenStore = useApiTokenStore();
 const isHovering = ref(false);
 const modalVisible = ref(false);
 const modalContent = ref('');
@@ -151,10 +151,10 @@ const deleteJob = async () => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiToken,
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
-  const receivedResponse = response as Response;
+  const receivedResponse = response;
   if (receivedResponse.ok && props.listName === 'postedJobs') {
     closeJobModal();
   } else {

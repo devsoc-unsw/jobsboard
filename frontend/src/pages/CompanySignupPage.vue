@@ -196,15 +196,15 @@ import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 const router = useRouter();
 
-const username = ref<string>('');
-const password = ref<string>('');
-const name = ref<string>('');
-const location = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
-const alertType = ref<string>('error');
-const alertMsg = ref<string>('');
-const confirmPassword = ref<string>('');
-const isLoading = ref<boolean>(false);
+const username = ref('');
+const password = ref('');
+const name = ref('');
+const location = ref('');
+const isAlertOpen = ref(false);
+const alertType = ref('error');
+const alertMsg = ref('');
+const confirmPassword = ref('');
+const isLoading = ref(false);
 
 const validateInput = () => {
   if (username.value === '') {

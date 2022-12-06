@@ -12,7 +12,7 @@
         <h3 class='text-xl text-left'>
           Still struggling to find a job...
         </h3>
-        <h1 class='text-3xl my-2 font-extrabold text-jb-headings text-left'>
+        <h1 class='text-3xl my-2 font-bold text-jb-headings text-left'>
           Explore Our Curated List of Jobs
         </h1>
         <h3 class='text-xl my-3 mb-8 text-left'>
@@ -128,12 +128,12 @@ import TransitionLoading from '@/animations/TransitionLoading.vue';
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const error = ref<boolean>(false);
-const errorMsg = ref<string>('');
+const error = ref(false);
+const errorMsg = ref('');
 const jobs = ref<any[]>([]);
-const query = ref<string>('');
-const loadMoreJobsLock = ref<boolean>(false);
-const isLoading = ref<boolean>(true);
+const query = ref('');
+const loadMoreJobsLock = ref(false);
+const isLoading = ref(true);
 
 onMounted(() => {
   // Change the page title
@@ -158,8 +158,8 @@ const loadMoreJobs = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
   isLoading.value = false;
   if (response.ok) {

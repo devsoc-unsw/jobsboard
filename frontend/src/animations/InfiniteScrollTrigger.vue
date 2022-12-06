@@ -10,7 +10,9 @@ const emit = defineEmits(['trigger:intersected', 'triggerIntersected']);
 
 onMounted(() => {
   window.addEventListener('scroll', () => {
-    if (window.scrollY + window.innerHeight >= document.querySelector('.content')!.scrollHeight) {
+    const contentEl = document.querySelector('.content');
+    if (contentEl &&
+      window.scrollY + window.innerHeight >= contentEl.scrollHeight) {
       emit('triggerIntersected');
     }
   });
