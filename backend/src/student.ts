@@ -142,14 +142,20 @@ export default class StudentFunctions {
       async () => {
         Logger.Info(`Attempting to get featured jobs`);
         let featuredJobs = await Helpers.doSuccessfullyOrFail(async () => {
-          // TODO(ad-t): doesnt check fields of company, but that's ok for now
           return await AppDataSource.getRepository(Job)
             .createQueryBuilder()
-            .select(['Job.id', 'Job.role', 'Job.description', 'Job.applicationLink'])
+            .select([
+              'company.logo',
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.workingRights',
+              'Job.applicationLink',
+            ])
+            .leftJoinAndSelect('Job.company', 'company')
             .where('Job.approved = :approved', { approved: true })
             .where('Job.expiry > :expiry', { expiry: new Date() })
             .andWhere('Job.hidden = :hidden', { hidden: false })
-            .leftJoinAndSelect('Job.company', 'company')
             .getMany();
         }, `Couldn't query for featured jobs`);
 
@@ -168,11 +174,14 @@ export default class StudentFunctions {
           }
           const newJob: any = {};
           newJob.id = job.id;
+          newJob.logo = job.company.logo;
           newJob.role = job.role;
           newJob.description = job.description;
+          newJob.workingRights = job.workingRights;
           newJob.applicationLink = job.applicationLink;
           newJob.company = job.company.name;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
+          console.log(newJob);
           return newJob;
         });
 

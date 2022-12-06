@@ -90,6 +90,7 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount.hash = Secrets.hash('test');
   companyAccount.verified = true;
   const company = new Company();
+  company.logo = Buffer.from('data:image/gif;base64,R0lGODlhAQABAAAAACw=', 'base64');
   company.name = 'Test company';
   company.location = 'Sydney';
   companyAccount.company = company;

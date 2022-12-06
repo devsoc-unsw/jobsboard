@@ -54,6 +54,12 @@
     </div>
     <!-- Sponsors -->
     <div class='w-3/5 my-12 mx-auto'>
+      <!-- <p
+        v-for='job in featuredJobs'
+        :key='job.id'
+      >
+        {{ job }}
+      </p> -->
       <h3 class='font-bold text-3xl mb-0 text-jb-headings'>
         Our Sponsors
       </h3>
@@ -101,14 +107,14 @@
           }'
         >
           <Slide
-            v-for='job in featuredJob'
+            v-for='job in featuredJobs'
             :key='job.id'
           >
             <FeaturedJobCard
-              :jobTitle='job.jobTitle'
-              :jobDescription='job.jobDescription'
+              :jobTitle='job.role'
+              :jobDescription='job.description'
               :jobTag='job.jobTag'
-              :imagePath='job.imagePath'
+              :imagePath='job.logo.values()'
             />
           </Slide>
           <template #addons>
@@ -193,6 +199,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import config from '@/config/config';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
 import 'vue3-carousel/dist/carousel.css';
@@ -215,45 +222,56 @@ const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
 const showRecruitmentModal = ref(false);
+const featuredJobs = ref();
 
 onMounted(() => {
   // Change the page title
   document.title = useRoute().meta.title;
   apiTokenStore.clearApiToken();
+  getFeaturedJobs();
 });
 
 // vue3-carousel requires an array of objects to be passed in as the v-for.
 // To be replaced with featured job data from the backend.
-const featuredJob = [
-  {
-    id: 0,
-    jobTitle: 'Full Stack Software Engineer',
-    jobDescription: 'We\'re looking for an outcome-oriented person who is motivated to see great engineering help innovate on product. You love working with other engineers and are excited to be part of an engaged...',
-    jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
-    imagePath: PearlerLogo,
-  },
-  {
-    id: 1,
-    jobTitle: '2023 Software Development Graduate',
-    jobDescription: 'Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. You will build software for Amazon\'s rapid fulfillment businesses for use across the globe.',
-    jobTag: ['AU/NZ Citizens', 'Australian PR'],
-    imagePath: awsLogo,
-  },
-  {
-    id: 2,
-    jobTitle: 'Software Engineer, 2023 Graduate',
-    jobDescription: 'Want the freedom to be creative? How about the time and resources to make them a reality? Yes? Great. We build software for the world\'s most accomplished thinkers.That means we need our own team...',
-    jobTag: ['AU/NZ Citizens', 'Australian PR'],
-    imagePath: AtlassianLogo,
-  },
-  {
-    id: 3,
-    jobTitle: 'Security Engineering Intern (Summer 22/23)',
-    jobDescription: 'We\'re looking for the next generation of Canvanauts! Be part of Canva\'s AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work and...',
-    jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
-    imagePath: CanvaLogo,
-  },
-];
+// const featuredJob = [
+//   {
+//     id: 0,
+//     jobTitle: 'Full Stack Software Engineer',
+//     jobDescription: 'We\'re looking for an outcome-oriented person who is motivated to see great engineering help innovate on product. You love working with other engineers and are excited to be part of an engaged...',
+//     jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
+//     imagePath: PearlerLogo,
+//   },
+//   {
+//     id: 1,
+//     jobTitle: '2023 Software Development Graduate',
+//     jobDescription: 'Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. You will build software for Amazon\'s rapid fulfillment businesses for use across the globe.',
+//     jobTag: ['AU/NZ Citizens', 'Australian PR'],
+//     imagePath: awsLogo,
+//   },
+//   {
+//     id: 2,
+//     jobTitle: 'Software Engineer, 2023 Graduate',
+//     jobDescription: 'Want the freedom to be creative? How about the time and resources to make them a reality? Yes? Great. We build software for the world\'s most accomplished thinkers.That means we need our own team...',
+//     jobTag: ['AU/NZ Citizens', 'Australian PR'],
+//     imagePath: AtlassianLogo,
+//   },
+//   {
+//     id: 3,
+//     jobTitle: 'Security Engineering Intern (Summer 22/23)',
+//     jobDescription: 'We\'re looking for the next generation of Canvanauts! Be part of Canva\'s AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work and...',
+//     jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
+//     imagePath: CanvaLogo,
+//   },
+// ];
+
+const getFeaturedJobs = async () => {
+  const response = await fetch(`${config.apiRoot}/featured-jobs`);
+  const data = await response.json();
+  console.log(data.featuredJobs);
+  // Convert company logo in data from Buffer array to base64 string
+
+  featuredJobs.value = data.featuredJobs;
+};
 
 const scrollToTop = () => {
   window.scrollTo({

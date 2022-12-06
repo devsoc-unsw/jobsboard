@@ -114,8 +114,8 @@ app.get(
   cors(corsOptions),
   Middleware.authenticateStudentMiddleware,
   StudentFunctions.SearchJobs,
-  Middleware.genericLoggingMiddleware
-)
+  Middleware.genericLoggingMiddleware,
+);
 
 app.get(
   '/job/company/hidden',
@@ -253,11 +253,11 @@ app.get(
 );
 
 app.get(
-  "/company/logo/status",
+  '/company/logo/status',
   cors(corsOptions),
   Middleware.authenticateCompanyMiddleware,
   CompanyFunctions.GetCompanyLogoStatus,
-  Middleware.genericLoggingMiddleware
+  Middleware.genericLoggingMiddleware,
 );
 
 app.delete(
