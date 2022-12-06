@@ -363,19 +363,28 @@
           }'
           :style='{ "background-color": "white", "width": "100%" }'
         />
-        <button
-          class='border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered'
-          @click='() => { modalVisible = true }'
+        <TransitionLoading
+          v-if='isLoading'
+          class='h-16 mt-6'
+        />
+        <div
+          v-else
+          class='flex flex-col'
         >
-          Preview
-        </button>
-        <button
-          class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
-              shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered'
-          @click='submitJobPost'
-        >
-          Post Job
-        </button>
+          <button
+            class='border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered'
+            @click='() => { modalVisible = true }'
+          >
+            Preview
+          </button>
+          <button
+            class='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
+                shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered'
+            @click='submitJobPost'
+          >
+            Post Job
+          </button>
+        </div>
       </div>
     </StudentViewTemplate>
   </LoggedInTemplate>
@@ -395,6 +404,7 @@ import LoggedInTemplate from '@/components/LoggedInTemplate.vue';
 import JobDescriptionModal from '@/components/modals/JobDescriptionModal.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 // config
 import config from '@/config/config';
@@ -433,6 +443,7 @@ const isAlertOpen = ref(false);
 const modalVisible= ref(false);
 const verifiedCompanies = ref<any>({});
 const selectedCompanyID = ref('');
+const isLoading = ref(false);
 
 onMounted(async () => {
   // Change the page title
@@ -474,6 +485,28 @@ onMounted(async () => {
 });
 
 const submitJobPost = async () => {
+  isLoading.value = true;
+  if (
+    selectedCompanyID.value.length === 0 ||
+    role.value.length === 0 ||
+    description.value.length === 0 ||
+    applicationLink.value.length === 0 ||
+    expiryDate.value.length === 0 ||
+    isPaidPosition.value.length === 0 ||
+    jobType.value.length === 0 ||
+    jobMode.value.length === 0 ||
+    workingRights.value.length === 0 ||
+    studentDemographic.value.length === 0 ||
+    wamRequirements.value.length === 0
+  ) {
+    alertType.value = 'error';
+    alertMsg.value = 'Missing one or more fields. Please ensure that all fields are filled.';
+    isAlertOpen.value = true;
+    isLoading.value = false;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
   // create a date object using this value
   let jobDate = new Date(expiryDate.value);
   // set to the end of the set day
@@ -492,6 +525,7 @@ const submitJobPost = async () => {
       top: 0,
       behavior: 'smooth',
     });
+    isLoading.value = false;
     return;
   }
 
@@ -542,7 +576,7 @@ const submitJobPost = async () => {
           router.push('/login');
         }, 3000);
       } else {
-        alertMsg.value = 'Missing one or more fields. Please ensure that all fields are filled.';
+        alertMsg.value = 'Looks like something went wrong. Please ensure that all fields are filled with a valid value.';
       }
       isAlertOpen.value = true;
       window.scrollTo({
@@ -550,6 +584,7 @@ const submitJobPost = async () => {
         behavior: 'smooth',
       });
     }
+    isLoading.value = false;
   };
 </script>
 

@@ -61,7 +61,12 @@
         </label>
       </div>
 
+      <TransitionLoading
+        v-if='isLoading'
+        class='h-16'
+      />
       <button
+        v-else
         class='btn btn-blue-filled w-40 h-11 my-4 p-2'
         @click='performCompanyPasswordReset'
       >
@@ -78,6 +83,7 @@ import { useRoute, useRouter } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 // config
 import config from '@/config/config';
@@ -91,9 +97,15 @@ const alertType = ref('');
 const alertMsg = ref('');
 const isAlertOpen = ref(false);
 const apiTokenStore = useApiTokenStore();
+const isLoading = ref<boolean>(false);
 
 const performCompanyPasswordReset = async () => {
-  if (newPassword.value !== confirmPassword.value) {
+  isLoading.value = true;
+  if (newPassword.value.length === 0) {
+    alertType.value = 'error';
+    alertMsg.value = 'Your new password can not be empty.';
+    isAlertOpen.value = true;
+  } else if (newPassword.value !== confirmPassword.value) {
     alertType.value = 'error';
     alertMsg.value = 'Passwords do not match. Please try again.';
     isAlertOpen.value = true;
@@ -134,6 +146,7 @@ const performCompanyPasswordReset = async () => {
       }
     }
   }
+  isLoading.value = false;
 };
 
 onMounted(() => {

@@ -80,7 +80,12 @@
           Company Login
         </router-link>
       </p>
+      <TransitionLoading
+        v-if='isLoading'
+        class='h-16'
+      />
       <button
+        v-else
         class='btn btn-blue-filled w-40 h-11 my-4 p-2'
         @click='performLogin'
       >
@@ -98,6 +103,7 @@ import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Alert from '@/components/Alert.vue';
 import config from '@/config/config';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
@@ -105,6 +111,7 @@ const router = useRouter();
 const zID = ref('');
 const password = ref('');
 const hidePassword = ref(true);
+const isLoading = ref(false);
 
 const showPassword = () => {
   hidePassword.value = !hidePassword.value;
@@ -119,6 +126,7 @@ onMounted(async () => {
 });
 
 const performLogin = async () => {
+  isLoading.value = true;
   const response = await fetch(
     `${config.apiRoot}/authenticate/student`,
   {
@@ -145,6 +153,7 @@ const performLogin = async () => {
     });
     isAlertOpen.value = true;
   }
+  isLoading.value = false;
 };
 </script>
 

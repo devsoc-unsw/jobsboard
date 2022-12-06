@@ -100,8 +100,12 @@
           Create one!
         </router-link>
       </p>
-
+      <TransitionLoading
+        v-if='isLoading'
+        class='h-16'
+      />
       <button
+        v-else
         class='btn btn-blue-filled w-40 h-11 p-2'
         @click='performCompanyLogin'
       >
@@ -118,6 +122,7 @@ import { useRouter, useRoute } from 'vue-router';
 import StudentViewTemplate from '@/components/StudentViewTemplate.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Alert from '@/components/Alert.vue';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 // config
 import config from '@/config/config';
@@ -129,6 +134,8 @@ const apiTokenStore = useApiTokenStore();
 const username = ref('');
 const password = ref('');
 const hidePassword = ref(true);
+const isLoading = ref(false);
+
 let isAlertOpen = ref(false);
 
 onMounted(async () => {
@@ -142,6 +149,7 @@ const showPassword = () => {
 };
 
 const performCompanyLogin = async () => {
+  isLoading.value = true;
   const response = await fetch(
     `${config.apiRoot}/authenticate/company`,
     {
@@ -168,6 +176,7 @@ const performCompanyLogin = async () => {
     });
     isAlertOpen.value = true;
   }
+  isLoading.value = false;
 };
 </script>
 

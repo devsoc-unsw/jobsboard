@@ -1,8 +1,13 @@
-import {
-  // Request,
-  Response,
-  NextFunction,
-} from 'express';
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+import { Response, NextFunction } from 'express';
+import Fuse from 'fuse.js';
 import { AppDataSource } from './index';
 import { Job } from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
@@ -10,47 +15,31 @@ import Logger from './logging';
 
 const paginatedJobLimit = 10;
 
+const MapJobsToObjects = (jobs: Job[]) => {
+  return jobs.map((job: Job) => {
+    const newCompany: any = {};
+    newCompany.name = job.company.name;
+    newCompany.description = job.company.description;
+    newCompany.location = job.company.location;
+
+    const newJob: any = {};
+    newJob.applicationLink = job.applicationLink;
+    newJob.company = newCompany;
+    newJob.description = job.description;
+    newJob.role = job.role;
+    newJob.id = job.id;
+    newJob.mode = job.mode;
+    newJob.studentDemographic = job.studentDemographic;
+    newJob.jobType = job.jobType;
+    newJob.workingRights = job.workingRights;
+    newJob.additionalInfo = job.additionalInfo;
+    newJob.wamRequirements = job.wamRequirements;
+    newJob.isPaid = job.isPaid;
+    return newJob;
+  });
+};
+
 export default class StudentFunctions {
-  /*
-  public static async GetAllActiveJobs(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(res, async () => {
-      Logger.Info
-      const jobs = await getRepository(Job)
-        .createQueryBuilder()
-        .select(["company.name", "company.location", "company.description", "Job.id", "Job.role", "Job.description", "Job.applicationLink"])
-        .leftJoinAndSelect("Job.company", "company")
-        .where("Job.approved = :approved", { approved: true })
-        .andWhere("Job.hidden = :hidden", { hidden: false })
-        .andWhere("Job.deleted = :deleted", { deleted: false })
-        .getMany();
-
-      const fixedJobs = jobs.map((job) => { 
-        const newJob: any = {};
-        newJob.applicationLink = job.applicationLink;
-        newJob.company = job.company;
-        newJob.description = job.description;
-        newJob.role = job.role;
-        newJob.id = job.id;
-        return newJob;
-      });
-      return {
-        status: 200,
-        msg: {
-          token: req.newJbToken,
-          jobs: fixedJobs
-        }
-      } as IResponseWithStatus;
-    }, () => {
-      return {
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        }
-      } as IResponseWithStatus;
-    }, next);
-  }
-  */
-
   public static async GetPaginatedJobs(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
@@ -73,27 +62,8 @@ export default class StudentFunctions {
           .orderBy('job.expiry', 'ASC')
           .getMany();
 
-        const fixedJobs = jobs.map((job: Job) => {
-          const newCompany: any = {};
-          newCompany.name = job.company.name;
-          newCompany.description = job.company.description;
-          newCompany.location = job.company.location;
+        const fixedJobs = MapJobsToObjects(jobs);
 
-          const newJob: any = {};
-          newJob.applicationLink = job.applicationLink;
-          newJob.company = newCompany;
-          newJob.description = job.description;
-          newJob.role = job.role;
-          newJob.id = job.id;
-          newJob.mode = job.mode;
-          newJob.studentDemographic = job.studentDemographic;
-          newJob.jobType = job.jobType;
-          newJob.workingRights = job.workingRights;
-          newJob.additionalInfo = job.additionalInfo;
-          newJob.wamRequirements = job.wamRequirements;
-          newJob.isPaid = job.isPaid;
-          return newJob;
-        });
         return {
           status: 200,
           msg: {
@@ -202,6 +172,7 @@ export default class StudentFunctions {
           newJob.description = job.description;
           newJob.applicationLink = job.applicationLink;
           newJob.company = job.company.name;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return newJob;
         });
 
@@ -219,6 +190,87 @@ export default class StudentFunctions {
           msg: {
             token: req.newJbToken,
           },
+        } as IResponseWithStatus;
+      },
+      next,
+    );
+  }
+
+  public static async SearchJobs(this: void, req: any, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
+      res,
+      async () => {
+        Helpers.requireParameters(req.params.queryString);
+        Logger.Info(
+          `STUDENT=${req.studentZID} attempting to search for jobs with QUERYSTRING=${req.params.queryString}`,
+        );
+        const queryString = req.params.queryString;
+
+        const allJobs = await Helpers.doSuccessfullyOrFail(async () => {
+          return await AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .select([
+              'company.name',
+              'company.location',
+              'company.description',
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.applicationLink',
+              'Job.mode',
+              'Job.studentDemographic',
+              'Job.jobType',
+              'Job.workingRights',
+              'Job.additionalInfo',
+              'Job.wamRequirements',
+              'Job.isPaid',
+              'Job.expiry',
+            ])
+            .leftJoinAndSelect('Job.company', 'company')
+            .where('Job.approved = :approved', { approved: true })
+            .andWhere('Job.deleted = :deleted', { deleted: false })
+            .andWhere('Job.hidden = :hidden', { hidden: false })
+            .andWhere('Job.expiry > :expiry', { expiry: new Date() })
+            .getMany();
+        }, `Failed to find jobs in the database`);
+
+        // ? why are there no private functions in TS
+        const fixedJobs = MapJobsToObjects(allJobs);
+        const fuseInstance = new Fuse(fixedJobs, {
+          // weight of keys are normalised back to [0, 1]
+          keys: [
+            {
+              name: 'company.name',
+              weight: 4,
+            },
+            {
+              name: 'role',
+              weight: 3,
+            },
+            {
+              name: 'mode',
+              weight: 2,
+            },
+            {
+              name: 'jobType',
+              weight: 2,
+            },
+          ],
+        });
+
+        const filteredResult = fuseInstance.search(queryString);
+
+        return {
+          status: 200,
+          msg: {
+            token: req.newJbToken,
+            searchResult: filteredResult,
+          },
+        } as IResponseWithStatus;
+      },
+      () => {
+        return {
+          status: 400,
         } as IResponseWithStatus;
       },
       next,
