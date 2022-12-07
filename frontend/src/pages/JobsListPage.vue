@@ -24,7 +24,7 @@
           <BenefitCard
             title='All jobs are paid'
             description='Student&apos;s welfare is always our
-              top priority,which is why we ensure that
+              top priority, which is why we ensure that
               all jobs that you see here are paid.'
             icon='money-bills'
             iconColor=''
@@ -93,7 +93,7 @@
             v-if='filteredJobs.length === 0 && !isLoading'
             class='max-w-4xl my-16 px-6 text-center'
           >
-            <h2 class='text-3xl my-2 font-extrabold text-jb-headings'>
+            <h2 class='text-3xl my-2 font-bold text-jb-headings'>
               Sorry, it doesn't seem like we have any jobs right now
             </h2>
             <h3 class='text-xl my-6'>
