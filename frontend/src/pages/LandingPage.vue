@@ -120,7 +120,10 @@
           </template>
         </carousel>
       </div>
-
+      <div
+        v-else
+        class='mb-28'
+      />
       <h3 class='font-bold text-3xl mb-0 text-jb-headings'>
         Want to Post a Job?
       </h3>
