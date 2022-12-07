@@ -174,14 +174,12 @@ export default class StudentFunctions {
           }
           const newJob: any = {};
           newJob.id = job.id;
-          newJob.logo = job.company.logo;
+          newJob.logo = job.company.logo.toString();
           newJob.role = job.role;
           newJob.description = job.description;
           newJob.workingRights = job.workingRights;
           newJob.applicationLink = job.applicationLink;
           newJob.company = job.company.name;
-
-          console.log(newJob);
           return newJob;
         });
 

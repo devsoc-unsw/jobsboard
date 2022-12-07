@@ -54,12 +54,6 @@
     </div>
     <!-- Sponsors -->
     <div class='w-3/5 my-12 mx-auto'>
-      <!-- <p
-        v-for='job in featuredJobs'
-        :key='job.id'
-      >
-        {{ job }}
-      </p> -->
       <h3 class='font-bold text-3xl mb-0 text-jb-headings'>
         Our Sponsors
       </h3>
@@ -113,8 +107,8 @@
             <FeaturedJobCard
               :jobTitle='job.role'
               :jobDescription='job.description'
-              :jobTag='job.jobTag'
-              :imagePath='job.logo.values()'
+              :jobTag='job.workingRights'
+              :imagePath='job.logo'
             />
           </Slide>
           <template #addons>
@@ -267,9 +261,6 @@ onMounted(() => {
 const getFeaturedJobs = async () => {
   const response = await fetch(`${config.apiRoot}/featured-jobs`);
   const data = await response.json();
-  console.log(data.featuredJobs);
-  // Convert company logo in data from Buffer array to base64 string
-
   featuredJobs.value = data.featuredJobs;
 };
 
