@@ -154,7 +154,7 @@ export default class StudentFunctions {
             ])
             .leftJoinAndSelect('Job.company', 'company')
             .where('Job.approved = :approved', { approved: true })
-            .where('Job.expiry > :expiry', { expiry: new Date() })
+            .andWhere('Job.expiry > :expiry', { expiry: new Date() })
             .andWhere('Job.hidden = :hidden', { hidden: false })
             .getMany();
         }, `Couldn't query for featured jobs`);

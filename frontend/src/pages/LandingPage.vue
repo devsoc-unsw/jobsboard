@@ -79,7 +79,7 @@
         .
       </p>
       <div
-        v-if='featuredJobs.length !== 0'
+        v-if='(featuredJobs.length !== 4)'
         class=' my-12 w-full'
       >
         <Carousel
