@@ -174,7 +174,7 @@ export default class StudentFunctions {
           }
           const newJob: any = {};
           newJob.id = job.id;
-          newJob.logo = job.company.logo.toString();
+          newJob.logo = job.company.logo ? job.company.logo.toString() : null;
           newJob.role = job.role;
           newJob.description = job.description;
           newJob.workingRights = job.workingRights;

@@ -5,17 +5,17 @@
   >
     <div>
       <div class='flex justify-center min-w-0 mx-5'>
-        <font-awesome-icon
-          v-if='imagePath'
-          icon='building'
-          class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
-        />
         <img
-          v-else
+          v-if='!!imagePath'
           :src='imagePath'
           class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
           alt='sponsor logo'
         >
+        <font-awesome-icon
+          v-else
+          icon='building'
+          class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
+        />
       </div>
       <h3 class='text-xl font-bold mx-4 mb-4'>
         {{ jobTitle }}

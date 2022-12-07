@@ -108,7 +108,7 @@
               :jobTitle='job.role'
               :jobDescription='job.description'
               :jobTag='job.workingRights'
-              :imagePath='job.logo'
+              :imagePath='job.logo ? job.logo.toString() : ""'
             />
           </Slide>
           <template #addons>
@@ -212,7 +212,7 @@ const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
 const showRecruitmentModal = ref(false);
-const featuredJobs = ref([]);
+const featuredJobs = ref<any>([]);
 
 onMounted(async () => {
   // Change the page title
