@@ -5,7 +5,13 @@
   >
     <div>
       <div class='flex justify-center min-w-0 mx-5'>
+        <font-awesome-icon
+          v-if='imagePath'
+          icon='building'
+          class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
+        />
         <img
+          v-else
           :src='imagePath'
           class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
           alt='sponsor logo'
@@ -20,7 +26,7 @@
           :key='idx'
           class='flex justify-center items-center rounded-md my-1 mx-1 px-2 h-6 bg-jb-tags text-base'
         >
-          {{ tag }}
+          {{ workingRightsObject[tag as keyof typeof workingRightsObject] }}
         </div>
       </div>
       <p
@@ -35,9 +41,13 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { WorkingRights } from '@/constants/job-fields';
 
 const router = useRouter();
+
+const workingRightsObject = ref(WorkingRights);
 
 defineProps({
   jobTitle: {

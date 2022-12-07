@@ -78,7 +78,7 @@
         </span>
         .
       </p>
-      <div class=' my-12 w-full'>
+      <div v-if='featuredJobs.length !== 0' class=' my-12 w-full'>
         <Carousel
           :items-to-show='1'
           :wrap-around='true'
@@ -207,56 +207,19 @@ import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import FeaturedJobCard from '@/components/FeaturedJobCard.vue';
 import SponsorCarousel from '@/components/SponsorCarousel.vue';
-import awsLogo from '@/assets/companies/awsLogo.png';
-import AtlassianLogo from '@/assets/companies/atlassianLogo.png';
-import CanvaLogo from '@/assets/companies/canvaLogo.png';
-import PearlerLogo from '@/assets/companies/PearlerLogo.png';
 
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
 const showRecruitmentModal = ref(false);
-const featuredJobs = ref();
+const featuredJobs = ref([]);
 
-onMounted(() => {
+onMounted(async () => {
   // Change the page title
   document.title = useRoute().meta.title;
   apiTokenStore.clearApiToken();
   getFeaturedJobs();
 });
-
-// vue3-carousel requires an array of objects to be passed in as the v-for.
-// To be replaced with featured job data from the backend.
-// const featuredJob = [
-//   {
-//     id: 0,
-//     jobTitle: 'Full Stack Software Engineer',
-//     jobDescription: 'We\'re looking for an outcome-oriented person who is motivated to see great engineering help innovate on product. You love working with other engineers and are excited to be part of an engaged...',
-//     jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
-//     imagePath: PearlerLogo,
-//   },
-//   {
-//     id: 1,
-//     jobTitle: '2023 Software Development Graduate',
-//     jobDescription: 'Amazon is looking for passionate Graduate Software Development Engineers (SDEs) to join our team. You will build software for Amazon\'s rapid fulfillment businesses for use across the globe.',
-//     jobTag: ['AU/NZ Citizens', 'Australian PR'],
-//     imagePath: awsLogo,
-//   },
-//   {
-//     id: 2,
-//     jobTitle: 'Software Engineer, 2023 Graduate',
-//     jobDescription: 'Want the freedom to be creative? How about the time and resources to make them a reality? Yes? Great. We build software for the world\'s most accomplished thinkers.That means we need our own team...',
-//     jobTag: ['AU/NZ Citizens', 'Australian PR'],
-//     imagePath: AtlassianLogo,
-//   },
-//   {
-//     id: 3,
-//     jobTitle: 'Security Engineering Intern (Summer 22/23)',
-//     jobDescription: 'We\'re looking for the next generation of Canvanauts! Be part of Canva\'s AAGE award-winning Summer Internship Program and get the opportunity to do meaningful work and...',
-//     jobTag: ['AU/NZ Citizens', 'Australian PR', 'Internationals'],
-//     imagePath: CanvaLogo,
-//   },
-// ];
 
 const getFeaturedJobs = async () => {
   const response = await fetch(`${config.apiRoot}/featured-jobs`);
