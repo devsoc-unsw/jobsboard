@@ -44,7 +44,10 @@ Logger.Init();
 const app = express();
 const port = process.env.SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({ limit: '5mb' }));
+app.use(express.urlencoded({ 
+  limit: '5mb',
+  extended: true
+}));
 app.use(helmet());
 
 let corsOptions;
