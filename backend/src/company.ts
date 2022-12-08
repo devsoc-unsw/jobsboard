@@ -15,6 +15,7 @@ import {
   CompanyJobsRequest,
   CreateCompanyRequest,
   CreateJobRequest,
+  GetCompanyHiddenJobs,
 } from './interfaces/interfaces';
 
 export default class CompanyFunctions {
@@ -317,7 +318,7 @@ export default class CompanyFunctions {
 
   public static async GetCompanyHiddenJobs(
     this: void,
-    req: any,
+    req: GetCompanyHiddenJobs,
     res: Response,
     next: NextFunction,
   ) {
@@ -329,7 +330,8 @@ export default class CompanyFunctions {
 
         Logger.Info(`COMPANY_ACCOUNT=${req.companyID} attempting to list all of its hidden jobs`);
 
-        const hiddenJobs = await AppDataSource.getRepository(Job)
+        const hiddenJobs = await AppDataSource
+          .getRepository(Job)
           .createQueryBuilder()
           .leftJoinAndSelect('Job.company', 'company')
           .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })

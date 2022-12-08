@@ -107,3 +107,7 @@ export interface CreateJobRequest
   extends Request<Record<string, never>, never, JobInfo>,
   CompanyAccountID,
   JbToken {}
+
+// GetCompanyHiddenJobs
+export interface GetCompanyHiddenJobs
+  extends Request, CompanyAccountID, CompanyID, JbToken {}
