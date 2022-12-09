@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 services:
   api:
     platform: linux/amd64
@@ -7,13 +7,13 @@ services:
       context: ./backend
     image: webpersonal.azurecr.io/jb-api:latest
     restart: always
-    volumes: 
+    volumes:
       - ./backend/src:/app/src     # mounts the backend/src folder to the /app/src folder in the container
       - /app/src/node_modules/     # prevent the node_modules folder from being mounted to prevent package incompatibilities
     ports:
       - 8080:8080    # host port 8080 (lhs) is mapped to container port 8080 (rhs)
     expose:
-      - 8080         # container port 8080 is exposed to other services in the container
+      - 8080         
     links:
       - db           # set db as a dependency of api
     environment:
@@ -24,7 +24,7 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=mysecretpassword
       - DB_NAME=postgres
-  
+
   frontend:
     build:
       context: ./frontend
@@ -53,7 +53,7 @@ services:
       - 5432:5432 # we want to expose port `5432` on our computer and map it to 5432 in the container
     expose:
       - 5432
-    environment: 
+    environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
@@ -63,7 +63,7 @@ services:
     build:
       dockerfile: test.dockerfile
       context: ./backend
-    links: 
+    links:
       - db
 
 volumes:
