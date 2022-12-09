@@ -20,14 +20,3 @@ COPY tsconfig.json .
 EXPOSE 8080
 
 CMD node ./dist/index.js
-# CMD yarn run dev
-# CMD ["yarn", "run", "dev"]
-# CMD ["yarn", "run", "dev"]
-
-# CMD ["yarn", "run", "serve"]
-
-# ENTRYPOINT [ "yarn", "run", "dev" ]
-# ENTRYPOINT [ "yarn", "run", "serve" ]
-
-
-# CMD yarn dev
