@@ -169,7 +169,7 @@
                 >
                   <img
                     v-if='logo'
-                    class='h-60'
+                    class='w-16 md:w-32 lg:w-48'
                     :src='preview'
                   >
                   <div
@@ -285,8 +285,7 @@ const uploadLogo = async () => {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+    },
     body: JSON.stringify({
       logo: convertedFile,
     }),

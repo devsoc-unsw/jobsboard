@@ -20,14 +20,14 @@ const props = defineProps({
   description: String,
 });
 
-const finalDescription = ref<string[]>(['']);
+const finalDescription = ref(['']);
 
 const parseText = () => {
   let splitDescription = props.description?.split('\n');
 
   let listFlag = false;
   for (let lineIndex in splitDescription) {
-    let line = splitDescription[lineIndex as any];
+    let line = splitDescription[Number(lineIndex)];
     // apply italics
     line = line.replace(/_(\s+)_/g, (match: string, italicContent: string) => `<i>${italicContent}</i>`);
     if (line.startsWith('- ')) {
@@ -48,11 +48,6 @@ const parseText = () => {
       finalDescription.value.push(line);
     }
   }
-};
-
-const updated = () => {
-  // TODO this is causing problems
-  // this.parseText();
 };
 </script>
 

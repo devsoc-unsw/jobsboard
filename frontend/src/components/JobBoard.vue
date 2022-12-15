@@ -34,7 +34,7 @@
 import JobProfileCard from '@/components/JobProfileCard.vue';
 import PostJobCard from '@/components/PostJobCard.vue';
 
-const props = defineProps({
+defineProps({
   jobList: Object,
   listName: String,
 });

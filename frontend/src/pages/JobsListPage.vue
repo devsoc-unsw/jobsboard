@@ -12,7 +12,7 @@
         <h3 class='text-xl text-left'>
           Still struggling to find a job...
         </h3>
-        <h1 class='text-3xl my-2 font-extrabold text-jb-headings text-left'>
+        <h1 class='text-3xl my-2 font-bold text-jb-headings text-left'>
           Explore Our Curated List of Jobs
         </h1>
         <h3 class='text-xl my-3 mb-8 text-left'>
@@ -24,7 +24,7 @@
           <BenefitCard
             title='All jobs are paid'
             description='Student&apos;s welfare is always our
-              top priority,which is why we ensure that
+              top priority, which is why we ensure that
               all jobs that you see here are paid.'
             icon='money-bills'
             iconColor=''
@@ -93,7 +93,7 @@
             v-if='filteredJobs.length === 0 && !isLoading'
             class='max-w-4xl my-16 px-6 text-center'
           >
-            <h2 class='text-3xl my-2 font-extrabold text-jb-headings'>
+            <h2 class='text-3xl my-2 font-bold text-jb-headings'>
               Sorry, it doesn't seem like we have any jobs right now
             </h2>
             <h3 class='text-xl my-6'>
@@ -128,12 +128,12 @@ import TransitionLoading from '@/animations/TransitionLoading.vue';
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const error = ref<boolean>(false);
-const errorMsg = ref<string>('');
+const error = ref(false);
+const errorMsg = ref('');
 const jobs = ref<any[]>([]);
-const query = ref<string>('');
-const loadMoreJobsLock = ref<boolean>(false);
-const isLoading = ref<boolean>(true);
+const query = ref('');
+const loadMoreJobsLock = ref(false);
+const isLoading = ref(true);
 
 onMounted(() => {
   // Change the page title
@@ -158,8 +158,8 @@ const loadMoreJobs = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
   isLoading.value = false;
   if (response.ok) {

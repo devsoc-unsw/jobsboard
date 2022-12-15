@@ -9,25 +9,8 @@
 </template>
 
 <script setup lang="ts">
-import { useApiTokenStore } from '@/store/apiToken';
-import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
-
-const apiTokenStore = useApiTokenStore();
-const router = useRouter();
-
-const props = defineProps({
-  loggedIn: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-const logOut = () => {
-  apiTokenStore.clearApiToken();
-  router.push('/login/company');
-};
 </script>
 
 <style lang="scss">

@@ -6,10 +6,16 @@
     <div>
       <div class='flex justify-center min-w-0 mx-5'>
         <img
+          v-if='!!imagePath'
           :src='imagePath'
           class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
           alt='sponsor logo'
         >
+        <font-awesome-icon
+          v-else
+          icon='building'
+          class='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
+        />
       </div>
       <h3 class='text-xl font-bold mx-4 mb-4'>
         {{ jobTitle }}
@@ -20,7 +26,7 @@
           :key='idx'
           class='flex justify-center items-center rounded-md my-1 mx-1 px-2 h-6 bg-jb-tags text-base'
         >
-          {{ tag }}
+          {{ workingRightsObject[tag as keyof typeof workingRightsObject] }}
         </div>
       </div>
       <p
@@ -35,28 +41,32 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { WorkingRights } from '@/constants/job-fields';
 
 const router = useRouter();
 
-  const props = defineProps({
-    jobTitle: {
-      type: String,
-      required: true,
-    },
-    jobDescription: {
-      type: String,
-      required: true,
-    },
-    jobTag: {
-      type: Array,
-      required: true,
-    },
-    imagePath: {
-      type: String,
-      required: true,
-    },
-  });
+const workingRightsObject = ref(WorkingRights);
+
+defineProps({
+  jobTitle: {
+    type: String,
+    required: true,
+  },
+  jobDescription: {
+    type: String,
+    required: true,
+  },
+  jobTag: {
+    type: Array,
+    required: true,
+  },
+  imagePath: {
+    type: String,
+    required: true,
+  },
+});
 </script>
 
 <style scoped lang="scss">
