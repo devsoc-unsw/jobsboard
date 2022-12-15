@@ -100,6 +100,7 @@ export default class CompanyFunctions {
     );
   }
 
+  // TODO: refactor using logo
   public static async CreateCompany(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
@@ -110,13 +111,15 @@ export default class CompanyFunctions {
           name: req.body.name,
           password: req.body.password,
           username: req.body.username,
+          logo: req.body.logo,
         };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
         Helpers.requireParameters(msg.name);
         Helpers.requireParameters(msg.location);
+        Helpers.requireParameters(msg.logo);
         Logger.Info(
-          `Attempting to create company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
+          `Attempting to create company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location} LOGO=${msg.logo}`,
         );
         // check if the company account exists with the same name
         // using the original typeorm OR convention fails to construct a suitable MySQL
@@ -140,6 +143,7 @@ export default class CompanyFunctions {
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
+        newCompany.logo = msg.logo;
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;
         newCompanyAccount.hash = Secrets.hash(msg.password);

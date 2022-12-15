@@ -171,6 +171,7 @@ describe("company", () => {
             password: "test",
             name: "Another test company",
             location: "Sydney",
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(400)
           .end(function (err, res) {
@@ -190,6 +191,7 @@ describe("company", () => {
             password: "testing auth",
             name: "Another test company",
             location: "Sydney",
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(409)
           .end(function (err, res) {
@@ -209,6 +211,7 @@ describe("company", () => {
             password: "testing auth",
             name: "Test company",
             location: "Sydney",
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(409)
           .end(function (err, res) {
@@ -227,6 +230,7 @@ describe("company", () => {
             password: "testing auth",
             name: "Yet another testing company",
             location: "Amsterdam",
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(200)
           .end(function (err, res) {

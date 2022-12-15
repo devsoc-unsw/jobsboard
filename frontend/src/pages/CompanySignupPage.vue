@@ -227,7 +227,7 @@
         type='submit'
         class='bg-jb-textlink rounded-md w-40 h-11 my-4 p-2 text-white font-bold text-base
                border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-        @click='performSignup() ; uploadLogo()'
+        @click='performSignup()'
       >
         Sign Up
       </button>
@@ -244,10 +244,8 @@ import config from '@/config/config';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Alert from '@/components/Alert.vue';
 import TransitionLoading from '@/animations/TransitionLoading.vue';
-import { useApiTokenStore } from '@/store/apiToken';
 
 const router = useRouter();
-const apiTokenStore = useApiTokenStore();
 
 const username = ref<string>('');
 const password = ref<string>('');
@@ -273,23 +271,6 @@ const toBase64 = (file: any) => {
 const updateLogo = (e: Event) => {
   logo.value = (e.target as HTMLInputElement).files![0];
   preview.value = URL.createObjectURL(logo.value);
-};
-
-const uploadLogo = async () => {
-  if (!logo.value) {
-    return;
-  }
-
-  const convertedFile = await toBase64(logo.value);
-  await fetch(`${config.apiRoot}/company/update/logo`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      logo: convertedFile,
-    }),
-  });
 };
 
 const validateInput = () => {
@@ -321,6 +302,7 @@ const performSignup = async () => {
     isLoading.value = false;
     return;
   }
+  const convertedFile = await toBase64(logo.value);
   const response = await fetch(`${config.apiRoot}/company`, {
     method: 'PUT',
     headers: {
@@ -332,6 +314,7 @@ const performSignup = async () => {
       password: password.value,
       name: name.value,
       location: location.value,
+      logo: convertedFile,
     }),
   });
 
