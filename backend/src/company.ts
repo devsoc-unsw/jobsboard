@@ -110,11 +110,13 @@ export default class CompanyFunctions {
           name: req.body.name,
           password: req.body.password,
           username: req.body.username,
+          logo: req.body.logo,
         };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
         Helpers.requireParameters(msg.name);
         Helpers.requireParameters(msg.location);
+        Helpers.requireParameters(msg.logo);
         Logger.Info(
           `Attempting to create company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
         );
@@ -140,6 +142,7 @@ export default class CompanyFunctions {
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
+        newCompany.logo = msg.logo;
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;
         newCompanyAccount.hash = Secrets.hash(msg.password);

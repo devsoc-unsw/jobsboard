@@ -178,6 +178,7 @@ describe("authentication", () => {
           password: "testPassword",
           location: "Sydney",
           name: "Such Company, Really Big Wow",
+          logo: Buffer.from("test string", 'utf8').toString('base64'),   // base64 encoded string
         };
 
         await server

@@ -155,6 +155,57 @@
             Location
           </label>
         </div>
+
+        <!-- Company Logo Input -->
+        <div class='relative group mt-4 mb-6'>
+          <div
+            class='mt-1 flex justify-center rounded-md border-4 border-dashed border-gray-300 hover:bg-gray-100 bg-white px-6 pt-5 pb-6 shadow-btn'
+          >
+            <div class='space-y-1 text-center'>
+              <div class='flex text-sm text-gray-600'>
+                <label
+                  for='logo'
+                  class='relative cursor-pointer rounded-md font-medium text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered'
+                >
+                  <img
+                    v-if='logo'
+                    class='w-16 md:w-32 lg:w-48'
+                    :src='preview'
+                  >
+                  <div
+                    v-else
+                    :src='preview'
+                  >
+                    <svg
+                      class='mx-auto h-12 w-12 text-gray-400'
+                      stroke='currentColor'
+                      fill='none'
+                      viewBox='0 0 48 48'
+                      aria-hidden='true'
+                    >
+                      <path
+                        d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
+                        stroke-width='2'
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                      />
+                    </svg>
+                    <p class='text-lg font-bold justify-center'>{{ logo ? logo.name : "Upload logo" }}</p>
+                  </div>
+                  <input
+                    id='logo'
+                    name='logo'
+                    type='file'
+                    accept='image/jpeg, image/png, image/jpg'
+                    class='hidden'
+                    required
+                    @change='updateLogo'
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
 
       <p class='text-lg text-jb-subheadings text-center'>
@@ -196,21 +247,37 @@ import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 const router = useRouter();
 
-const username = ref('');
-const password = ref('');
-const name = ref('');
-const location = ref('');
-const isAlertOpen = ref(false);
-const alertType = ref('error');
-const alertMsg = ref('');
-const confirmPassword = ref('');
-const isLoading = ref(false);
+const username = ref<string>('');
+const password = ref<string>('');
+const name = ref<string>('');
+const location = ref<string>('');
+const isAlertOpen = ref<boolean>(false);
+const alertType = ref<string>('error');
+const alertMsg = ref<string>('');
+const confirmPassword = ref<string>('');
+const logo = ref<any>(null);
+const preview = ref<any>(null);
+const isLoading = ref<boolean>(false);
+
+const toBase64 = (file: any) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+};
+
+const updateLogo = (e: Event) => {
+  logo.value = (e.target as HTMLInputElement).files![0];
+  preview.value = URL.createObjectURL(logo.value);
+};
 
 const validateInput = () => {
-  if (username.value === '') {
+  if (username.value === '' || password.value === '' || confirmPassword.value === '' || name.value === '' || location.value === '' || logo.value === '') {
     isAlertOpen.value = true;
     alertType.value = 'error';
-    alertMsg.value = 'Email cannot be empty. Please try again.';
+    alertMsg.value = 'One or more fields are empty. Please try again';
     return false;
   } else if (!username.value.match(
       /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
@@ -219,30 +286,10 @@ const validateInput = () => {
     alertType.value = 'error';
     alertMsg.value = 'Please enter a valid email address.';
     return false;
-  } else if (password.value === '') {
-    isAlertOpen.value = true;
-    alertType.value = 'error';
-    alertMsg.value = 'Password cannot be empty. Please try again.';
-    return false;
-  } else if (confirmPassword.value === '') {
-    isAlertOpen.value = true;
-    alertType.value = 'error';
-    alertMsg.value = 'Confirm password input cannot be empty. Please try again';
-    return false;
   } else if (password.value !== confirmPassword.value) {
     isAlertOpen.value = true;
     alertType.value = 'error';
     alertMsg.value = 'Passwords do not match. Please try again';
-    return false;
-  } else if (name.value === '') {
-    isAlertOpen.value = true;
-    alertType.value = 'error';
-    alertMsg.value = 'Company name cannot be empty. Please try again.';
-    return false;
-  } else if (location.value === '') {
-    isAlertOpen.value = true;
-    alertType.value = 'error';
-    alertMsg.value = 'Company location cannot be empty. Please try again.';
     return false;
   }
   return true;
@@ -255,6 +302,7 @@ const performSignup = async () => {
     isLoading.value = false;
     return;
   }
+  const convertedFile = await toBase64(logo.value);
   const response = await fetch(`${config.apiRoot}/company`, {
     method: 'PUT',
     headers: {
@@ -266,6 +314,7 @@ const performSignup = async () => {
       password: password.value,
       name: name.value,
       location: location.value,
+      logo: convertedFile,
     }),
   });
 
@@ -291,8 +340,8 @@ const performSignup = async () => {
 };
 
 onMounted(() => {
-    // Change the page title
-    document.title = useRoute().meta.title;
+  // Change the page title
+  document.title = useRoute().meta.title;
 });
 </script>
 
