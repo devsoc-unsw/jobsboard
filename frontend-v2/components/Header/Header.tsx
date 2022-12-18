@@ -1,7 +1,9 @@
+"use client"
 import React from 'react'
 import logo from 'assets/logos/csesocwhite.png';
 import moon from 'assets/misc/moon.svg';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 // .tooltipText {
 //   top: 150%;
@@ -20,10 +22,11 @@ import Image from 'next/image';
 // }
 
 const Header = () => {
-  // const router = useRouter();
+  const router = useRouter();
   // const apiTokenStore = useApiTokenStore();
 
   // const apiToken = ref(apiTokenStore.getApiToken());
+  const apiToken = true;
 
   // onMounted(async () => {
   //   setTimeout(() => {
@@ -33,10 +36,10 @@ const Header = () => {
   //   }, 10);
   // });
 
-  // const logOut = () => {
-  //   apiTokenStore.clearApiToken();
-  //   router.push('/login/student');
-  // };
+  const handleLogout = () => {
+    // apiTokenStore.clearApiToken();
+    router.push('/login/student');
+  };
 
   return (
     <div
@@ -47,8 +50,7 @@ const Header = () => {
       className='w-[10%] cursor-pointer xl:w-[15%] lg:w-[17%] md:w-[20%] sm:w-[25%]'
       src={logo}
       alt='CSESoc'
-      // TODO
-      // @click='() => { router.push(`/`) }'
+      onClick={() => router.push("/")}
     />
     <div className='flex justify-evenly items-center'>
       <div className='group fill-black cursor-pointer w-[20%] mr-5 sm:mr-2.5 relative inline-block'>
@@ -62,28 +64,21 @@ const Header = () => {
           Coming soon
         </span>
       </div>
-      <div v-if='!apiToken'>
-        <button
+      {apiToken ? <button
           className='bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[2px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg'
-          // TODO
-          // @click='() => { router.push(`/login/student`) }'
+                 onClick={() => router.push("/login/student")}
         >
           Log In
-        </button>
-      </div>
-      <div v-else>
-        <button
+        </button> : <button
           className='bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[5px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg'
-          // TODO
-          // @click='logOut'
+          onClick={handleLogout}
         >
           Logout
-        </button>
-      </div>
+        </button> }
     </div>
   </div>
   )

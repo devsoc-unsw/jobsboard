@@ -7,9 +7,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
-const LoginStudentPage = () => {
+const LoginCompanyPage = () => {
   const [hidePassword, setHidePassword] = useState(true)
-  const [zID, setZID] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
@@ -19,7 +19,7 @@ const LoginStudentPage = () => {
   const performLogin = async () => {
     setIsLoading(true)
     const response = await fetch(
-      `${api.baseURL}/authenticate/student`,
+      `${api.baseURL}/authenticate/company`,
     {
       method: 'POST',
       headers: {
@@ -27,7 +27,7 @@ const LoginStudentPage = () => {
       },
       // mode: "no-cors",
       body: JSON.stringify({
-        zID,
+        username,
         password,
       }),
     });
@@ -36,7 +36,7 @@ const LoginStudentPage = () => {
       const msg = await response.json();
       // apiTokenStore.setApiToken(msg.token);
       setAlertOpen(false)
-      router.push('/jobs');
+      router.push('/company/home');
     } else {
       window.scrollTo({
         top: 0,
@@ -48,13 +48,12 @@ const LoginStudentPage = () => {
   };
 
   return (
-    <div>
-      <div className='h-full flex flex-col justify-center items-center py-16'>
+    <div><div className='h-full flex flex-col justify-center items-center py-16'>
     <h1 className='font-bold text-3xl text-jb-headings'>
-      Student Login
+      Company Login
     </h1>
     <p className='text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8'>
-      Enter your zID in the format zXXXXXXX and your zPassword.
+      Enter your email in the format example@company.com and your password.
     </p>
 
     {/* <!-- Error Alert --> */}
@@ -64,36 +63,39 @@ const LoginStudentPage = () => {
       open={alertOpen}
       onClose={() => setAlertOpen(false)}
     />
+
     <form className='flex justify-center items-center flex-col w-full'>
-      {/* <!-- zId Input --> */}
-      <div className='w-2/5 relative group mt-4 mb-6 md:w-1/2 sm:w-4/5'>
+      {/* <!-- Email Input --> */}
+      <div className='w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
         <input
-          id='zID'
-          name='zID'
+          id='email'
+          v-model='username'
+          name='email'
           type='text'
-          className='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
+          className='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer'
           autoComplete='username'
           required
-          onChange={(e) => setZID(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           onKeyUp={(e) => {
             if (e.key === 'Enter') performLogin()
           }}
         />
         <label
-          htmlFor='zID'
+          htmlFor='email'
           className='transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink'
         >
-          zID
+          Email
         </label>
       </div>
 
       {/* <!-- Password Input --> */}
-      <div className='w-2/5 relative group mt-4 mb-6 md:w-1/2 sm:w-4/5'>
+      <div className='w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5'>
         <input
           id='password'
+          v-model='password'
           name='password'
           type={hidePassword ? "password" : "text"}
           className='font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer'
@@ -122,13 +124,34 @@ const LoginStudentPage = () => {
     </form>
 
     <p className='text-lg text-jb-subheadings text-center'>
-      Not a student?&nbsp;
+      Not a company?&nbsp;
       <Link
         className='text-jb-textlink font-bold transition-colors duration-200 ease-linear
                   cursor-pointer hover:text-jb-textlink-hovered'
-        href='/login/company'
+        href='/login/student'
       >
-        Company Login
+        Student Login
+      </Link>
+    </p>
+
+    <p className='text-lg text-jb-subheadings text-center my-2'>
+      Forgot your password?&nbsp;
+      <Link
+        className='text-jb-textlink font-bold transition-colors duration-200 ease-linear
+                      cursor-pointer hover:text-jb-textlink-hovered'
+        href='/company/password-forgot'
+      >
+        Reset Your Password
+      </Link>
+    </p>
+    <p className='text-lg text-jb-subheadings text-center my-2 mb-6'>
+      Don&apos;t have an account?
+      <Link
+        className='text-jb-textlink font-bold transition-colors duration-200 ease-linear
+                cursor-pointer hover:text-jb-textlink-hovered'
+        href='/signup/company'
+      >
+        Create one!
       </Link>
     </p>
     {isLoading ? <Loading />: <button
@@ -141,4 +164,4 @@ const LoginStudentPage = () => {
   )
 }
 
-export default LoginStudentPage
+export default LoginCompanyPage
