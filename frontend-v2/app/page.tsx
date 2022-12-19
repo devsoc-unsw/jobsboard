@@ -171,7 +171,7 @@ const HomePage = () => {
           <button
             className='bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0
                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-            onClick={() => router.push("/signup/company")}
+            onClick={() => router.push("/company/signup")}
           >
             Join Us
           </button>

@@ -1,9 +1,10 @@
 "use client"
-import React from 'react'
+import React, { useContext } from 'react'
 import logo from 'assets/logos/csesocwhite.png';
 import moon from 'assets/misc/moon.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import AppContext from 'app/AppContext';
 
 // .tooltipText {
 //   top: 150%;
@@ -23,23 +24,14 @@ import { useRouter } from 'next/navigation';
 
 const Header = () => {
   const router = useRouter();
-  // const apiTokenStore = useApiTokenStore();
-
-  // const apiToken = ref(apiTokenStore.getApiToken());
-  const apiToken = true;
-
-  // onMounted(async () => {
-  //   setTimeout(() => {
-  //     if (!apiTokenStore.getApiToken()) {
-  //       apiToken.value = '';
-  //     }
-  //   }, 10);
-  // });
+  const { apiToken, resetApiToken } = useContext(AppContext);
 
   const handleLogout = () => {
-    // apiTokenStore.clearApiToken();
+    resetApiToken()
     router.push('/login/student');
   };
+
+  console.log(apiToken)
 
   return (
     <div
@@ -64,7 +56,7 @@ const Header = () => {
           Coming soon
         </span>
       </div>
-      {apiToken ? <button
+      {!apiToken ? <button
           className='bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[2px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg'

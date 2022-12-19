@@ -2,14 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import styles from './styles.module.css'
 
+export type AlertType = "error" | "success"
+
 type Props = {
   open: boolean,
-  type: "error" | "success",
+  type?: AlertType,
   message: string,
   onClose?: () => void,
 }
 
-const Alert = ({open, type, message, onClose}: Props) => {
+const Alert = ({open, type = "error", message, onClose}: Props) => {
   const getContainerStyles = () => {
     return type === 'error' ? styles.errorContainer : styles.successContainer;
   };
@@ -37,9 +39,7 @@ const Alert = ({open, type, message, onClose}: Props) => {
         {message}
       </div>
       <button
-        type='button'
-        className={`ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex justify-center items-center h-8 w-8 ${getButtonStyles()}`}
-        aria-label='Close'
+        type='button' className={`ml-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex justify-center items-center h-8 w-8 ${getButtonStyles()}`} aria-label='Close'
         onClick={onClose}
       >
         <span className='sr-only'>Close</span>

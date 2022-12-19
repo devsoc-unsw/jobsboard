@@ -1,11 +1,13 @@
 "use client"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AppContext from 'app/AppContext'
 import Alert from 'components/Alert/Alert'
 import Loading from 'components/Loading/Loading'
 import api from 'config/api'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { AuthenticationPayload } from 'types/student'
 
 const LoginCompanyPage = () => {
   const [hidePassword, setHidePassword] = useState(true)
@@ -13,31 +15,23 @@ const LoginCompanyPage = () => {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
+  const { setApiToken } = useContext(AppContext)
 
   const router = useRouter()
 
   const performLogin = async () => {
     setIsLoading(true)
-    const response = await fetch(
-      `${api.baseURL}/authenticate/admin`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // mode: "no-cors",
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
-  
-    if (response.ok) {
-      const msg = await response.json();
-      // apiTokenStore.setApiToken(msg.token);
-      setAlertOpen(false)
-      router.push('/admin/home');
-    } else {
+    try {
+      const res = await api.post<AuthenticationPayload>('/authenticate/admin', {
+          username,
+          password,
+      })    
+      if (res.status === 200) {
+        setApiToken(res.data.token);
+        setAlertOpen(false)
+        router.push('/admin/home');
+      }
+    } catch(e) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth',

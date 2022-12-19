@@ -1,11 +1,13 @@
 "use client"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AppContext from 'app/AppContext'
 import Alert from 'components/Alert/Alert'
 import Loading from 'components/Loading/Loading'
 import api from 'config/api'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { AuthenticationPayload } from 'types/student'
 
 const LoginCompanyPage = () => {
   const [hidePassword, setHidePassword] = useState(true)
@@ -13,28 +15,19 @@ const LoginCompanyPage = () => {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
+  const { setApiToken } = useContext(AppContext)
 
   const router = useRouter()
 
   const performLogin = async () => {
     setIsLoading(true)
-    const response = await fetch(
-      `${api.baseURL}/authenticate/company`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // mode: "no-cors",
-      body: JSON.stringify({
+    const res = await api.post<AuthenticationPayload>('/authenticate/company', {
         username,
         password,
-      }),
-    });
+    })
   
-    if (response.ok) {
-      const msg = await response.json();
-      // apiTokenStore.setApiToken(msg.token);
+    if (res.status === 200) {
+      setApiToken(res.data.token);
       setAlertOpen(false)
       router.push('/company/home');
     } else {
@@ -139,13 +132,13 @@ const LoginCompanyPage = () => {
       <Link
         className='text-jb-textlink font-bold transition-colors duration-200 ease-linear
                       cursor-pointer hover:text-jb-textlink-hovered'
-        href='/company/password-forgot'
+        href='/company/forgot'
       >
         Reset Your Password
       </Link>
     </p>
     <p className='text-lg text-jb-subheadings text-center my-2 mb-6'>
-      Don&apos;t have an account?
+      Don&apos;t have an account?&nbsp;
       <Link
         className='text-jb-textlink font-bold transition-colors duration-200 ease-linear
                 cursor-pointer hover:text-jb-textlink-hovered'

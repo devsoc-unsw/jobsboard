@@ -1,11 +1,13 @@
 "use client"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AppContext from 'app/AppContext'
 import Alert from 'components/Alert/Alert'
 import Loading from 'components/Loading/Loading'
 import api from 'config/api'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { AuthenticationPayload } from 'types/student'
 
 const LoginStudentPage = () => {
   const [hidePassword, setHidePassword] = useState(true)
@@ -13,31 +15,23 @@ const LoginStudentPage = () => {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
+  const { setApiToken } = useContext(AppContext)
 
   const router = useRouter()
 
   const performLogin = async () => {
     setIsLoading(true)
-    const response = await fetch(
-      `${api.baseURL}/authenticate/student`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // mode: "no-cors",
-      body: JSON.stringify({
-        zID,
-        password,
-      }),
-    });
-  
-    if (response.ok) {
-      const msg = await response.json();
-      // apiTokenStore.setApiToken(msg.token);
-      setAlertOpen(false)
-      router.push('/jobs');
-    } else {
+    try {
+      const res = await api.post<AuthenticationPayload>('/authenticate/student', {
+          zID,
+          password,
+      })
+      if (res.status === 200) {
+        setApiToken(res.data.token);
+        setAlertOpen(false)
+        router.push('/jobs');
+      }
+    } catch(e) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth',

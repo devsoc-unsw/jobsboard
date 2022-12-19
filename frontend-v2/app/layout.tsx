@@ -82,6 +82,7 @@ library.add(faEye);
 library.add(faEyeSlash);
 
 import { Assistant } from '@next/font/google'
+import AppProvider from "./AppProvider";
 
 const assistant = Assistant({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
@@ -97,11 +98,13 @@ export default function RootLayout({
     <html>
       <head />
       <body className={assistant.className}>
-        <Header />
-        <div className={styles.pageContainer}>
-          {children}
-        </div>
-        <Footer />
+        <AppProvider>
+          <Header />
+          <div className={styles.pageContainer}>
+            {children}
+          </div>
+          <Footer />
+        </AppProvider>
       </body>
     </html>
   )
