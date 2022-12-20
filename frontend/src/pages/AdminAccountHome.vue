@@ -184,7 +184,7 @@ onMounted(async () => {
     if (response.status === 401) {
       alertMsg.value = 'You are not authorized to perform this action. Redirecting to login page.';
       setTimeout(() => {
-        router.push('/');
+        // router.push('/');
       }, 5000);
     } else {
       alertMsg.value = 'Failed to get pending companies. You might want to check what\'s happening in the console.';
@@ -209,7 +209,7 @@ onMounted(async () => {
     if (pendingJobsResponse.status === 401) {
       alertMsg.value = 'You are not authorized to perform this action. Redirecting to login page...';
       setTimeout(() => {
-        router.push('/');
+        // router.push('/');
       }, 5000);
     } else {
       alertMsg.value = 'Failed to get pending jobs. You might want to check what\'s happening in the console.';
