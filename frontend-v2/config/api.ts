@@ -8,8 +8,8 @@ import axios from "axios";
 // };
 
 const api = axios.create({
-  // baseURL: 'https://jobsboard.csesoc.unsw.edu.au/api',
-  baseURL: 'http://localhost:8080/',
+  baseURL: 'https://jobsboard.staging.csesoc.unsw.edu.au/api',
+  // baseURL: 'http://localhost:8080/',
   timeout: 1000,
   headers: {'Content-Type': 'application/json', 'Accept': 'application/json' }
 });

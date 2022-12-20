@@ -1,14 +1,16 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 
 type Props = {
   title: string;
   description: string;
+  icon: any;
 }
 
-const BenefitCard = ({ title, description }: Props) => {
+const BenefitCard = ({ title, description, icon }: Props) => {
   return (
     <div className='w-64 md:w-auto md:my-3'>
-    {/* <font-awesome-icon :icon='icon' /> */}
+      <FontAwesomeIcon icon={icon} />
     <br />
     <h1 className='text-xl text-jb-headings font-bold mb-2'>
       {title}
