@@ -31,8 +31,6 @@ const Header = () => {
     router.push('/login/student');
   };
 
-  console.log(apiToken)
-
   return (
     <div
     className='flex justify-evenly items-center py-4 px-[5%]
