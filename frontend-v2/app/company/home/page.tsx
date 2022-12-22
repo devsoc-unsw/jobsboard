@@ -1,6 +1,9 @@
 "use client"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import JobBoard from 'components/JobBoard/JobBoard';
 import api from 'config/api';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
 
@@ -11,7 +14,7 @@ const CompanyHomePage = () => {
   const [jobs, setJobs] = useState([])
   const [expiredJobs, setExpiredJobs] = useState([])
   const [boardStatus, setBoardStatus] = useState('postedJobs')
-  const [showModal, setShowModal] = useState(false)
+  const [openModal, setOpenModal] = useState(false)
   const [logo, setLogo] = useState<any>(null)
   const [preview, setPreview] = useState<any>(null)
 
@@ -58,7 +61,7 @@ const CompanyHomePage = () => {
     });
   };
   
-  const updateLogo = (e: Event) => {
+  const updateLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const uploadLogo = (e.target as HTMLInputElement).files![0];
     setLogo(uploadLogo)
     setPreview(URL.createObjectURL(uploadLogo))
@@ -72,7 +75,7 @@ const CompanyHomePage = () => {
     })
   
     if (res.status !== 200) {
-      setShowModal(true)
+      setOpenModal(true)
     }
   };
   
@@ -88,7 +91,7 @@ const CompanyHomePage = () => {
       },
       logo: convertedFile,
     })
-    setShowModal(false)  
+    setOpenModal(false)  
   };
   
   const getHiddenJobs = async () => {
@@ -137,7 +140,7 @@ const CompanyHomePage = () => {
 
   return (
     <div>
-      {showModal && <div>
+      {openModal && <div>
         {/* <!-- Modal backdrop --> */}
         <div className='opacity-25 fixed inset-0 z-40 bg-black' />
         {/* <!-- Modal --> */}
@@ -162,24 +165,20 @@ const CompanyHomePage = () => {
                 <label
                   className='flex flex-col justify-center items-center w-full h-64 rounded-lg border-2 border-dashed cursor-pointer bg-white border-gray-600 hover:border-gray-500 hover:bg-gray-100'
                 >
-                  <img
-                    v-if='logo'
-                    className='w-3/4'
-                    src={preview}
-                  />
-                  <div
-                    v-else
+                  {logo ? <Image className='w-3/4'
+                    alt='preview logo'
+                    src={preview} /> : <div
                     className='flex flex-col justify-center items-center pt-5 pb-6'
                   >
-                    {/* <font-awesome-icon
+                    <FontAwesomeIcon
                       icon='cloud-upload'
                       className='text-jb-subheader mb-4'
                       size='3x'
-                    /> */}
+                    />
                     <p className='mb-2 text-sm'>
                       { logo && "Click to upload an image" }
                     </p>
-                  </div>
+                  </div>}
                   <input
                     accept='.jpg, .png'
                     type='file'
@@ -194,7 +193,7 @@ const CompanyHomePage = () => {
               >
                 <button
                   className='bg-red-600 rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-md-hovered'
-                  onClick={() => setShowModal(false)}
+                  onClick={() => setOpenModal(false)}
                 >
                   Cancel
                 </button>
@@ -222,10 +221,10 @@ const CompanyHomePage = () => {
         <div className='w-[700px] m-auto mt-8'>
           {/* <!-- Board select dropdown --> */}
           <div className='text-left flex ml-2'>
-            {/* <font-awesome-icon
+            <FontAwesomeIcon
               icon='bars'
               className='text-2xl'
-            /> */}
+            />
             <div>
               <select
                 id='board'
@@ -244,10 +243,10 @@ const CompanyHomePage = () => {
           </div>
         </div>
         {/* <!-- Board --> */}
-        {/* <JobBoard
-          :jobList='boardStatus === "postedJobs" ? jobs : expiredJobs'
-          :listName='boardStatus'
-        /> */}
+        <JobBoard
+          jobList={boardStatus === "postedJobs" ? jobs : expiredJobs}
+          listName={boardStatus}
+        />
 
         <h1
           className='font-bold text-4xl text-jb-headings text-center leading-[72px] mt-14'

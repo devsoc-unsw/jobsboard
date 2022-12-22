@@ -79,7 +79,7 @@ export default createRouter({
       ],
     },
   }, {
-    // halfway??
+    // started
     path: '/company/home',
     component: CompanyAccountHome,
     meta: {
