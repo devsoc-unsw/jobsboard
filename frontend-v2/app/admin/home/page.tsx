@@ -159,7 +159,7 @@ const AdminHomePage = () => {
           </p>
           <button
             className='btn btn-blue-filled h-14 p-4'
-            onClick={() => { router.push(`/admin/jobs/pending`) }}
+            onClick={() => router.push(`/admin/jobs/`)}
           >
             <FontAwesomeIcon
               icon='briefcase'

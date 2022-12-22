@@ -101,6 +101,7 @@ export default createRouter({
       ],
     },
   }, {
+    // started
     path: '/admin/jobs/pending',
     component: AdminListPendingJobs,
     meta: {
@@ -112,6 +113,7 @@ export default createRouter({
       ],
     },
   }, {
+    // started
     path: '/admin/companies/pending',
     component: AdminListCompanyPendingVerification,
     meta: {

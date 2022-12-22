@@ -132,9 +132,9 @@ const AdminCompanyPage = () => {
         </h1>
         <p className='text-jb-subheadings mb-12'>
           There {companies.length === 1 ? 'is': 'are' }
-          currently {companies.length} pending verification(s).
+          &nbsp;currently {companies.length} pending verification(s).
         </p>
-        {companies.map((company, idx) => <PendingCompanyCard
+        {companies.map((company) => <PendingCompanyCard
           key={company.id}
           companyAccountID={company.id}
           companyName={company.company.name}
