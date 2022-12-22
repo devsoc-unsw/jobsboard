@@ -104,7 +104,7 @@ const AdminHomePage = () => {
               <span className='text-jb-textlink font-bold hover:text-jb-textlink-hovered'>
                 {nPendingCompanies } companies
               </span>
-              waiting for verification and
+              &nbsp;waiting for verification and&nbsp;
               <span className='text-jb-textlink font-bold hover:text-jb-textlink-hovered'>
                 {nPendingJobs } job posts
               </span>
@@ -132,7 +132,7 @@ const AdminHomePage = () => {
           </p>
           <button
             className='btn btn-blue-filled h-14 p-4'
-            onClick={() => { router.push(`/admin/companies/pending`) }}
+            onClick={() => { router.push(`/admin/company`) }}
           >
             <FontAwesomeIcon
               icon='user-shield'
