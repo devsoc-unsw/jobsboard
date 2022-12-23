@@ -125,6 +125,7 @@ export default createRouter({
       ],
     },
   }, {
+    // TODO
     path: '/admin/jobs/post',
     component: AdminCreateJobAsCompany,
     meta: {
@@ -136,6 +137,7 @@ export default createRouter({
       ],
     },
   }, {
+    // TODO
     path: '/company/jobs/add',
     component: CompanyAddJob,
     meta: {
