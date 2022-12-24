@@ -13,7 +13,7 @@ const JobPostCard = () => {
         </p>
         <div
           className='flex justify-center items-center bg-white w-16 h-16 rounded-full cursor-pointer justify-self-center'
-          onClick={() => router.push("/company/jobs/add")}
+          onClick={() => router.push("/company/post")}
         >
           <FontAwesomeIcon
             icon='plus'

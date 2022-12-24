@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import GoogleLogo from 'assets/companies/googleLogo.png';
 import JobCard from 'components/JobCard/JobCard'
+import ErrorBox from 'components/ErrorBox/ErrorBox'
 
 const JobsPage = () => {
   const router = useRouter()
@@ -78,7 +79,13 @@ const JobsPage = () => {
   
 
   return (
-    <div><div className='max-w-4xl m-auto px-6'>
+    <div>
+      {error &&
+        <ErrorBox>
+          {errorMsg}
+        </ErrorBox>
+      }
+      <div className='max-w-4xl m-auto px-6'>
     <h3 className='text-xl text-left'>
       Still struggling to find a job...
     </h3>

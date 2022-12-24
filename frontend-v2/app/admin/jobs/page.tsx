@@ -2,6 +2,7 @@
 import AppContext from 'app/AppContext';
 import Loading from 'components/Loading/Loading';
 import PendingJobCard from 'components/PendingJobCard/PendingJobCard';
+import Toast from 'components/Toast/Toast';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
@@ -55,6 +56,10 @@ const AdminJobsPage = () => {
 
   return (
     <div className='w-11/12 max-w-2xl mx-auto text-center'>
+      {successMsg + errorMsg !== "" && <Toast
+        message={successMsg || errorMsg}
+        type={successMsg ? 'success': 'error'}
+      />}
         <h1 className='text-3xl text-jb-headings font-bold mt-0 mb-2 md:mt-10'>
           Pending Job Requests
         </h1>

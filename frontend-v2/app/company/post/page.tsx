@@ -2,12 +2,12 @@
 import PostJobForm from 'components/PostJobForm/PostJobForm'
 import React from 'react'
 
-const AdminJobsPostPage = () => {
+const CompanyPostPage = () => {
   return (
     <div>
-      <PostJobForm admin />
+      <PostJobForm />
     </div>
   )
 }
 
-export default AdminJobsPostPage
+export default CompanyPostPage

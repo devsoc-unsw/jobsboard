@@ -2,6 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AppContext from 'app/AppContext'
 import PendingCompanyCard from 'components/PendingCompanyCard/PendingCompanyCard'
+import Toast, { ToastType } from 'components/Toast/Toast'
 import api from 'config/api'
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
@@ -10,7 +11,7 @@ const AdminCompanyPage = () => {
   const { apiToken, setApiToken } = useContext(AppContext)
 
   const router = useRouter()
-  const [toastType, setToastType] = useState('')
+  const [toastType, setToastType] = useState<ToastType>('success')
   const [toastMsg, setToastMsg] = useState('')
   const [toastOpen, setToastOpen] = useState(false);
 
@@ -21,7 +22,7 @@ const AdminCompanyPage = () => {
 
   const [companies, setCompanies] = useState<any[]>([])
 
-  const triggerAlert = (type: string, msg: string) => {
+  const triggerAlert = (type: ToastType, msg: string) => {
     // window.scrollTo({ top: 0, behavior: 'smooth' });
     setToastType(type)
     setToastMsg(msg)
@@ -71,6 +72,12 @@ const AdminCompanyPage = () => {
 
   return (
     <div>
+      {toastOpen &&
+        <Toast
+          message={toastMsg}
+          type={toastType}
+        />
+      }
       {/* <FadeTransition>
         <Toast
           v-if='isToastOpen'
