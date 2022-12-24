@@ -1,6 +1,13 @@
 import React from 'react'
 
-const Modal = ({ children }) => {
+type Props = {
+  open: boolean
+  children: React.ReactNode
+}
+
+const Modal = ({ open, children }: Props) => {
+  if (!open) return null;
+
   return (
     <div>
     {/* <!-- Modal backdrop --> */}

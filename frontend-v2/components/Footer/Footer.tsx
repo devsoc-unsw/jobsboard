@@ -7,10 +7,12 @@ import youtubeLogo from 'assets/SocialMedia/youtube.svg';
 import discordLogo from 'assets/SocialMedia/discord.svg';
 import githubLogo from 'assets/SocialMedia/github.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import container from 'styles/container.module.css';
 
 const Footer = () => {
   return (
-    <div className='flex flex-row justify-between items-center b-0 l-0 py-6 pr-[50px] pl-[30px] bg-jb-blue md:flex-col text-white'>
+    <div className='bg-jb-blue md:flex-col text-white py-5'>
+    <div className={`flex justify-between items-center ${container.pageContainer}`}>
       {/* TODO <style scoped lang="scss">
       a {
         display: flex;
@@ -111,6 +113,7 @@ const Footer = () => {
           Jobsboard was made with <FontAwesomeIcon width={16} icon='heart' /> by CSE students for CSE students.
         </p>
       </div>
+  </div>
   </div>
   )
 }

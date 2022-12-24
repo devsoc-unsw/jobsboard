@@ -88,7 +88,8 @@ const JobProfileCard = ({
 
   return (
     <div>
-      {openModal && <JobDescriptionModal
+      <JobDescriptionModal
+      open={openModal}
       title={role}
       description={description}
       applicationLink={applicationLink}
@@ -101,7 +102,7 @@ const JobProfileCard = ({
       wamRequirements={wamRequirements}
       additionalInfo={additionalInfo}
       onClose={closeJobModal}
-    />}
+    />
     <div
       className='relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer px-6'
       onClick={() => setOpenModal(true)}

@@ -15,6 +15,7 @@ import api from 'config/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
+import Header from 'components/Header/Header';
 
 // const getFeaturedJobs = async () => {
 //   const response = await fetch(`${api.baseURL}/featured-jobs`);
@@ -22,59 +23,78 @@ import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
 //   return data.featuredJobs;
 // };
 
+import container from 'styles/container.module.css';
+import { useState } from 'react';
+import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
+
 const HomePage = () => {
   // const featuredJobs = await getFeaturedJobs()
   const featuredJobs = []
 
   const router = useRouter()
 
+  const [openModal, setOpenModal] = useState(false)
+
   return (
     <div className='text-center'>
-      <div className='relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]'>
-      {/* <Image
-          src={BigBlob}
-          className='absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2' alt="big blob"      /> */}
-      {/* <Header
-        // class='absolute top-0'
-        // style='background: transparent'
-      /> */}
-      <div className='flex justify-around align-middle mx-auto gap-7'>
-        <div className='flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold'>
-          <p className='text-lg text-white'>
-            CSESoc presents
-          </p>
-          <h1 className='text-[#143A6C] font-bold text-6xl leading-[72px] m-0'>
-            Jobs Board
-          </h1>
-          <p className='text-lg text-white mt-3'>
-            Connecting UNSW students with top employers since 2018.
-          </p>
-          <div className='justify-start flex gap-5 mt-4 sm:justify-center sm:flex-wrap'>
-            <button
-              className='bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
-                      hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg'
-                      onClick={() => router.push("/login/student")}
-            >
-              Explore
-            </button>
-            <button
-              className='bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
-                      hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg'
-                      onClick={() => router.push("/login/company")}
-            >
-              Advertise
-            </button>
-          </div>
-        </div>
-        <Image
-          alt='Jobsboard'
-          width='200'
-          src={JobsboardLogo}
-          className='sm:hidden'
+      <RecruitmentModal open={openModal} onClose={() => setOpenModal(false)} />
+      <Header
+          style={{
+            background: 'transparent',
+            position: 'absolute',
+            top: 0,
+            zIndex: 100,
+            width: '100%',
+          }}
         />
+      <div className='relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]'>
+        <Image
+            src={BigBlob}
+            className='absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2'
+            alt="big blob"
+            style={{
+              height: '100%',
+              width: 'unset'
+            }}
+        />
+        <div className='flex justify-around align-middle mx-auto gap-7'>
+          <div className='flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold'>
+            <p className='text-lg text-white'>
+              CSESoc presents
+            </p>
+            <h1 className='text-[#143A6C] font-bold text-6xl leading-[72px] m-0'>
+              Jobs Board
+            </h1>
+            <p className='text-lg text-white mt-3'>
+              Connecting UNSW students with top employers since 2018.
+            </p>
+            <div className='justify-start flex gap-5 mt-4 sm:justify-center sm:flex-wrap'>
+              <button
+                className='bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
+                        hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg'
+                        onClick={() => router.push("/login/student")}
+              >
+                Explore
+              </button>
+              <button
+                className='bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
+                        hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg'
+                        onClick={() => router.push("/login/company")}
+              >
+                Advertise
+              </button>
+            </div>
+          </div>
+          <Image
+            alt='Jobsboard'
+            width='200'
+            src={JobsboardLogo}
+            className='sm:hidden'
+          />
+        </div>
       </div>
-    </div>
-    {/* <!-- Sponsors --> */}
+      <div className={container.pageContainer}>
+        {/* <!-- Sponsors --> */}
     <div className='my-12 mx-auto'>
       <h3 className='font-bold text-3xl mb-0 text-jb-headings'>
         Our Sponsors
@@ -200,7 +220,7 @@ const HomePage = () => {
         <button
           className='bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
                   hover:bg-jb-btn-hovered hover:shadow-btn-hovered'
-          // @click='showModal'
+          onClick={() => setOpenModal(true)}
         >
           Join the Team
         </button>
@@ -226,6 +246,7 @@ const HomePage = () => {
           />
       </div>
     </div>
+      </div>
     </div>
   )
 }

@@ -182,7 +182,8 @@ const PostJobForm = ({ admin }: Props) => {
 
   return (
     <div>
-      {openModal && <JobDescriptionModal
+      <JobDescriptionModal
+        open={openModal}
         title={role}
         description={description}
         applicationLink={applicationLink}
@@ -195,7 +196,7 @@ const PostJobForm = ({ admin }: Props) => {
         wamRequirements={wamRequirements}
         additionalInfo={additionalInfo}
         onClose={() => setOpenModal(false)}        
-      />}
+      />
       <div className='flex flex-col items-center w-4/5 mx-auto mb-10'>
         {/* <!-- select company --> */}
         <h1 className='text-jb-headings font-bold text-3xl mt-0 lg:mt-10'>

@@ -22,7 +22,11 @@ import AppContext from 'app/AppContext';
 //   border-color: transparent transparent white transparent;
 // }
 
-const Header = () => {
+type Props = {
+  style?: React.CSSProperties
+}
+
+const Header = ({ style }: Props) => {
   const router = useRouter();
   const { apiToken, resetApiToken } = useContext(AppContext);
 
@@ -33,6 +37,7 @@ const Header = () => {
 
   return (
     <div
+    style={style}
     className='flex justify-evenly items-center py-4 px-[5%]
            bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]'
   >

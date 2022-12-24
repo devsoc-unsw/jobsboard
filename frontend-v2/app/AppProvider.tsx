@@ -2,7 +2,11 @@
 import React, { useState } from 'react'
 import AppContext from './AppContext';
 
-const AppProvider = ({ children }) => {
+type Props = {
+  children: React.ReactNode
+}
+
+const AppProvider = ({ children }: Props) => {
   const [apiToken, setApiToken] = useState<string | null>(null);
   return (
     <AppContext.Provider value={{ apiToken, setApiToken: (api) => setApiToken(api), resetApiToken: () => setApiToken(null)

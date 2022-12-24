@@ -15,6 +15,7 @@ type Props = {
   studentDemographic: any[],
   wamRequirements: string,
   additionalInfo: string,
+  open: boolean,
   onClose(): void,
 }
 
@@ -30,10 +31,11 @@ const JobDescriptionModal = ({
   studentDemographic,
   wamRequirements,
   additionalInfo,
+  open,
   onClose,
 }: Props) => {
   return (
-    <Modal>
+    <Modal open={open}>
     <div className='relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[80%] my-auto overflow-auto'>
       {/* <!-- Modal header --> */}
       <div className='flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600'>

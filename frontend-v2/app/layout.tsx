@@ -43,7 +43,7 @@ import {
   faGithub,
   faLinkedin,
 } from '@fortawesome/free-brands-svg-icons';
-import styles from './styles.module.css'
+import container from '../styles/container.module.css'
 
 library.add(faBuilding);
 library.add(faChevronLeft);
@@ -99,10 +99,7 @@ export default function RootLayout({
       <head />
       <body className={assistant.className}>
         <AppProvider>
-          <Header />
-          <div className={styles.pageContainer}>
-            {children}
-          </div>
+          {children}
           <Footer />
         </AppProvider>
       </body>

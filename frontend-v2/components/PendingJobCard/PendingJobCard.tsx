@@ -101,7 +101,8 @@ const PendingJobCard = ({
 
   return (
     <div>
-      {openModal && <JobDescriptionModal
+      <JobDescriptionModal
+            open={openModal}
             title={role}
             description={description}
             applicationLink={applicationLink}
@@ -114,7 +115,7 @@ const PendingJobCard = ({
             wamRequirements={wamRequirements}
             additionalInfo={additionalInfo}
             onClose={() => setOpenModal(false)}
-      />}
+      />
     <br />
     <div>
       <button
