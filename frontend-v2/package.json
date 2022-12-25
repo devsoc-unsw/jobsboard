@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint src/**/*.{ts,tsx}",
-    "lint:fix": "eslint --fix src/**/*.{ts,tsx}",
-    "format": "prettier --write './**/*.{ts,tsx}'"
+    "lint": "eslint ./**/*.{ts,tsx}",
+    "lint:fix": "eslint --fix ./**/*.{ts,tsx}",
+    "prettier": "prettier ./**/*.{ts,tsx}",
+    "prettier:fix": "prettier --write ./**/*.{ts,tsx}",
+    "format": "eslint --fix ./**/*.{ts,tsx} && prettier --write ./**/*.{ts,tsx}"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
@@ -33,6 +35,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "postcss": "^8.4.20",
     "prettier": "^2.8.1",
     "sass": "^1.57.0",

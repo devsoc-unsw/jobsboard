@@ -1,10 +1,10 @@
-import Breadcrumbs from "components/Breadcrumbs/Breadcrumbs"
-import Header from "components/Header/Header"
-import container from "styles/container.module.css"
+import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
+import Header from 'components/Header/Header';
+import container from 'styles/container.module.css';
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const MainRootLayout = ({ children }: Props) => {
   return (
@@ -15,7 +15,7 @@ const MainRootLayout = ({ children }: Props) => {
         {children}
       </div>
     </>
-    )
-}
+  );
+};
 
-export default MainRootLayout
+export default MainRootLayout;
