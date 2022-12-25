@@ -5,22 +5,7 @@ import moon from 'assets/misc/moon.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import AppContext from 'app/AppContext';
-
-// .tooltipText {
-//   top: 150%;
-//   transform: translate(-50%, 0);
-// }
-// // tooltip
-// .tooltipText::after {
-//   content: "";
-//   position: absolute;
-//   bottom: 100%;
-//   left: 50%;
-//   margin-left: -5px;
-//   border-width: 5px;
-//   border-style: solid;
-//   border-color: transparent transparent white transparent;
-// }
+import styles from './styles.module.css'
 
 type Props = {
   style?: React.CSSProperties
@@ -54,8 +39,8 @@ const Header = ({ style }: Props) => {
           src={moon}
           alt='Toggle Theme'
         />
-        {/* <!-- tooltip --> */}
-        <span className='invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 tooltipText'>
+        {/* Tooltip */}
+        <span className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}>
           Coming soon
         </span>
       </div>

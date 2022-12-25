@@ -122,8 +122,7 @@ const HomePage = () => {
         .
       </p>
       {featuredJobs.length !== 4 ? <div>
-        {/* TODO */}
-        Show carosel
+        {/* TODO: Show carousel*/}
       </div> :<div
         className='mb-28'
       /> }
