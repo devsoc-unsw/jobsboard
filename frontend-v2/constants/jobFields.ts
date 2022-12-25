@@ -1,18 +1,18 @@
 export const JobMode = {
   onsite: 'Onsite',
   hybrid: 'Hybrid',
-  remote: 'Remote',
+  remote: 'Remote'
 };
 
 export const StudentDemographic = {
   penultimate: 'Penultimate Students',
   final_year: 'Final Year Students',
-  all: 'All Students',
+  all: 'All Students'
 };
 
 export const JobType = {
   intern: 'Internship',
-  grad: 'Graduate Position',
+  grad: 'Graduate Position'
 };
 
 export const WorkingRights = {
@@ -22,12 +22,12 @@ export const WorkingRights = {
   aus_temp_grad_visa: 'Australian Temp Grad Visa',
   nz_ctz_and_perm_res: 'NZ Citizen/PR',
   no_wr: 'No Working Rights',
-  all: 'All',
+  all: 'All'
 };
 
 export const WamRequirements = {
   HD: 'HD',
   D: 'D',
   C: 'C',
-  none: 'No preference',
+  none: 'No preference'
 };

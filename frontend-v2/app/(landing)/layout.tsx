@@ -1,13 +1,11 @@
-import React from 'react'
+import React from 'react';
 
 type Props = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 const LandingRootLayout = ({ children }: Props) => {
-  return (
-    <div>{children}</div>
-  )
-}
+  return <div>{children}</div>;
+};
 
-export default LandingRootLayout
+export default LandingRootLayout;

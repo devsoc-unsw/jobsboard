@@ -1,3 +1,3 @@
 export type AuthenticationPayload = {
-  token: string
-}
+  token: string;
+};
