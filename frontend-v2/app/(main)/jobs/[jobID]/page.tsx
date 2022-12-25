@@ -12,18 +12,18 @@ import React, { useContext, useEffect, useState } from 'react'
 const JobInfoPage = ({ params }: any) => {
   const jobID = params.jobID
 
-  const [companyID, setCompanyID] = useState('')
+  // const [companyID, setCompanyID] = useState('')
   const [role, setRole] = useState('')
   const [company, setCompany] = useState('')
-  const [companyDescription, setCompanyDescription] = useState('')
+  // const [companyDescription, setCompanyDescription] = useState('')
   const [description, setDescription] = useState('')
   const [jobs, setJobs] = useState<any[]>([])
   const [location, setLocation] = useState('')
   const [applicationLink, setApplicationLink] = useState('')
   const [jobMode, setJobMode] = useState('hybrid')
-  const [studentDemographic, setStudentDemographic] = useState('all')
+  const [studentDemographic, setStudentDemographic] = useState([])
   const [jobType, setJobType] = useState('intern')
-  const [workingRights, setWorkingRights] = useState('all')
+  const [workingRights, setWorkingRights] = useState([])
 
   const [wamRequirements, setWamRequirements] = useState('none')
   const [additionalInfo, setAdditionalInfo] = useState('')
@@ -31,7 +31,7 @@ const JobInfoPage = ({ params }: any) => {
   const [expiryDate, setExpiryDate] = useState('')
   const [alertMsg, setAlertMsg] = useState('')
   const [alertOpen, setAlertOpen] = useState(false)
-  const [jobInfoReady, setJobInfoReady] = useState(false)
+  // const [jobInfoReady, setJobInfoReady] = useState(false)
   const [isJobDescriptionShown, setIsJobDescriptionShown] = useState(true)
 
   const router = useRouter()
@@ -57,13 +57,13 @@ const JobInfoPage = ({ params }: any) => {
       setRole(job.role)
       setCompany(job.company.name)
       setDescription(job.description)
-      setCompanyDescription(job.company.description)
+      // setCompanyDescription(job.company.description)
       setLocation(job.company.location)
-      setCompanyID(job.company.id)
+      // setCompanyID(job.company.id)
       setApplicationLink(job.applicationLink)
       setJobMode(job.mode)
       setStudentDemographic(job.studentDemographic)
-      setJobType(job.jobTyoe)
+      setJobType(job.jobType)
       setWorkingRights(job.workingRights)
       setAdditionalInfo(job.additionalInfo || 'This company has not provided any additional information.')
       setWamRequirements(job.wamRequirements)
@@ -105,7 +105,7 @@ const JobInfoPage = ({ params }: any) => {
       setAlertMsg('Unable to load company jobs at this time. Please try again later.')
     }
   
-    setJobInfoReady(true)  
+    // setJobInfoReady(true)  
   };
 
   useEffect(() => {
@@ -119,6 +119,8 @@ const JobInfoPage = ({ params }: any) => {
     }, 100);
   }, [])
 
+  console.log({ workingRights })
+
   return (
     <div>
       <Alert
@@ -127,8 +129,8 @@ const JobInfoPage = ({ params }: any) => {
         open={alertOpen}
         onClose={() => setAlertOpen(false)}
       />
-      <div className='flex flex-row justify-center h-screen px-8 mb-10'>
-        <div className='flex flex-col py-4 px-2 h-full bg-white rounded-lg mr-12 w-1/4 overflow-y-auto shadow-card sm:hidden'>
+      <div className='flex flex-row justify-center h-screen mb-10'>
+        <div className='flex flex-col py-4 px-2 h-full bg-white rounded-lg mr-4 w-1/4 overflow-y-auto shadow-card sm:hidden'>
           <h2
             className={`font-bold text-xl text-jb-headings ${jobs.length === 0 ? "my-auto" : "mb-4"}`}
           >
@@ -168,49 +170,49 @@ const JobInfoPage = ({ params }: any) => {
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faBuilding}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>Company:</b> {company }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faLocationDot}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>Location:</b> {location }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faSuitcase}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>Job Mode:</b> {JobMode[jobMode as keyof typeof JobMode]}
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faSuitcase}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>Job Type:</b> {JobType[jobType as keyof typeof JobType] }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faCalendar}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>Expiry Date:</b> {new Date(expiryDate).toLocaleString().split(',')[0] }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faCircleDollarToSlot}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>Is this a paid position?</b> {isPaid ? "Yes" : "No" }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faGraduationCap}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>Required WAM:&nbsp;</b>
                 {WamRequirements[wamRequirements as keyof typeof WamRequirements] }
@@ -218,7 +220,7 @@ const JobInfoPage = ({ params }: any) => {
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faAddressCard}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>
                   {
@@ -231,7 +233,7 @@ const JobInfoPage = ({ params }: any) => {
                 <ul
                 className='list-disc list-inside ml-12'
               >
-                {Object.values(workingRights).map((r) => <li 
+                {workingRights.map((r) => <li 
                   key={r}
                 >{WR[r as keyof typeof WR]}</li>)}
               </ul>
@@ -240,7 +242,7 @@ const JobInfoPage = ({ params }: any) => {
               <span className='mb-1'>
                 <FontAwesomeIcon
                   icon={faUser}
-                  className='mr-5 w-7'
+                  className='mr-2 w-7'
                 />
                 <b>
                   {
@@ -252,7 +254,7 @@ const JobInfoPage = ({ params }: any) => {
                 {
                   !["all"].every((val, idx) => val === studentDemographic[idx]) && 
                   <ul className='list-disc list-inside ml-12'>
-                    {Object.values(studentDemographic).map((s) => <li 
+                    {studentDemographic.map((s) => <li 
                   key={s}
                 >{SD[s as keyof typeof SD]}</li>)}
                   </ul>

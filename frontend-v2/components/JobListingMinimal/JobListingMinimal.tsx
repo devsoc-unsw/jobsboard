@@ -25,7 +25,8 @@ const JobListingMinimal = ({ jobID, role, company, location }: Props) => {
     {/* <!-- TODO: to be replaced with company logo --> */}
     <FontAwesomeIcon
       icon={faBuilding}
-      className='h-12 mr-4 md:mr-0'
+      className='mr-4 md:mr-0'
+      size="3x"
     />
     <div className='flex flex-col text-left pt-0 md:pt-4 md:text-center'>
       <h2 className='font-bold text-jb-headings'>

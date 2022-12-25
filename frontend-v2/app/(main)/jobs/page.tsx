@@ -22,6 +22,7 @@ const JobsPage = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    // TODO!: locking needs to be fixed!
     const loadMoreJobs = async () => {
       const sleep = (milliseconds: number) => {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
@@ -86,7 +87,7 @@ const JobsPage = () => {
           {errorMsg}
         </ErrorBox>
       }
-      <div className='max-w-4xl m-auto px-6'>
+      <div>
     <h3 className='text-xl text-left'>
       Still struggling to find a job...
     </h3>
@@ -144,10 +145,10 @@ const JobsPage = () => {
       </div>
     </div>
   </div>
-  <div className='max-w-6xl m-auto px-6'>
+  <div>
     {loading && <Loading />}
     <div className='flex flex-wrap justify-center'>
-      <div className='flex flex-wrap sm:justify-center'>
+      <div className='flex flex-wrap justify-center'>
         {
           filteredJobs.map((job) => 
             <JobCard
