@@ -1,10 +1,11 @@
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 
 type Props = {
   title: string;
   description: string;
-  icon: any;
+  icon: IconDefinition;
 }
 
 const BenefitCard = ({ title, description, icon }: Props) => {

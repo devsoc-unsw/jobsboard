@@ -1,4 +1,5 @@
 "use client"
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AppContext from 'app/AppContext'
 import Alert from 'components/Alert/Alert'
@@ -110,7 +111,7 @@ const LoginCompanyPage = () => {
           Password
         </label>
         <FontAwesomeIcon
-          icon={hidePassword ? "eye-slash" : "eye"}
+          icon={hidePassword ? faEyeSlash : faEye}
           className='text-jb-placeholder hover:text-black duration-500 cursor-pointer absolute right-[15px] top-1/2 -translate-y-1/2'
           onClick={() => setHidePassword(prevState => !prevState)}
         />

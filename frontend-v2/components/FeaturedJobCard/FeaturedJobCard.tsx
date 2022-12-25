@@ -1,3 +1,4 @@
+import { faBuilding } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { WorkingRights } from 'constants/jobFields'
 import { useRouter } from 'next/navigation'
@@ -27,7 +28,7 @@ const FeaturedJobCard = ({ title, description, tag, imgSrc }: Props) => {
           className='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
           alt='sponsor logo'
         /> : <FontAwesomeIcon
-        icon='building'
+        icon={faBuilding}
         className='select-none pointer-events-none object-contain w-full py-4 min-h-[180px]'
         />
         }

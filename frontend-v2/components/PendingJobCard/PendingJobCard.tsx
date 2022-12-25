@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react'
 import googleLogo from 'assets/companies/googleLogo.png'
+import { faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   company: string,
@@ -51,7 +52,7 @@ const PendingJobCard = ({
   const router = useRouter();
   const { apiToken, setApiToken } = useContext(AppContext);
 
-  const approveJob = async (e) => {
+  const approveJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     const res = await api.patch(`/job/${jobID}/approve`, {
       headers: {
@@ -76,7 +77,7 @@ const PendingJobCard = ({
       }
     }
   };
-  const rejectJob = async (e) => {
+  const rejectJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     const res = await api.patch(`/job/${jobID}/reject`, {
       headers: {
@@ -133,14 +134,14 @@ const PendingJobCard = ({
           </h2>
           <p>
             <FontAwesomeIcon
-              icon='building'
+              icon={faBuilding}
               className='h-4 mr-1'
             />
             {company}
           </p>
           <p>
             <FontAwesomeIcon
-              icon='location-dot'
+              icon={faLocationDot}
               className='h-4 mr-1'
             />
             {location}

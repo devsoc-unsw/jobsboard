@@ -1,3 +1,4 @@
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Modal from 'components/Modal/Modal'
 import React from 'react'
@@ -22,7 +23,7 @@ const RecruitmentModal = ({ open, onClose }: Props) => {
           onClick={onClose}
         >
           <FontAwesomeIcon
-            icon='xmark'
+            icon={faXmark}
             size='2x'
           />
         </button>

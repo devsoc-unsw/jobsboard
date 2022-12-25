@@ -1,3 +1,4 @@
+import { faAddressCard, faCalendar, faCircleDollarToSlot, faGraduationCap, faLink, faSuitcase, faUser, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Modal from 'components/Modal/Modal'
 import { JobMode as JobModeObj, StudentDemographic as StudentDemographicObj, WamRequirements as WamRequirementsObj, WorkingRights as WorkingRightsObj } from 'constants/jobFields'
@@ -48,7 +49,7 @@ const JobDescriptionModal = ({
           onClick={onClose}
         >
           <FontAwesomeIcon
-            icon='xmark'
+            icon={faXmark}
             size='2x'
           />
         </button>
@@ -58,7 +59,7 @@ const JobDescriptionModal = ({
         <div className='grid grid-cols-2 w-full text-left'>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='suitcase'
+              icon={faSuitcase}
               className='mr-1'
             />
             Job Mode:&nbsp;
@@ -68,7 +69,7 @@ const JobDescriptionModal = ({
           </h3>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='suitcase'
+              icon={faSuitcase}
               className='mr-1'
             />
             Job Type:&nbsp;
@@ -78,7 +79,7 @@ const JobDescriptionModal = ({
           </h3>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='circle-dollar-to-slot'
+              icon={faCircleDollarToSlot}
               className='mr-1'
             />
             Is this position paid?&nbsp;
@@ -88,7 +89,7 @@ const JobDescriptionModal = ({
           </h3>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='calendar'
+              icon={faCalendar}
               className='mr-1'
             />
             Application Expiry Date:&nbsp;
@@ -98,7 +99,7 @@ const JobDescriptionModal = ({
           </h3>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='graduation-cap'
+              icon={faGraduationCap}
               className='mr-1'
             />
             Applicant's WAM:&nbsp;
@@ -112,7 +113,7 @@ const JobDescriptionModal = ({
           </h3>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='link'
+              icon={faLink}
               className='mr-1'
             />
             Application Link:&nbsp;
@@ -122,7 +123,7 @@ const JobDescriptionModal = ({
           </h3>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='address-card'
+              icon={faAddressCard}
               className='mr-1'
             />
             Applicant's Working Rights:&nbsp;
@@ -140,7 +141,7 @@ const JobDescriptionModal = ({
           </h3>
           <h3 className='text-l font-medium text-gray-900 dark:text-white'>
             <FontAwesomeIcon
-              icon='user'
+              icon={faUser}
               className='mr-1'
             />
             Who should apply for this role?&nbsp;

@@ -9,6 +9,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import GoogleLogo from 'assets/companies/googleLogo.png';
 import JobCard from 'components/JobCard/JobCard'
 import ErrorBox from 'components/ErrorBox/ErrorBox'
+import { faClipboard, faCode, faMagnifyingGlass, faMoneyBills, faPeopleGroup } from '@fortawesome/free-solid-svg-icons'
 
 const JobsPage = () => {
   const router = useRouter()
@@ -103,34 +104,34 @@ const JobsPage = () => {
         description='Student&apos;s welfare is always our
           top priority, which is why we ensure that
           all jobs that you see here are paid.'
-        icon='money-bills'
+        icon={faMoneyBills}
       />
       <BenefitCard
         title='Complete Transparency'
         description='We aim to give you as much information
           as possible about the job upfront like whether or
           not a job is suitable for an international student.'
-        icon='code'
+        icon={faCode}
       />
       <BenefitCard
         title='Amazing Partners'
         description='Our Careers team work round the clock to
           partner up with amazing companies in order to provide
           you with the best selection of jobs.'
-        icon='people-group'
+        icon={faPeopleGroup}
       />
     </div>
 
     <div className='flex items-center my-8 justify-between sm:flex-wrap sm:justify-center'>
       <div className='flex items-center sm:mb-4'>
-        <FontAwesomeIcon icon='clipboard' />
+        <FontAwesomeIcon icon={faClipboard} />
         <p className='ml-2 font-bold'>
           {filteredJobs.length} Jobs Found
         </p>
       </div>
       <div className='relative'>
         <FontAwesomeIcon
-          icon='magnifying-glass'
+          icon={faMagnifyingGlass}
           className='flex absolute inset-y-0 my-auto left-0 items-center pl-3 pointer-events-none'
         />
         <input

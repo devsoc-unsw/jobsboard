@@ -1,3 +1,4 @@
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -16,7 +17,7 @@ const JobPostCard = () => {
           onClick={() => router.push("/company/post")}
         >
           <FontAwesomeIcon
-            icon='plus'
+            icon={faPlus}
             size='2x'
             className='text-jb-headings'
           />

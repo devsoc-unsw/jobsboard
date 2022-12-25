@@ -19,7 +19,7 @@ const PendingCompanyCard = ({ onClick, onRemove, onAlert, logo, companyName, loc
   const router = useRouter();
   const { apiToken, setApiToken } = useContext(AppContext)
 
-  const verifyCompany = async (e) => {
+  const verifyCompany = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
     const res = await api.patch(`/admin/company/${companyAccountID}/verify`, {
       headers: {

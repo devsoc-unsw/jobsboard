@@ -1,3 +1,4 @@
+import { faCircleDollarToSlot, faLocationDot, faSuitcase, faTrashAlt, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal'
@@ -116,28 +117,28 @@ const JobProfileCard = ({
           <div>
             <div>
               <FontAwesomeIcon
-                icon='suitcase'
+                icon={faSuitcase}
                 className='text-black'
                 size='1x'
               />
             </div>
             <div>
               <FontAwesomeIcon
-                icon='location-dot'
+                icon={faLocationDot}
                 className='text-black ml-0.5'
                 size='1x'
               />
             </div>
             <div>
               <FontAwesomeIcon
-                icon='user-group'
+                icon={faUserGroup}
                 className='text-black'
                 size='1x'
               />
             </div>
             <div>
               <FontAwesomeIcon
-                icon='circle-dollar-to-slot'
+                icon={faCircleDollarToSlot}
                 className='text-black'
                 size='1x'
               />
@@ -170,7 +171,7 @@ const JobProfileCard = ({
     >
       <div>
         <FontAwesomeIcon
-          icon='trash-alt'
+          icon={faTrashAlt}
           className='text-[#FF7060]'
           size='1x'
         />

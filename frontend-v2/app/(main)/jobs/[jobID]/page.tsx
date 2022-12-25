@@ -1,4 +1,5 @@
 "use client"
+import { faAddressCard, faBuilding, faCalendar, faCircleDollarToSlot, faGraduationCap, faLocationDot, faSuitcase, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AppContext from 'app/AppContext'
 import Alert from 'components/Alert/Alert'
@@ -146,7 +147,7 @@ const JobInfoPage = ({ params }: any) => {
             <div className='flex flex-col mr-8 self-center'>
               {/* <!-- TODO: to be replaced with company logo --> */}
               <FontAwesomeIcon
-                icon='building'
+                icon={faBuilding}
                 size='10x'
                 className='mb-2'
               />
@@ -166,49 +167,49 @@ const JobInfoPage = ({ params }: any) => {
               </h1>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='building'
+                  icon={faBuilding}
                   className='mr-5 w-7'
                 />
                 <b>Company:</b> {company }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='location-dot'
+                  icon={faLocationDot}
                   className='mr-5 w-7'
                 />
                 <b>Location:</b> {location }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='suitcase'
+                  icon={faSuitcase}
                   className='mr-5 w-7'
                 />
                 <b>Job Mode:</b> {JobMode[jobMode as keyof typeof JobMode]}
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='suitcase'
+                  icon={faSuitcase}
                   className='mr-5 w-7'
                 />
                 <b>Job Type:</b> {JobType[jobType as keyof typeof JobType] }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='calendar'
+                  icon={faCalendar}
                   className='mr-5 w-7'
                 />
                 <b>Expiry Date:</b> {new Date(expiryDate).toLocaleString().split(',')[0] }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='circle-dollar-to-slot'
+                  icon={faCircleDollarToSlot}
                   className='mr-5 w-7'
                 />
                 <b>Is this a paid position?</b> {isPaid ? "Yes" : "No" }
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='graduation-cap'
+                  icon={faGraduationCap}
                   className='mr-5 w-7'
                 />
                 <b>Required WAM:&nbsp;</b>
@@ -216,7 +217,7 @@ const JobInfoPage = ({ params }: any) => {
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='address-card'
+                  icon={faAddressCard}
                   className='mr-5 w-7'
                 />
                 <b>
@@ -238,7 +239,7 @@ const JobInfoPage = ({ params }: any) => {
               </span>
               <span className='mb-1'>
                 <FontAwesomeIcon
-                  icon='user'
+                  icon={faUser}
                   className='mr-5 w-7'
                 />
                 <b>

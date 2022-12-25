@@ -1,4 +1,5 @@
 "use client"
+import { faBars, faCloudUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import JobBoard from 'components/JobBoard/JobBoard';
@@ -171,7 +172,7 @@ const CompanyHomePage = () => {
                     className='flex flex-col justify-center items-center pt-5 pb-6'
                   >
                     <FontAwesomeIcon
-                      icon='cloud-upload'
+                      icon={faCloudUpload}
                       className='text-jb-subheader mb-4'
                       size='3x'
                     />
@@ -222,7 +223,7 @@ const CompanyHomePage = () => {
           {/* <!-- Board select dropdown --> */}
           <div className='text-left flex ml-2'>
             <FontAwesomeIcon
-              icon='bars'
+              icon={faBars}
               className='text-2xl'
             />
             <div>

@@ -1,3 +1,4 @@
+import { faCircleInfo, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import styles from './styles.module.css'
@@ -30,7 +31,7 @@ const Alert = ({open, type = "error", message, onClose}: Props) => {
       role='alert'
     >
       <FontAwesomeIcon
-        icon='circle-info'
+        icon={faCircleInfo}
         className={getTextStyles()}
       />
       <div
@@ -44,7 +45,7 @@ const Alert = ({open, type = "error", message, onClose}: Props) => {
       >
         <span className='sr-only'>Close</span>
         <FontAwesomeIcon
-          icon='xmark'
+          icon={faXmark}
           className={getTextStyles()}
         />
       </button>

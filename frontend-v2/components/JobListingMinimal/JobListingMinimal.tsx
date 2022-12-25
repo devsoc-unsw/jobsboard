@@ -1,3 +1,4 @@
+import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -23,7 +24,7 @@ const JobListingMinimal = ({ jobID, role, company, location }: Props) => {
   >
     {/* <!-- TODO: to be replaced with company logo --> */}
     <FontAwesomeIcon
-      icon='building'
+      icon={faBuilding}
       className='h-12 mr-4 md:mr-0'
     />
     <div className='flex flex-col text-left pt-0 md:pt-4 md:text-center'>

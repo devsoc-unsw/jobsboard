@@ -1,4 +1,5 @@
 "use client"
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AppContext from 'app/AppContext'
 import PendingCompanyCard from 'components/PendingCompanyCard/PendingCompanyCard'
@@ -105,7 +106,7 @@ const AdminCompanyPage = () => {
                 </h2>
                 <div className='flex flex-row items-center'>
                   <FontAwesomeIcon
-                    icon='location-dot'
+                    icon={faLocationDot}
                     className='h-4 mr-4'
                   />
                   <h3 className='text-lg font-medium text-left'>

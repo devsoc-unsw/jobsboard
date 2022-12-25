@@ -1,4 +1,6 @@
 "use client"
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Alert, { AlertType } from 'components/Alert/Alert'
 import Loading from 'components/Loading/Loading'
 import api from 'config/api'
@@ -112,10 +114,10 @@ const CompanySignupPage = () => {
           <div className='bg-orange-100 border-t-4 border-orange-500 rounded-b px-5 py-4 shadow-md lg:mx-[15%] my-4'>
             <div className='flex'>
               <div className='py-1'>
-                {/* <font-awesome-icon
-                  icon='circle-info'
+                <FontAwesomeIcon
+                  icon={faCircleInfo}
                   size='lg'
-                /> */}
+                />
               </div>
               <div className='mx-[2%] text-left break-words overflow-hidden'>
                 <p className='font-bold text-lg sm:text-lg'>

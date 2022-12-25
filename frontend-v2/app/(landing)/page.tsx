@@ -26,6 +26,7 @@ import Header from 'components/Header/Header';
 import container from 'styles/container.module.css';
 import { useState } from 'react';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
+import { faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
   // const featuredJobs = await getFeaturedJobs()
@@ -233,9 +234,9 @@ const HomePage = () => {
         </button>
       </div>
       <div className='mt-20 flex justify-center'>
-      <FontAwesomeIcon icon='chevron-circle-up'
-          width={50}
+      <FontAwesomeIcon icon={faChevronCircleUp}
           className='fill-[0c3149] cursor-pointer text-[#0c3149]'
+          size="3x"
           onClick={() => {
             window.scrollTo({
               left: 0,

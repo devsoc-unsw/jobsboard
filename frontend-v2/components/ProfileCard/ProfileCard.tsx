@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 type Props = {
   name: string;
@@ -28,13 +29,13 @@ const ProfileCard = ({ name, title, involvement, funFact, linkedin, gh, photo}: 
           href={linkedin}
           target='__blank'
         >
-          <FontAwesomeIcon icon={["fab", "linkedin"]} className='text-blue-700 h-8' />
+          <FontAwesomeIcon icon={faLinkedin} className='text-blue-700 h-8' />
         </a>
         <a
           href={gh}
           target='__blank'
         >
-          <FontAwesomeIcon icon={["fab", "github"]} className='h-8' />
+          <FontAwesomeIcon icon={faGithub} className='h-8' />
         </a>
       </div>
     </div>

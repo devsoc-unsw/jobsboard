@@ -1,3 +1,4 @@
+"use client"
 import Image from 'next/image';
 import logo from 'assets/logos/csesocwhite.png';
 import facebookLogo from 'assets/SocialMedia/facebook.svg';
@@ -8,8 +9,11 @@ import discordLogo from 'assets/SocialMedia/discord.svg';
 import githubLogo from 'assets/SocialMedia/github.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import container from 'styles/container.module.css';
+import { useRouter } from 'next/navigation';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 const Footer = () => {
+  const router = useRouter()
   return (
     <div className='bg-jb-blue md:flex-col text-white py-5'>
     <div className={`flex justify-between items-center ${container.pageContainer}`}>
@@ -36,8 +40,7 @@ const Footer = () => {
           </a>
           <a
             className='cursor-pointer'
-            // TODO
-            // @click='() => { router.push("/team") }'
+            onClick={() => router.push('/team')}
           >Meet the Team</a>
         </div>
         <p className='m-0'>
@@ -110,7 +113,7 @@ const Footer = () => {
           received through this website is correct.
           <br/>
           <br/>
-          Jobsboard was made with <FontAwesomeIcon width={16} icon='heart' /> by CSE students for CSE students.
+          Jobsboard was made with <FontAwesomeIcon icon={faHeart} /> by CSE students for CSE students.
         </p>
       </div>
   </div>

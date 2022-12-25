@@ -1,4 +1,5 @@
 "use client"
+import { faAngleRight, faBell, faBriefcase, faUserShield, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
@@ -91,7 +92,7 @@ const AdminHomePage = () => {
         >
           <div className='mx-3 my-auto'>
             <FontAwesomeIcon
-              icon='bell'
+              icon={faBell}
               className='text-2xl text-jb-headings bell'
             />
           </div>
@@ -113,7 +114,7 @@ const AdminHomePage = () => {
           </div>
           <div className='flex items-start mx-2'>
             <FontAwesomeIcon
-              icon='xmark'
+              icon={faXmark}
               className='text-xl ml-2 text-jb-headings cursor-pointer'
               onClick={() => setInfoAlert(false)}
             />
@@ -135,14 +136,14 @@ const AdminHomePage = () => {
             onClick={() => { router.push(`/admin/company`) }}
           >
             <FontAwesomeIcon
-              icon='user-shield'
+              icon={faUserShield}
               className='text-white'
             />
             <p className='p-4 text-white'>
               Verify Company
             </p>
             <FontAwesomeIcon
-              icon='angle-right'
+              icon={faAngleRight}
               className='text-white'
             />
           </button>
@@ -162,14 +163,14 @@ const AdminHomePage = () => {
             onClick={() => router.push(`/admin/jobs/`)}
           >
             <FontAwesomeIcon
-              icon='briefcase'
+              icon={faBriefcase}
               className='text-white'
             />
             <p className='p-4 text-white'>
               Verify Job Post
             </p>
             <FontAwesomeIcon
-              icon='angle-right'
+              icon={faAngleRight}
               className='text-white'
             />
           </button>
@@ -190,14 +191,14 @@ const AdminHomePage = () => {
             onClick={() => { router.push(`/admin/jobs/post`) }}
           >
             <FontAwesomeIcon
-              icon='briefcase'
+              icon={faBriefcase}
               className='text-white'
             />
             <p className='p-4 text-white'>
               Post Job
             </p>
             <FontAwesomeIcon
-              icon='angle-right'
+              icon={faAngleRight}
               className='text-white'
             />
           </button>

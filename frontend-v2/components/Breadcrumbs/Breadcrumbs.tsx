@@ -1,7 +1,9 @@
 "use client"
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react'
+import styles from './styles.module.css'
 
 const Breadcrumbs = () => {
   const router = useRouter();
@@ -33,15 +35,13 @@ const Breadcrumbs = () => {
   const breadcrumbList = generateBreadcrumbs();
 
   return (
-    <ul className='flex justify-start ml-[28%] mt-10 mb-4 p-0 list-none font-bold'>
+    <ul className='flex justify-start mt-10 mb-4 p-0 list-none font-bold'>
       {breadcrumbList.map((breadcrumb, idx) => 
       <li
-        // class='flex float-left h-5 w-auto items-center'
-        // class='{ "text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered": breadcrumb.link }'
+        className={`flex float-left h-5 w-auto items-center ${breadcrumb.href && "text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered"} ${styles.breadcrumbItem}`}
       key={idx} onClick={() => router.push(breadcrumbList[idx].href)}>
-        {breadcrumb.title === 'Home' ? <div><FontAwesomeIcon width={16} icon='house' /></div> : <p
-          // className='{ "text-jb-headings text-base font-bold": !breadcrumb.link,
-          //           "text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered ": breadcrumb.link }'
+        {breadcrumb.title === 'Home' ? <div><FontAwesomeIcon size='xs' icon={faHouse} /></div> : <p
+        className={breadcrumb.href ? "text-jb-headings text-base font-bold" : "text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered"}
         >
           {breadcrumb.title}
         </p>}

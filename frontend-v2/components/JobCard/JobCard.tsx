@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './styles.module.css'
+import { faAddressCard, faClock, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   jobID: number,
@@ -51,7 +52,7 @@ const JobCard = ({ jobID, jobTitle, imagePath, jobType, jobTag, jobLocation, job
     <div className='flex items-center mx-4 my-1'>
       <FontAwesomeIcon
         className='w-4'
-        icon='clock'
+        icon={faClock}
       />
       <p className='ml-2'>
         {JobType[jobType as keyof typeof JobType] }
@@ -60,7 +61,7 @@ const JobCard = ({ jobID, jobTitle, imagePath, jobType, jobTag, jobLocation, job
     <div className='flex items-center mx-4 my-1'>
       <FontAwesomeIcon
         className='w-4'
-        icon='location-dot'
+        icon={faLocationDot}
       />
       <p className='ml-2'>
         {jobLocation}
@@ -69,7 +70,7 @@ const JobCard = ({ jobID, jobTitle, imagePath, jobType, jobTag, jobLocation, job
     <div className='flex items-center mx-4 my-1 mb-4'>
       <FontAwesomeIcon
         className='w-4'
-        icon='address-card'
+        icon={faAddressCard}
       />
       <p className='ml-2'>
         {JobMode[jobMode as keyof typeof JobMode] }

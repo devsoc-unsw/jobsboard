@@ -4,9 +4,7 @@ type Props = {
   children: React.ReactNode
 }
 
-const LandingRootLayout = ({
-  children
-}: Props) => {
+const LandingRootLayout = ({ children }: Props) => {
   return (
     <div>{children}</div>
   )

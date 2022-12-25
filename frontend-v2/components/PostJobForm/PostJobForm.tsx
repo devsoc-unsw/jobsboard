@@ -1,4 +1,5 @@
 "use client"
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AppContext from 'app/AppContext'
 import Alert, { AlertType } from 'components/Alert/Alert'
@@ -214,7 +215,7 @@ const PostJobForm = ({ admin }: Props) => {
           <div className='flex'>
             <div className='py-1'>
               <FontAwesomeIcon
-                icon='circle-info'
+                icon={faCircleInfo}
                 size='lg'
               />
             </div>
