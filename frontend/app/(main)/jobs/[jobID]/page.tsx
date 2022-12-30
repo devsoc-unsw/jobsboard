@@ -271,7 +271,11 @@ const JobInfoPage = ({ params }: any) => {
             </ul>
           </div>
           <div className="text-left h-full p-4 bg-white rounded-2xl w-full overflow-y-auto shadow-card">
-            <p>{isJobDescriptionShown ? description : additionalInfo}</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: isJobDescriptionShown ? description : additionalInfo
+              }}
+            />
           </div>
         </div>
       </div>

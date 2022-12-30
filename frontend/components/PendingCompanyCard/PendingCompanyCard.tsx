@@ -29,11 +29,15 @@ const PendingCompanyCard = ({
 
   const verifyCompany = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const res = await api.patch(`/admin/company/${companyAccountID}/verify`, {
-      headers: {
-        Authorization: apiToken
+    const res = await api.patch(
+      `/admin/company/${companyAccountID}/verify`,
+      {},
+      {
+        headers: {
+          Authorization: apiToken
+        }
       }
-    });
+    );
 
     if (res.status === 200) {
       setApiToken(res.data.token);

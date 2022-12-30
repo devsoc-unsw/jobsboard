@@ -86,12 +86,17 @@ const CompanyHomePage = () => {
     }
 
     const convertedFile = await toBase64(logo.value);
-    await api.put('/company/update/logo', {
-      headers: {
-        Authorization: apiToken
+    await api.put(
+      '/company/update/logo',
+      {
+        logo: convertedFile
       },
-      logo: convertedFile
-    });
+      {
+        headers: {
+          Authorization: apiToken
+        }
+      }
+    );
     setOpenModal(false);
   };
 
@@ -163,7 +168,7 @@ const CompanyHomePage = () => {
                 <div className="flex justify-center items-center w-full p-6">
                   <label className="flex flex-col justify-center items-center w-full h-64 rounded-lg border-2 border-dashed cursor-pointer bg-white border-gray-600 hover:border-gray-500 hover:bg-gray-100">
                     {logo ? (
-                      <Image className="w-3/4" alt="preview logo" src={preview} />
+                      <Image alt="preview logo" width={100} height={100} src={preview} />
                     ) : (
                       <div className="flex flex-col justify-center items-center pt-5 pb-6">
                         <FontAwesomeIcon
@@ -171,7 +176,7 @@ const CompanyHomePage = () => {
                           className="text-jb-subheader mb-4"
                           size="3x"
                         />
-                        <p className="mb-2 text-sm">{logo && 'Click to upload an image'}</p>
+                        <p className="mb-2 text-sm">{logo || 'Click to upload an image'}</p>
                       </div>
                     )}
                     <input

@@ -12,6 +12,7 @@ import api from 'config/api';
 import { JobMode, JobType } from 'constants/jobFields';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
+import styles from './styles.module.css';
 
 type Props = {
   jobID: number;
@@ -29,23 +30,6 @@ type Props = {
   listName: string;
 };
 
-/*
-.box {
-  background: linear-gradient(146deg, rgba(111, 179, 252, 0.4) 0%, rgba(254, 254, 254) 100%);
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
-}
-.hover {
-  color: white
-}
-.main_hover {
-  background-color: #FF7060;
-}
-.boxHover {
-  background: linear-gradient(146.05deg, #79B9FF 0%, rgba(255, 255, 255, 0) 100%);
-  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
-}
-*/
-
 const JobProfileCard = ({
   jobID,
   role,
@@ -62,7 +46,6 @@ const JobProfileCard = ({
   listName
 }: Props) => {
   const [openModal, setOpenModal] = useState(false);
-  const [modalContent, setModalContent] = useState('');
 
   const { apiToken } = useContext(AppContext);
 
@@ -73,7 +56,6 @@ const JobProfileCard = ({
 
   const closeJobModal = async () => {
     setOpenModal(false);
-    setModalContent('');
   };
 
   const deleteJob = async () => {
@@ -111,7 +93,7 @@ const JobProfileCard = ({
         onClose={closeJobModal}
       />
       <div
-        className="relative mt-6 ml-6 mb-8 box rounded-xl w-[190px] h-[230px] cursor-pointer px-6"
+        className={`${styles.box} relative mt-6 ml-6 mb-8 rounded-xl w-[190px] h-[230px] cursor-pointer px-6`}
         onClick={() => setOpenModal(true)}
       >
         <div className="text-left">
@@ -155,7 +137,7 @@ const JobProfileCard = ({
         </div>
         {listName === 'postedJobs' && (
           <div
-            className="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center relative left-[70px] bottom-[65px] cursor-pointer"
+            className="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center cursor-pointer"
             onClick={deleteJob}
           >
             <div>

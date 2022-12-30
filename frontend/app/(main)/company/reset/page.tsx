@@ -28,12 +28,17 @@ const ResetPage = () => {
       setAlertMsg('Passwords do not match. Please try again.');
       setAlertOpen(true);
     } else {
-      const res = await api.put('/company/password-reset', {
-        headers: {
-          Authorization: apiToken
+      const res = await api.put(
+        '/company/password-reset',
+        {
+          newPassword
         },
-        newPassword
-      });
+        {
+          headers: {
+            Authorization: apiToken
+          }
+        }
+      );
 
       if (res.status === 200) {
         window.scrollTo(0, 10);

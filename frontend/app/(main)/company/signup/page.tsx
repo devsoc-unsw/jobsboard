@@ -1,15 +1,17 @@
 'use client';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AppContext from 'app/AppContext';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 const CompanySignupPage = () => {
   const router = useRouter();
+  const { apiToken } = useContext(AppContext);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -32,8 +34,8 @@ const CompanySignupPage = () => {
     });
   };
 
-  const updateLogo = (e: Event) => {
-    const uploadLogo = (e.target as HTMLInputElement).files![0];
+  const updateLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadLogo = e.target.files![0];
     setLogo(uploadLogo);
     setPreview(URL.createObjectURL(uploadLogo));
   };
@@ -73,13 +75,21 @@ const CompanySignupPage = () => {
       return;
     }
     const convertedFile = await toBase64(logo);
-    const res = await api.put('/company', {
-      username,
-      password,
-      name,
-      location,
-      logo: convertedFile
-    });
+    const res = await api.put(
+      '/company',
+      {
+        username,
+        password,
+        name,
+        location,
+        logo: convertedFile
+      },
+      {
+        headers: {
+          Authorization: apiToken
+        }
+      }
+    );
 
     if (res.status === 200) {
       setAlertOpen(true);

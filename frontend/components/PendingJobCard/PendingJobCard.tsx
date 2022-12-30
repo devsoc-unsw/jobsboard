@@ -54,11 +54,15 @@ const PendingJobCard = ({
 
   const approveJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const res = await api.patch(`/job/${jobID}/approve`, {
-      headers: {
-        Authorization: apiToken
+    const res = await api.patch(
+      `/job/${jobID}/approve`,
+      {},
+      {
+        headers: {
+          Authorization: apiToken
+        }
       }
-    });
+    );
     if (res.status === 200) {
       setApiToken(res.data.token);
       onRemove();
@@ -79,11 +83,15 @@ const PendingJobCard = ({
   };
   const rejectJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const res = await api.patch(`/job/${jobID}/reject`, {
-      headers: {
-        Authorization: apiToken
+    const res = await api.patch(
+      `/job/${jobID}/reject`,
+      {},
+      {
+        headers: {
+          Authorization: apiToken
+        }
       }
-    });
+    );
     if (res.status === 200) {
       setApiToken(res.data.token);
       onRemove();

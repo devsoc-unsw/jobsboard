@@ -87,7 +87,7 @@ const PostJobForm = ({ admin }: Props) => {
         });
       }
     };
-    setup();
+    admin && setup();
   }, []);
 
   const submitJobPost = async () => {
@@ -120,7 +120,7 @@ const PostJobForm = ({ admin }: Props) => {
     jobDate.setMinutes(59);
 
     // ensure that there is a selected company
-    if ((admin && parseInt(selectedCompanyID, 10) < 0) || isNaN(parseInt(selectedCompanyID, 10))) {
+    if (admin && (parseInt(selectedCompanyID, 10) < 0 || isNaN(parseInt(selectedCompanyID, 10)))) {
       // error message
       setAlertType('error');
       setAlertMsg('Please select a valid company.');
@@ -135,22 +135,27 @@ const PostJobForm = ({ admin }: Props) => {
 
     const apiEndpoint = admin ? `/admin/company/${selectedCompanyID}/jobs` : `/jobs`;
 
-    const res = await api.put(apiEndpoint, {
-      headers: {
-        Authorization: apiToken
+    const res = await api.put(
+      apiEndpoint,
+      {
+        role,
+        description,
+        applicationLink,
+        expiry: jobDate.valueOf(),
+        isPaid: isPaidPosition,
+        jobMode,
+        studentDemographic,
+        jobType,
+        workingRights,
+        wamRequirements,
+        additionalInfo
       },
-      role,
-      description,
-      applicationLink,
-      expiry: jobDate.valueOf(),
-      jobMode,
-      studentDemographic,
-      jobType,
-      workingRights,
-      wamRequirements,
-      additionalInfo,
-      isPaid: isPaidPosition
-    });
+      {
+        headers: {
+          Authorization: apiToken
+        }
+      }
+    );
 
     setApiToken(res.data.token);
 
@@ -165,7 +170,7 @@ const PostJobForm = ({ admin }: Props) => {
         behavior: 'smooth'
       });
       setTimeout(() => {
-        router.push('/admin/home');
+        router.push(`/${admin ? 'admin' : 'company'}/home`);
       }, 5000);
     } else {
       setAlertType('error');
@@ -189,6 +194,19 @@ const PostJobForm = ({ admin }: Props) => {
     }
     setLoading(false);
   };
+
+  const handleOnChangeWorkingRights = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) setWorkingRights((prevState) => [...prevState, e.target.value]);
+    else setWorkingRights((prevState) => prevState.filter((v) => v !== e.target.value));
+  };
+
+  const handleOnChangeStudentDemographic = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) setStudentDemographic((prevState) => [...prevState, e.target.value]);
+    else setStudentDemographic((prevState) => prevState.filter((v) => v !== e.target.value));
+  };
+
+  const handleOnChangeWamRequirements = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setWamRequirements(e.target.value);
 
   return (
     <div>
@@ -214,7 +232,7 @@ const PostJobForm = ({ admin }: Props) => {
           Reach out to a talented pool of over 10,000 Computer Science and Engineering students
         </p>
         {/* <!-- disclaimer box --> */}
-        {!admin && alertOpen && (
+        {!admin && !alertOpen && (
           <div className="bg-orange-100 border-t-4 border-orange-500 rounded-b px-4 py-3 shadow-md mx-[15%] lg:mx-0 mb-10">
             <div className="flex">
               <div className="py-1">
@@ -225,7 +243,7 @@ const PostJobForm = ({ admin }: Props) => {
                   Important note before making a job post
                 </p>
                 <p className="text-left">
-                  Please understand that we will be cross checking this with the
+                  Please understand that we will be cross checking this with the&nbsp;
                   <a
                     className="text-jb-textlink font-bold hover:text-jb-textlink-hovered"
                     href="https://www.fairwork.gov.au/starting-employment/unpaid-work/student-placements"
@@ -234,7 +252,7 @@ const PostJobForm = ({ admin }: Props) => {
                   >
                     Australian Fair Work Act 2009
                   </a>
-                  to determine whether the job post follows all guidelines and prioritises the
+                  &nbsp;to determine whether the job post follows all guidelines and prioritises the
                   safety of our members.
                 </p>
               </div>
@@ -383,8 +401,7 @@ const PostJobForm = ({ admin }: Props) => {
         <div className="flex flex-row items-center self-start text-left text-lg">
           <input
             id="wr_aus_ctz"
-            value={workingRights}
-            onChange={(e) => setWorkingRights(e.target.value)}
+            onChange={handleOnChangeWorkingRights}
             type="checkbox"
             value="aus_ctz"
             className="self-center mr-2 w-auto"
@@ -394,8 +411,7 @@ const PostJobForm = ({ admin }: Props) => {
         <div className="flex flex-row items-center self-start text-left text-lg">
           <input
             id="wr_aus_perm_res"
-            value={workingRights}
-            onChange={(e) => setWorkingRights(e.target.value)}
+            onChange={handleOnChangeWorkingRights}
             type="checkbox"
             value="aus_perm_res"
             className="self-center mr-2 w-auto"
@@ -405,8 +421,7 @@ const PostJobForm = ({ admin }: Props) => {
         <div className="flex flex-row items-center self-start text-left text-lg">
           <input
             id="wr_aus_stud_visa"
-            value={workingRights}
-            onChange={(e) => setWorkingRights(e.target.value)}
+            onChange={handleOnChangeWorkingRights}
             type="checkbox"
             value="aus_stud_visa"
             className="self-center mr-2 w-auto"
@@ -416,7 +431,7 @@ const PostJobForm = ({ admin }: Props) => {
         <div className="flex flex-row items-center self-start text-left text-lg">
           <input
             id="wr_aus_temp_grad_visa"
-            // v-model='workingRights'
+            onChange={handleOnChangeWorkingRights}
             type="checkbox"
             value="aus_temp_grad_visa"
             className="self-center mr-2 w-auto"
@@ -426,7 +441,7 @@ const PostJobForm = ({ admin }: Props) => {
         <div className="flex flex-row items-center self-start text-left text-lg">
           <input
             id="wr_nz_ctz_and_perm_res"
-            v-model="workingRights"
+            onChange={handleOnChangeWorkingRights}
             type="checkbox"
             value="nz_ctz_and_perm_res"
             className="self-center mr-2 w-auto"
@@ -436,7 +451,7 @@ const PostJobForm = ({ admin }: Props) => {
         <div className="flex flex-row items-center self-start text-left text-lg">
           <input
             id="wr_no_wr"
-            v-model="workingRights"
+            onChange={handleOnChangeWorkingRights}
             type="checkbox"
             value="no_wr"
             className="self-center mr-2 w-auto"
@@ -446,7 +461,7 @@ const PostJobForm = ({ admin }: Props) => {
         <div className="flex flex-row items-center self-start text-left text-lg">
           <input
             id="wr_all"
-            v-model="workingRights"
+            onChange={handleOnChangeWorkingRights}
             type="checkbox"
             value="all"
             className="self-center mr-2 w-auto"
@@ -465,7 +480,7 @@ const PostJobForm = ({ admin }: Props) => {
               <div className="flex flex-row items-center self-start text-left text-lg">
                 <input
                   id="student_demographic_final_year"
-                  v-model="studentDemographic"
+                  onChange={handleOnChangeStudentDemographic}
                   type="checkbox"
                   value="final_year"
                   className="self-center mr-2 w-auto"
@@ -475,7 +490,7 @@ const PostJobForm = ({ admin }: Props) => {
               <div className="flex flex-row items-center self-start text-left text-lg">
                 <input
                   id="student_demographic_penultimate"
-                  v-model="studentDemographic"
+                  onChange={handleOnChangeStudentDemographic}
                   type="checkbox"
                   value="penultimate"
                   className="self-center mr-2 w-auto"
@@ -485,7 +500,7 @@ const PostJobForm = ({ admin }: Props) => {
               <div className="flex flex-row items-center self-start text-left text-lg">
                 <input
                   id="student_demographic_all"
-                  v-model="studentDemographic"
+                  onChange={handleOnChangeStudentDemographic}
                   type="checkbox"
                   value="all"
                   className="self-center mr-2 w-auto"
@@ -505,7 +520,7 @@ const PostJobForm = ({ admin }: Props) => {
               <div className="flex flex-row items-center self-start text-left text-lg">
                 <input
                   id="applicantWam_HD"
-                  v-model="wamRequirements"
+                  onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="HD"
                   className="self-center mr-2 w-auto"
@@ -515,7 +530,7 @@ const PostJobForm = ({ admin }: Props) => {
               <div className="flex flex-row items-center self-start text-left text-lg">
                 <input
                   id="applicantWam_D"
-                  v-model="wamRequirements"
+                  onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="D"
                   className="self-center mr-2 w-auto"
@@ -525,7 +540,7 @@ const PostJobForm = ({ admin }: Props) => {
               <div className="flex flex-row items-center self-start text-left text-lg">
                 <input
                   id="applicantWam_C"
-                  v-model="wamRequirements"
+                  onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="C"
                   className="self-center mr-2 w-auto"
@@ -535,7 +550,7 @@ const PostJobForm = ({ admin }: Props) => {
               <div className="flex flex-row items-center self-start text-left text-lg">
                 <input
                   id="applicantWam_none"
-                  v-model="wamRequirements"
+                  onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="none"
                   className="self-center mr-2 w-auto"
