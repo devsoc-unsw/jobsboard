@@ -1,13 +1,6 @@
 'use client';
-// import { useRouter, useRoute } from 'vue-router';
-// import { useApiTokenStore } from 'store/apiToken';
-// import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
-
-// import RecruitmentModal from 'components/modals/RecruitmentModal.vue';
-// import FadeTransition from 'components/FadeTransition.vue';
 import BigBlob from 'assets/misc/BigBlob.svg';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
-// import Header from 'components/Header/Header';
 // import FeaturedJobCard from 'components/FeaturedJobCard.vue';
 // import SponsorCarousel from 'components/SponsorCarousel.vue';
 import Image from 'next/image';
@@ -16,24 +9,27 @@ import { useRouter } from 'next/navigation';
 import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
 import Header from 'components/Header/Header';
 
-// const getFeaturedJobs = async () => {
-//   const response = await fetch(`${api.baseURL}/featured-jobs`);
-//   const data = await response.json();
-//   return data.featuredJobs;
-// };
-
 import container from 'styles/container.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
 import { faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
+import api from 'config/api';
 
 const HomePage = () => {
-  // const featuredJobs = await getFeaturedJobs()
-  const featuredJobs = [];
+  const [featuredJobs, setFeaturedJobs] = useState([]);
 
   const router = useRouter();
 
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    const getFeaturedJobs = async () => {
+      const res = await api.get('/featured-jobs');
+      setFeaturedJobs(res.data.featuredJobs);
+    };
+
+    getFeaturedJobs();
+  }, []);
 
   return (
     <div className="text-center">
