@@ -62,7 +62,6 @@ const CompanyForgotPage = () => {
       <div className="w-1/4 relative group mt-4 mb-8 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input
           id="email"
-          v-model="email"
           name="email"
           type="text"
           className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"

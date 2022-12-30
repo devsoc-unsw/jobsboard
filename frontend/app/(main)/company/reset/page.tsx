@@ -111,7 +111,6 @@ const ResetPage = () => {
       <div className="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
         <input
           id="confirmPassword"
-          v-model="confirmPassword"
           name="confirmPassword"
           type="password"
           className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"

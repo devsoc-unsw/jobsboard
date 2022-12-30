@@ -222,7 +222,7 @@ const CompanyHomePage = () => {
             <div>
               <select
                 id="board"
-                v-model="boardStatus"
+                onChange={(e) => setBoardStatus(e.target.value)}
                 name="boards"
                 className="bg-[#F6F9FC] ml-4 font-bold text-lg"
               >

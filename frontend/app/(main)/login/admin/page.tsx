@@ -64,7 +64,6 @@ const LoginCompanyPage = () => {
           <div className="w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
             <input
               id="email"
-              v-model="username"
               name="email"
               type="text"
               className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
@@ -90,7 +89,6 @@ const LoginCompanyPage = () => {
           <div className="w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
             <input
               id="password"
-              v-model="password"
               name="password"
               type={hidePassword ? 'password' : 'text'}
               className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"

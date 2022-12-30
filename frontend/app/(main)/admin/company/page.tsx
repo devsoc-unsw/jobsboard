@@ -71,13 +71,6 @@ const AdminCompanyPage = () => {
   return (
     <div>
       {toastOpen && <Toast message={toastMsg} type={toastType} />}
-      {/* <FadeTransition>
-        <Toast
-          v-if='isToastOpen'
-          :isSuccess='toastType === "success"'
-          :message='toastMsg'
-        />
-      </FadeTransition> */}
       {openModal && (
         <div>
           {/* <!-- Modal backdrop --> */}
