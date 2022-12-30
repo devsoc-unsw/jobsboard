@@ -12,6 +12,7 @@ import api from 'config/api';
 import { JobMode, JobType } from 'constants/jobFields';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
+import { StudentDemographic, WorkingRights } from 'types/api';
 import styles from './styles.module.css';
 
 type Props = {
@@ -23,8 +24,8 @@ type Props = {
   expiry: string;
   description: string;
   applicationLink: string;
-  workingRights: any[];
-  studentDemographic: any[];
+  workingRights: WorkingRights[];
+  studentDemographic: StudentDemographic[];
   wamRequirements: string;
   additionalInfo: string;
   listName: string;
@@ -125,7 +126,7 @@ const JobProfileCard = ({
                 {jobModeObject[mode as keyof typeof JobMode]}
               </p>
               <p className="ml-3 text-jb-subheadings truncate">
-                {studentDemographic!.length === 2 ? 'Penult & Final' : 'All Students'}
+                {studentDemographic.length === 2 ? 'Penult & Final' : 'All Students'}
               </p>
               <p className="ml-3 text-jb-subheadings truncate">{pay ? 'Paid' : 'Not Paid'}</p>
             </div>

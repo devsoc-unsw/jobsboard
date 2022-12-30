@@ -7,44 +7,28 @@ import api from 'config/api';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
+import { CompanyJob, CompanyJobsPayload, HiddenJob, HiddenJobsPayload } from 'types/api';
 
 const CompanyHomePage = () => {
   const router = useRouter();
   const { apiToken } = useContext(AppContext);
 
-  const [jobs, setJobs] = useState([]);
-  const [expiredJobs, setExpiredJobs] = useState([]);
+  const [jobs, setJobs] = useState<CompanyJob[]>([]);
+  const [expiredJobs, setExpiredJobs] = useState<HiddenJob[]>([]);
   const [boardStatus, setBoardStatus] = useState('postedJobs');
   const [openModal, setOpenModal] = useState(false);
   const [logo, setLogo] = useState<any>(null);
   const [preview, setPreview] = useState<any>(null);
 
   const getCompanyJobs = async () => {
-    const res = await api.get('/companyjobs', {
+    const res = await api.get<CompanyJobsPayload>('/companyjobs', {
       headers: {
         Authorization: apiToken
       }
     });
 
     if (res.status === 200) {
-      const companyJobs = res.data.companyJobs.map((job: any) => {
-        return {
-          id: job.id,
-          role: job.role,
-          description: job.description,
-          additionalInfo: job.additionalInfo,
-          status: job.status,
-          applicationLink: job.applicationLink,
-          jobType: job.jobType,
-          expiry: job.expiry,
-          pay: job.isPaid,
-          studentDemographic: job.studentDemographic,
-          mode: job.mode,
-          workingRights: job.workingRights,
-          wamRequirements: job.wamRequirements
-        };
-      });
-      setJobs(companyJobs);
+      setJobs(res.data.companyJobs);
     } else {
       window.scrollTo({
         top: 0,
@@ -63,7 +47,7 @@ const CompanyHomePage = () => {
   };
 
   const updateLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadLogo = (e.target as HTMLInputElement).files![0];
+    const uploadLogo = e.target.files![0];
     setLogo(uploadLogo);
     setPreview(URL.createObjectURL(uploadLogo));
   };
@@ -101,30 +85,14 @@ const CompanyHomePage = () => {
   };
 
   const getHiddenJobs = async () => {
-    const res = await api.get('/job/company/hidden', {
+    const res = await api.get<HiddenJobsPayload>('/job/company/hidden', {
       headers: {
         Authorization: apiToken
       }
     });
 
     if (res.status === 200) {
-      const hiddenJobs = res.data.hiddenJobs.map((job: any) => {
-        return {
-          id: job.id,
-          role: job.role,
-          description: job.description,
-          status: job.status,
-          applicationLink: job.applicationLink,
-          expiry: job.expiry,
-          isPaid: job.isPaid,
-          jobType: job.jobType,
-          studentDemographic: job.studentDemographic,
-          mode: job.mode,
-          workingRights: job.workingRights,
-          wamRequirements: job.wamRequirements
-        };
-      });
-      setExpiredJobs(hiddenJobs);
+      setExpiredJobs(res.data.hiddenJobs);
     } else {
       window.scrollTo({
         top: 0,

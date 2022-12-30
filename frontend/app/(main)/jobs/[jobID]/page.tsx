@@ -23,8 +23,15 @@ import {
 } from 'constants/jobFields';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
+import { CompanyJob, HiddenJob } from 'types/api';
 
-const JobInfoPage = ({ params }: any) => {
+type Props = {
+  params: {
+    jobID: string;
+  };
+};
+
+const JobInfoPage = ({ params }: Props) => {
   const jobID = params.jobID;
 
   // const [companyID, setCompanyID] = useState('')
@@ -32,7 +39,7 @@ const JobInfoPage = ({ params }: any) => {
   const [company, setCompany] = useState('');
   // const [companyDescription, setCompanyDescription] = useState('')
   const [description, setDescription] = useState('');
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<(CompanyJob | HiddenJob)[]>([]);
   const [location, setLocation] = useState('');
   const [applicationLink, setApplicationLink] = useState('');
   const [jobMode, setJobMode] = useState('hybrid');
@@ -155,7 +162,7 @@ const JobInfoPage = ({ params }: any) => {
           <div>
             {jobs.map((job) => (
               <JobListingMinimal
-                key={job.key}
+                key={job.id}
                 jobID={job.id}
                 role={job.role}
                 company={company}

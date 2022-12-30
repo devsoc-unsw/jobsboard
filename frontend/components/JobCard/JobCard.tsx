@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { JobType, WorkingRights, JobMode } from 'constants/jobFields';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import { faAddressCard, faClock, faLocationDot } from '@fortawesome/free-solid-s
 type Props = {
   jobID: number;
   jobTitle: number;
-  imagePath: any;
+  imagePath: string;
   jobType: string;
   jobTag: string[];
   jobLocation: string;
@@ -44,7 +44,7 @@ const JobCard = ({
       <h3 className="text-l text-left font-bold mx-4">{jobTitle}</h3>
 
       <div className="flex flex-wrap flex-row m-0 items-center mx-4 my-2 xs:flex-col xs:items-start">
-        {jobTag.map((tag, idx) => (
+        {jobTag.map((tag) => (
           <div
             key={tag}
             className="flex justify-center items-center rounded-md my-1 px-2 h-6 bg-jb-tags text-base"

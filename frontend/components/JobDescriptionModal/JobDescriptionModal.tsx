@@ -17,6 +17,7 @@ import {
   WorkingRights as WorkingRightsObj
 } from 'constants/jobFields';
 import React from 'react';
+import { StudentDemographic, WorkingRights } from 'types/api';
 
 type Props = {
   title: string;
@@ -26,8 +27,8 @@ type Props = {
   isPaidPosition: string;
   jobType: string;
   jobMode: string;
-  workingRights: any[];
-  studentDemographic: any[];
+  workingRights: WorkingRights[];
+  studentDemographic: StudentDemographic[];
   wamRequirements: string;
   additionalInfo: string;
   open: boolean;

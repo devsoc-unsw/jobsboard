@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import googleLogo from 'assets/companies/googleLogo.png';
 import { faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { StudentDemographic, WorkingRights } from 'types/api';
 
 type Props = {
   company: string;
@@ -19,8 +20,8 @@ type Props = {
   isPaidPosition: string;
   jobType: string;
   jobMode: string;
-  workingRights: any[];
-  studentDemographic: any[];
+  workingRights: WorkingRights[];
+  studentDemographic: StudentDemographic[];
   wamRequirements: string;
   additionalInfo: string;
   onSuccess(message: string): void;

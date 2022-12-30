@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { StudentDemographic, WorkingRights } from 'types/api';
 
 type Props = {
   admin?: boolean;
@@ -25,8 +26,8 @@ const PostJobForm = ({ admin }: Props) => {
   const [isPaidPosition, setIsPaidPosition] = useState('');
   const [jobType, setJobType] = useState('');
   const [jobMode, setJobMode] = useState('');
-  const [workingRights, setWorkingRights] = useState<string[]>([]);
-  const [studentDemographic, setStudentDemographic] = useState<string[]>([]);
+  const [workingRights, setWorkingRights] = useState<WorkingRights[]>([]);
+  const [studentDemographic, setStudentDemographic] = useState<StudentDemographic[]>([]);
   const [wamRequirements, setWamRequirements] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [alertType, setAlertType] = useState<AlertType>('success');
@@ -196,12 +197,14 @@ const PostJobForm = ({ admin }: Props) => {
   };
 
   const handleOnChangeWorkingRights = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) setWorkingRights((prevState) => [...prevState, e.target.value]);
+    if (e.target.checked)
+      setWorkingRights((prevState) => [...prevState, e.target.value as WorkingRights]);
     else setWorkingRights((prevState) => prevState.filter((v) => v !== e.target.value));
   };
 
   const handleOnChangeStudentDemographic = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) setStudentDemographic((prevState) => [...prevState, e.target.value]);
+    if (e.target.checked)
+      setStudentDemographic((prevState) => [...prevState, e.target.value as StudentDemographic]);
     else setStudentDemographic((prevState) => prevState.filter((v) => v !== e.target.value));
   };
 

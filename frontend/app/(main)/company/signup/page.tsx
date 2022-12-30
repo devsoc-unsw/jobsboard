@@ -21,11 +21,11 @@ const CompanySignupPage = () => {
   const [alertType, setAlertType] = useState<AlertType>('error');
   const [alertMsg, setAlertMsg] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [logo, setLogo] = useState<any>(null);
-  const [preview, setPreview] = useState<any>(null);
+  const [logo, setLogo] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const toBase64 = (file: any) => {
+  const toBase64 = (file: File) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -41,14 +41,7 @@ const CompanySignupPage = () => {
   };
 
   const validateInput = () => {
-    if (
-      username === '' ||
-      password === '' ||
-      confirmPassword === '' ||
-      name === '' ||
-      location === '' ||
-      logo === ''
-    ) {
+    if (!username || !password || !confirmPassword || !name || !location || !logo) {
       setAlertOpen(true);
       setAlertType('error');
       setAlertMsg('One or more fields are empty. Please try again');
@@ -69,7 +62,7 @@ const CompanySignupPage = () => {
 
   const performSignup = async () => {
     setIsLoading(true);
-    if (!validateInput()) {
+    if (!validateInput() || !logo) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setIsLoading(false);
       return;
@@ -305,9 +298,7 @@ const CompanySignupPage = () => {
                           stroke-linejoin="round"
                         />
                       </svg>
-                      <p className="text-lg font-bold justify-center">
-                        {logo ? logo.name : 'Upload logo'}
-                      </p>
+                      <p className="text-lg font-bold justify-center">Upload logo</p>
                     </div>
                   )}
                   <input
