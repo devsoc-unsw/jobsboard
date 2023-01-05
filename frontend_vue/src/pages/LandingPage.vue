@@ -79,8 +79,8 @@
         .
       </p>
       <div
-        v-if='(featuredJobs.length !== 4)'
-        class=' my-12 w-full'
+        v-if='(featuredJobs.length === 4)'
+        class='my-12 w-full'
       >
         <Carousel
           :items-to-show='1'
