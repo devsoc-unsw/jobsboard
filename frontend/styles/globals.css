@@ -41,7 +41,7 @@
   }
 
   .hover-anim {
-    @apply transform transition duration-200 hover:scale-105 cursor-pointer;
+    @apply transform transition duration-200 hover:scale-[1.03] cursor-pointer;
   }
 }
 

@@ -1,6 +1,7 @@
 import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { WorkingRights } from 'constants/jobFields';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import styles from './styles.module.css';
@@ -17,15 +18,16 @@ const FeaturedJobCard = ({ title, description, tag, imgSrc }: Props) => {
 
   return (
     <div
-      className="flex flex-col justify-between w-[300px] shadow-card mb-4 rounded-lg min-h-[550px] bg-white relative hover-anim"
+      className="flex my-5 flex-col justify-between w-full shadow-card mb-4 rounded-lg bg-white relative hover-anim"
       onClick={() => router.push('/login/student')}
     >
       <div>
         <div className="flex justify-center min-w-0 mx-5">
           {imgSrc ? (
-            <img
+            <Image
               src={imgSrc}
-              className="select-none pointer-events-none object-contain w-full py-4 min-h-[180px]"
+              className="select-none pointer-events-none object-contain w-full py-4"
+              height={180}
               alt="sponsor logo"
             />
           ) : (
@@ -37,7 +39,7 @@ const FeaturedJobCard = ({ title, description, tag, imgSrc }: Props) => {
         </div>
         <h3 className="text-xl font-bold mx-4 mb-4">{title}</h3>
         <div className="flex flex-row flex-wrap m-0 justify-evenly items-center mx-2 my-2 xs:flex-col">
-          {tag.map((tag, idx) => (
+          {tag.map((tag) => (
             <div
               key={tag}
               className="flex justify-center items-center rounded-md my-1 mx-1 px-2 h-6 bg-jb-tags text-base"

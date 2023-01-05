@@ -1,8 +1,6 @@
 'use client';
 import BigBlob from 'assets/misc/BigBlob.svg';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
-// import FeaturedJobCard from 'components/FeaturedJobCard.vue';
-// import SponsorCarousel from 'components/SponsorCarousel.vue';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/navigation';
@@ -14,6 +12,13 @@ import { useEffect, useState } from 'react';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
 import { faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import api from 'config/api';
+import FeaturedJobCard from 'components/FeaturedJobCard/FeaturedJobCard';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const HomePage = () => {
   const [featuredJobs, setFeaturedJobs] = useState([]);
@@ -107,57 +112,32 @@ const HomePage = () => {
             </span>
             .
           </p>
-          {featuredJobs.length !== 4 ? (
-            <div>{/* TODO: Show carousel*/}</div>
+          {!!featuredJobs.length ? (
+            <Swiper
+              slidesPerView={4}
+              spaceBetween={30}
+              navigation={true}
+              pagination={{
+                clickable: true
+              }}
+              loop
+              autoplay
+              modules={[Pagination, Navigation]}
+            >
+              {featuredJobs.map((job) => (
+                <SwiperSlide key={job.title}>
+                  <FeaturedJobCard
+                    title={job.title}
+                    description={job.description}
+                    tag={job.workingRights}
+                    imgSrc={job.logo}
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
           ) : (
             <div className="mb-28" />
           )}
-          {/* <div
-        v-if='(featuredJobs.length !== 4)'
-        className=' my-12 w-full'
-      >
-        <Carousel
-          :items-to-show='1'
-          :wrap-around='true'
-          :breakpoints='{
-            // 900px and up
-            900: {
-              itemsToShow: 2.5,
-              snapAlign: "center",
-            },
-            // 1024px and up
-            1024: {
-              itemsToShow: 3,
-              snapAlign: "center",
-            },
-            // 1400px and up
-            1400: {
-              itemsToShow: 3.95,
-              snapAlign: "center",
-            },
-          }'
-        >
-          <Slide
-            v-for='job in featuredJobs'
-            :key='job.id'
-          >
-            <FeaturedJobCard
-              :jobTitle='job.role'
-              :jobDescription='job.description'
-              :jobTag='job.workingRights'
-              :imagePath='job.logo ? job.logo.toString() : ""'
-            />
-          </Slide>
-          <template #addons>
-            <Navigation />
-            <Pagination />
-          </template>
-        </carousel>
-      </div>
-      <div
-        v-else
-        className='mb-28'
-      /> */}
           <h3 className="font-bold text-3xl mb-0 text-jb-headings">Want to Post a Job?</h3>
           <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
             Are you a company looking to advertise with us? We&apos;d absolutely love to hear from
