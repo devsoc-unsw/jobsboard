@@ -35,7 +35,6 @@ export default createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ y: 0 }),
   routes: [{
-    // started
     path: '/login/student',
     component: StudentLoginPage,
     meta: {
@@ -46,7 +45,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/login/company',
     component: CompanyLoginPage,
     meta: {
@@ -57,7 +55,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/login/admin',
     component: AdminLoginPage,
     meta: {
@@ -68,7 +65,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started change to /company/signup
     path: '/signup/company',
     component: CompanySignupPage,
     meta: {
@@ -79,7 +75,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/company/home',
     component: CompanyAccountHome,
     meta: {
@@ -90,7 +85,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/admin/home',
     component: AdminAccountHome,
     meta: {
@@ -101,7 +95,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/admin/jobs/pending',
     component: AdminListPendingJobs,
     meta: {
@@ -113,7 +106,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/admin/companies/pending',
     component: AdminListCompanyPendingVerification,
     meta: {
@@ -125,7 +117,6 @@ export default createRouter({
       ],
     },
   }, {
-    // TODO
     path: '/admin/jobs/post',
     component: AdminCreateJobAsCompany,
     meta: {
@@ -137,7 +128,6 @@ export default createRouter({
       ],
     },
   }, {
-    // TODO
     path: '/company/jobs/add',
     component: CompanyAddJob,
     meta: {
@@ -149,7 +139,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/jobs',
     component: JobsListPage,
     meta: {
@@ -160,7 +149,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started change to /jobs/:jobID
     path: '/job/:jobID',
     component: SingleJobPage,
     props: true,
@@ -173,7 +161,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started change to company/forgot
     path: '/company/password-forgot',
     component: CompanyPasswordForgotPage,
     meta: {
@@ -184,7 +171,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started?? change to /company/reset
     path: '/company/password-reset/:token',
     component: CompanyPasswordResetPage,
     props: true,
@@ -197,7 +183,6 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/team',
     component: TeamPage,
     meta: {
@@ -208,14 +193,12 @@ export default createRouter({
       ],
     },
   }, {
-    // started
     path: '/',
     component: LandingPage,
     meta: {
       title: 'Home | Jobs Board',
     },
   }, {
-    // started
     path: '/:pathMatch(.*)*',
     component: PageNotFoundPage,
     meta: {
