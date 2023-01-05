@@ -18,7 +18,7 @@ const FeaturedJobCard = ({ title, description, tag, imgSrc }: Props) => {
 
   return (
     <div
-      className="flex my-5 flex-col justify-between w-full shadow-card mb-4 rounded-lg bg-white relative hover-anim"
+      className="flex mx-4 mt-8 mb-12 flex-col justify-between shadow-card rounded-lg bg-white relative hover-anim"
       onClick={() => router.push('/login/student')}
     >
       <div>

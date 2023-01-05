@@ -114,11 +114,21 @@ const HomePage = () => {
           </p>
           {!!featuredJobs.length ? (
             <Swiper
-              slidesPerView={4}
-              spaceBetween={30}
+              slidesPerView={1}
               navigation={true}
               pagination={{
                 clickable: true
+              }}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2
+                },
+                768: {
+                  slidesPerView: 3
+                },
+                1024: {
+                  slidesPerView: 4
+                }
               }}
               loop
               autoplay
