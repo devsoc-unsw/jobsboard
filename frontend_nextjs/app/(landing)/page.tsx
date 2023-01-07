@@ -19,6 +19,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Link from 'next/link';
+import Button from 'ui/Button';
 
 const HomePage = () => {
   const [featuredJobs, setFeaturedJobs] = useState([]);
@@ -169,22 +170,12 @@ const HomePage = () => {
           <div className="flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col sm:gap-4">
             <div>
               <Link href="/company/signup">
-                <button
-                  className="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0
-                    shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-                >
-                  Join Us
-                </button>
+                <Button>Join Us</Button>
               </Link>
             </div>
             <div>
               <Link href="/company/login">
-                <button
-                  className="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0 mb-0 sm:mb-10
-                    shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-                >
-                  Post a Job
-                </button>
+                <Button>Post a Job</Button>
               </Link>
             </div>
           </div>
@@ -196,21 +187,10 @@ const HomePage = () => {
             Otherwise, you can also contribute by suggesting cool new features or even make a pull
             request on the Jobs Board repo.
           </p>
-          <div className="mt-8 mb-28 mx-24 sm:m-0">
-            <button
-              className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
-                  hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-              onClick={() => setOpenModal(true)}
-            >
-              Join the Team
-            </button>
+          <div className="mt-8 flex justify-center gap-5 mb-28 mx-24 sm:m-0">
+            <Button onClick={() => setOpenModal(true)}>Join the Team</Button>
             <a href="https://github.com/csesoc/jobs-board" target="_blank" rel="noreferrer">
-              <button
-                className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
-                  hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-              >
-                Source Code
-              </button>
+              <Button>Source Code</Button>
             </a>
           </div>
           <div className="mt-20 flex justify-center">

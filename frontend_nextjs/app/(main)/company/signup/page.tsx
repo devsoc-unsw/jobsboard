@@ -8,6 +8,7 @@ import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
+import Button from 'ui/Button';
 
 const CompanySignupPage = () => {
   const router = useRouter();
@@ -317,7 +318,7 @@ const CompanySignupPage = () => {
         </div>
       </form>
 
-      <p className="text-lg text-jb-subheadings text-center">
+      <p className="text-lg text-jb-subheadings text-center mb-6">
         Already have an account?&nbsp;
         <Link
           className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
@@ -327,18 +328,7 @@ const CompanySignupPage = () => {
           Company Login
         </Link>
       </p>
-      {isLoading ? (
-        <Loading />
-      ) : (
-        <button
-          type="submit"
-          className="bg-jb-textlink rounded-md w-40 h-11 my-4 p-2 text-white font-bold text-base
-               border-0 shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-          onClick={performSignup}
-        >
-          Sign Up
-        </button>
-      )}
+      {isLoading ? <Loading /> : <Button onClick={performSignup}>Sign Up</Button>}
     </div>
   );
 };

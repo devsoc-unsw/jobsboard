@@ -13,6 +13,7 @@ import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
+import Button from 'ui/Button';
 
 const AdminHomePage = () => {
   const router = useRouter();
@@ -135,16 +136,13 @@ const AdminHomePage = () => {
           <span className="text-jb-textlink font-bold"> company is legitimate </span>
           before verifying.
         </p>
-        <button
-          className="btn btn-blue-filled h-14 p-4"
-          onClick={() => {
-            router.push(`/admin/company`);
-          }}
-        >
-          <FontAwesomeIcon icon={faUserShield} className="text-white" />
-          <p className="p-4 text-white">Verify Company</p>
-          <FontAwesomeIcon icon={faAngleRight} className="text-white" />
-        </button>
+        <Link href="/admin/company">
+          <Button>
+            <FontAwesomeIcon icon={faUserShield} />
+            <span className="mx-3">Verify Company</span>
+            <FontAwesomeIcon icon={faAngleRight} />
+          </Button>
+        </Link>
       </div>
 
       {/* <!-- Job Verification --> */}
@@ -155,11 +153,11 @@ const AdminHomePage = () => {
           <span className="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>.
         </p>
         <Link href="/admin/jobs">
-          <button className="btn btn-blue-filled h-14 p-4">
-            <FontAwesomeIcon icon={faBriefcase} className="text-white" />
-            <p className="p-4 text-white">Verify Job Post</p>
-            <FontAwesomeIcon icon={faAngleRight} className="text-white" />
-          </button>
+          <Button>
+            <FontAwesomeIcon icon={faBriefcase} />
+            <span className="mx-3">Verify Job Post</span>
+            <FontAwesomeIcon icon={faAngleRight} />
+          </Button>
         </Link>
       </div>
 
@@ -171,16 +169,13 @@ const AdminHomePage = () => {
           <span className="text-jb-textlink font-bold"> post on behalf of a company</span>. Ensure
           that you have their explicit permission before doing so.
         </p>
-        <button
-          className="btn btn-blue-filled h-14 p-4"
-          onClick={() => {
-            router.push(`/admin/jobs/post`);
-          }}
-        >
-          <FontAwesomeIcon icon={faBriefcase} className="text-white" />
-          <p className="p-4 text-white">Post Job</p>
-          <FontAwesomeIcon icon={faAngleRight} className="text-white" />
-        </button>
+        <Link href="/admin/jobs/post">
+          <Button>
+            <FontAwesomeIcon icon={faBriefcase} />
+            <span className="mx-3">Post Job</span>
+            <FontAwesomeIcon icon={faAngleRight} />
+          </Button>
+        </Link>
       </div>
     </div>
   );

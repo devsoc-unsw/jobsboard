@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';
+import Button from 'ui/Button';
 
 const StudentLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -114,7 +115,7 @@ const StudentLoginPage = () => {
           </div>
         </form>
 
-        <p className="text-lg text-jb-subheadings text-center">
+        <p className="text-lg text-jb-subheadings text-center mb-5">
           Not a student?&nbsp;
           <Link
             className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
@@ -124,13 +125,7 @@ const StudentLoginPage = () => {
             Company Login
           </Link>
         </p>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <button className="btn btn-blue-filled w-40 h-11 my-4 p-2" onClick={performLogin}>
-            Log In
-          </button>
-        )}
+        {isLoading ? <Loading /> : <Button onClick={performLogin}>Log In</Button>}
       </div>
     </div>
   );

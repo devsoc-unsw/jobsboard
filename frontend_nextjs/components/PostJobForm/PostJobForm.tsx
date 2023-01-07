@@ -11,6 +11,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { StudentDemographic, WorkingRights } from 'types/api';
+import Button from 'ui/Button';
 
 type Props = {
   admin?: boolean;
@@ -579,20 +580,14 @@ const PostJobForm = ({ admin }: Props) => {
         {loading ? (
           <Loading />
         ) : (
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-5">
             <button
               className="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
               onClick={() => setOpenModal(true)}
             >
               Preview
             </button>
-            <button
-              className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
-              shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
-              onClick={submitJobPost}
-            >
-              Post Job
-            </button>
+            <Button onClick={submitJobPost}>Post Job</Button>
           </div>
         )}
       </div>

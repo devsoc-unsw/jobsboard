@@ -21,9 +21,11 @@ import {
   WorkingRights as WR,
   StudentDemographic as SD
 } from 'constants/jobFields';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import { CompanyJob, HiddenJob } from 'types/api';
+import Button from 'ui/Button';
 
 type Props = {
   params: {
@@ -173,17 +175,12 @@ const JobInfoPage = ({ params }: Props) => {
         </div>
         <div className="flex flex-col items-center w-3/4 h-full sm:w-full">
           <div className="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
-            <div className="flex flex-col mr-8 self-center">
+            <div className="flex flex-col mr-8 justify-center">
               {/* <!-- TODO: to be replaced with company logo --> */}
-              <FontAwesomeIcon icon={faBuilding} size="10x" className="mb-2" />
-              <a href={applicationLink} target="_blank" rel="noreferrer">
-                <button
-                  className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
-              shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
-                >
-                  Apply
-                </button>
-              </a>
+              <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
+              <Link href={applicationLink} target="_blank" rel="noreferrer">
+                <Button>Apply</Button>
+              </Link>
             </div>
             <div className="flex flex-col text-left">
               <h1 className="font-bold text-3xl my-4 text-jb-headings">{role}</h1>
