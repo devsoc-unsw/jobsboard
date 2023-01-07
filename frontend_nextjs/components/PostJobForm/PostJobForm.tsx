@@ -171,7 +171,7 @@ const PostJobForm = ({ admin }: Props) => {
         behavior: 'smooth'
       });
       setTimeout(() => {
-        router.push(`/${admin ? 'admin' : 'company'}/home`);
+        router.push(`/${admin ? 'admin' : 'company'}/dashboard`);
       }, 5000);
     } else {
       setAlertType('error');

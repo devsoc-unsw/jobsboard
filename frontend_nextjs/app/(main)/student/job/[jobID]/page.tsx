@@ -62,7 +62,7 @@ const JobInfoPage = ({ params }: Props) => {
   const fetchJob = async () => {
     // determine whether there is an API key present and redirect if not present
     if (!apiToken) {
-      router.push('/login/student');
+      router.push('/student/login');
       return;
     }
 
@@ -102,7 +102,7 @@ const JobInfoPage = ({ params }: Props) => {
       if (res.status === 401) {
         setAlertMsg('Login expired. Redirecting to login page.');
         setTimeout(() => {
-          router.push('/login/company');
+          router.push('/company/login');
         }, 3000);
       } else {
         setAlertMsg('Unable to load jobs at this time. Please try again later.');

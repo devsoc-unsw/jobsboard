@@ -94,13 +94,13 @@ const CompanyForgotPage = () => {
       <div className="flex flex-row justify-evenly items-center pt-12 w-1/4 sm:flex-col xl:w-2/5 md:w-1/2">
         <p className="flex flex-col text-jb-subheadings pb-0 sm:pb-4">
           Not a company?
-          <Link href="/login/student" className="text-jb-textlink font-bold">
+          <Link href="/student/login" className="text-jb-textlink font-bold">
             Student Login
           </Link>
         </p>
         <p className="flex flex-col text-jb-subheadings">
           Don&apos;t have an account?
-          <Link href="/signup/company" className="text-jb-textlink font-bold">
+          <Link href="/company/signup" className="text-jb-textlink font-bold">
             Create One
           </Link>
         </p>

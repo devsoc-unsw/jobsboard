@@ -59,7 +59,7 @@ const ResetPage = () => {
         } else if (res.status === 401) {
           setAlertMsg('Token may be invalid or expired. Redirecting to login page.');
           setTimeout(() => {
-            router.push('/login/company');
+            router.push('/company/login');
           }, 3000);
         } else {
           setAlertMsg('There was an error when trying to reset your password. Please try again.');

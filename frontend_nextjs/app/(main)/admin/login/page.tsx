@@ -5,14 +5,13 @@ import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';
 
-const LoginStudentPage = () => {
+const LoginCompanyPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
-  const [zID, setZID] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -23,14 +22,14 @@ const LoginStudentPage = () => {
   const performLogin = async () => {
     setIsLoading(true);
     try {
-      const res = await api.post<AuthenticationPayload>('/authenticate/student', {
-        zID,
+      const res = await api.post<AuthenticationPayload>('/authenticate/admin', {
+        username,
         password
       });
       if (res.status === 200) {
         setApiToken(res.data.token);
         setAlertOpen(false);
-        router.push('/jobs');
+        router.push('/admin/dashboard');
       }
     } catch (e) {
       window.scrollTo({
@@ -45,9 +44,10 @@ const LoginStudentPage = () => {
   return (
     <div>
       <div className="h-full flex flex-col justify-center items-center py-16">
-        <h1 className="font-bold text-3xl text-jb-headings">Student Login</h1>
-        <p className="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
-          Enter your zID in the format zXXXXXXX and your zPassword.
+        <h1 className="font-bold text-3xl text-jb-headings">Admin Login</h1>
+        <p className="text-lg text-jb-subheadings my-4">
+          Enter your username and password. If there are any problems, please get in touch with a
+          project lead.
         </p>
 
         {/* <!-- Error Alert --> */}
@@ -57,34 +57,35 @@ const LoginStudentPage = () => {
           open={alertOpen}
           onClose={() => setAlertOpen(false)}
         />
+
         <form className="flex justify-center items-center flex-col w-full">
-          {/* <!-- zId Input --> */}
-          <div className="w-2/5 relative group mt-4 mb-6 md:w-1/2 sm:w-4/5">
+          {/* <!-- Email Input --> */}
+          <div className="w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
             <input
-              id="zID"
-              name="zID"
+              id="email"
+              name="email"
               type="text"
-              className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
+              className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
               autoComplete="username"
               required
-              onChange={(e) => setZID(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               onKeyUp={(e) => {
                 if (e.key === 'Enter') performLogin();
               }}
             />
             <label
-              htmlFor="zID"
+              htmlFor="email"
               className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
             >
-              zID
+              Email
             </label>
           </div>
 
           {/* <!-- Password Input --> */}
-          <div className="w-2/5 relative group mt-4 mb-6 md:w-1/2 sm:w-4/5">
+          <div className="w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
             <input
               id="password"
               name="password"
@@ -113,17 +114,6 @@ const LoginStudentPage = () => {
             />
           </div>
         </form>
-
-        <p className="text-lg text-jb-subheadings text-center">
-          Not a student?&nbsp;
-          <Link
-            className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
-                  cursor-pointer hover:text-jb-textlink-hovered"
-            href="/login/company"
-          >
-            Company Login
-          </Link>
-        </p>
         {isLoading ? (
           <Loading />
         ) : (
@@ -131,9 +121,18 @@ const LoginStudentPage = () => {
             Log In
           </button>
         )}
+        <p className="text-lg text-jb-subheadings mt-6 mb-4 mx-[18%] sm:mx-8">
+          Or return to&nbsp;
+          <span
+            className="font-bold cursor-pointer text-jb-textlink hover:text-jb-textlink-hovered"
+            onClick={() => router.push('/')}
+          >
+            Home
+          </span>
+        </p>
       </div>
     </div>
   );
 };
 
-export default LoginStudentPage;
+export default LoginCompanyPage;

@@ -17,7 +17,7 @@ const Header = ({ style }: Props) => {
 
   const handleLogout = () => {
     resetApiToken();
-    router.push('/login/student');
+    router.push('/student/login');
   };
 
   return (
@@ -47,7 +47,7 @@ const Header = ({ style }: Props) => {
             className="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[2px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg"
-            onClick={() => router.push('/login/student')}
+            onClick={() => router.push('/student/login')}
           >
             Log In
           </button>

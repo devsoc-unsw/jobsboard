@@ -89,7 +89,7 @@ const CompanySignupPage = () => {
       setAlertType('success');
       setAlertMsg('Company account created successfully! Redirecting to the login page...');
       setTimeout(() => {
-        router.push('/login/company');
+        router.push('/company/login');
       }, 5000);
     } else if (res.status === 409) {
       setAlertOpen(true);
@@ -322,7 +322,7 @@ const CompanySignupPage = () => {
         <Link
           className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
                     cursor-pointer hover:text-jb-textlink-hovered"
-          href="/login/company"
+          href="/company/login"
         >
           Company Login
         </Link>

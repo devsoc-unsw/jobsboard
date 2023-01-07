@@ -13,7 +13,7 @@ type Props = {
 const JobListingMinimal = ({ jobID, role, company, location }: Props) => {
   const router = useRouter();
   const routeToJob = () => {
-    router.push(`/jobs/${jobID}`);
+    router.push(`/student/job/${jobID}`);
   };
 
   return (

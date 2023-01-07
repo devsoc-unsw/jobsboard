@@ -70,7 +70,7 @@ const JobProfileCard = ({
     } else {
       if (res.status === 401) {
         setTimeout(() => {
-          router.push('/login/company');
+          router.push('/company/login');
         }, 3000);
       }
     }

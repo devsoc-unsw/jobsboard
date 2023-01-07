@@ -5,6 +5,7 @@ import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';
@@ -21,17 +22,16 @@ const LoginCompanyPage = () => {
 
   const performLogin = async () => {
     setIsLoading(true);
-    try {
-      const res = await api.post<AuthenticationPayload>('/authenticate/admin', {
-        username,
-        password
-      });
-      if (res.status === 200) {
-        setApiToken(res.data.token);
-        setAlertOpen(false);
-        router.push('/admin/home');
-      }
-    } catch (e) {
+    const res = await api.post<AuthenticationPayload>('/authenticate/company', {
+      username,
+      password
+    });
+
+    if (res.status === 200) {
+      setApiToken(res.data.token);
+      setAlertOpen(false);
+      router.push('/company/dashboard');
+    } else {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -44,10 +44,9 @@ const LoginCompanyPage = () => {
   return (
     <div>
       <div className="h-full flex flex-col justify-center items-center py-16">
-        <h1 className="font-bold text-3xl text-jb-headings">Admin Login</h1>
-        <p className="text-lg text-jb-subheadings my-4">
-          Enter your username and password. If there are any problems, please get in touch with a
-          project lead.
+        <h1 className="font-bold text-3xl text-jb-headings">Company Login</h1>
+        <p className="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
+          Enter your email in the format example@company.com and your password.
         </p>
 
         {/* <!-- Error Alert --> */}
@@ -114,6 +113,38 @@ const LoginCompanyPage = () => {
             />
           </div>
         </form>
+
+        <p className="text-lg text-jb-subheadings text-center">
+          Not a company?&nbsp;
+          <Link
+            className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
+                  cursor-pointer hover:text-jb-textlink-hovered"
+            href="/student/login"
+          >
+            Student Login
+          </Link>
+        </p>
+
+        <p className="text-lg text-jb-subheadings text-center my-2">
+          Forgot your password?&nbsp;
+          <Link
+            className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
+                      cursor-pointer hover:text-jb-textlink-hovered"
+            href="/company/forgot"
+          >
+            Reset Your Password
+          </Link>
+        </p>
+        <p className="text-lg text-jb-subheadings text-center my-2 mb-6">
+          Don&apos;t have an account?&nbsp;
+          <Link
+            className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
+                cursor-pointer hover:text-jb-textlink-hovered"
+            href="/company/signup"
+          >
+            Create one!
+          </Link>
+        </p>
         {isLoading ? (
           <Loading />
         ) : (
@@ -121,15 +152,6 @@ const LoginCompanyPage = () => {
             Log In
           </button>
         )}
-        <p className="text-lg text-jb-subheadings mt-6 mb-4 mx-[18%] sm:mx-8">
-          Or return to&nbsp;
-          <span
-            className="font-bold cursor-pointer text-jb-textlink hover:text-jb-textlink-hovered"
-            onClick={() => router.push('/')}
-          >
-            Home
-          </span>
-        </p>
       </div>
     </div>
   );

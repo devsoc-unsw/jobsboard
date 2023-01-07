@@ -31,7 +31,7 @@ const JobCard = ({
   return (
     <div
       className="flex flex-col rounded-lg m-4 shadow-card hover-anim w-60"
-      onClick={() => router.push(`/jobs/${jobID}`)}
+      onClick={() => router.push(`/student/job/${jobID}`)}
     >
       <div className="flex mx-5">
         <Image

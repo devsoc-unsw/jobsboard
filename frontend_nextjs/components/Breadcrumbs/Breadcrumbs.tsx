@@ -31,7 +31,7 @@ const Breadcrumbs = () => {
         { name: 'Home', link: '/' },
         { name: 'Reset Password', link: pathname }
       ];
-    } else if (pathname?.includes('/home')) {
+    } else if (pathname?.includes('/dashboard')) {
       breadcrumb = [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: pathname }
@@ -49,18 +49,13 @@ const Breadcrumbs = () => {
     } else if (pathname === '/company/post') {
       breadcrumb = [
         { name: 'Home', link: '/' },
-        { name: 'Dashboard', link: '/company/home' },
+        { name: 'Dashboard', link: '/company/dashboard' },
         { name: 'Post Job', link: pathname }
       ];
-    } else if (pathname === '/jobs') {
+    } else if (pathname?.includes('/student/job/')) {
       breadcrumb = [
         { name: 'Home', link: '/' },
-        { name: 'Job List', link: pathname }
-      ];
-    } else if (pathname?.includes('/jobs/')) {
-      breadcrumb = [
-        { name: 'Home', link: '/' },
-        { name: 'Job List', link: '/jobs' },
+        { name: 'Dashboard', link: '/student/dashboard' },
         { name: 'Job', link: pathname }
       ];
     }

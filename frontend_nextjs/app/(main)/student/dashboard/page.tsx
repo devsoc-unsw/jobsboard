@@ -17,7 +17,7 @@ import {
   faPeopleGroup
 } from '@fortawesome/free-solid-svg-icons';
 
-const JobsPage = () => {
+const StudentDashboardPage = () => {
   const router = useRouter();
   const { apiToken } = useContext(AppContext);
   const [error, setError] = useState(false);
@@ -57,7 +57,7 @@ const JobsPage = () => {
         if (res.status == 401) {
           setErrorMsg('Login expired. Redirecting to login page.');
           setTimeout(() => {
-            router.push('/login/company');
+            router.push('/company/login');
           }, 3000);
         } else {
           setErrorMsg('Unable to load jobs at this time. Please try again later.');
@@ -177,4 +177,4 @@ const JobsPage = () => {
   );
 };
 
-export default JobsPage;
+export default StudentDashboardPage;

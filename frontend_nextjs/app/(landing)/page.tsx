@@ -73,14 +73,14 @@ const HomePage = () => {
               <button
                 className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
-                onClick={() => router.push('/login/student')}
+                onClick={() => router.push('/student/login')}
               >
                 Explore
               </button>
               <button
                 className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
-                onClick={() => router.push('/login/company')}
+                onClick={() => router.push('/company/login')}
               >
                 Advertise
               </button>
@@ -110,7 +110,7 @@ const HomePage = () => {
             <span
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
                     cursor-pointer hover:text-jb-textlink-hovered"
-              onClick={() => router.push('/login/student')}
+              onClick={() => router.push('/student/login')}
             >
               here
             </span>
@@ -178,7 +178,7 @@ const HomePage = () => {
               <button
                 className="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0 mb-0 sm:mb-10
                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-                onClick={() => router.push('/login/company')}
+                onClick={() => router.push('/company/login')}
               >
                 Post a Job
               </button>
