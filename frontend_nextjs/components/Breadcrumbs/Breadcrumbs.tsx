@@ -5,30 +5,66 @@ import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import styles from './styles.module.css';
 
+type Breadcrumb = {
+  name: string;
+  link: string;
+};
+
 const Breadcrumbs = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  // ref: https://dev.to/dan_starner/building-dynamic-breadcrumbs-in-nextjs-17oa
   const generateBreadcrumbs = () => {
-    if (!pathname) return [];
-    // Break down the path between "/"s, removing empty entities
-    // Ex:"/my/nested/path" --> ["my", "nested", "path"]
-    const asPathNestedRoutes = pathname.split('/').filter((v) => v.length > 0);
-
-    // Iterate over the list of nested route parts and build
-    // a "crumb" object for each one.
-    const crumbList = asPathNestedRoutes.map((subpath, idx) => {
-      // We can get the partial nested route for the crumb
-      // by joining together the path parts up to this point.
-      const href = '/' + asPathNestedRoutes.slice(0, idx + 1).join('/');
-      // The title will just be the route string for now
-      const title = subpath.length ? subpath[0].toUpperCase() + subpath.slice(1) : subpath;
-      return { href, title };
-    });
-
-    // Add in a default "Home" crumb for the top-level
-    return [{ href: '/', title: 'Home' }, ...crumbList];
+    let breadcrumb: Breadcrumb[] = [];
+    if (pathname?.includes('/login')) {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Login', link: pathname }
+      ];
+    } else if (pathname?.includes('/forgot')) {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Forgot Password', link: pathname }
+      ];
+    } else if (pathname?.includes('/reset')) {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Reset Password', link: pathname }
+      ];
+    } else if (pathname?.includes('/home')) {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: pathname }
+      ];
+    } else if (pathname?.includes('/team')) {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Team', link: pathname }
+      ];
+    } else if (pathname?.includes('/signup')) {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Sign Up', link: pathname }
+      ];
+    } else if (pathname === '/company/post') {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/company/home' },
+        { name: 'Post Job', link: pathname }
+      ];
+    } else if (pathname === '/jobs') {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Job List', link: pathname }
+      ];
+    } else if (pathname?.includes('/jobs/')) {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Job List', link: '/jobs' },
+        { name: 'Job', link: pathname }
+      ];
+    }
+    return breadcrumb;
   };
 
   const breadcrumbList = generateBreadcrumbs();
@@ -38,25 +74,25 @@ const Breadcrumbs = () => {
       {breadcrumbList.map((breadcrumb, idx) => (
         <li
           className={`flex float-left h-5 w-auto items-center ${
-            breadcrumb.href &&
+            breadcrumb.link &&
             'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered'
           } ${styles.breadcrumbItem}`}
           key={idx}
-          onClick={() => router.push(breadcrumbList[idx].href)}
+          onClick={() => router.push(breadcrumbList[idx].link)}
         >
-          {breadcrumb.title === 'Home' ? (
+          {breadcrumb.name === 'Home' ? (
             <div>
               <FontAwesomeIcon size="xs" icon={faHouse} />
             </div>
           ) : (
             <p
               className={
-                breadcrumb.href
+                breadcrumb.link
                   ? 'text-jb-headings text-base font-bold'
                   : 'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered'
               }
             >
-              {breadcrumb.title}
+              {breadcrumb.name}
             </p>
           )}
         </li>

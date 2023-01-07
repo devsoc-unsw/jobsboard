@@ -5,7 +5,6 @@ import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';

@@ -101,7 +101,6 @@ const TeamPage = () => {
 
   return (
     <div>
-      <Breadcrumbs />
       <div className="text-center">
         <h2 className="font-bold text-4xl drop-shadow-xl mb-10 text-jb-headings mt-4">
           Interested about the people behind <br />

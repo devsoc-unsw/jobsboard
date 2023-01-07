@@ -29,8 +29,12 @@ const HomePage = () => {
 
   useEffect(() => {
     const getFeaturedJobs = async () => {
-      const res = await api.get('/featured-jobs');
-      setFeaturedJobs(res.data.featuredJobs);
+      try {
+        const res = await api.get('/featured-jobs');
+        setFeaturedJobs(res.data.featuredJobs);
+      } catch (e) {
+        console.error('Error at getFeaturedJobs', e);
+      }
     };
 
     getFeaturedJobs();
