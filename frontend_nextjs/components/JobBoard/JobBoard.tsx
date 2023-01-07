@@ -17,7 +17,7 @@ const JobBoard = ({ jobList, listName }: Props) => {
             key={job.key}
             jobID={job.id}
             role={job.role}
-            pay={job.isPaidPosition}
+            isPaidPosition={job.isPaidPosition}
             jobType={job.jobType}
             mode={job.mode}
             expiry={job.expiry}

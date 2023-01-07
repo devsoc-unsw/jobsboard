@@ -18,7 +18,7 @@ import styles from './styles.module.css';
 type Props = {
   jobID: number;
   role: string;
-  pay: string;
+  isPaidPosition: string;
   jobType: string;
   mode: string;
   expiry: string;
@@ -34,7 +34,7 @@ type Props = {
 const JobProfileCard = ({
   jobID,
   role,
-  pay,
+  isPaidPosition,
   jobType,
   mode,
   expiry,
@@ -84,7 +84,7 @@ const JobProfileCard = ({
         description={description}
         applicationLink={applicationLink}
         expiryDate={expiry}
-        isPaidPosition={pay}
+        isPaidPosition={isPaidPosition}
         jobType={jobType}
         jobMode={mode}
         workingRights={workingRights}
@@ -128,7 +128,9 @@ const JobProfileCard = ({
               <p className="ml-3 text-jb-subheadings truncate">
                 {studentDemographic.length === 2 ? 'Penult & Final' : 'All Students'}
               </p>
-              <p className="ml-3 text-jb-subheadings truncate">{pay ? 'Paid' : 'Not Paid'}</p>
+              <p className="ml-3 text-jb-subheadings truncate">
+                {isPaidPosition ? 'Paid' : 'Not Paid'}
+              </p>
             </div>
           </div>
 
