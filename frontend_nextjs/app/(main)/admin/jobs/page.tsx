@@ -1,5 +1,6 @@
 'use client';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import Loading from 'components/Loading/Loading';
 import PendingJobCard from 'components/PendingJobCard/PendingJobCard';
 import Toast from 'components/Toast/Toast';
@@ -18,24 +19,25 @@ const AdminJobsPage = () => {
 
   useEffect(() => {
     const fetchJobs = async () => {
-      const res = await api.get('/admin/jobs/pending', {
-        headers: {
-          Authorization: apiToken
-        }
-      });
+      try {
+        const res = await api.get('/admin/jobs/pending', {
+          headers: {
+            Authorization: apiToken
+          }
+        });
 
-      if (res.status === 200) {
         setApiToken(res.data.token);
         setJobs(res.data.pendingJobs);
-      } else {
+      } catch (e) {
         window.scrollTo(0, 10);
-        if (res.status == 401) {
-          setErrorMsg('You are not authorized to perform this action. Redirecting to login page.');
-          setTimeout(() => {
-            router.push('/login');
-          }, 3000);
-        } else {
-          setErrorMsg('Failed to get pending jobs.');
+        setErrorMsg('Failed to get pending jobs.');
+        if (e instanceof AxiosError) {
+          if (e.response?.status === 401) {
+            setErrorMsg('You are not authorized to perform this action. Redirecting to home page.');
+            setTimeout(() => {
+              router.push('/');
+            }, 3000);
+          }
         }
       }
 

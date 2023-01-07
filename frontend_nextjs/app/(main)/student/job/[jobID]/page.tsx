@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import Alert from 'components/Alert/Alert';
 import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
 import api from 'config/api';
@@ -68,14 +69,12 @@ const JobInfoPage = ({ params }: Props) => {
       return;
     }
 
-    // load the jobs using the api token
-    const res = await api.get(`/job/${jobID}`, {
-      headers: {
-        Authorization: apiToken
-      }
-    });
-
-    if (res.status === 200) {
+    try {
+      const res = await api.get(`/job/${jobID}`, {
+        headers: {
+          Authorization: apiToken
+        }
+      });
       const job = res.data.job;
 
       setRole(job.role);
@@ -95,30 +94,14 @@ const JobInfoPage = ({ params }: Props) => {
       setWamRequirements(job.wamRequirements);
       setIsPaid(job.isPaid);
       setExpiryDate(job.expiry);
-    } else {
-      setAlertOpen(true);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+
+      const jobRes = await api.get(`/company/${res.data.job.company.id}/jobs`, {
+        headers: {
+          Authorization: apiToken
+        }
       });
-      if (res.status === 401) {
-        setAlertMsg('Login expired. Redirecting to login page.');
-        setTimeout(() => {
-          router.push('/company/login');
-        }, 3000);
-      } else {
-        setAlertMsg('Unable to load jobs at this time. Please try again later.');
-      }
-    }
+      console.log({ jobRes });
 
-    const jobRes = await api.get(`/company/${res.data.job.company.id}/jobs`, {
-      headers: {
-        Authorization: apiToken
-      }
-    });
-    console.log({ jobRes });
-
-    if (jobRes.status === 200) {
       // TODO(ad-t): Fix below, as it will always be true
       const updatedJobs = jobRes.data.companyJobs.filter((job: any) => {
         const jobResultID = parseInt(job.id, 10);
@@ -126,12 +109,22 @@ const JobInfoPage = ({ params }: Props) => {
         return jobResultID !== currentJobID;
       });
       setJobs(updatedJobs);
-    } else {
+    } catch (e) {
+      setAlertMsg('Unable to load jobs at this time. Please try again later.');
       setAlertOpen(true);
-      setAlertMsg('Unable to load company jobs at this time. Please try again later.');
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          setAlertMsg('Login expired. Redirecting to login page.');
+          setTimeout(() => {
+            router.push('/company/login');
+          }, 3000);
+        }
+      }
     }
-
-    // setJobInfoReady(true)
   };
 
   useEffect(() => {

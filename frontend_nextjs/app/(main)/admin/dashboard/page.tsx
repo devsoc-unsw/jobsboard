@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import Alert from 'components/Alert/Alert';
 import api from 'config/api';
 import Link from 'next/link';
@@ -26,52 +27,55 @@ const AdminHomePage = () => {
   const [nPendingJobs, setNPendingJobs] = useState(0);
 
   const fetchInfo = async () => {
-    // Get the number of companies pending verification
-    const res = await api.get('/admin/pending/companies', {
-      headers: {
-        Authorization: apiToken
-      }
-    });
+    try {
+      // Get the number of companies pending verification
+      const res = await api.get('/admin/pending/companies', {
+        headers: {
+          Authorization: apiToken
+        }
+      });
 
-    if (res.status == 200) {
       setApiToken(res.data.token);
       setNPendingCompanies(res.data.pendingCompanyVerifications.length);
-    } else {
+    } catch (e) {
       setAlertOpen(true);
+      setAlertMsg(
+        "Failed to get pending companies. You might want to check what's happening in the console."
+      );
       window.scrollTo(0, 10);
-      if (res.status === 401) {
-        setAlertMsg('You are not authorized to perform this action. Redirecting to login page.');
-        setTimeout(() => {
-          // router.push('/');
-        }, 5000);
-      } else {
-        setAlertMsg(
-          "Failed to get pending companies. You might want to check what's happening in the console."
-        );
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          setAlertMsg('You are not authorized to perform this action. Redirecting to login page.');
+          setTimeout(() => {
+            router.push('/');
+          }, 5000);
+        }
       }
     }
 
-    // Get the number of jobs pending verification
-    const pendingJobsRes = await api.get('/admin/jobs/pending', {
-      headers: {
-        Authorization: apiToken
-      }
-    });
+    try {
+      // Get the number of jobs pending verification
+      const pendingJobsRes = await api.get('/admin/jobs/pending', {
+        headers: {
+          Authorization: apiToken
+        }
+      });
 
-    if (pendingJobsRes.status) {
       setApiToken(pendingJobsRes.data.token);
       setNPendingJobs(pendingJobsRes.data.pendingJobs.length);
-    } else {
+    } catch (e) {
+      setAlertOpen(true);
+      setAlertMsg(
+        "Failed to get pending jobs. You might want to check what's happening in the console."
+      );
       window.scrollTo(0, 10);
-      if (pendingJobsRes.status === 401) {
-        setAlertMsg('You are not authorized to perform this action. Redirecting to login page...');
-        setTimeout(() => {
-          // router.push('/');
-        }, 5000);
-      } else {
-        setAlertMsg(
-          "Failed to get pending jobs. You might want to check what's happening in the console."
-        );
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          setAlertMsg('You are not authorized to perform this action. Redirecting to login page.');
+          setTimeout(() => {
+            router.push('/');
+          }, 5000);
+        }
       }
     }
   };
@@ -169,7 +173,7 @@ const AdminHomePage = () => {
           <span className="text-jb-textlink font-bold"> post on behalf of a company</span>. Ensure
           that you have their explicit permission before doing so.
         </p>
-        <Link href="/admin/jobs/post">
+        <Link href="/admin/post">
           <Button>
             <FontAwesomeIcon icon={faBriefcase} />
             <span className="mx-3">Post Job</span>

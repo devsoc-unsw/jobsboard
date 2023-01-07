@@ -16,6 +16,7 @@ import {
   faMoneyBills,
   faPeopleGroup
 } from '@fortawesome/free-solid-svg-icons';
+import { AxiosError } from 'axios';
 
 const StudentDashboardPage = () => {
   const router = useRouter();
@@ -24,51 +25,37 @@ const StudentDashboardPage = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [jobs, setJobs] = useState<any[]>([]);
   const [query, setQuery] = useState('');
-  const [loadMoreJobsLock, setLoadMoreJobsLock] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO!: locking needs to be fixed!
-    const loadMoreJobs = async () => {
-      const sleep = (milliseconds: number) => {
-        return new Promise((resolve) => setTimeout(resolve, milliseconds));
-      };
-
-      while (loadMoreJobsLock) {
-        await sleep(1000);
-      }
-
-      setLoadMoreJobsLock(true);
-
+    const getJobs = async () => {
       // determine whether there is an API key present and redirect if not present
       // load the jobs using the api token
-      const res = await api.get(`/jobs/${jobs.length}`, {
-        headers: {
-          Authorization: apiToken
-        }
-      });
-      setLoading(false);
+      try {
+        const res = await api.get(`/jobs/${jobs.length}`, {
+          headers: {
+            Authorization: apiToken
+          }
+        });
 
-      if (res.status == 200) {
-        setJobs((prevState) => [...prevState, ...res.data.jobs]);
-      } else {
+        setJobs(res.data.jobs);
+      } catch (e) {
+        setErrorMsg('Unable to load jobs at this time. Please try again later.');
         setError(true);
         window.scrollTo(0, 10);
-        if (res.status == 401) {
-          setErrorMsg('Login expired. Redirecting to login page.');
-          setTimeout(() => {
-            router.push('/company/login');
-          }, 3000);
-        } else {
-          setErrorMsg('Unable to load jobs at this time. Please try again later.');
+        if (e instanceof AxiosError) {
+          if (e.response?.status === 401) {
+            setErrorMsg('Login expired. Redirecting to login page.');
+            setTimeout(() => {
+              router.push('/company/login');
+            }, 3000);
+          }
         }
-        setJobs([]);
       }
-
-      setLoadMoreJobsLock(false);
+      setLoading(false);
     };
 
-    loadMoreJobs();
+    getJobs();
   }, []);
 
   const getValue = (object: any, path: string): any => {
@@ -144,12 +131,12 @@ const StudentDashboardPage = () => {
       <div>
         {loading && <Loading />}
         <div className="flex flex-wrap justify-center">
-          <div className="flex flex-wrap justify-center">
+          <div className="flex flex-wrap justify-center gap-7">
             {filteredJobs.map((job) => (
               <JobCard
                 key={job.key}
                 jobID={job.id}
-                imagePath={GoogleLogo}
+                jobLogo={job.logo}
                 jobTitle={job.company.name}
                 jobRole={job.role}
                 jobType={job.jobType}

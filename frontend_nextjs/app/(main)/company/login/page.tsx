@@ -23,16 +23,15 @@ const LoginCompanyPage = () => {
 
   const performLogin = async () => {
     setIsLoading(true);
-    const res = await api.post<AuthenticationPayload>('/authenticate/company', {
-      username,
-      password
-    });
-
-    if (res.status === 200) {
+    try {
+      const res = await api.post<AuthenticationPayload>('/authenticate/company', {
+        username,
+        password
+      });
       setApiToken(res.data.token);
       setAlertOpen(false);
       router.push('/company/dashboard');
-    } else {
+    } catch (e) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'

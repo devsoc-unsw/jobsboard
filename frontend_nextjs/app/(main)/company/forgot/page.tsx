@@ -1,4 +1,5 @@
 'use client';
+import { AxiosError } from 'axios';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
@@ -14,11 +15,11 @@ const CompanyForgotPage = () => {
 
   const performCompanyPasswordForgot = async () => {
     setIsLoading(true);
-    const res = await api.post('/company/forgot-password', {
-      username: email
-    });
+    try {
+      await api.post('/company/forgot-password', {
+        username: email
+      });
 
-    if (res.status === 200) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -26,17 +27,18 @@ const CompanyForgotPage = () => {
       setAlertType('success');
       setAlertOpen(true);
       setAlertMsg('An email will be sent shortly. Please check your inbox.');
-    } else {
+    } catch (e) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
       setAlertType('error');
       setAlertOpen(true);
-      if (res.status === 400) {
-        setAlertMsg('Could not find a company account with that email. Please try again.');
-      } else {
-        setAlertMsg('Email failed to send. Please try again.');
+      setAlertMsg('Email failed to send. Please try again.');
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 400) {
+          setAlertMsg('Could not find a company account with that email. Please try again.');
+        }
       }
     }
     setIsLoading(false);

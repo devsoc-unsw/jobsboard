@@ -21,15 +21,14 @@ const CompanyHomePage = () => {
   const [preview, setPreview] = useState<any>(null);
 
   const getCompanyJobs = async () => {
-    const res = await api.get<CompanyJobsPayload>('/companyjobs', {
-      headers: {
-        Authorization: apiToken
-      }
-    });
-
-    if (res.status === 200) {
+    try {
+      const res = await api.get<CompanyJobsPayload>('/companyjobs', {
+        headers: {
+          Authorization: apiToken
+        }
+      });
       setJobs(res.data.companyJobs);
-    } else {
+    } catch (e) {
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -53,13 +52,13 @@ const CompanyHomePage = () => {
   };
 
   const checkCompanyLogoStatus = async () => {
-    const res = await api.get('/company/logo/status', {
-      headers: {
-        Authorization: apiToken
-      }
-    });
-
-    if (res.status !== 200) {
+    try {
+      await api.get('/company/logo/status', {
+        headers: {
+          Authorization: apiToken
+        }
+      });
+    } catch (e) {
       setOpenModal(true);
     }
   };
@@ -70,39 +69,37 @@ const CompanyHomePage = () => {
     }
 
     const convertedFile = await toBase64(logo.value);
-    await api.put(
-      '/company/update/logo',
-      {
-        logo: convertedFile
-      },
-      {
-        headers: {
-          Authorization: apiToken
+    try {
+      await api.put(
+        '/company/update/logo',
+        {
+          logo: convertedFile
+        },
+        {
+          headers: {
+            Authorization: apiToken
+          }
         }
-      }
-    );
-    setOpenModal(false);
+      );
+      setOpenModal(false);
+    } catch (e) {
+      console.error('Error at uploadLogo', e);
+    }
   };
 
   const getHiddenJobs = async () => {
-    const res = await api.get<HiddenJobsPayload>('/job/company/hidden', {
-      headers: {
-        Authorization: apiToken
-      }
-    });
-
-    if (res.status === 200) {
-      setExpiredJobs(res.data.hiddenJobs);
-    } else {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    try {
+      const res = await api.get<HiddenJobsPayload>('/job/company/hidden', {
+        headers: {
+          Authorization: apiToken
+        }
       });
-      if (res.status === 401) {
-        setTimeout(() => {
-          router.push('/login');
-        }, 1000);
-      }
+
+      setExpiredJobs(res.data.hiddenJobs);
+    } catch (e) {
+      setTimeout(() => {
+        router.push('/company/login');
+      }, 1000);
     }
   };
 

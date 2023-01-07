@@ -1,5 +1,6 @@
 'use client';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
@@ -28,19 +29,19 @@ const ResetPage = () => {
       setAlertMsg('Passwords do not match. Please try again.');
       setAlertOpen(true);
     } else {
-      const res = await api.put(
-        '/company/password-reset',
-        {
-          newPassword
-        },
-        {
-          headers: {
-            Authorization: apiToken
+      try {
+        await api.put(
+          '/company/password-reset',
+          {
+            newPassword
+          },
+          {
+            headers: {
+              Authorization: apiToken
+            }
           }
-        }
-      );
+        );
 
-      if (res.status === 200) {
         window.scrollTo(0, 10);
         setAlertType('success');
         setAlertMsg(
@@ -48,21 +49,22 @@ const ResetPage = () => {
         );
         setAlertOpen(true);
         setTimeout(() => {
-          router.push('/login');
+          router.push('/company/login');
         }, 5000);
-      } else {
+      } catch (e) {
         window.scrollTo(0, 10);
-        setAlertType('success');
+        setAlertType('error');
+        setAlertMsg('There was an error when trying to reset your password. Please try again.');
         setAlertOpen(true);
-        if (res.status === 400) {
-          setAlertMsg('Please try again. Password reset failed.');
-        } else if (res.status === 401) {
-          setAlertMsg('Token may be invalid or expired. Redirecting to login page.');
-          setTimeout(() => {
-            router.push('/company/login');
-          }, 3000);
-        } else {
-          setAlertMsg('There was an error when trying to reset your password. Please try again.');
+        if (e instanceof AxiosError) {
+          if (e.response?.status === 400) {
+            setAlertMsg('Please try again. Password reset failed.');
+          } else if (e.response?.status === 401) {
+            setAlertMsg('Token may be invalid or expired. Redirecting to login page.');
+            setTimeout(() => {
+              router.push('/company/login');
+            }, 3000);
+          }
         }
       }
     }

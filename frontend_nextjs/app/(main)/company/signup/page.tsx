@@ -2,6 +2,7 @@
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
@@ -69,39 +70,43 @@ const CompanySignupPage = () => {
       return;
     }
     const convertedFile = await toBase64(logo);
-    const res = await api.put(
-      '/company',
-      {
-        username,
-        password,
-        name,
-        location,
-        logo: convertedFile
-      },
-      {
-        headers: {
-          Authorization: apiToken
+    try {
+      await api.put(
+        '/company',
+        {
+          username,
+          password,
+          name,
+          location,
+          logo: convertedFile
+        },
+        {
+          headers: {
+            Authorization: apiToken
+          }
         }
-      }
-    );
+      );
 
-    if (res.status === 200) {
       setAlertOpen(true);
       setAlertType('success');
       setAlertMsg('Company account created successfully! Redirecting to the login page...');
       setTimeout(() => {
         router.push('/company/login');
       }, 5000);
-    } else if (res.status === 409) {
-      setAlertOpen(true);
-      setAlertType('error');
-      setAlertMsg('There already exists a company with this email. Please try again.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
+    } catch (e) {
       setAlertOpen(true);
       setAlertType('error');
       setAlertMsg('Invalid email address. Please try again.');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 409) {
+          setAlertOpen(true);
+          setAlertType('error');
+          setAlertMsg('There already exists a company with this email. Please try again.');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
     }
     setIsLoading(false);
   };

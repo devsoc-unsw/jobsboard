@@ -12,6 +12,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { StudentDemographic, WorkingRights } from 'types/api';
 import Button from 'ui/Button';
+import { AxiosError } from 'axios';
 
 type Props = {
   admin?: boolean;
@@ -61,27 +62,27 @@ const PostJobForm = ({ admin }: Props) => {
 
   useEffect(() => {
     const setup = async () => {
-      // make the call to get a list of verified companies to select from
-      const res = await api.get('/admin/companies', {
-        headers: {
-          Authorization: apiToken
-        }
-      });
-
-      if (res.status === 200) {
+      try {
+        // make the call to get a list of verified companies to select from
+        const res = await api.get('/admin/companies', {
+          headers: {
+            Authorization: apiToken
+          }
+        });
         // alphabetically sort them
         setVerifiedCompanies(
           res.data.companies.sort((companyA: any, companyB: any) => companyA.name > companyB.name)
         );
-      } else {
+      } catch (e) {
         setAlertType('error');
-        if (res.status === 401) {
-          setAlertMsg('You are not authorized to perform this action. Redirecting to login page.');
-          setTimeout(() => {
-            router.push('/login');
-          }, 3000);
-        } else {
-          setAlertMsg('Malformed request. Please contact the admin.');
+        setAlertMsg('Something went wrong. Please try again!');
+        if (e instanceof AxiosError) {
+          if (e.response?.status === 401) {
+            setAlertMsg('Invalid user credentials. Redirecting to login page.');
+            setTimeout(() => {
+              router.push('/admin/login');
+            }, 3000);
+          }
         }
         window.scrollTo({
           top: 0,
@@ -137,35 +138,32 @@ const PostJobForm = ({ admin }: Props) => {
 
     const apiEndpoint = admin ? `/admin/company/${selectedCompanyID}/jobs` : `/jobs`;
 
-    const res = await api.put(
-      apiEndpoint,
-      {
-        role,
-        description,
-        applicationLink,
-        expiry: jobDate.valueOf(),
-        isPaid: isPaidPosition,
-        jobMode,
-        studentDemographic,
-        jobType,
-        workingRights,
-        wamRequirements,
-        additionalInfo
-      },
-      {
-        headers: {
-          Authorization: apiToken
+    try {
+      const res = await api.put(
+        apiEndpoint,
+        {
+          role,
+          description,
+          applicationLink,
+          expiry: jobDate.valueOf(),
+          isPaid: isPaidPosition,
+          jobMode,
+          studentDemographic,
+          jobType,
+          workingRights,
+          wamRequirements,
+          additionalInfo
+        },
+        {
+          headers: {
+            Authorization: apiToken
+          }
         }
-      }
-    );
-
-    setApiToken(res.data.token);
-
-    if (res.status === 200) {
-      setAlertType('success');
-      setAlertMsg(
-        'Job posted! This job will be made available to students shortly. Redirecting to your dashboard...'
       );
+
+      admin && setApiToken(res.data.token);
+      setAlertType('success');
+      setAlertMsg('Job successfully posted! Redirecting to your dashboard...');
       setAlertOpen(true);
       window.scrollTo({
         top: 0,
@@ -174,21 +172,17 @@ const PostJobForm = ({ admin }: Props) => {
       setTimeout(() => {
         router.push(`/${admin ? 'admin' : 'company'}/dashboard`);
       }, 5000);
-    } else {
+    } catch (e) {
       setAlertType('error');
-      if (res.status === 403) {
-        setAlertMsg('Failed to post job request as this company has not been verified.');
-      } else if (res.status === 401) {
-        setAlertMsg('You are not authorized to perform this action. Redirecting to login page.');
-        setTimeout(() => {
-          router.push('/login');
-        }, 3000);
-      } else {
-        setAlertMsg(
-          'Looks like something went wrong. Please ensure that all fields are filled with a valid value.'
-        );
+      setAlertMsg('Something went wrong. Please try again!');
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          setAlertMsg('Invalid user credentials. Redirecting to login page.');
+          setTimeout(() => {
+            router.push(`/${admin ? 'admin' : 'company'}/login`);
+          }, 3000);
+        }
       }
-      setAlertOpen(true);
       window.scrollTo({
         top: 0,
         behavior: 'smooth'

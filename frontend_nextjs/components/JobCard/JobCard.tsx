@@ -3,13 +3,18 @@ import { JobType, WorkingRights, JobMode } from 'constants/jobFields';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './styles.module.css';
-import { faAddressCard, faClock, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAddressCard,
+  faBuilding,
+  faClock,
+  faLocationDot
+} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
 type Props = {
   jobID: number;
   jobTitle: number;
-  imagePath: string;
+  jobLogo: string;
   jobType: string;
   jobTag: string[];
   jobLocation: string;
@@ -20,7 +25,7 @@ type Props = {
 const JobCard = ({
   jobID,
   jobTitle,
-  imagePath,
+  jobLogo,
   jobType,
   jobTag,
   jobLocation,
@@ -29,18 +34,22 @@ const JobCard = ({
 }: Props) => {
   return (
     <Link href={`/student/job/${jobID}`}>
-      <div className="flex flex-col rounded-lg m-4 shadow-card hover-anim w-60">
-        <div className="flex mx-5">
-          <Image
-            src={imagePath}
-            className="h-[100px] max-w-[180px] m-auto my-4 object-contain"
-            alt="sponsor logo"
-          />
+      <div className="flex flex-col rounded-lg shadow-card hover-anim w-60 h-full bg-white">
+        <div className="flex m-5 justify-center">
+          {jobLogo ? (
+            <Image
+              src={jobLogo}
+              className="h-[100px] max-w-[180px] m-auto my-4 object-contain"
+              alt="sponsor logo"
+            />
+          ) : (
+            <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
+          )}
         </div>
         <h3 className="text-xl text-left font-bold mx-4 mb-4">{jobRole}</h3>
         <h3 className="text-l text-left font-bold mx-4">{jobTitle}</h3>
 
-        <div className="flex flex-wrap flex-row m-0 items-center mx-4 my-2 xs:flex-col xs:items-start">
+        <div className="flex flex-wrap flex-row m-0 items-center mx-4 my-2 gap-3 xs:flex-col xs:items-start">
           {jobTag.map((tag) => (
             <div
               key={tag}

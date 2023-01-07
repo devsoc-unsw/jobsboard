@@ -1,4 +1,5 @@
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import api from 'config/api';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -29,31 +30,31 @@ const PendingCompanyCard = ({
 
   const verifyCompany = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const res = await api.patch(
-      `/admin/company/${companyAccountID}/verify`,
-      {},
-      {
-        headers: {
-          Authorization: apiToken
+    try {
+      const res = await api.patch(
+        `/admin/company/${companyAccountID}/verify`,
+        {},
+        {
+          headers: {
+            Authorization: apiToken
+          }
         }
-      }
-    );
-
-    if (res.status === 200) {
+      );
       setApiToken(res.data.token);
       onAlert('success', 'Company verified!');
       onRemove();
-    } else {
-      if (res.status === 401) {
-        onAlert(
-          'error',
-          'You are not authorized to perform this action. Redirecting to login page.'
-        );
-        setTimeout(() => {
-          router.push('/login');
-        }, 3000);
-      } else {
-        onAlert('error', 'Error in processing verification. Please try again later.');
+    } catch (e) {
+      onAlert('error', 'Error in processing verification. Please try again later.');
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          onAlert(
+            'error',
+            'You are not authorized to perform this action. Redirecting to home page.'
+          );
+          setTimeout(() => {
+            router.push('/');
+          }, 3000);
+        }
       }
     }
   };
@@ -64,7 +65,16 @@ const PendingCompanyCard = ({
       onClick={onClick}
     >
       <div className="flex flex-row items-center">
-        {logo && <Image className="h-12" src={logo} alt="company logo"></Image>}
+        {/* TODO!: fix logo */}
+        {/* {logo && (
+          <Image
+            src=""
+            src={'data:image/png;base64,' + Buffer.from(logo.data).toString('base64')}
+            width={12}
+            height={12}
+            alt="company logo"
+          ></Image>
+        )} */}
         <div className="flex flex-col text-left w-full truncate">
           <h2 className="font-bold text-jb-headings text-xl truncate">{companyName}</h2>
           <h3 className="text-jb-subheadings text-lg truncate">{location}</h3>

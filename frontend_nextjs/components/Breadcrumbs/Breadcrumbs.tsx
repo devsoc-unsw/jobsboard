@@ -46,17 +46,41 @@ const Breadcrumbs = () => {
         { name: 'Home', link: '/' },
         { name: 'Sign Up', link: pathname }
       ];
-    } else if (pathname === '/company/post') {
+    }
+    // Company specific routes breadcrumbs
+    else if (pathname === '/company/post') {
       breadcrumb = [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/company/dashboard' },
         { name: 'Post Job', link: pathname }
       ];
-    } else if (pathname?.includes('/student/job/')) {
+    }
+    // Student specific routes breadcrumbs
+    else if (pathname?.includes('/student/job/')) {
       breadcrumb = [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/student/dashboard' },
         { name: 'Job', link: pathname }
+      ];
+    }
+    // Admin specific routes breadcrumbs
+    else if (pathname === '/admin/company') {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/admin/dashboard' },
+        { name: 'Pending Companies', link: pathname }
+      ];
+    } else if (pathname === '/admin/jobs') {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/admin/dashboard' },
+        { name: 'Pending Jobs', link: pathname }
+      ];
+    } else if (pathname === '/admin/post') {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/admin/dashboard' },
+        { name: 'Post Job', link: pathname }
       ];
     }
     return breadcrumb;

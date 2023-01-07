@@ -8,6 +8,7 @@ import React, { useContext, useState } from 'react';
 import googleLogo from 'assets/companies/googleLogo.png';
 import { faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { StudentDemographic, WorkingRights } from 'types/api';
+import { AxiosError } from 'axios';
 
 type Props = {
   company: string;
@@ -55,56 +56,59 @@ const PendingJobCard = ({
 
   const approveJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    const res = await api.patch(
-      `/job/${jobID}/approve`,
-      {},
-      {
-        headers: {
-          Authorization: apiToken
+    try {
+      const res = await api.patch(
+        `/job/${jobID}/approve`,
+        {},
+        {
+          headers: {
+            Authorization: apiToken
+          }
         }
-      }
-    );
-    if (res.status === 200) {
+      );
       setApiToken(res.data.token);
       onRemove();
       onSuccess('Job successfully approved!');
       onError('');
-    } else {
-      window.scrollTo(0, 10);
-      if (res.status === 401) {
-        onSuccess('');
-        onError('You are not authorized to perform this action. Redirecting to login page.');
-        setTimeout(() => {
-          router.push('/login');
-        }, 3000);
-      } else {
-        onError('Error in processing approval. Please try again later.');
-      }
-    }
-  };
-  const rejectJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    const res = await api.patch(
-      `/job/${jobID}/reject`,
-      {},
-      {
-        headers: {
-          Authorization: apiToken
+    } catch (e) {
+      onError('Something went wrong. Please try again.');
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          onSuccess('');
+          onError('Invalid user credentials. Redirecting to home page.');
+          setTimeout(() => {
+            router.push('/');
+          }, 3000);
         }
       }
-    );
-    if (res.status === 200) {
+      window.scrollTo(0, 10);
+    }
+  };
+
+  const rejectJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    try {
+      const res = await api.patch(
+        `/job/${jobID}/reject`,
+        {},
+        {
+          headers: {
+            Authorization: apiToken
+          }
+        }
+      );
       setApiToken(res.data.token);
       onRemove();
       onSuccess('Job successfully rejected!');
-    } else {
-      if (res.status === 401) {
-        onError('You are not authorized to perform this action. Redirecting to login page.');
-        setTimeout(() => {
-          router.push('/login');
-        }, 3000);
-      } else {
-        onError('Error in processing rejection. Please try again later.');
+    } catch (e) {
+      onError('Something went wrong. Please try again!');
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          onError('Invalid user credentials. Redirecting to home page.');
+          setTimeout(() => {
+            router.push('/');
+          }, 3000);
+        }
       }
     }
   };

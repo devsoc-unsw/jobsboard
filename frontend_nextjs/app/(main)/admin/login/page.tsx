@@ -28,11 +28,9 @@ const LoginCompanyPage = () => {
         username,
         password
       });
-      if (res.status === 200) {
-        setApiToken(res.data.token);
-        setAlertOpen(false);
-        router.push('/admin/dashboard');
-      }
+      setApiToken(res.data.token);
+      setAlertOpen(false);
+      router.push('/admin/dashboard');
     } catch (e) {
       window.scrollTo({
         top: 0,

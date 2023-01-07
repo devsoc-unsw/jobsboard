@@ -7,6 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
 import { JobMode, JobType } from 'constants/jobFields';
@@ -60,18 +61,20 @@ const JobProfileCard = ({
   };
 
   const deleteJob = async () => {
-    const res = await api.delete(`/company/job/${jobID}`, {
-      headers: {
-        Authorization: apiToken
-      }
-    });
-    if (res.status === 200 && listName === 'postedJobs') {
-      closeJobModal();
-    } else {
-      if (res.status === 401) {
-        setTimeout(() => {
-          router.push('/company/login');
-        }, 3000);
+    try {
+      await api.delete(`/company/job/${jobID}`, {
+        headers: {
+          Authorization: apiToken
+        }
+      });
+      listName === 'postedJobs' && closeJobModal();
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        if (e.response?.status === 401) {
+          setTimeout(() => {
+            router.push('/company/login');
+          }, 3000);
+        }
       }
     }
   };

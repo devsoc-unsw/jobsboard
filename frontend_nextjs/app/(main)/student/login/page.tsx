@@ -28,11 +28,9 @@ const StudentLoginPage = () => {
         zID,
         password
       });
-      if (res.status === 200) {
-        setApiToken(res.data.token);
-        setAlertOpen(false);
-        router.push('/student/dashboard');
-      }
+      setApiToken(res.data.token);
+      setAlertOpen(false);
+      router.push('/student/dashboard');
     } catch (e) {
       window.scrollTo({
         top: 0,

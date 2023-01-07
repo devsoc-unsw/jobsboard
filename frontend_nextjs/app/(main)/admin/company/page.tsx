@@ -2,6 +2,7 @@
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
 import PendingCompanyCard from 'components/PendingCompanyCard/PendingCompanyCard';
 import Toast, { ToastType } from 'components/Toast/Toast';
 import api from 'config/api';
@@ -42,26 +43,26 @@ const AdminCompanyPage = () => {
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      const res = await api.get(`/admin/pending/companies`, {
-        headers: {
-          Authorization: apiToken
-        }
-      });
+      try {
+        const res = await api.get(`/admin/pending/companies`, {
+          headers: {
+            Authorization: apiToken
+          }
+        });
 
-      if (res.status === 200) {
         setApiToken(res.data.token);
         setCompanies(res.data.pendingCompanyVerifications);
-      } else {
+      } catch (e) {
         setToastType('error');
-        if (res.status === 401) {
-          setToastMsg('You are not authorized to perform this action. Redirecting to login page.');
-          setToastOpen(true);
-          setTimeout(() => {
-            router.push('/login');
-          }, 3000);
-        } else {
-          setToastMsg('Failed to get pending companies.');
-          setToastOpen(true);
+        setToastMsg('Failed to get pending companies.');
+        setToastOpen(true);
+        if (e instanceof AxiosError) {
+          if (e.response?.status === 401) {
+            setToastMsg('You are not authorized to perform this action. Redirecting to home page.');
+            setTimeout(() => {
+              router.push('/');
+            }, 3000);
+          }
         }
       }
     };
