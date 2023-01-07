@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
 import api from 'config/api';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 
@@ -153,14 +154,13 @@ const AdminHomePage = () => {
           Please ensure that all job posts complies with the
           <span className="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>.
         </p>
-        <button
-          className="btn btn-blue-filled h-14 p-4"
-          onClick={() => router.push(`/admin/jobs/`)}
-        >
-          <FontAwesomeIcon icon={faBriefcase} className="text-white" />
-          <p className="p-4 text-white">Verify Job Post</p>
-          <FontAwesomeIcon icon={faAngleRight} className="text-white" />
-        </button>
+        <Link href="/admin/jobs">
+          <button className="btn btn-blue-filled h-14 p-4">
+            <FontAwesomeIcon icon={faBriefcase} className="text-white" />
+            <p className="p-4 text-white">Verify Job Post</p>
+            <FontAwesomeIcon icon={faAngleRight} className="text-white" />
+          </button>
+        </Link>
       </div>
 
       {/* <!-- Post Job as Company --> */}

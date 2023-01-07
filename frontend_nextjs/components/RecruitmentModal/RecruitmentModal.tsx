@@ -58,13 +58,15 @@ const RecruitmentModal = ({ open, onClose }: Props) => {
           <p>
             If you are looking for a frontend role, you are required to complete the Vue Frontend
             Assessment, which can be found&nbsp;
-            <span
+            <a
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
                   cursor-pointer hover:text-jb-textlink-hovered"
-              onClick={() => window.open('https://github.com/csesoc/vue-frontend-assessment')}
+              href="https://github.com/csesoc/vue-frontend-assessment"
+              target="_blank"
+              rel="noreferrer"
             >
               here
-            </span>
+            </a>
             &nbsp;and provide a link to your repository in the application.
           </p>
 

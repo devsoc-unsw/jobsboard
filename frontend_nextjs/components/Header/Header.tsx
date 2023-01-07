@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import AppContext from 'app/AppContext';
 import styles from './styles.module.css';
+import Link from 'next/link';
 
 type Props = {
   style?: React.CSSProperties;
@@ -23,15 +24,12 @@ const Header = ({ style }: Props) => {
   return (
     <div
       style={style}
-      className="flex justify-evenly items-center py-4 px-[5%]
+      className="flex justify-evenly items-center py-4
            bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]"
     >
-      <Image
-        className="w-[10%] cursor-pointer xl:w-[15%] lg:w-[17%] md:w-[20%] sm:w-[25%]"
-        src={logo}
-        alt="CSESoc"
-        onClick={() => router.push('/')}
-      />
+      <Link href="/">
+        <Image className="cursor-pointer" src={logo} width={175} alt="CSESoc" />
+      </Link>
       <div className="flex justify-evenly items-center">
         <div className="group fill-black cursor-pointer w-[20%] mr-5 sm:mr-2.5 relative inline-block">
           <Image className="rotate-220" src={moon} alt="Toggle Theme" />
@@ -43,14 +41,15 @@ const Header = ({ style }: Props) => {
           </span>
         </div>
         {!apiToken ? (
-          <button
-            className="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
+          <Link href="/student/login">
+            <button
+              className="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]
                  py-[2px] px-[15px] font-bold cursor-pointer duration-500 hover:bg-white hover:text-[#3a76f8]
                  hover:translate-y-[-2px] hover:shadow-lg"
-            onClick={() => router.push('/student/login')}
-          >
-            Log In
-          </button>
+            >
+              Log In
+            </button>
+          </Link>
         ) : (
           <button
             className="bg-transparent border-2 border-solid border-[#f9f7f1] rounded-2xl text-[#f9f7f1]

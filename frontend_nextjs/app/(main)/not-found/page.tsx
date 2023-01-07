@@ -5,12 +5,12 @@ import styles from './not-found.module.css';
 import { useRouter } from 'next/navigation';
 
 const NotFound = () => {
-  // const router = useRouter()
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     router.push('/');
-  //   }, 5000);
-  // }, [router])
+  const router = useRouter();
+  useEffect(() => {
+    setTimeout(() => {
+      router.push('/');
+    }, 5000);
+  }, [router]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-full w-full">

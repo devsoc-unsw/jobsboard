@@ -176,15 +176,14 @@ const JobInfoPage = ({ params }: Props) => {
             <div className="flex flex-col mr-8 self-center">
               {/* <!-- TODO: to be replaced with company logo --> */}
               <FontAwesomeIcon icon={faBuilding} size="10x" className="mb-2" />
-              <button
-                className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
+              <a href={applicationLink} target="_blank" rel="noreferrer">
+                <button
+                  className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0
               shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
-                onClick={() => {
-                  window.open(applicationLink, '_blank');
-                }}
-              >
-                Apply
-              </button>
+                >
+                  Apply
+                </button>
+              </a>
             </div>
             <div className="flex flex-col text-left">
               <h1 className="font-bold text-3xl my-4 text-jb-headings">{role}</h1>

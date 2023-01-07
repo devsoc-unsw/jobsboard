@@ -1,7 +1,8 @@
 'use client';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 import styles from './styles.module.css';
 
@@ -11,7 +12,6 @@ type Breadcrumb = {
 };
 
 const Breadcrumbs = () => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const generateBreadcrumbs = () => {
@@ -73,23 +73,24 @@ const Breadcrumbs = () => {
             'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered'
           } ${styles.breadcrumbItem}`}
           key={idx}
-          onClick={() => router.push(breadcrumbList[idx].link)}
         >
-          {breadcrumb.name === 'Home' ? (
-            <div>
-              <FontAwesomeIcon size="xs" icon={faHouse} />
-            </div>
-          ) : (
-            <p
-              className={
-                breadcrumb.link
-                  ? 'text-jb-headings text-base font-bold'
-                  : 'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered'
-              }
-            >
-              {breadcrumb.name}
-            </p>
-          )}
+          <Link href={breadcrumbList[idx].link}>
+            {breadcrumb.name === 'Home' ? (
+              <div>
+                <FontAwesomeIcon size="xs" icon={faHouse} />
+              </div>
+            ) : (
+              <p
+                className={
+                  breadcrumb.link
+                    ? 'text-jb-headings text-base font-bold'
+                    : 'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered'
+                }
+              >
+                {breadcrumb.name}
+              </p>
+            )}
+          </Link>
         </li>
       ))}
     </ul>

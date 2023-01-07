@@ -5,6 +5,7 @@ import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
 import Loading from 'components/Loading/Loading';
 import api from 'config/api';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';
@@ -123,12 +124,12 @@ const LoginCompanyPage = () => {
         )}
         <p className="text-lg text-jb-subheadings mt-6 mb-4 mx-[18%] sm:mx-8">
           Or return to&nbsp;
-          <span
+          <Link
             className="font-bold cursor-pointer text-jb-textlink hover:text-jb-textlink-hovered"
-            onClick={() => router.push('/')}
+            href="/"
           >
             Home
-          </span>
+          </Link>
         </p>
       </div>
     </div>

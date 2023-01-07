@@ -3,7 +3,6 @@ import BigBlob from 'assets/misc/BigBlob.svg';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useRouter } from 'next/navigation';
 import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
 import Header from 'components/Header/Header';
 
@@ -19,11 +18,10 @@ import { Navigation, Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import Link from 'next/link';
 
 const HomePage = () => {
   const [featuredJobs, setFeaturedJobs] = useState([]);
-
-  const router = useRouter();
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -70,20 +68,22 @@ const HomePage = () => {
               Connecting UNSW students with top employers since 2018.
             </p>
             <div className="justify-start flex gap-5 mt-4 sm:justify-center sm:flex-wrap">
-              <button
-                className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
+              <Link href="/student/login">
+                <button
+                  className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
-                onClick={() => router.push('/student/login')}
-              >
-                Explore
-              </button>
-              <button
-                className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
+                >
+                  Explore
+                </button>
+              </Link>
+              <Link href="/company/login">
+                <button
+                  className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
-                onClick={() => router.push('/company/login')}
-              >
-                Advertise
-              </button>
+                >
+                  Advertise
+                </button>
+              </Link>
             </div>
           </div>
           <Image alt="Jobsboard" width="200" src={JobsboardLogo} className="sm:hidden" />
@@ -107,13 +107,13 @@ const HomePage = () => {
           </p>
           <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
             Check out the full list of open jobs&nbsp;
-            <span
+            <Link
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
                     cursor-pointer hover:text-jb-textlink-hovered"
-              onClick={() => router.push('/student/login')}
+              href="/student/login"
             >
               here
-            </span>
+            </Link>
             .
           </p>
           {!!featuredJobs.length ? (
@@ -156,32 +156,36 @@ const HomePage = () => {
           <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
             Are you a company looking to advertise with us? We&apos;d absolutely love to hear from
             you. In the meantime, you can also check out&nbsp;
-            <span
+            <a
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered"
-              onClick={() => window.open('https://www.csesoc.unsw.edu.au/sponsors')}
+              href="https://www.csesoc.unsw.edu.au/sponsors"
+              target="_blank"
+              rel="noreferrer"
             >
               other companies
-            </span>
+            </a>
             &nbsp;that have partnered with us.
           </p>
           <div className="flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col sm:gap-4">
             <div>
-              <button
-                className="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0
+              <Link href="/company/signup">
+                <button
+                  className="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0
                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-                onClick={() => router.push('/company/signup')}
-              >
-                Join Us
-              </button>
+                >
+                  Join Us
+                </button>
+              </Link>
             </div>
             <div>
-              <button
-                className="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0 mb-0 sm:mb-10
+              <Link href="/company/login">
+                <button
+                  className="bg-jb-textlink rounded-md w-40 h-11 text-white font-bold text-base border-0 mb-0 sm:mb-10
                     shadow-btn duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-                onClick={() => router.push('/company/login')}
-              >
-                Post a Job
-              </button>
+                >
+                  Post a Job
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -200,13 +204,14 @@ const HomePage = () => {
             >
               Join the Team
             </button>
-            <button
-              className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
+            <a href="https://github.com/csesoc/jobs-board" target="_blank" rel="noreferrer">
+              <button
+                className="bg-jb-textlink rounded-md w-40 h-11 m-2 text-white font-bold text-base border-0 shadow-btn duration-200 ease-linear cursor-pointer
                   hover:bg-jb-btn-hovered hover:shadow-btn-hovered"
-              onClick={() => window.open('https://github.com/csesoc/jobs-board')}
-            >
-              Source Code
-            </button>
+              >
+                Source Code
+              </button>
+            </a>
           </div>
           <div className="mt-20 flex justify-center">
             <FontAwesomeIcon
