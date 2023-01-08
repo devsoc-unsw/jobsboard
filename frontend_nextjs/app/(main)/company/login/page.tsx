@@ -94,7 +94,7 @@ const LoginCompanyPage = () => {
           </div>
         </form>
 
-        <p className="text-lg text-jb-subheadings text-center">
+        <p className="text-lg text-jb-subheadings text-center my-2">
           Not a company?&nbsp;
           <Link
             className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
