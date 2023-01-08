@@ -19,7 +19,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import Link from 'next/link';
-import Button from 'ui/Button';
+import Button from 'ui/Button/Button';
 
 const HomePage = () => {
   const [featuredJobs, setFeaturedJobs] = useState([]);

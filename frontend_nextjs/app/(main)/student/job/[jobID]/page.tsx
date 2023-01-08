@@ -26,7 +26,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import { CompanyJob, HiddenJob } from 'types/api';
-import Button from 'ui/Button';
+import Button from 'ui/Button/Button';
 
 type Props = {
   params: {

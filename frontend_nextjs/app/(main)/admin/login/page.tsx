@@ -3,26 +3,28 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
-import Loading from 'components/Loading/Loading';
 import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';
-import Button from 'ui/Button';
+import Button from 'ui/Button/Button';
+import Input from 'ui/Input/Input';
+import Label from 'ui/Label/Label';
+import Spinner from 'ui/Spinner/Spinner';
 
 const LoginCompanyPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const { setApiToken } = useContext(AppContext);
 
   const router = useRouter();
 
   const performLogin = async () => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const res = await api.post<AuthenticationPayload>('/authenticate/admin', {
         username,
@@ -38,7 +40,7 @@ const LoginCompanyPage = () => {
       });
       setAlertOpen(true);
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -61,52 +63,30 @@ const LoginCompanyPage = () => {
         <form className="flex justify-center items-center flex-col w-full">
           {/* <!-- Email Input --> */}
           <div className="w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
-            <input
-              id="email"
+            <Input
               name="email"
               type="text"
-              className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
-              autoComplete="username"
               required
-              onChange={(e) => setUsername(e.target.value)}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') performLogin();
-              }}
+              autoComplete="username"
+              onChange={(value) => setUsername(value)}
+              value={username}
+              onKeyUp={(key) => key === 'Enter' && performLogin()}
             />
-            <label
-              htmlFor="email"
-              className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-            >
-              Email
-            </label>
+            <Label htmlFor="email">Email</Label>
           </div>
 
           {/* <!-- Password Input --> */}
           <div className="w-2/5 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
-            <input
-              id="password"
+            <Input
               name="password"
               type={hidePassword ? 'password' : 'text'}
-              className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
-              autoComplete="current-password"
               required
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') performLogin();
-              }}
+              autoComplete="current-password"
+              onChange={(value) => setPassword(value)}
+              value={password}
+              onKeyUp={(key) => key === 'Enter' && performLogin()}
             />
-            <label
-              htmlFor="password"
-              className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-            >
-              Password
-            </label>
+            <Label htmlFor="password">Password</Label>
             <FontAwesomeIcon
               icon={hidePassword ? faEyeSlash : faEye}
               className="text-jb-placeholder hover:text-black duration-500 cursor-pointer absolute right-[15px] top-1/2 -translate-y-1/2"
@@ -114,7 +94,7 @@ const LoginCompanyPage = () => {
             />
           </div>
         </form>
-        {isLoading ? <Loading /> : <Button onClick={performLogin}>Log In</Button>}
+        {loading ? <Spinner /> : <Button onClick={performLogin}>Log In</Button>}
         <p className="text-lg text-jb-subheadings mt-6 mb-4 mx-[18%] sm:mx-8">
           Or return to&nbsp;
           <Link

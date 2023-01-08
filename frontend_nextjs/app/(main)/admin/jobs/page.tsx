@@ -1,7 +1,7 @@
 'use client';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
-import Loading from 'components/Loading/Loading';
+import Spinner from 'ui/Spinner/Spinner';
 import PendingJobCard from 'components/PendingJobCard/PendingJobCard';
 import Toast from 'components/Toast/Toast';
 import api from 'config/api';
@@ -67,7 +67,7 @@ const AdminJobsPage = () => {
       <h3 className="text-base text-jb-subheadings">
         {jobs.length} Pending {jobs.length === 1 ? 'Job' : 'Jobs'}
       </h3>
-      {loading && <Loading />}
+      {loading && <Spinner />}
       {jobs.map((job) => (
         <PendingJobCard
           key={job.key}

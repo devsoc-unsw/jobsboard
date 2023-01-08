@@ -1,7 +1,7 @@
 'use client';
 import { AxiosError } from 'axios';
 import Alert, { AlertType } from 'components/Alert/Alert';
-import Loading from 'components/Loading/Loading';
+import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -11,10 +11,10 @@ const CompanyForgotPage = () => {
   const [alertType, setAlertType] = useState<AlertType>('error');
   const [alertMsg, setAlertMsg] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const performCompanyPasswordForgot = async () => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       await api.post('/company/forgot-password', {
         username: email
@@ -41,7 +41,7 @@ const CompanyForgotPage = () => {
         }
       }
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -82,8 +82,8 @@ const CompanyForgotPage = () => {
           Email
         </label>
       </div>
-      {isLoading ? (
-        <Loading />
+      {loading ? (
+        <Spinner />
       ) : (
         <button
           className="btn btn-blue-filled w-40 h-11 my-4 p-2"

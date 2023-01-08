@@ -2,10 +2,12 @@
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import Alert, { AlertType } from 'components/Alert/Alert';
-import Loading from 'components/Loading/Loading';
+import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
+import Input from 'ui/Input/Input';
+import Label from 'ui/Label/Label';
 
 const ResetPage = () => {
   const [newPassword, setNewPassword] = useState('');
@@ -14,12 +16,12 @@ const ResetPage = () => {
   const [alertMsg, setAlertMsg] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
   const { apiToken } = useContext(AppContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const performCompanyPasswordReset = async () => {
-    setIsLoading(true);
+    setLoading(true);
     if (newPassword.length === 0) {
       setAlertType('error');
       setAlertMsg('Your new password can not be empty.');
@@ -68,7 +70,7 @@ const ResetPage = () => {
         }
       }
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -88,51 +90,31 @@ const ResetPage = () => {
 
       {/* <!-- New Password Input --> */}
       <div className="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
-        <input
-          id="newPassword"
+        <Input
           name="newPassword"
           type="password"
-          className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
           required
+          onChange={(value) => setNewPassword(value)}
           value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          onKeyUp={(e) => e.key === 'Enter' && performCompanyPasswordReset()}
+          onKeyUp={(key) => key === 'Enter' && performCompanyPasswordReset()}
         />
-        <label
-          htmlFor="newPassword"
-          className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-        >
-          New Password
-        </label>
+        <Label htmlFor="newPassword">New Password</Label>
       </div>
 
       {/* <!-- Confirm Password Input --> */}
       <div className="w-1/4 relative group mt-4 mb-6 xl:w-2/5 md:w-1/2 sm:w-4/5">
-        <input
-          id="confirmPassword"
+        <Input
           name="confirmPassword"
           type="password"
-          className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
           required
+          onChange={(value) => setConfirmPassword(value)}
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          onKeyUp={(e) => e.key === 'Enter' && performCompanyPasswordReset()}
+          onKeyUp={(key) => key === 'Enter' && performCompanyPasswordReset()}
         />
-        <label
-          htmlFor="confirmPassword"
-          className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                 group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                 group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                 peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-        >
-          Confirm Password
-        </label>
+        <Label htmlFor="confirmPassword">Confirm Password</Label>
       </div>
-      {isLoading ? (
-        <Loading />
+      {loading ? (
+        <Spinner />
       ) : (
         <button
           className="btn btn-blue-filled w-40 h-11 my-4 p-2"

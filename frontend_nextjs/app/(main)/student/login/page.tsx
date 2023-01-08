@@ -3,26 +3,28 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
-import Loading from 'components/Loading/Loading';
+import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';
-import Button from 'ui/Button';
+import Button from 'ui/Button/Button';
+import Input from 'ui/Input/Input';
+import Label from 'ui/Label/Label';
 
 const StudentLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [zID, setZID] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const { setApiToken } = useContext(AppContext);
 
   const router = useRouter();
 
   const performLogin = async () => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const res = await api.post<AuthenticationPayload>('/authenticate/student', {
         zID,
@@ -38,7 +40,7 @@ const StudentLoginPage = () => {
       });
       setAlertOpen(true);
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -59,52 +61,30 @@ const StudentLoginPage = () => {
         <form className="flex justify-center items-center flex-col w-full">
           {/* <!-- zId Input --> */}
           <div className="w-2/5 relative group mt-4 mb-6 md:w-1/2 sm:w-4/5">
-            <input
-              id="zID"
+            <Input
               name="zID"
               type="text"
-              className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
-              autoComplete="username"
               required
-              onChange={(e) => setZID(e.target.value)}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') performLogin();
-              }}
+              autoComplete="username"
+              onChange={(value) => setZID(value)}
+              value={zID}
+              onKeyUp={(key) => key === 'Enter' && performLogin()}
             />
-            <label
-              htmlFor="zID"
-              className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-            >
-              zID
-            </label>
+            <Label htmlFor="zID">zID</Label>
           </div>
 
           {/* <!-- Password Input --> */}
           <div className="w-2/5 relative group mt-4 mb-6 md:w-1/2 sm:w-4/5">
-            <input
-              id="password"
+            <Input
               name="password"
               type={hidePassword ? 'password' : 'text'}
-              className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink peer"
-              autoComplete="current-password"
               required
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyUp={(e) => {
-                if (e.key === 'Enter') performLogin();
-              }}
+              autoComplete="current-password"
+              onChange={(value) => setPassword(value)}
+              value={password}
+              onKeyUp={(key) => key === 'Enter' && performLogin()}
             />
-            <label
-              htmlFor="password"
-              className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-            >
-              Password
-            </label>
+            <Label htmlFor="password">Password</Label>
             <FontAwesomeIcon
               icon={hidePassword ? faEyeSlash : faEye}
               className="text-jb-placeholder hover:text-black duration-500 cursor-pointer absolute right-[15px] top-1/2 -translate-y-1/2"
@@ -112,7 +92,6 @@ const StudentLoginPage = () => {
             />
           </div>
         </form>
-
         <p className="text-lg text-jb-subheadings text-center mb-5">
           Not a student?&nbsp;
           <Link
@@ -123,7 +102,7 @@ const StudentLoginPage = () => {
             Company Login
           </Link>
         </p>
-        {isLoading ? <Loading /> : <Button onClick={performLogin}>Log In</Button>}
+        {loading ? <Spinner /> : <Button onClick={performLogin}>Log In</Button>}
       </div>
     </div>
   );

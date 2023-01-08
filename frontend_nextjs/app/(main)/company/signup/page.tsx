@@ -4,12 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import Alert, { AlertType } from 'components/Alert/Alert';
-import Loading from 'components/Loading/Loading';
+import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
-import Button from 'ui/Button';
+import Button from 'ui/Button/Button';
+import Input from 'ui/Input/Input';
+import Label from 'ui/Label/Label';
+import Image from 'next/image';
 
 const CompanySignupPage = () => {
   const router = useRouter();
@@ -25,7 +28,7 @@ const CompanySignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [logo, setLogo] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const toBase64 = (file: File) => {
     return new Promise((resolve, reject) => {
@@ -63,10 +66,10 @@ const CompanySignupPage = () => {
   };
 
   const performSignup = async () => {
-    setIsLoading(true);
+    setLoading(true);
     if (!validateInput() || !logo) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      setIsLoading(false);
+      setLoading(false);
       return;
     }
     const convertedFile = await toBase64(logo);
@@ -108,7 +111,7 @@ const CompanySignupPage = () => {
         }
       }
     }
-    setIsLoading(false);
+    setLoading(false);
   };
 
   return (
@@ -151,130 +154,70 @@ const CompanySignupPage = () => {
       )}
       <form className="w-2/5 sm:w-1/2 md:w-2/5 xl:w-1/4">
         <div className="relative group mt-4 mb-8">
-          <input
-            id="username"
-            name="username"
-            autoComplete="username"
+          <Input
+            name="email"
             type="text"
-            className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
             required
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') performSignup();
-            }}
+            autoComplete="username"
+            onChange={(value) => setUsername(value)}
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onKeyUp={(key) => key === 'Enter' && performSignup()}
           />
-          <label
-            htmlFor="username"
-            className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-          >
-            Email
-          </label>
+          <Label htmlFor="email">Email</Label>
         </div>
 
         {/* <!-- Password Input --> */}
         <div className="relative group mt-4 mb-8">
-          <input
-            id="password"
+          <Input
             name="password"
-            autoComplete="new-password"
             type="password"
-            className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
             required
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') performSignup();
-            }}
+            autoComplete="new-password"
+            onChange={(value) => setPassword(value)}
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onKeyUp={(key) => key === 'Enter' && performSignup()}
           />
-          <label
-            htmlFor="password"
-            className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-          >
-            Password
-          </label>
+          <Label htmlFor="password">Password</Label>
         </div>
 
         {/* <!-- Confirm Password Input --> */}
         <div className="group relative mt-4 mb-8">
-          <input
-            id="confirmPassword"
+          <Input
             name="confirmPassword"
-            autoComplete="new-password"
             type="password"
-            className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
             required
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') performSignup();
-            }}
+            autoComplete="new-password"
+            onChange={(value) => setConfirmPassword(value)}
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onKeyUp={(key) => key === 'Enter' && performSignup()}
           />
-          <label
-            htmlFor="confirmPassword"
-            className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-          >
-            Confirm Password
-          </label>
+          <Label htmlFor="confirmPassword">Confirm Password</Label>
         </div>
 
         {/* <!-- Company Name Input --> */}
         <div className="relative group mt-4 mb-8">
-          <input
-            id="name"
+          <Input
             name="name"
             type="text"
-            className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
             required
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') performSignup();
-            }}
+            onChange={(value) => setName(value)}
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onKeyUp={(key) => key === 'Enter' && performSignup()}
           />
-          <label
-            htmlFor="name"
-            className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-          >
-            Company Name
-          </label>
+          <Label htmlFor="name">Company Name</Label>
         </div>
 
         {/* <!-- Company Location Input --> */}
         <div className="relative group mt-4 mb-8">
-          <input
-            id="location"
+          <Input
             name="location"
             type="text"
-            className="font-bold border-l-4 border-jb-textlink rounded-md p-4 shadow-btn w-full text-lg focus:outline-jb-textlink sm:w-full peer"
             required
-            onKeyUp={(e) => {
-              if (e.key === 'Enter') performSignup();
-            }}
+            onChange={(value) => setLocation(value)}
             value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            onKeyUp={(key) => key === 'Enter' && performSignup()}
           />
-          <label
-            htmlFor="location"
-            className="transform transition-all duration-400 absolute top-7 left-0 h-full flex items-center font-bold text-lg text-jb-placeholder/60 pl-6 pb-[3.75rem]
-                  group-focus-within:text-base group-focus-within:h-1/2 group-focus-within:-translate-y-full
-                  group-focus-within:pl-2 group-focus-within:pb-10 group-focus-within:text-jb-textlink
-                  peer-valid:text-base peer-valid:h-1/2 peer-valid:-translate-y-full peer-valid:pl-2 peer-valid:pb-10 peer-valid:text-jb-textlink"
-          >
-            Location
-          </label>
+          <Label htmlFor="location">Location</Label>
         </div>
 
         {/* <!-- Company Logo Input --> */}
@@ -287,7 +230,7 @@ const CompanySignupPage = () => {
                   className="relative cursor-pointer rounded-md font-medium text-jb-textlink font-bold transition-colors duration-200 ease-linear hover:text-jb-textlink-hovered"
                 >
                   {logo ? (
-                    <img className="w-16 md:w-32 lg:w-48" src={preview} />
+                    <Image src={preview} alt="company logo" width={200} height={200} />
                   ) : (
                     <div>
                       <svg
@@ -333,7 +276,7 @@ const CompanySignupPage = () => {
           Company Login
         </Link>
       </p>
-      {isLoading ? <Loading /> : <Button onClick={performSignup}>Sign Up</Button>}
+      {loading ? <Spinner /> : <Button onClick={performSignup}>Sign Up</Button>}
     </div>
   );
 };

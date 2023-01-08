@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import BenefitCard from 'components/BenefitCard/BenefitCard';
-import Loading from 'components/Loading/Loading';
+import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
@@ -17,6 +17,7 @@ import {
   faPeopleGroup
 } from '@fortawesome/free-solid-svg-icons';
 import { AxiosError } from 'axios';
+import Input from 'ui/Input/Input';
 
 const StudentDashboardPage = () => {
   const router = useRouter();
@@ -129,7 +130,7 @@ const StudentDashboardPage = () => {
         </div>
       </div>
       <div>
-        {loading && <Loading />}
+        {loading && <Spinner />}
         <div className="flex flex-wrap justify-center">
           <div className="flex flex-wrap justify-center gap-7">
             {filteredJobs.map((job) => (

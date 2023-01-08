@@ -4,15 +4,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
-import Loading from 'components/Loading/Loading';
+import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { StudentDemographic, WorkingRights } from 'types/api';
-import Button from 'ui/Button';
+import Button from 'ui/Button/Button';
 import { AxiosError } from 'axios';
+import Input from 'ui/Input/Input';
 
 type Props = {
   admin?: boolean;
@@ -290,14 +291,14 @@ const PostJobForm = ({ admin }: Props) => {
         <h2 className="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">
           Job Title
         </h2>
-        <input
+        <Input
           value={role}
-          onChange={(e) => setRole(e.target.value)}
+          onChange={(value) => setRole(value)}
           name="role"
           type="text"
           placeholder="Job Title"
-          className="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
         />
+
         <h2 className="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">
           Job Description
         </h2>
@@ -311,25 +312,23 @@ const PostJobForm = ({ admin }: Props) => {
         <h2 className="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">
           Application Link
         </h2>
-        <input
+        <Input
           value={applicationLink}
-          onChange={(e) => setApplicationLink(e.target.value)}
+          onChange={(value) => setApplicationLink(value)}
           name="applicationLink"
           type="text"
           placeholder="www.example.com"
-          className="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
         />
         <div className="flex flex-row justify-between w-full text-left lg:flex-col">
           <div className="flex flex-col items-start text-left w-2/5 lg:w-full">
             <h2 className="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">
               Application Expiry Date
             </h2>
-            <input
+            <Input
               value={expiryDate}
-              onChange={(e) => setExpiryDate(e.target.value)}
+              onChange={(value) => setExpiryDate(value)}
               name="expiryDate"
               type="date"
-              className="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink"
             />
           </div>
           <div className="flex flex-col items-start text-left w-2/5 lg:w-full">
@@ -572,7 +571,7 @@ const PostJobForm = ({ admin }: Props) => {
           - Is your company able to sponsor the applicant"s visa if needed?`}
         />
         {loading ? (
-          <Loading />
+          <Spinner />
         ) : (
           <div className="flex flex-col gap-5">
             <button
