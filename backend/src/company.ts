@@ -661,7 +661,7 @@ export default class CompanyFunctions {
           `
         We received a request to reset the password for your JobsBoard account.
         <br>
-        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/password-reset/${token}">link</a>.
+        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/reset/${token}">link</a>.
         <br>
         <p>If you did not request a password reset for your account, simply ignore this message.</p>
         <p>Best regards,</p>
@@ -772,72 +772,77 @@ export default class CompanyFunctions {
       next,
     );
   }
-  
+
   public static async UploadLogo(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(res, async () => {
+    Helpers.catchAndLogError(
+      res,
+      async () => {
+        const companyAccountID = req.companyAccountID;
 
-      const companyAccountID = req.companyAccountID;
-      
-      // check if the required parameters are provided
-      Helpers.requireParameters(companyAccountID);
-      Helpers.requireParameters(req.body.logo);
-  
-      Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
-  
-      await AppDataSource
-        .createQueryBuilder()
-        .update(Company)
-        .set({ 
-          logo: req.body.logo
-        })
-        .where("id = :id", { id: companyAccountID })
-        .execute()
-      
-      Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
-      
-      return {
-        status: 200,
-        msg: undefined
-      } as IResponseWithStatus;
+        // check if the required parameters are provided
+        Helpers.requireParameters(companyAccountID);
+        Helpers.requireParameters(req.body.logo);
 
-    }, () => {
-      return {
-        status: 400,
-        msg: undefined
-      } as IResponseWithStatus;
-    }, next);
-    
-  };
+        Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
+
+        await AppDataSource.createQueryBuilder()
+          .update(Company)
+          .set({
+            logo: req.body.logo,
+          })
+          .where('id = :id', { id: companyAccountID })
+          .execute();
+
+        Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
+
+        return {
+          status: 200,
+          msg: undefined,
+        } as IResponseWithStatus;
+      },
+      () => {
+        return {
+          status: 400,
+          msg: undefined,
+        } as IResponseWithStatus;
+      },
+      next,
+    );
+  }
 
   public static async GetCompanyLogoStatus(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(res, async () => {
-      const companyLogo = await Helpers.doSuccessfullyOrFail(async () => {
-        return await AppDataSource.getRepository(Company)
-          .createQueryBuilder()
-          .select(["Company.logo"])
-          .where("Company.id = :id", { id: parseInt(req.companyAccountID, 10) })
-          .getOne();
-      }, `Failed to find logo for COMPANY=${req.companyAccountID}.`);
+    Helpers.catchAndLogError(
+      res,
+      async () => {
+        const companyLogo = await Helpers.doSuccessfullyOrFail(async () => {
+          return await AppDataSource.getRepository(Company)
+            .createQueryBuilder()
+            .select(['Company.logo'])
+            .where('Company.id = :id', { id: parseInt(req.companyAccountID, 10) })
+            .getOne();
+        }, `Failed to find logo for COMPANY=${req.companyAccountID}.`);
 
-      if (!companyLogo) {
+        if (!companyLogo) {
+          return {
+            status: 404,
+            msg: undefined,
+          } as IResponseWithStatus;
+        }
+
         return {
-          status: 404,
-          msg: undefined
-        } as IResponseWithStatus;  
-      }
-
-      return {
-        status: 200,
-        msg: undefined
-      } as IResponseWithStatus;
-
-    }, () => {
-      return {
-        status: 400,
-        msg: undefined
-      } as IResponseWithStatus;
-    }, next);
-  };
+          status: 200,
+          msg: undefined,
+        } as IResponseWithStatus;
+      },
+      () => {
+        return {
+          status: 400,
+          msg: undefined,
+        } as IResponseWithStatus;
+      },
+      next,
+    );
+  }
 
   public static async UpdateCompanyDetails(this: void, req: any, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(

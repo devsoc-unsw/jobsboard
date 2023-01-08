@@ -152,7 +152,7 @@ const CompanySignupPage = () => {
           />
         </div>
       )}
-      <form className="w-2/5 sm:w-1/2 md:w-2/5 xl:w-1/4">
+      <form className="w-2/5 sm:w-1/2 md:w-3/5 xl:w-1/2">
         <div className="relative group mt-4 mb-8">
           <Input
             name="email"

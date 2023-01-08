@@ -1,21 +1,27 @@
 'use client';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
 
-const ResetPage = () => {
+type Props = {
+  params: {
+    token: string;
+  };
+};
+
+const ResetPage = ({ params }: Props) => {
+  const token = params.token;
+
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [alertType, setAlertType] = useState<AlertType>('error');
   const [alertMsg, setAlertMsg] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
-  const { apiToken } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -39,7 +45,7 @@ const ResetPage = () => {
           },
           {
             headers: {
-              Authorization: apiToken
+              Authorization: token
             }
           }
         );
