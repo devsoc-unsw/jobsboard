@@ -1,11 +1,6 @@
-import {
-  // Request,
-  Response,
-  NextFunction,
-} from 'express';
-
+import { Response, NextFunction } from 'express';
 import { Brackets } from 'typeorm';
-import { AppDataSource } from './index';
+import { AppDataSource } from './config';
 import Job from './entity/job';
 import Company from './entity/company';
 import CompanyAccount from './entity/company_account';
@@ -13,16 +8,28 @@ import Statistics from './entity/statistics';
 import Helpers, { IResponseWithStatus } from './helpers';
 import MailFunctions from './mail';
 import Logger from './logging';
+import {
+  AdminJobRequest,
+  GeneralAdminRequest,
+  VerifyCompanyAccountRequest,
+  AdminCreateJobRequest,
+  AdminApprovedJobPostsRequest,
+} from './interfaces/interfaces';
 
 export default class AdminFunctions {
-  public static async ApproveJobRequest(this: void, req: any, res: Response, next: NextFunction) {
+  public static async ApproveJobRequest(
+    this: void,
+    req: AdminJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Admin ID=${req.adminID} attempting to approve JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobID = Number(req.params.jobID);
-        if (isNaN(jobID)) {
+        if (Number.isNaN(jobID)) {
           Logger.Info(`Rejected jobID ${jobID} as it is not a numeric value`);
           return {
             status: 400,
@@ -46,10 +53,10 @@ export default class AdminFunctions {
         );
 
         jobToApprove.company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () => (jobToApprove.company.companyAccount = await AppDataSource.createQueryBuilder()
+          async () => AppDataSource.createQueryBuilder()
             .relation(Company, 'companyAccount')
             .of(jobToApprove.company)
-            .loadOne()),
+            .loadOne(),
           `Failed to find company account owning JOB=${jobID}`,
         );
 
@@ -61,20 +68,24 @@ export default class AdminFunctions {
 
         // increment number of jobs approved for that year
         const jobCreatedYear = jobToApprove.createdAt.getFullYear();
-        const numApprovedJobs = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Statistics)
-            .createQueryBuilder('s')
-            .select(['s.numJobPosts'])
-            .where('s.year = :year', { year: jobCreatedYear })
-            .getOne(),
-          `Failed to retrive the number of approved job posts for YEAR=${jobCreatedYear}`,
-        );
+        const numApprovedJobs = await AppDataSource.getRepository(Statistics)
+          .createQueryBuilder('s')
+          .where('s.year = :year', { year: jobCreatedYear })
+          .getOne();
 
-        await AppDataSource.createQueryBuilder()
-          .update(Statistics)
-          .set({ numJobPosts: numApprovedJobs + 1 })
-          .where('year = :year', { year: jobCreatedYear })
-          .execute();
+        if (numApprovedJobs === null) {
+          await AppDataSource.createQueryBuilder()
+            .insert()
+            .into(Statistics)
+            .values([{ year: jobCreatedYear, numJobPosts: 1 }])
+            .execute();
+        } else {
+          await AppDataSource.createQueryBuilder()
+            .update(Statistics)
+            .set({ numJobPosts: () => 'numJobPosts + 1' })
+            .where('year = :year', { year: jobCreatedYear })
+            .execute();
+        }
 
         await MailFunctions.AddMailToQueue(
           jobToApprove.company.companyAccount.username,
@@ -104,14 +115,19 @@ export default class AdminFunctions {
     );
   }
 
-  public static async RejectJobRequest(this: void, req: any, res: Response, next: NextFunction) {
+  public static async RejectJobRequest(
+    this: void,
+    req: AdminJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobID = Number(req.params.jobID);
-        if (isNaN(jobID)) {
+        if (Number.isNaN(jobID)) {
           return {
             status: 400,
             msg: undefined,
@@ -134,7 +150,10 @@ export default class AdminFunctions {
         );
 
         jobToReject.company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder().relation(Company, 'companyAccount').of(jobToReject.company).loadOne(),
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Company, 'companyAccount')
+            .of(jobToReject.company)
+            .loadOne(),
           `Failed to find company account owning JOB=${jobID}`,
         );
 
@@ -172,7 +191,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetPendingJobs(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetPendingJobs(
+    this: void,
+    req: AdminJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -198,16 +222,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             ])
             .where('Job.approved = :approved', { approved: false })
             .andWhere('Job.hidden = :hidden', { hidden: false })
+            .innerJoinAndSelect('Job.company', 'c')
             .getMany(),
           "Couldn't find any pending job requests.",
         );
-
-        for (let jobIndex = 0; jobIndex < pendingJobs.length; jobIndex++) {
-          pendingJobs[jobIndex].company = await AppDataSource.createQueryBuilder()
-            .relation(Job, 'company')
-            .of(pendingJobs[jobIndex])
-            .loadOne();
-        }
         return {
           status: 200,
           msg: {
@@ -226,7 +244,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetPendingCompanyVerifications(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetPendingCompanyVerifications(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -236,17 +259,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             .createQueryBuilder()
             .select('CompanyAccount.id')
             .where('CompanyAccount.verified = :verified', { verified: false })
+            .innerJoinAndSelect('CompanyAccount.company', 'c')
             .getMany();
-          for (
-            let companyAccountIndex = 0;
-            companyAccountIndex < pendingCompanyAccounts.length;
-            companyAccountIndex++
-          ) {
-            pendingCompanyAccounts[companyAccountIndex].company = await AppDataSource.createQueryBuilder()
-              .relation(CompanyAccount, 'company')
-              .of(pendingCompanyAccounts[companyAccountIndex])
-              .loadOne();
-          }
           return pendingCompanyAccounts;
         }, "Couldn't find any pending company verifications.");
         return {
@@ -267,11 +281,18 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async VerifyCompanyAccount(this: void, req: any, res: Response, next: NextFunction) {
+  public static async VerifyCompanyAccount(
+    this: void,
+    req: VerifyCompanyAccountRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        Logger.Info(`Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`);
+        Logger.Info(
+          `Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`,
+        );
         const pendingCompany = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder()
@@ -334,26 +355,24 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async ListAllCompaniesAsAdmin(this: void, req: any, res: Response, next: NextFunction) {
+  public static async ListAllCompaniesAsAdmin(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`Admin ID=${req.adminID} attempting to query all companies`);
-        const companyAccounts = await Helpers.doSuccessfullyOrFail(async () => {
-          const companyAccounts = await AppDataSource.getRepository(CompanyAccount)
-            .createQueryBuilder()
-            .where('CompanyAccount.verified = :verified', { verified: true })
-            .getMany();
-          for (let companyAccountIndex = 0; companyAccountIndex < companyAccounts.length; companyAccountIndex++) {
-            companyAccounts[companyAccountIndex].company = await AppDataSource.createQueryBuilder()
-              .relation(CompanyAccount, 'company')
-              .of(companyAccounts[companyAccountIndex])
-              .loadOne();
-          }
-          return companyAccounts;
-        }, `Couldn't get all verified company objects as Admin ID=${req.adminID}`);
 
-        const fixedCompanies = companyAccounts.map((companyAccount: CompanyAccount) => ({
+        const companyAccounts = await AppDataSource.getRepository(CompanyAccount)
+          .createQueryBuilder()
+          .where('CompanyAccount.verified = :verified', { verified: true })
+          .innerJoinAndSelect('CompanyAccount.company', 'c')
+          .getMany();
+
+        const fixedCompanies = companyAccounts.map((companyAccount) => ({
           id: companyAccount.company.id,
           name: companyAccount.company.name,
           location: companyAccount.company.location,
@@ -376,7 +395,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async CreateJobOnBehalfOfExistingCompany(this: void, req: any, res: Response, next: NextFunction) {
+  public static async CreateJobOnBehalfOfExistingCompany(
+    this: void,
+    req: AdminCreateJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -392,7 +416,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         // get it's associated company account to verify
         company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder().relation(Company, 'companyAccount').of(company).loadOne(),
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Company, 'companyAccount')
+            .of(company)
+            .loadOne(),
           `Could not get the related company account for company ID=${company.id}`,
         );
 
@@ -475,11 +502,16 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         await AppDataSource.manager.save(company);
 
         const newJobID: number = company.jobs[company.jobs.length - 1].id;
-        Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`);
+        Logger.Info(
+          `Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`,
+        );
 
         // check to see if that job is queryable
         await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job).createQueryBuilder().where('Job.id = :id', { id: newJobID }).getOne(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .where('Job.id = :id', { id: newJobID })
+            .getOne(),
           `Failed to fetch the newly created JOB=${newJobID}`,
         );
 
@@ -500,7 +532,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetNumVerifiedCompanies(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetNumVerifiedCompanies(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -516,7 +553,9 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         const numVerifiedCompanies = verifiedCompanies.length;
 
-        Logger.Info(`Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`);
+        Logger.Info(
+          `Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`,
+        );
 
         return {
           status: 200,
@@ -533,15 +572,22 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async getNumApprovedJobPosts(this: void, req: any, res: Response, next: NextFunction) {
+  public static async getNumApprovedJobPosts(
+    this: void,
+    req: AdminApprovedJobPostsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(
-          `Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${req.adminID}`,
+          `Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
+            req.adminID
+          }`,
         );
 
-        const yearToSearch = req.params.year;
+        const yearToSearch = parseInt(req.params.year, 10);
         Helpers.requireParameters(yearToSearch);
 
         const numApprovedJobs = await Helpers.doSuccessfullyOrFail(
@@ -567,7 +613,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           );
 
           const allApprovedJobsThatYear = allApprovedJobs.filter(
-            (job: any) => job.createdAt.getFullYear() == yearToSearch,
+            (job) => job.createdAt.getFullYear() === yearToSearch,
           );
           const numJobsPostsinYear = allApprovedJobsThatYear.length;
 
@@ -609,7 +655,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
-  public static async GetAllHiddenJobs(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetAllHiddenJobs(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -654,8 +705,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         );
 
         // group jobs by company name
-        const resMap = new Map();
-        hiddenJobs.forEach((job: any) => {
+        const resMap = new Map<string, Job[]>();
+        hiddenJobs.forEach((job) => {
           const key = String(job.company.name);
           if (!resMap.has(key)) {
             resMap.set(key, []);

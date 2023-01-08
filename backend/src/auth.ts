@@ -1,19 +1,18 @@
-import { Request, Response, NextFunction } from 'express';
-
+import { Response, NextFunction } from 'express';
 import { Client } from 'ldapts';
-import { AppDataSource } from './index';
-
+import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
-import Student from './entity/student';
+import EStudent from './entity/student';
 import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import Logger from './logging';
 import Secrets from './secrets';
+import { AuthRequest } from './interfaces/interfaces';
 
 // auth token data structures
 interface IToken {
-  id: number;
+  id: string;
   type: AccountType;
   lastRequestTimestamp: number;
   ipAddress: string;
@@ -32,7 +31,7 @@ export default class Auth {
   // Student-based authentication functions
   public static async AuthenticateStudent(
     this: void,
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -45,7 +44,7 @@ export default class Auth {
         const result = await Auth.authenticateStudent(msg.zID, msg.password);
         if (result === true) {
           Logger.Info(`Successfully authenticated STUDENT=${msg.zID}`);
-          // successful login
+
           const rawToken: IToken = {
             id: msg.zID,
             type: AccountType.Student,
@@ -56,21 +55,21 @@ export default class Auth {
           const token: JWT = JWT.create(rawToken);
 
           // find whether the student has logged on here before
-          const studentQuery = await AppDataSource.getRepository(Student)
+          const studentQuery = await AppDataSource.getRepository(EStudent)
             .createQueryBuilder()
             .where('Student.zID = :zID', { zID: msg.zID })
             .getOne();
 
           if (studentQuery === null) {
             // never logged on here before
-            const student: Student = new Student();
+            const student: EStudent = new EStudent();
             student.zID = msg.zID;
             student.latestValidToken = token as string;
             await AppDataSource.manager.save(student);
             Logger.Info(`Created student record for STUDENT=${msg.zID}`);
           } else {
             await AppDataSource.createQueryBuilder()
-              .update(Student)
+              .update(EStudent)
               .set({ latestValidToken: token as string })
               .where('id = :id', { id: studentQuery.id })
               .execute();
@@ -94,7 +93,7 @@ export default class Auth {
   // Company-based authentication functions
   public static async AuthenticateCompany(
     this: void,
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -113,13 +112,17 @@ export default class Auth {
           `Couldn't find company with username: ${msg.username}`,
         );
         try {
-          if (!Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())) {
-            Logger.Info(`Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`);
+          if (
+            !Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
+          ) {
+            Logger.Info(
+              `Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`,
+            );
             throw new Error('Invalid credentials');
           }
           Logger.Info(`Successfully authenticated COMPANY=${msg.username}`);
           const rawToken: IToken = {
-            id: companyQuery.id,
+            id: companyQuery.id.toString(),
             type: AccountType.Company,
             lastRequestTimestamp: Date.now(),
             ipAddress: req.ip,
@@ -149,7 +152,7 @@ export default class Auth {
   // admin-based authentication functions
   public static async AuthenticateAdmin(
     this: void,
-    req: Request,
+    req: AuthRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -167,17 +170,16 @@ export default class Auth {
           .getOne();
 
         try {
-          if (!Secrets.compareHash(
-            adminQuery.hash.valueOf(),
-            Secrets.hash(msg.password).valueOf(),
-          )) {
+          if (
+            !Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
+          ) {
             Logger.Info(`Failed to authenticate ADMIN=${msg.username} due to invalid credentials`);
             throw new Error('Invalid credentials');
           }
           Logger.Info(`Successfully authenticated ADMIN=${msg.username}`);
           // credentials match, so grant them a token
           const rawToken: IToken = {
-            id: adminQuery.id,
+            id: adminQuery.id.toString(),
             type: AccountType.Admin,
             lastRequestTimestamp: Date.now(),
             ipAddress: req.ip,
@@ -216,8 +218,8 @@ export default class Auth {
           //   minVersion: 'TLSv1.2',
           // },
         });
-        const result = await client.bind(`${zID}@ad.unsw.edu.au`, password);
-        Logger.Info(`Authentication state for STUDENT=${zID} IS=${result}`);
+        await client.bind(`${zID}@ad.unsw.edu.au`, password);
+        Logger.Info(`STUDENT=${zID} is logged in`);
         return true;
       }
       // if unexpected characters are found, immediately reject

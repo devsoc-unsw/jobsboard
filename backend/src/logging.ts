@@ -1,6 +1,9 @@
+/* eslint-disable */
+// ! will hopefully be rewritten or discarded so no need to lint it
+
 import winston from 'winston';
 import Logs from './entity/logs';
-import { AppDataSource } from './index';
+import { AppDataSource } from './config';
 
 export default class Logger {
   public static Init(): void {

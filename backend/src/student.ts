@@ -1,5 +1,5 @@
 import { Response, NextFunction } from 'express';
-import { AppDataSource } from './index';
+import { AppDataSource } from './config';
 import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
 import Logger from './logging';
@@ -13,9 +13,10 @@ import {
 } from './types/job-field';
 
 import {
-  JobBase, CompanyBase,
+  JobBase,
+  CompanyBase,
   StudentPaginatedJobsRequest,
-  StudentGetJobReQuest,
+  StudentGetJobRequest,
   StudentFeaturedJobsRequest,
 } from './interfaces/interfaces';
 
@@ -104,7 +105,7 @@ export default class StudentFunctions {
 
   public static async GetJob(
     this: void,
-    req: StudentGetJobReQuest,
+    req: StudentGetJobRequest,
     res: Response,
     next: NextFunction,
   ) {

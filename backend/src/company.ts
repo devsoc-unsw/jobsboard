@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { Brackets } from 'typeorm';
-import { AppDataSource } from './index';
+import { AppDataSource } from './config';
 import Company from './entity/company';
 import CompanyAccount from './entity/company_account';
 import Job from './entity/job';
@@ -15,7 +15,17 @@ import {
   CompanyJobsRequest,
   CreateCompanyRequest,
   CreateJobRequest,
-  GetCompanyHiddenJobs,
+  GetHiddenJobsRequest,
+  JobInfo,
+  EditJobRequest,
+  CompanyGetJobsRequest,
+  DeleteJobRequest,
+  CompanyResetPasswordEmailRequest,
+  CompanyGetResetTokenRequest,
+  CompanyResetPasswordRequest,
+  CompanyUploadLogoRequest,
+  CheckCompanyLogoRequest,
+  UpdateCompanyDetailsRequest,
 } from './interfaces/interfaces';
 
 export default class CompanyFunctions {
@@ -318,7 +328,7 @@ export default class CompanyFunctions {
 
   public static async GetCompanyHiddenJobs(
     this: void,
-    req: GetCompanyHiddenJobs,
+    req: GetHiddenJobsRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -330,8 +340,7 @@ export default class CompanyFunctions {
 
         Logger.Info(`COMPANY_ACCOUNT=${req.companyID} attempting to list all of its hidden jobs`);
 
-        const hiddenJobs = await AppDataSource
-          .getRepository(Job)
+        const hiddenJobs = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
           .leftJoinAndSelect('Job.company', 'company')
           .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
@@ -384,8 +393,8 @@ export default class CompanyFunctions {
     );
   }
 
-  private static isJobUpdated(newJob: Job, jobInfo: any) {
-    const areArraysEquals = (a: any[], b: any[]) => Array.isArray(a)
+  private static isJobUpdated(newJob: Job, jobInfo: JobInfo) {
+    const areArraysEquals = (a: unknown[], b: unknown[]) => Array.isArray(a)
       && Array.isArray(b)
       && a.length === b.length
       && a.every((val, index) => val === b[index]);
@@ -411,7 +420,7 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async EditJob(this: void, req: any, res: Response, next: NextFunction) {
+  public static async EditJob(this: void, req: EditJobRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -457,7 +466,7 @@ export default class CompanyFunctions {
           .createQueryBuilder()
           .leftJoinAndSelect('Job.company', 'company')
           .where('company.id = :id', { id: parseInt(companyId, 10) })
-          .andWhere('Job.id = :jobId', { jobId: parseInt(jobInfo.id, 10) })
+          .andWhere('Job.id = :jobId', { jobId: jobInfo.id })
           .getOne();
 
         if (oldJob === null) {
@@ -521,7 +530,7 @@ export default class CompanyFunctions {
 
   public static async GetAllJobsFromCompany(
     this: void,
-    req: any,
+    req: CompanyGetJobsRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -557,7 +566,7 @@ export default class CompanyFunctions {
           `Failed to find jobs for COMPANY=${req.companyAccountID}`,
         );
 
-        const fixedCompanyJobs = companyJobs.map((job: any) => {
+        const fixedCompanyJobs = companyJobs.map((job) => {
           let jobStatus = 'Unknown';
           if (job.approved && !job.hidden) {
             jobStatus = 'Approved';
@@ -603,7 +612,7 @@ export default class CompanyFunctions {
 
   public static async MarkJobPostRequestAsDeleted(
     this: void,
-    req: any,
+    req: DeleteJobRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -652,7 +661,7 @@ export default class CompanyFunctions {
 
   public static async SendResetPasswordEmail(
     this: void,
-    req: any,
+    req: CompanyResetPasswordEmailRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -674,7 +683,7 @@ export default class CompanyFunctions {
           `Failed to find company account with USERNAME=${receipientEmail}`,
         );
         // create new token
-        const token: JWT = JWT.create({
+        const token = JWT.create({
           id: companyAccountUsernameSearchResult.id,
           type: AccountType.Company,
           lastRequestTimestamp: Date.now(),
@@ -682,7 +691,7 @@ export default class CompanyFunctions {
         });
         await AppDataSource.createQueryBuilder()
           .update(CompanyAccount)
-          .set({ latestValidResetToken: token as string })
+          .set({ latestValidResetToken: token })
           .where('id = :id', { id: companyAccountUsernameSearchResult.id })
           .execute();
 
@@ -716,7 +725,7 @@ export default class CompanyFunctions {
 
   public static async GetPasswordResetToken(
     this: void,
-    req: any,
+    req: CompanyGetResetTokenRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -755,7 +764,12 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async PasswordReset(this: void, req: any, res: Response, next: NextFunction) {
+  public static async PasswordReset(
+    this: void,
+    req: CompanyResetPasswordRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -805,13 +819,12 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async UploadLogo(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async UploadLogo(req: CompanyUploadLogoRequest, res: Response, next: NextFunction) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const { companyAccountID } = req;
 
-        // check if the required parameters are provided
         Helpers.requireParameters(companyAccountID);
         Helpers.requireParameters(req.body.logo);
 
@@ -820,7 +833,7 @@ export default class CompanyFunctions {
         await AppDataSource.createQueryBuilder()
           .update(Company)
           .set({
-            logo: req.body.logo,
+            logo: Buffer.from(req.body.logo, 'utf8'),
           })
           .where('id = :id', { id: companyAccountID })
           .execute();
@@ -840,8 +853,13 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async GetCompanyLogoStatus(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetCompanyLogoStatus(
+    this: void,
+    req: CheckCompanyLogoRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const companyLogo = await Helpers.doSuccessfullyOrFail(
@@ -875,7 +893,7 @@ export default class CompanyFunctions {
 
   public static async UpdateCompanyDetails(
     this: void,
-    req: any,
+    req: UpdateCompanyDetailsRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -902,7 +920,7 @@ export default class CompanyFunctions {
             name: req.body.name,
             location: req.body.location,
             description: req.body.description,
-            logo: req.body.logo,
+            logo: Buffer.from(req.body.logo, 'utf8'),
           })
           .where('id = :id', { id: companyAccountID })
           .execute();

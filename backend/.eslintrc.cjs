@@ -6,7 +6,7 @@ module.exports = {
     project: ['./tsconfig.json'],
   },
   ignorePatterns: [
-    "./tests/**",
+    "*_tests.js",
     "./node_modules/**",
   ],
   plugins: ['@typescript-eslint'],
@@ -16,4 +16,20 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking'
   ],
+  rules: {
+    "import/no-cycle": "warn",
+    "@typescript-eslint/brace-style": "off",
+    "@typescript-eslint/no-floating-promises": [
+      "error", { ignoreIIFE: true}
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+
+  }
 };
