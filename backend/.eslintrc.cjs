@@ -21,7 +21,7 @@ module.exports = {
     "import/no-cycle": "warn",
     "@typescript-eslint/brace-style": "off",
     "@typescript-eslint/no-floating-promises": [
-      "error", { ignoreIIFE: true}
+      "error", { ignoreIIFE: true }
     ],
     "@typescript-eslint/no-unused-vars": [
       "error",
