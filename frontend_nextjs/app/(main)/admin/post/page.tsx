@@ -2,7 +2,7 @@
 import PostJobForm from 'components/PostJobForm/PostJobForm';
 import React from 'react';
 
-const AdminJobsPostPage = () => {
+const AdminPostPage = () => {
   return (
     <div>
       <PostJobForm admin />
@@ -10,4 +10,4 @@ const AdminJobsPostPage = () => {
   );
 };
 
-export default AdminJobsPostPage;
+export default AdminPostPage;

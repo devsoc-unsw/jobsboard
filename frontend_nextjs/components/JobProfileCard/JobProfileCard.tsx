@@ -16,7 +16,7 @@ import React, { useContext, useState } from 'react';
 import { StudentDemographic, WorkingRights } from 'types/api';
 import styles from './styles.module.css';
 
-type Props = {
+type JobProfileCardProps = {
   jobID: number;
   role: string;
   isPaidPosition: string;
@@ -46,7 +46,7 @@ const JobProfileCard = ({
   wamRequirements,
   additionalInfo,
   listName
-}: Props) => {
+}: JobProfileCardProps) => {
   const [openModal, setOpenModal] = useState(false);
 
   const { apiToken } = useContext(AppContext);

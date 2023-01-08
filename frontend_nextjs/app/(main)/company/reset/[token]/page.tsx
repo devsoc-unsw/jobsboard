@@ -8,13 +8,13 @@ import React, { useState } from 'react';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
 
-type Props = {
+type CompanyResetPageProps = {
   params: {
     token: string;
   };
 };
 
-const ResetPage = ({ params }: Props) => {
+const CompanyResetPage = ({ params }: CompanyResetPageProps) => {
   const token = params.token;
 
   const [newPassword, setNewPassword] = useState('');
@@ -133,4 +133,4 @@ const ResetPage = ({ params }: Props) => {
   );
 };
 
-export default ResetPage;
+export default CompanyResetPage;

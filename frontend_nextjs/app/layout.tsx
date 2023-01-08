@@ -13,11 +13,11 @@ const assistant = Assistant({
   display: 'swap'
 });
 
-type Props = {
+type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-const RootLayout = ({ children }: Props) => {
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html>
       <head />

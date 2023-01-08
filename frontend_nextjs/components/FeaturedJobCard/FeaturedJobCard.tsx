@@ -6,14 +6,14 @@ import Link from 'next/link';
 import React from 'react';
 import styles from './styles.module.css';
 
-type Props = {
+type FeaturedJobCardProps = {
   title: string;
   description: string;
   tag: string[];
   imgSrc: string;
 };
 
-const FeaturedJobCard = ({ title, description, tag, imgSrc }: Props) => {
+const FeaturedJobCard = ({ title, description, tag, imgSrc }: FeaturedJobCardProps) => {
   return (
     <Link href="/student/login">
       <div className="flex mx-4 mt-8 mb-12 flex-col justify-between shadow-card rounded-lg bg-white relative hover-anim">

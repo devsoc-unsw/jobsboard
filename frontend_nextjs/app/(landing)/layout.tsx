@@ -1,10 +1,10 @@
 import React from 'react';
 
-type Props = {
+type LandingRootLayoutProps = {
   children: React.ReactNode;
 };
 
-const LandingRootLayout = ({ children }: Props) => {
+const LandingRootLayout = ({ children }: LandingRootLayoutProps) => {
   return <div>{children}</div>;
 };
 

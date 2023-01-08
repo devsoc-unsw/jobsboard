@@ -6,7 +6,6 @@ import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
-import GoogleLogo from 'assets/companies/googleLogo.png';
 import JobCard from 'components/JobCard/JobCard';
 import ErrorBox from 'components/ErrorBox/ErrorBox';
 import {
@@ -17,7 +16,6 @@ import {
   faPeopleGroup
 } from '@fortawesome/free-solid-svg-icons';
 import { AxiosError } from 'axios';
-import Input from 'ui/Input/Input';
 
 const StudentDashboardPage = () => {
   const router = useRouter();

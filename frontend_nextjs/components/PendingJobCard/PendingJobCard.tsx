@@ -10,7 +10,7 @@ import { faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { StudentDemographic, WorkingRights } from 'types/api';
 import { AxiosError } from 'axios';
 
-type Props = {
+type PendingJobCardProps = {
   company: string;
   location: string;
   jobID: number;
@@ -48,7 +48,7 @@ const PendingJobCard = ({
   onSuccess,
   onError,
   onRemove
-}: Props) => {
+}: PendingJobCardProps) => {
   const [openModal, setOpenModal] = useState(false);
 
   const router = useRouter();

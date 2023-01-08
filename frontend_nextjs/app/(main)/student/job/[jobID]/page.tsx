@@ -28,13 +28,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { CompanyJob, HiddenJob } from 'types/api';
 import Button from 'ui/Button/Button';
 
-type Props = {
+type StudentJobPageProps = {
   params: {
     jobID: string;
   };
 };
 
-const JobInfoPage = ({ params }: Props) => {
+const StudentJobPage = ({ params }: StudentJobPageProps) => {
   const jobID = params.jobID;
 
   // const [companyID, setCompanyID] = useState('')
@@ -279,4 +279,4 @@ const JobInfoPage = ({ params }: Props) => {
   );
 };
 
-export default JobInfoPage;
+export default StudentJobPage;

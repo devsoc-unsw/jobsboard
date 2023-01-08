@@ -19,7 +19,7 @@ import {
 import React from 'react';
 import { StudentDemographic, WorkingRights } from 'types/api';
 
-type Props = {
+type JobDescriptionModalProps = {
   title: string;
   description: string;
   applicationLink: string;
@@ -49,7 +49,7 @@ const JobDescriptionModal = ({
   additionalInfo,
   open,
   onClose
-}: Props) => {
+}: JobDescriptionModalProps) => {
   return (
     <Modal open={open}>
       <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[80%] my-auto overflow-auto">

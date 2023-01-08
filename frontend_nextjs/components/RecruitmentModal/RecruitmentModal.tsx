@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'components/Modal/Modal';
 import React from 'react';
 
-type Props = {
+type RecruitmentModalProps = {
   open: boolean;
   onClose(): void;
 };
 
-const RecruitmentModal = ({ open, onClose }: Props) => {
+const RecruitmentModal = ({ open, onClose }: RecruitmentModalProps) => {
   return (
     <Modal open={open}>
       <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[80%] my-auto overflow-auto">

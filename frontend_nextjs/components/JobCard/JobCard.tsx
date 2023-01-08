@@ -11,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 
-type Props = {
+type JobCardProps = {
   jobID: number;
   jobTitle: number;
   jobLogo: string;
@@ -31,7 +31,7 @@ const JobCard = ({
   jobLocation,
   jobRole,
   jobMode
-}: Props) => {
+}: JobCardProps) => {
   return (
     <Link href={`/student/job/${jobID}`}>
       <div className="flex flex-col rounded-lg shadow-card hover-anim w-60 h-full bg-white">

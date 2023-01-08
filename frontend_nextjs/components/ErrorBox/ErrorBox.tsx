@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './styles.module.css';
 
-type Props = {
+type ErrorBoxProps = {
   children: React.ReactNode;
 };
 
-const ErrorBox = ({ children }: Props) => {
+const ErrorBox = ({ children }: ErrorBoxProps) => {
   return <div className={styles.error}>{children}</div>;
 };
 

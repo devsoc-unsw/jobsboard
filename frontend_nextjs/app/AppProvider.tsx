@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import AppContext from './AppContext';
 
-type Props = {
+type AppProviderProps = {
   children: React.ReactNode;
 };
 
 const sessionStorageApiTokenKeyName = 'jobs-board-api-token';
 
-const AppProvider = ({ children }: Props) => {
+const AppProvider = ({ children }: AppProviderProps) => {
   const [apiToken, setApiToken] = useState<string | null>(null);
   return (
     <AppContext.Provider

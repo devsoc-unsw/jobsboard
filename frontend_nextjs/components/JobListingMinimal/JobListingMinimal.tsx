@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import React from 'react';
 
-type Props = {
+type JobListingMinimalProps = {
   jobID: number;
   role: string;
   company: string;
   location: string;
 };
 
-const JobListingMinimal = ({ jobID, role, company, location }: Props) => {
+const JobListingMinimal = ({ jobID, role, company, location }: JobListingMinimalProps) => {
   return (
     // <!-- TODO: replace router push with window.open instead? -->
     <Link href={`/student/job/${jobID}`}>

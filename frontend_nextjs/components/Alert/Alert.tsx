@@ -5,14 +5,14 @@ import styles from './styles.module.css';
 
 export type AlertType = 'error' | 'success';
 
-type Props = {
+type AlertProps = {
   open: boolean;
   type?: AlertType;
   message: string;
   onClose?: () => void;
 };
 
-const Alert = ({ open, type = 'error', message, onClose }: Props) => {
+const Alert = ({ open, type = 'error', message, onClose }: AlertProps) => {
   const getContainerStyles = () => {
     return type === 'error' ? styles.errorContainer : styles.successContainer;
   };

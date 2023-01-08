@@ -1,4 +1,3 @@
-import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import ProfileCard from 'components/ProfileCard/ProfileCard';
 import React from 'react';
 

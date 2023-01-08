@@ -1,10 +1,11 @@
+'use client';
 import React, { useEffect } from 'react';
 import Robot from 'assets/misc/404_Robot.png';
 import Image from 'next/image';
 import styles from './not-found.module.css';
 import { useRouter } from 'next/navigation';
 
-const NotFound = () => {
+const NotFoundPage = () => {
   const router = useRouter();
   useEffect(() => {
     setTimeout(() => {
@@ -37,4 +38,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;

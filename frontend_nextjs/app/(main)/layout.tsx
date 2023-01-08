@@ -2,11 +2,11 @@ import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import Header from 'components/Header/Header';
 import container from 'styles/container.module.css';
 
-type Props = {
+type MainRootLayoutProps = {
   children: React.ReactNode;
 };
 
-const MainRootLayout = ({ children }: Props) => {
+const MainRootLayout = ({ children }: MainRootLayoutProps) => {
   return (
     <>
       <Header />

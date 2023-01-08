@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import { CompanyJob, CompanyJobsPayload, HiddenJob, HiddenJobsPayload } from 'types/api';
 
-const CompanyHomePage = () => {
+const CompanyDashboardPage = () => {
   const router = useRouter();
   const { apiToken } = useContext(AppContext);
 
@@ -220,4 +220,4 @@ const CompanyHomePage = () => {
   );
 };
 
-export default CompanyHomePage;
+export default CompanyDashboardPage;

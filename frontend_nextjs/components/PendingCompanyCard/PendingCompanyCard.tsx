@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 
-type Props = {
+type PendingCompanyCardProps = {
   companyName: string;
   location: string;
   description: string;
@@ -24,7 +24,7 @@ const PendingCompanyCard = ({
   companyName,
   location,
   companyAccountID
-}: Props) => {
+}: PendingCompanyCardProps) => {
   const router = useRouter();
   const { apiToken, setApiToken } = useContext(AppContext);
 

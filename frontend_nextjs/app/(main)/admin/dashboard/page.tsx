@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import Button from 'ui/Button/Button';
 
-const AdminHomePage = () => {
+const AdminDashboardPage = () => {
   const router = useRouter();
   const { apiToken, setApiToken } = useContext(AppContext);
 
@@ -185,4 +185,4 @@ const AdminHomePage = () => {
   );
 };
 
-export default AdminHomePage;
+export default AdminDashboardPage;

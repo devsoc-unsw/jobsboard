@@ -13,7 +13,7 @@ import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
 
-const LoginCompanyPage = () => {
+const CompanyLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -131,4 +131,4 @@ const LoginCompanyPage = () => {
   );
 };
 
-export default LoginCompanyPage;
+export default CompanyLoginPage;

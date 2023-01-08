@@ -15,11 +15,11 @@ import Button from 'ui/Button/Button';
 import { AxiosError } from 'axios';
 import Input from 'ui/Input/Input';
 
-type Props = {
+type PostJobFormProps = {
   admin?: boolean;
 };
 
-const PostJobForm = ({ admin }: Props) => {
+const PostJobForm = ({ admin }: PostJobFormProps) => {
   const [openModal, setOpenModal] = useState(false);
 
   const [role, setRole] = useState('');

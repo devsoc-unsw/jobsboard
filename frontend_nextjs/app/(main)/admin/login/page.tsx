@@ -13,7 +13,7 @@ import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
 import Spinner from 'ui/Spinner/Spinner';
 
-const LoginCompanyPage = () => {
+const AdminLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -109,4 +109,4 @@ const LoginCompanyPage = () => {
   );
 };
 
-export default LoginCompanyPage;
+export default AdminLoginPage;

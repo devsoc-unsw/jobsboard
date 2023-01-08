@@ -8,11 +8,11 @@ import AppContext from 'app/AppContext';
 import styles from './styles.module.css';
 import Link from 'next/link';
 
-type Props = {
+type HeaderProps = {
   style?: React.CSSProperties;
 };
 
-const Header = ({ style }: Props) => {
+const Header = ({ style }: HeaderProps) => {
   const router = useRouter();
   const { apiToken, resetApiToken } = useContext(AppContext);
 
