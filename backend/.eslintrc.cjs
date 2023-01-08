@@ -8,6 +8,7 @@ module.exports = {
   ignorePatterns: [
     "*_tests.js",
     "./node_modules/**",
+    ".eslintrc.cjs"
   ],
   plugins: ['@typescript-eslint'],
   extends: [
