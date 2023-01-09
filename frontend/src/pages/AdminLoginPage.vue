@@ -1,7 +1,7 @@
 <template>
   <StudentViewTemplate notLoggedIn>
     <Breadcrumbs />
-    <main class='h-full flex flex-col justify-center items-center mb-16'>
+    <main class='h-full flex flex-col justify-center items-center py-16'>
       <h1 class='font-bold text-3xl mb-0 text-jb-headings'>
         Admin Login
       </h1>
@@ -66,12 +66,18 @@
         </div>
       </form>
 
+      <TransitionLoading
+        v-if='isLoading'
+        class='h-16'
+      />
       <button
+        v-else
         class='btn btn-blue-filled w-28 h-11 p-2'
         @click='performAdminLogin'
       >
         Log In
       </button>
+
       <p class='text-lg text-jb-subheadings mt-6 mb-4 mx-[18%] sm:mx-8'>
         Or return to
         <span
@@ -95,6 +101,7 @@ import Alert from '@/components/Alert.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useApiTokenStore } from '@/store/apiToken';
+import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 // config
 import config from '@/config/config';
@@ -114,11 +121,14 @@ const password = ref('');
 const hidePassword = ref(true);
 const isAlertOpen = ref(false);
 
+const isLoading = ref(false);
+
 const showPassword = () => {
   hidePassword.value = !hidePassword.value;
 };
 
 const performAdminLogin = async () => {
+  isLoading.value = true;
   const response = await fetch(`${config.apiRoot}/authenticate/admin`, {
     method: 'POST',
     headers: {
@@ -143,6 +153,7 @@ const performAdminLogin = async () => {
     });
     isAlertOpen.value = true;
   }
+  isLoading.value = false;
 };
 
 const toLandingPage = () => {

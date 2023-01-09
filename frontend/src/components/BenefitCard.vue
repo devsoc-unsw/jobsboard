@@ -10,20 +10,21 @@
 </template>
 
 <script setup lang="ts">
-  const props = defineProps({
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    icon: {
-      type: String,
-      required: false,
-    },
-  });
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  icon: {
+    type: String,
+    required: false,
+    default: '',
+  },
+});
 </script>
 
 <style scoped lang="scss">

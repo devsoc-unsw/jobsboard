@@ -32,7 +32,7 @@ const props = defineProps({
 onMounted(async () => {
   if (props.notLoggedIn === true) {
     return;
-  } else if (apiTokenStore.getApiToken() === undefined) {
+  } else if (!apiTokenStore.getApiToken()) {
     router.push('/');
   }
 });
@@ -42,7 +42,8 @@ onMounted(async () => {
 .content {
   background: #f6f9fc;
   color: $black;
-  min-height: 100%;
+  min-height: 93vh;
+  /* min-height: 100%; */
   flex: 1 1 auto;
   padding: 2rem 0 0 0;
 }

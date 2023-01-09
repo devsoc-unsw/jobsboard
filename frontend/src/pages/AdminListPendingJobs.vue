@@ -66,9 +66,9 @@ import FadeTransition from '@/components/FadeTransition.vue';
 import TransitionLoading from '@/animations/TransitionLoading.vue';
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
-const isLoading = ref<boolean>(true);
-const successMsg = ref<string>('');
-const errorMsg = ref<string>('');
+const isLoading = ref(true);
+const successMsg = ref('');
+const errorMsg = ref('');
 // TODO: associate a type with this!
 const jobs = ref<any>([]);
 onMounted(async () => {
@@ -78,8 +78,8 @@ onMounted(async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
   isLoading.value = false;
   if (response.ok) {

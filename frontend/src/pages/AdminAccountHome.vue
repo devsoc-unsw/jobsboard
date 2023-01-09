@@ -155,11 +155,11 @@ import { useApiTokenStore } from '@/store/apiToken';
 const router = useRouter();
 const apiTokenStore = useApiTokenStore();
 
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
-const infoAlert = ref<boolean>(true);
-const nPendingCompanies = ref<number>(0);
-const nPendingJobs = ref<number>(0);
+const alertMsg = ref('');
+const isAlertOpen = ref(false);
+const infoAlert = ref(true);
+const nPendingCompanies = ref(0);
+const nPendingJobs = ref(0);
 
 onMounted(async () => {
   // Change the page title
@@ -170,8 +170,8 @@ onMounted(async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
 
   if (response.ok) {
@@ -196,8 +196,8 @@ onMounted(async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
 
   if (pendingJobsResponse.ok) {

@@ -4,6 +4,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts}'],
   media: false,
   theme: {
+    fontWeight: {
+      bold: 600,
+    },
     screens: {
       // The following screen sizes are converted into css like so
       // @media (max-width: ...px) { ... }

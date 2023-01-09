@@ -1,4 +1,4 @@
-name: Docker (staging)
+name: Docker
 on:
   push:
 
@@ -38,11 +38,14 @@ jobs:
           tags: |
             ghcr.io/csesoc/jobs-board-${{ matrix.component }}:${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
-  deploy:
-    name: Deploy (CD)
+  deploy-staging:
+    name: Deploy Staging (CD)
     runs-on: ubuntu-latest
     needs: [build]
     concurrency: staging
+    environment:
+      name: Staging
+      url: https://jobsboard.staging.csesoc.unsw.edu.au
     if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
     steps:
       - name: Checkout repository
@@ -50,8 +53,8 @@ jobs:
         with:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
-      - name: Install yq - portable yaml processor
-        uses: mikefarah/yq@v4.29.2
+      - name: Install yq
+        uses: mikefarah/yq@v4.30.6
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -62,7 +65,38 @@ jobs:
           yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-frontend:${{ github.sha }}"' apps/projects/jobsboard/staging/deploy-frontend.yml
           yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-backend:${{ github.sha }}"' apps/projects/jobsboard/staging/deploy-backend.yml
           git add . 
-          git commit -m "feat(jobsboard): update images" 
+          git commit -m "feat(jobsboard/staging): update images" 
           git push -u origin update/jobsboard/${{ github.sha }}
-          gh pr create --title "feat(jobsboard): update image" --body "Updates the image for the jobs-board deployment to commit csesoc/jobs-board@${{ github.sha }}." > URL
+          gh pr create --title "feat(jobsboard/staging): update images" --body "Updates the images for the jobs-board deployment to commit csesoc/jobs-board@${{ github.sha }}." > URL
+          gh pr merge $(cat URL) --squash -d
+  deploy-prod:
+    name: Deploy Production (CD)
+    runs-on: ubuntu-latest
+    needs: [build]
+    concurrency: prod
+    environment:
+      name: Production
+      url: https://jobsboard.csesoc.unsw.edu.au
+    if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: csesoc/deployment
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Install yq
+        uses: mikefarah/yq@v4.30.6
+      - name: Update deployment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          git config user.name "CSESoc CD"
+          git config user.email "technical@csesoc.org.au"
+          git checkout -b update/jobsboard/${{ github.sha }}
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-frontend:${{ github.sha }}"' apps/projects/jobsboard/prod/deploy-frontend.yml
+          yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-backend:${{ github.sha }}"' apps/projects/jobsboard/prod/deploy-backend.yml
+          git add . 
+          git commit -m "feat(jobsboard/prod): update images" 
+          git push -u origin update/jobsboard/${{ github.sha }}
+          gh pr create --title "feat(jobsboard/prod): update images" --body "Updates the images for the jobs-board deployment to commit csesoc/jobs-board@${{ github.sha }}." > URL
           gh pr merge $(cat URL) --squash -d

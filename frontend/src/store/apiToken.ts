@@ -2,13 +2,9 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import config from '@/config/config';
 
-type ApiStoreState = {
-  apiToken?: string;
-}
-
 export const useApiTokenStore = defineStore('apiToken', () => {
-  const state = ref<ApiStoreState>({
-    apiToken: undefined,
+  const state = ref({
+    apiToken: '',
   });
 
   function setApiToken(newToken: string) {
@@ -17,20 +13,16 @@ export const useApiTokenStore = defineStore('apiToken', () => {
   }
 
   function clearApiToken() {
-    state.value.apiToken = undefined;
+    state.value.apiToken = '';
     sessionStorage.removeItem(config.sessionStorageApiTokenKeyName);
   }
 
   function getApiToken() {
     const stateToken = state.value.apiToken;
-    if (stateToken === undefined || stateToken === null) {
+    if (!stateToken) {
       const sessionStorageToken =
         sessionStorage.getItem(config.sessionStorageApiTokenKeyName);
-
-      if (sessionStorageToken === null || sessionStorageToken === undefined) {
-        return undefined;
-      }
-      return sessionStorageToken;
+      return sessionStorageToken ?? '';
     }
     return stateToken;
   }

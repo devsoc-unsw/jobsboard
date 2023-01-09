@@ -1,203 +1,208 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router';
+
+type Breadcrumb = {
+  name: string
+  link?: string
+}
 
 declare module 'vue-router' {
   interface RouteMeta {
     title: string,
-    breadcrumb?: Object
+    breadcrumb?: Breadcrumb[]
   }
 }
 
 // pages
-const LandingPage = () => import("@/pages/LandingPage.vue");
-const PageNotFoundPage = () => import("@/pages/PageNotFound.vue");
-const StudentLoginPage = () => import("@/pages/StudentLoginPage.vue");
-const CompanyLoginPage = () => import("@/pages/CompanyLoginPage.vue");
-const CompanySignupPage = () => import("@/pages/CompanySignupPage.vue");
-const CompanyPasswordForgotPage = () => import("@/pages/CompanyPasswordForgotPage.vue");
-const CompanyPasswordResetPage = () => import("@/pages/CompanyPasswordResetPage.vue");
-const JobsListPage = () => import("@/pages/JobsListPage.vue");
-const SingleJobPage = () => import("@/pages/SingleJobPage.vue");
-const CompanyAccountHome = () => import("@/pages/CompanyAccountHome.vue");
-const CompanyAddJob = () => import("@/pages/CompanyAddJob.vue");
-const AdminLoginPage = () => import("@/pages/AdminLoginPage.vue");
-const AdminAccountHome = () => import("@/pages/AdminAccountHome.vue");
-const AdminListPendingJobs = () => import("@/pages/AdminListPendingJobs.vue");
-const AdminListCompanyPendingVerification = () => import("@/pages/AdminListCompanyPendingVerification.vue");
-const AdminCreateJobAsCompany = () => import("@/pages/AdminCreateJobAsCompany.vue");
-const TeamPage = () => import("@/pages/TeamPage.vue");
+const LandingPage = () => import('@/pages/LandingPage.vue');
+const PageNotFoundPage = () => import('@/pages/PageNotFound.vue');
+const StudentLoginPage = () => import('@/pages/StudentLoginPage.vue');
+const CompanyLoginPage = () => import('@/pages/CompanyLoginPage.vue');
+const CompanySignupPage = () => import('@/pages/CompanySignupPage.vue');
+const CompanyPasswordForgotPage = () => import('@/pages/CompanyPasswordForgotPage.vue');
+const CompanyPasswordResetPage = () => import('@/pages/CompanyPasswordResetPage.vue');
+const JobsListPage = () => import('@/pages/JobsListPage.vue');
+const SingleJobPage = () => import('@/pages/SingleJobPage.vue');
+const CompanyAccountHome = () => import('@/pages/CompanyAccountHome.vue');
+const CompanyAddJob = () => import('@/pages/CompanyAddJob.vue');
+const AdminLoginPage = () => import('@/pages/AdminLoginPage.vue');
+const AdminAccountHome = () => import('@/pages/AdminAccountHome.vue');
+const AdminListPendingJobs = () => import('@/pages/AdminListPendingJobs.vue');
+const AdminListCompanyPendingVerification = () => import('@/pages/AdminListCompanyPendingVerification.vue');
+const AdminCreateJobAsCompany = () => import('@/pages/AdminCreateJobAsCompany.vue');
+const TeamPage = () => import('@/pages/TeamPage.vue');
 
 export default createRouter({
   history: createWebHistory(),
   scrollBehavior: () => ({ y: 0 }),
   routes: [{
-    path: "/login/student",
+    path: '/login/student',
     component: StudentLoginPage,
     meta: {
-      title:  "Login | Jobs Board",
+      title: 'Login | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Login' }
-      ]
-    }
+        { name: 'Login' },
+      ],
+    },
   }, {
-    path: "/login/company",
+    path: '/login/company',
     component: CompanyLoginPage,
     meta: {
-      title:  "Login | Jobs Board",
+      title: 'Login | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Login' }
-      ]
-    }
+        { name: 'Login' },
+      ],
+    },
   }, {
-    path: "/login/admin",
+    path: '/login/admin',
     component: AdminLoginPage,
     meta: {
-      title:  "Login | Jobs Board",
+      title: 'Login | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Login' }
-      ]
-    }
+        { name: 'Login' },
+      ],
+    },
   }, {
-    path: "/signup/company",
+    path: '/signup/company',
     component: CompanySignupPage,
     meta: {
-      title: "Sign Up | Jobs Board",
+      title: 'Sign Up | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Sign Up' }
-      ]
-    }
+        { name: 'Sign Up' },
+      ],
+    },
   }, {
-    path: "/company/home",
+    path: '/company/home',
     component: CompanyAccountHome,
     meta: {
-      title: "Home | Jobs Board",
+      title: 'Home | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Dashboard' }
-      ]
-    }
+        { name: 'Dashboard' },
+      ],
+    },
   }, {
-    path: "/admin/home",
+    path: '/admin/home',
     component: AdminAccountHome,
     meta: {
-      title: "Home | Jobs Board",
+      title: 'Home | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Dashboard'}
-      ]
-    }
+        { name: 'Dashboard' },
+      ],
+    },
   }, {
-    path: "/admin/jobs/pending",
+    path: '/admin/jobs/pending',
     component: AdminListPendingJobs,
     meta: {
-      title: "Pending Jobs | Jobs Board",
+      title: 'Pending Jobs | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
-        { name: 'Jobs' }
-      ]
-    }
+        { name: 'Jobs' },
+      ],
+    },
   }, {
-    path: "/admin/companies/pending",
+    path: '/admin/companies/pending',
     component: AdminListCompanyPendingVerification,
     meta: {
-      title: "Pending Companies | Jobs Board",
+      title: 'Pending Companies | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
-        { name: 'Companies' }
-      ]
-    }
+        { name: 'Companies' },
+      ],
+    },
   }, {
-    path: "/admin/jobs/post",
+    path: '/admin/jobs/post',
     component: AdminCreateJobAsCompany,
     meta: {
-      title: "Post Job | Jobs Board",
+      title: 'Post Job | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/home' },
-        { name: 'Post' }
-      ]
-    }
+        { name: 'Post' },
+      ],
+    },
   }, {
-    path: "/company/jobs/add",
+    path: '/company/jobs/add',
     component: CompanyAddJob,
     meta: {
-      title: "Post Job | Jobs Board",
+      title: 'Post Job | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/company/home' },
-        { name: 'Post Job' }
-      ]
-    }
+        { name: 'Post Job' },
+      ],
+    },
   }, {
-    path: "/jobs",
+    path: '/jobs',
     component: JobsListPage,
     meta: {
-      title: "Jobs List | Jobs Board",
+      title: 'Jobs List | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Job List' }
-      ]
-    }
+        { name: 'Job List' },
+      ],
+    },
   }, {
-    path: "/job/:jobID",
+    path: '/job/:jobID',
     component: SingleJobPage,
     props: true,
-    name: "job",
+    name: 'job',
     meta: {
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Job List' , link: '/jobs' },
-        { name: 'Job' }
-      ]
-    }
+        { name: 'Job List', link: '/jobs' },
+        { name: 'Job' },
+      ],
+    },
   }, {
-    path: "/company/password-forgot",
+    path: '/company/password-forgot',
     component: CompanyPasswordForgotPage,
     meta: {
-      title: "Forgot Password | Jobs Board",
+      title: 'Forgot Password | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Forgot Password' }
-      ]
-    }
+        { name: 'Forgot Password' },
+      ],
+    },
   }, {
-    path: "/company/password-reset/:token",
+    path: '/company/password-reset/:token',
     component: CompanyPasswordResetPage,
     props: true,
-    name: "token",
+    name: 'token',
     meta: {
-      title: "Reset Password | Jobs Board",
+      title: 'Reset Password | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Reset Password' }
-      ]
-    }
+        { name: 'Reset Password' },
+      ],
+    },
   }, {
-    path: "/team",
+    path: '/team',
     component: TeamPage,
     meta: {
-      title: "Team | Jobs Board",
+      title: 'Team | Jobs Board',
       breadcrumb: [
         { name: 'Home', link: '/' },
-        { name: 'Team' }
-      ]
-    }
+        { name: 'Team' },
+      ],
+    },
   }, {
-    path: "/",
+    path: '/',
     component: LandingPage,
     meta: {
-      title: "Home | Jobs Board",
-    }
+      title: 'Home | Jobs Board',
+    },
   }, {
-    path: "/:pathMatch(.*)*",
+    path: '/:pathMatch(.*)*',
     component: PageNotFoundPage,
     meta: {
-      title: "Page Not Found | Jobs Board",
-    }
+      title: 'Page Not Found | Jobs Board',
+    },
   }],
 } as any);

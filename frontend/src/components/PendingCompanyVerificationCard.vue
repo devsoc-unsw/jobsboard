@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import config from '@/config/config';
 
 import { useRouter } from 'vue-router';
@@ -53,8 +52,8 @@ const verifyCompany = async () => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
 
   if (response.ok) {
