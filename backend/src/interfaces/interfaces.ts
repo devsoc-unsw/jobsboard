@@ -41,6 +41,7 @@ interface CompanyAccountInfo {
   name: string;
   username: string;
   password: string;
+  logo?: string;
 }
 
 interface StudentZID {
@@ -125,6 +126,12 @@ export interface StudentPaginatedJobsRequest
 export interface StudentGetJobRequest extends Request<JobIDParams>, StudentZID, JbToken {}
 
 export interface StudentFeaturedJobsRequest extends Request, JbToken {}
+
+interface QueryString {
+  queryString: string;
+}
+interface QueryStringParams extends ParamsDictionary, QueryString {}
+export interface SearchJobRequest extends Request<QueryStringParams>, StudentZID, JbToken {}
 
 // * CompanyFunctions
 

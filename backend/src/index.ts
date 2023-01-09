@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
@@ -43,6 +42,7 @@ import {
   StudentPaginatedJobsRequest,
   UpdateCompanyDetailsRequest,
   VerifyCompanyAccountRequest,
+  SearchJobRequest,
 } from './interfaces/interfaces';
 
 dotenv.config();
@@ -53,7 +53,7 @@ const port = process.env.SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({
   limit: '5mb',
-  extended: true
+  extended: true,
 }));
 app.use(helmet());
 
@@ -128,16 +128,16 @@ app.get(
 app.get(
   '/student/job/:queryString',
   cors(corsOptions),
-  Middleware.authenticateStudentMiddleware,
-  StudentFunctions.SearchJobs,
-  Middleware.genericLoggingMiddleware,
-);
-
-app.get(
-  '/student/job/:queryString',
-  cors(corsOptions),
-  Middleware.authenticateStudentMiddleware,
-  StudentFunctions.SearchJobs,
+  (req: AuthoriseStudentRequest, res, next) => {
+    (async () => {
+      await Middleware.authoriseStudentMiddleware(req, res, next);
+    })();
+  },
+  (req: SearchJobRequest, res, next) => {
+    (async () => {
+      await StudentFunctions.SearchJobs(req, res, next);
+    })();
+  },
   Middleware.genericLoggingMiddleware,
 );
 
@@ -389,7 +389,6 @@ app.get(
 );
 
 app.get(
-  '/company/logo/status',
   '/company/logo/status',
   cors(corsOptions),
   Middleware.authoriseCompanyMiddleware,
