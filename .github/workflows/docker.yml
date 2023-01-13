@@ -67,7 +67,7 @@ jobs:
           git add . 
           git commit -m "feat(jobsboard/staging): update images" 
           git push -u origin update/jobsboard/${{ github.sha }}
-          gh pr create --title "feat(jobsboard/staging): update images" --body "Updates the images for the jobs-board deployment to commit csesoc/jobs-board@${{ github.sha }}." > URL
+          gh pr create --title "feat(jobsboard/staging): update images" --body "Updates the images for the jobsboard deployment to commit csesoc/jobsboard@${{ github.sha }}." > URL
           gh pr merge $(cat URL) --squash -d
   deploy-prod:
     name: Deploy Production (CD)
