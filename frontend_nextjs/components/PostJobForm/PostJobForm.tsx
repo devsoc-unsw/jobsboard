@@ -8,12 +8,14 @@ import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { StudentDemographic, WorkingRights } from 'types/api';
 import Button from 'ui/Button/Button';
 import { AxiosError } from 'axios';
 import Input from 'ui/Input/Input';
+import dynamic from 'next/dynamic';
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 type PostJobFormProps = {
   admin?: boolean;
@@ -280,7 +282,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
               <option value="" disabled selected>
                 Please select an option
               </option>
-              {Object.values(verifiedCompanies).map((company) => (
+              {Object.values(verifiedCompanies).map((company: any) => (
                 <option key={company.id} value={company.id}>
                   {company.name} - {company.location}
                 </option>

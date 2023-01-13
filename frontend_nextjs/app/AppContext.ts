@@ -8,8 +8,8 @@ type Context = {
 
 const AppContext = createContext<Context>({
   apiToken: null,
-  setApiToken: () => {},
-  resetApiToken: () => {}
+  setApiToken: () => undefined,
+  resetApiToken: () => undefined
 });
 
 export default AppContext;

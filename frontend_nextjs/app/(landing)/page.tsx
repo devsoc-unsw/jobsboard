@@ -22,7 +22,7 @@ import Link from 'next/link';
 import Button from 'ui/Button/Button';
 
 const HomePage = () => {
-  const [featuredJobs, setFeaturedJobs] = useState([]);
+  const [featuredJobs, setFeaturedJobs] = useState<any[]>([]);
 
   const [openModal, setOpenModal] = useState(false);
 
