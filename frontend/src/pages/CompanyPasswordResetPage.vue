@@ -87,7 +87,6 @@ import TransitionLoading from '@/animations/TransitionLoading.vue';
 
 // config
 import config from '@/config/config';
-import { useApiTokenStore } from '@/store/apiToken';
 
 const router = useRouter();
 
@@ -96,7 +95,6 @@ const confirmPassword = ref('');
 const alertType = ref('');
 const alertMsg = ref('');
 const isAlertOpen = ref(false);
-const apiTokenStore = useApiTokenStore();
 const isLoading = ref<boolean>(false);
 
 const performCompanyPasswordReset = async () => {
@@ -114,7 +112,7 @@ const performCompanyPasswordReset = async () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiTokenStore.getApiToken(),
+        'Authorization': useRoute().params.token as string,
       },
       // mode: "no-cors",
       body: JSON.stringify({

@@ -84,6 +84,11 @@ export async function seedDB(activeEntities: any[]) {
   adminAccount.hash = Secrets.hash('incorrect pony plug paperclip');
   await AppDataSource.manager.save(adminAccount);
 
+  const adminAccount2 = new AdminAccount();
+  adminAccount.username = 'test';
+  adminAccount.hash = Secrets.hash('test');
+  await AppDataSource.manager.save(adminAccount2);
+
   // create a verified company account
   const companyAccount = new CompanyAccount();
   companyAccount.username = 'test';

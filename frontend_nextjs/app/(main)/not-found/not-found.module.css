@@ -1,0 +1,75 @@
+.pulsingDot {
+  position: relative;
+  left: -624.938rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 0.313rem;
+  background-color: #2c8bf4;
+  color: #2c8bf4;
+  box-shadow: 624.938rem 0 0 -0.313rem #2c8bf4;
+  animation: dotPulse 1.5s infinite linear;
+  animation-delay: .25s;
+}
+
+.pulsingDot::before, .pulsingDot::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 0.313rem;
+  background-color: #2c8bf4;
+  color: #2c8bf4;
+}
+
+.pulsingDot::before {
+  box-shadow: 624rem 0 0 -0.313rem #2c8bf4;
+  animation: dotPulseBefore 1.5s infinite linear;
+  animation-delay: 0s;
+}
+
+.pulsingDot::after {
+  box-shadow: 625.875rem 0 0 -0.313rem #2c8bf4;
+  animation: dotPulseAfter 1.5s infinite linear;
+  animation-delay: .5s;
+}
+
+@keyframes dotPulseBefore {
+  0% {
+    box-shadow: 623.75rem 0 0 -0.313rem #2c8bf4;
+  }
+  30% {
+    box-shadow: 623.75rem 0 0 0.125rem #2c8bf4;
+  }
+  60%,
+  100% {
+    box-shadow: 623.75rem 0 0 -0.313rem #2c8bf4;
+  }
+}
+
+@keyframes dotPulse {
+  0% {
+    box-shadow: 624.938rem 0 0 -0.313rem #2c8bf4;
+  }
+  30% {
+    box-shadow: 624.938rem 0 0 0.125rem #2c8bf4;
+  }
+  60%,
+  100% {
+    box-shadow: 624.938rem 0 0 -0.313rem #2c8bf4;
+  }
+}
+
+@keyframes dotPulseAfter {
+  0% {
+    box-shadow: 625.875rem 0 0 -0.313rem #2c8bf4;
+  }
+  30% {
+    box-shadow: 625.875rem 0 0 0.125rem #2c8bf4;
+  }
+  60%,
+  100% {
+    box-shadow: 625.875rem 0 0 -0.313rem #2c8bf4;
+  }
+}

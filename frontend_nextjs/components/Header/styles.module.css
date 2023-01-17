@@ -1,0 +1,15 @@
+.tooltipText {
+  top: 150%;
+  transform: translate(-50%, 0);
+}
+
+.tooltipText::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent white transparent;
+}
