@@ -33,8 +33,6 @@ services:
     build:
       context: ./frontend
     image: webpersonal.azurecr.io/jb-frontend:latest
-    volumes:
-      - ./frontend/src:/app/src
     ports:
       - "8081:80"
     expose:
@@ -44,9 +42,9 @@ services:
       context: ./frontend_nextjs
     image: webpersonal.azurecr.io/jb-frontend:latest
     ports:
-      - "8081:80"
+      - "3000:3000"
     expose:
-      - 8081
+      - 3000
   db:
     image: postgres:14.6-alpine # this is the image that we want to run (aka app)
     restart: always

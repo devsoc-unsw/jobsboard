@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     appDir: true
   },
-  distDir: 'dist',
+  output: 'standalone',
   reactStrictMode: true
 };
 
