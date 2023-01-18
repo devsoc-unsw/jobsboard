@@ -22,7 +22,7 @@ Visit [Jobs Board](https://jobsboard.csesoc.unsw.edu.au/) to find out more. If y
 
 <h2 id="disclaimer">Disclaimer</h2>
 
-> CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. We do not represent the School, Faculty, or University. This website seeks to be a centralised platform for students looking for employment opportunities, but its information has not been officially endorsed by  the University, Faculty, School, or the Computer Science and Engineering Society.  You should confirm with the employer that any information 
+> CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. We do not represent the School, Faculty, or University. This website seeks to be a centralised platform for students looking for employment opportunities, but its information has not been officially endorsed by  the University, Faculty, School, or the Computer Science and Engineering Society.  You should confirm with the employer that any information
 received through this website is correct.
 
 <h2 id="team">About the Team</h2>
@@ -38,19 +38,6 @@ Jobs Board was made with 🤍 by CSE students, for CSE students.
 
 <h2 id="documentation">Documentation</h2>
 
-### Running the project locally 
-Navigate to the `/backend` folder and create a `.env` file with the following contents:
-
-```
-  NODE_ENV=development
-  SERVER_PORT=8080
-```
-
-#### Using `yarn`
-1. Navigate into both the `/frontend` and `/backend` folders.
-2. Run `yarn install` in both directories.
-3. Run `yarn run serve` 
-
 #### Using Docker
 1. Navigate to the root of the project.
 2. Run `docker-compose build` to build all containers or `docker-compose build [container-name]` for a specific container specified in the compose file.
@@ -60,18 +47,57 @@ Navigate to the `/backend` folder and create a `.env` file with the following co
 
 >*When developing locally, always remember to change the `apiRoot` in `frontend/src/config/config.ts` to `localhost`. When pr is ready for submission, change it back to the production or staging `apiRoot`*
 
+### Local Development Guide
+1. Navigate to the `/backend` folder and create a `.env` file with the following contents:
+
+```
+  NODE_ENV=development
+  SERVER_PORT=8080
+  DB_HOST=localhost
+  DB_PORT=5432
+  DB_USER=postgres
+  DB_PASSWORD=mysecretpassword
+  DB_NAME=postgres
+```
+2. Navigate into both the `/frontend` and `/backend` folders and run `yarn install`
+
+#### Frontend
+1. Navigate into the `/frontend` folder and run `yarn run serve`
+
+#### Backend
+1. Start the database by running `docker compose up -d db`
+2. Navigate into the `/backend` folder and run `yarn run serve`
+
+####  Backend Testing
+1. Navigate into the `/backend` folder
+2. Start the database by running `docker compose up db`
+3. Start the api by running `docker compose up api`
+4. Start the tests by running `yarn run test`
+
+#### Using `yarn`
+1. Navigate into both the `/frontend` and `/backend` folders.
+2. Run `yarn install` in both directories.
+3. Run `yarn run serve`
+
+### Finished your work
+Always double check before submitting your pr
+1. Run `docker compose build` and ensure the build completes successfully
+2. Run `docker compose up` and ensure all tests pass
+
 ### Pushing
 Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
 
 ### API Docs
-After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/). 
+After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/).
 When adding, modifying or removing routes from `backend/src/index.ts`, update the documentation at `backend/src/docs/openapi.json` accordingly to by following the existing format.
 
 ### Code Style & Linting
 #### Frontend
 
+Coming
+
 #### Backend
-- Run `yarn run lint` to see both style and linting issues in `.ts` files within the `backend` directory at once **(recommended)**
+- Run `yarn run lint` to see both style and linting issues in `.ts` files within the `backend` directory at once
 - Run `yarn run lint:fix` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
 - Run `yarn run prettier` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
-- Run `yarn run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier`
+- Run `yarn run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier` **(recommended)**
