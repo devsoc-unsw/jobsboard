@@ -8,11 +8,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Job } from './job';
-import { CompanyAccount } from './company_account';
+import Job from './job';
+import CompanyAccount from './company_account';
 
 @Entity()
-export class Company {
+export default class Company {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -46,12 +46,13 @@ export class Company {
   @JoinColumn()
   public jobs: Job[];
 
+  // ! this is a depdency cycle problem
   @OneToOne((_) => CompanyAccount, (companyAccount) => companyAccount.company)
   public companyAccount: CompanyAccount;
 
   @CreateDateColumn()
-  createdAt: Date;
+    createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+    updatedAt: Date;
 }

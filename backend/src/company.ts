@@ -1,110 +1,131 @@
-import {
-  // Request,
-  Response,
-  NextFunction,
-} from 'express';
-
-import { AppDataSource } from './index';
-import { Company } from './entity/company';
-import { CompanyAccount } from './entity/company_account';
-import { Job } from './entity/job';
+import { Response, NextFunction } from 'express';
+import { Brackets } from 'typeorm';
+import { AppDataSource } from './config';
+import Company from './entity/company';
+import CompanyAccount from './entity/company_account';
+import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
 import Secrets from './secrets';
 import MailFunctions from './mail';
 import Logger from './logging';
 import { AccountType, IToken } from './auth';
 import JWT from './jwt';
-import { Brackets } from 'typeorm';
+import {
+  CompanyInfoRequest,
+  CompanyJobsRequest,
+  CreateCompanyRequest,
+  CreateJobRequest,
+  GetHiddenJobsRequest,
+  JobInfo,
+  EditJobRequest,
+  CompanyGetJobsRequest,
+  DeleteJobRequest,
+  CompanyResetPasswordEmailRequest,
+  CompanyGetResetTokenRequest,
+  CompanyResetPasswordRequest,
+  CompanyUploadLogoRequest,
+  CheckCompanyLogoRequest,
+  UpdateCompanyDetailsRequest,
+} from './interfaces/interfaces';
 
 export default class CompanyFunctions {
-  public static async GetCompanyInfo(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetCompanyInfo(
+    this: void,
+    req: CompanyInfoRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        Logger.Info(`STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`);
-        const companyInfo = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(Company)
-            .createQueryBuilder()
-            .select(['Company.name', 'Company.location', 'Company.description'])
-            .leftJoinAndSelect('Company.jobs', 'Job')
-            .where('Company.id = :id', { id: parseInt(req.params.companyID, 10) })
-            .getOne();
-        }, `Failed to find COMPANY=${req.params.companyID}.`);
+        Logger.Info(
+          `STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`,
+        );
+        const companyInfo = await AppDataSource.getRepository(Company)
+          .createQueryBuilder()
+          .select(['Company.name', 'Company.location', 'Company.description'])
+          .leftJoinAndSelect('Company.jobs', 'Job')
+          .where('Company.id = :id', { id: parseInt(req.params.companyID, 10) })
+          .getOne();
+
         return {
           status: 200,
           msg: {
             token: req.newJbToken,
-            companyInfo: companyInfo,
+            companyInfo,
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async GetJobsFromCompany(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetJobsFromCompany(
+    this: void,
+    req: CompanyJobsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`STUDENT=${req.studentZID} getting jobs for COMPANY=${req.params.companyID}`);
-        const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .leftJoinAndSelect('Job.company', 'company')
-            .where('company.id = :id', { id: parseInt(req.params.companyID, 10) })
-            .andWhere('Job.approved = :approved', { approved: true })
-            .andWhere('Job.hidden = :hidden', { hidden: false })
-            .andWhere('Job.deleted = :deleted', { deleted: false })
-            .andWhere('Job.expiry > :expiry', { expiry: new Date() })
-            .select([
-              'Job.id',
-              'Job.role',
-              'Job.description',
-              'Job.applicationLink',
-              'Job.mode',
-              'Job.studentDemographic',
-              'Job.jobType',
-              'Job.workingRights',
-              'Job.wamRequirements',
-              'Job.additionalInfo',
-              'Job.isPaid',
-            ])
-            .getMany();
-        }, `Failed to find jobs for COMPANY=${req.params.companyID}`);
+        const companyJobs = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect('Job.company', 'company')
+          .where('company.id = :id', { id: parseInt(req.params.companyID, 10) })
+          .andWhere('Job.approved = :approved', { approved: true })
+          .andWhere('Job.hidden = :hidden', { hidden: false })
+          .andWhere('Job.deleted = :deleted', { deleted: false })
+          .andWhere('Job.expiry > :expiry', { expiry: new Date() })
+          .select([
+            'Job.id',
+            'Job.role',
+            'Job.description',
+            'Job.applicationLink',
+            'Job.mode',
+            'Job.studentDemographic',
+            'Job.jobType',
+            'Job.workingRights',
+            'Job.wamRequirements',
+            'Job.additionalInfo',
+            'Job.isPaid',
+          ])
+          .getMany();
 
         return {
           status: 200,
           msg: {
             token: req.newJbToken,
-            companyJobs: companyJobs,
+            companyJobs,
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async CreateCompany(this: void, req: any, res: Response, next: NextFunction) {
+  public static async CreateCompany(
+    this: void,
+    req: CreateCompanyRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        // verify input paramters
         const msg = {
           location: req.body.location,
           name: req.body.name,
@@ -112,11 +133,13 @@ export default class CompanyFunctions {
           username: req.body.username,
           logo: req.body.logo,
         };
+
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
         Helpers.requireParameters(msg.name);
         Helpers.requireParameters(msg.location);
         Helpers.requireParameters(msg.logo);
+
         Logger.Info(
           `Attempting to create company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
         );
@@ -138,22 +161,27 @@ export default class CompanyFunctions {
             msg: undefined,
           } as IResponseWithStatus;
         }
-        // if there is no conflict, create the company account and company record
+
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
-        newCompany.logo = msg.logo;
+        newCompany.logo = Buffer.from(msg.logo, 'utf8');
+
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;
         newCompanyAccount.hash = Secrets.hash(msg.password);
         newCompanyAccount.company = newCompany;
         newCompany.companyAccount = newCompanyAccount;
 
-        await AppDataSource.manager.save(newCompanyAccount);
+        const companyAccountRepository = AppDataSource.getRepository(CompanyAccount);
 
-        Logger.Info(`Created company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`);
+        // ? does the single save also add newCompany to the db? (need investigation)
+        await companyAccountRepository.save(newCompanyAccount);
 
-        // await conn.manager.save(newCompanyAccount);
+        Logger.Info(
+          `Created company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
+        );
+
         await MailFunctions.AddMailToQueue(
           newCompanyAccount.username,
           'Thank you for adding your company to the CSESoc Jobs Board',
@@ -172,17 +200,20 @@ export default class CompanyFunctions {
           msg: undefined,
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: undefined,
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async CreateJob(this: void, req: any, res: Response, next: NextFunction) {
+  public static async CreateJob(
+    this: void,
+    req: CreateJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -209,20 +240,15 @@ export default class CompanyFunctions {
           isPaid: req.body.isPaid,
         };
 
+        // ? double check data sent from frontend are guaranteed valid before removing
         Helpers.requireParameters(msg.role);
         Helpers.requireParameters(msg.description);
         Helpers.requireParameters(msg.applicationLink);
         Helpers.requireParameters(msg.expiry);
         Helpers.requireParameters(msg.isPaid);
-
-        Helpers.isValidJobMode(msg.jobMode);
-        Helpers.isValidStudentDemographic(msg.studentDemographic);
-        Helpers.isValidJobType(msg.jobType);
-        Helpers.isValidWorkingRights(msg.workingRights);
-        Helpers.isValidWamRequirement(msg.wamRequirements);
-
         Helpers.isDateInTheFuture(msg.expiry);
         Helpers.validApplicationLink(msg.applicationLink);
+
         Logger.Info(
           `Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`,
         );
@@ -264,14 +290,14 @@ export default class CompanyFunctions {
         await AppDataSource.manager.save(companyAccount);
 
         // get the supposed id for the new job and check if it's queryable from the db
-        const newJobID: number = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
+        const newJobID = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
+
         Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
-        await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .where('Job.id = :id', { id: newJobID })
-            .getOne();
-        }, `Failed to fetch the newly created JOB=${newJobID}`);
+
+        await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .where('Job.id = :id', { id: newJobID })
+          .getOne();
 
         await MailFunctions.AddMailToQueue(
           companyAccount.username,
@@ -294,20 +320,23 @@ export default class CompanyFunctions {
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static GetCompanyHiddenJobs(this: void, req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(
+  public static async GetCompanyHiddenJobs(
+    this: void,
+    req: GetHiddenJobsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
       res,
       async () => {
         const companyID = req.companyAccountID;
@@ -315,65 +344,64 @@ export default class CompanyFunctions {
 
         Logger.Info(`COMPANY_ACCOUNT=${req.companyID} attempting to list all of its hidden jobs`);
 
-        const hiddenJobs = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .leftJoinAndSelect('Job.company', 'company')
-            .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
-            .andWhere(
-              new Brackets((q) => {
-                q.where('Job.deleted = :deleted', { deleted: true })
-                  .orWhere('Job.expiry <= :expiry', { expiry: new Date() })
-                  .orWhere('Job.hidden = :hidden', { hidden: true });
-              }),
-            )
-            .orderBy('Job.createdAt', 'DESC')
-            .select([
-              'Job.id',
-              'Job.role',
-              'Job.description',
-              'Job.applicationLink',
-              'Job.approved',
-              'Job.hidden',
-              'Job.mode',
-              'Job.studentDemographic',
-              'Job.jobType',
-              'Job.workingRights',
-              'Job.wamRequirements',
-              'Job.additionalInfo',
-              'Job.isPaid',
-              'Job.expiry',
-              'Job.deleted',
-            ])
-            .getMany();
-        }, `Failed to find jobs for COMPANY=${req.companyAccountID}`);
+        const hiddenJobs = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect('Job.company', 'company')
+          .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
+          .andWhere(
+            new Brackets((q) => {
+              q.where('Job.deleted = :deleted', { deleted: true })
+                .orWhere('Job.expiry <= :expiry', { expiry: new Date() })
+                .orWhere('Job.hidden = :hidden', { hidden: true });
+            }),
+          )
+          .orderBy('Job.createdAt', 'DESC')
+          .select([
+            'Job.id',
+            'Job.role',
+            'Job.description',
+            'Job.applicationLink',
+            'Job.approved',
+            'Job.hidden',
+            'Job.mode',
+            'Job.studentDemographic',
+            'Job.jobType',
+            'Job.workingRights',
+            'Job.wamRequirements',
+            'Job.additionalInfo',
+            'Job.isPaid',
+            'Job.expiry',
+            'Job.deleted',
+          ])
+          .getMany();
 
-        Logger.Info(`COMPANY_ACCOUNT=${req.companyID} successfully to retrieved all of its hidden jobs`);
+        Logger.Info(
+          `COMPANY_ACCOUNT=${req.companyID} successfully to retrieved all of its hidden jobs`,
+        );
 
         return {
           status: 200,
           msg: {
             token: req.newJbToken,
-            hiddenJobs: hiddenJobs,
+            hiddenJobs,
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  private static isJobUpdated(newJob: Job, jobInfo: any) {
-    const areArraysEquals = (a: any[], b: any[]) => {
-      return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
-    };
+  private static isJobUpdated(newJob: Job, jobInfo: JobInfo) {
+    const areArraysEquals = (a: unknown[], b: unknown[]) => Array.isArray(a)
+      && Array.isArray(b)
+      && a.length === b.length
+      && a.every((val, index) => val === b[index]);
 
     if (!areArraysEquals(newJob.studentDemographic, jobInfo.studentDemographic)) {
       return false;
@@ -383,20 +411,20 @@ export default class CompanyFunctions {
     }
 
     return (
-      newJob !== null &&
-      newJob.role === jobInfo.role &&
-      newJob.description === jobInfo.description &&
-      newJob.applicationLink === jobInfo.applicationLink &&
-      new Date(newJob.expiry).valueOf() === new Date(jobInfo.expiry).valueOf() &&
-      newJob.mode === jobInfo.jobMode &&
-      newJob.jobType === jobInfo.jobType &&
-      newJob.isPaid === jobInfo.isPaid &&
-      newJob.additionalInfo === jobInfo.additionalInfo &&
-      newJob.wamRequirements === jobInfo.wamRequirements
+      newJob !== null
+      && newJob.role === jobInfo.role
+      && newJob.description === jobInfo.description
+      && newJob.applicationLink === jobInfo.applicationLink
+      && new Date(newJob.expiry).valueOf() === new Date(jobInfo.expiry).valueOf()
+      && newJob.mode === jobInfo.jobMode
+      && newJob.jobType === jobInfo.jobType
+      && newJob.isPaid === jobInfo.isPaid
+      && newJob.additionalInfo === jobInfo.additionalInfo
+      && newJob.wamRequirements === jobInfo.wamRequirements
     );
   }
 
-  public static async EditJob(this: void, req: any, res: Response, next: NextFunction) {
+  public static async EditJob(this: void, req: EditJobRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -442,7 +470,7 @@ export default class CompanyFunctions {
           .createQueryBuilder()
           .leftJoinAndSelect('Job.company', 'company')
           .where('company.id = :id', { id: parseInt(companyId, 10) })
-          .andWhere('Job.id = :jobId', { jobId: parseInt(jobInfo.id, 10) })
+          .andWhere('Job.id = :jobId', { jobId: jobInfo.id })
           .getOne();
 
         if (oldJob === null) {
@@ -496,23 +524,26 @@ export default class CompanyFunctions {
           msg: undefined,
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: undefined,
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async GetAllJobsFromCompany(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetAllJobsFromCompany(
+    this: void,
+    req: CompanyGetJobsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         Logger.Info(`COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`);
-        const companyJobs = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(Job)
+        const companyJobs = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(Job)
             .createQueryBuilder()
             .leftJoinAndSelect('Job.company', 'company')
             .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
@@ -535,10 +566,11 @@ export default class CompanyFunctions {
               'Job.additionalInfo',
               'Job.isPaid',
             ])
-            .getMany();
-        }, `Failed to find jobs for COMPANY=${req.companyAccountID}`);
+            .getMany(),
+          `Failed to find jobs for COMPANY=${req.companyAccountID}`,
+        );
 
-        const fixedCompanyJobs = companyJobs.map((job: any) => {
+        const fixedCompanyJobs = companyJobs.map((job) => {
           let jobStatus = 'Unknown';
           if (job.approved && !job.hidden) {
             jobStatus = 'Approved';
@@ -572,32 +604,38 @@ export default class CompanyFunctions {
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async MarkJobPostRequestAsDeleted(this: void, req: any, res: Response, next: NextFunction) {
+  public static async MarkJobPostRequestAsDeleted(
+    this: void,
+    req: DeleteJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        Logger.Info(`COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`);
-        const jobToDelete = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(Job)
+        Logger.Info(
+          `COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`,
+        );
+        const jobToDelete = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(Job)
             .createQueryBuilder()
             .leftJoinAndSelect('Job.company', 'company')
             .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
             .andWhere('Job.id = :jobID', { jobID: req.params.jobID })
             .andWhere('Job.deleted = :deleted', { deleted: false })
-            .getOne();
-        }, `Failed to find JOB=${req.params.jobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
+            .getOne(),
+          `Failed to find JOB=${req.params.jobID} for COMPANY_ACCOUNT=${req.companyAccountID}`,
+        );
 
         // found a valid job that can be deleted
         await AppDataSource.createQueryBuilder()
@@ -615,35 +653,41 @@ export default class CompanyFunctions {
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async SendResetPasswordEmail(this: void, req: any, res: Response, next: NextFunction) {
+  public static async SendResetPasswordEmail(
+    this: void,
+    req: CompanyResetPasswordEmailRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
         // check for required params
         const receipientEmail = req.body.username;
         Helpers.requireParameters(receipientEmail);
-        Logger.Info(`Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`);
+        Logger.Info(
+          `Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`,
+        );
         // check if company with provided username exists
-        const companyAccountUsernameSearchResult = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(CompanyAccount)
+        const companyAccountUsernameSearchResult = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder('company_account')
             .where('company_account.username = :username', { username: receipientEmail })
-            .getOne();
-        }, `Failed to find company account with USERNAME=${receipientEmail}`);
+            .getOne(),
+          `Failed to find company account with USERNAME=${receipientEmail}`,
+        );
         // create new token
-        const token: JWT = JWT.create({
+        const token = JWT.create({
           id: companyAccountUsernameSearchResult.id,
           type: AccountType.Company,
           lastRequestTimestamp: Date.now(),
@@ -651,7 +695,7 @@ export default class CompanyFunctions {
         });
         await AppDataSource.createQueryBuilder()
           .update(CompanyAccount)
-          .set({ latestValidResetToken: token as string })
+          .set({ latestValidResetToken: token })
           .where('id = :id', { id: companyAccountUsernameSearchResult.id })
           .execute();
 
@@ -673,34 +717,38 @@ export default class CompanyFunctions {
           msg: undefined,
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async GetPasswordResetToken(this: void, req: any, res: Response, next: NextFunction) {
+  public static async GetPasswordResetToken(
+    this: void,
+    req: CompanyGetResetTokenRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        const username = req.params.username;
+        const { username } = req.params;
         Helpers.requireParameters(username);
 
         Logger.Info(`Retrieving paswsword reset token for COMPANY=${username} `);
 
-        const resetToken = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(CompanyAccount)
+        const resetToken = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder('company_account')
             .select(['company_account.latestValidResetToken'])
-            .where('company_account.username = :username', { username: username })
-            .getOne();
-        }, `Failed to find password reset token for COMPANY=${username}`);
+            .where('company_account.username = :username', { username })
+            .getOne(),
+          `Failed to find password reset token for COMPANY=${username}`,
+        );
 
         // check the reset token is not empty
         Helpers.requireParameters(resetToken.latestValidResetToken);
@@ -712,17 +760,20 @@ export default class CompanyFunctions {
           },
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: undefined,
+      } as IResponseWithStatus),
       next,
     );
   }
 
-  public static async PasswordReset(this: void, req: any, res: Response, next: NextFunction) {
+  public static async PasswordReset(
+    this: void,
+    req: CompanyResetPasswordRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     await Helpers.catchAndLogError(
       res,
       async () => {
@@ -735,12 +786,13 @@ export default class CompanyFunctions {
 
         const jwt: IToken = JWT.get(req.get('Authorization'));
         // get the id of the company making this request
-        const companyAccount = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(CompanyAccount)
+        const companyAccount = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder('company_account')
             .where('company_account.id = :id', { id: jwt.id })
-            .getOne();
-        }, `Failed to find company account with ID=${jwt.id}`);
+            .getOne(),
+          `Failed to find company account with ID=${jwt.id}`,
+        );
 
         Logger.Info(`Attempting to reset password for COMPANY=${companyAccount.id}`);
         // update the company's password with the new password
@@ -763,87 +815,96 @@ export default class CompanyFunctions {
           msg: undefined,
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: undefined,
+      } as IResponseWithStatus),
       next,
     );
   }
-  
-  public static async UploadLogo(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(res, async () => {
 
-      const companyAccountID = req.companyAccountID;
-      
-      // check if the required parameters are provided
-      Helpers.requireParameters(companyAccountID);
-      Helpers.requireParameters(req.body.logo);
-  
-      Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
-  
-      await AppDataSource
-        .createQueryBuilder()
-        .update(Company)
-        .set({ 
-          logo: req.body.logo
-        })
-        .where("id = :id", { id: companyAccountID })
-        .execute()
-      
-      Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
-      
-      return {
-        status: 200,
-        msg: undefined
-      } as IResponseWithStatus;
-
-    }, () => {
-      return {
-        status: 400,
-        msg: undefined
-      } as IResponseWithStatus;
-    }, next);
-    
-  };
-
-  public static async GetCompanyLogoStatus(req: any, res: Response, next: NextFunction) {
-    Helpers.catchAndLogError(res, async () => {
-      const companyLogo = await Helpers.doSuccessfullyOrFail(async () => {
-        return await AppDataSource.getRepository(Company)
-          .createQueryBuilder()
-          .select(["Company.logo"])
-          .where("Company.id = :id", { id: parseInt(req.companyAccountID, 10) })
-          .getOne();
-      }, `Failed to find logo for COMPANY=${req.companyAccountID}.`);
-
-      if (!companyLogo) {
-        return {
-          status: 404,
-          msg: undefined
-        } as IResponseWithStatus;  
-      }
-
-      return {
-        status: 200,
-        msg: undefined
-      } as IResponseWithStatus;
-
-    }, () => {
-      return {
-        status: 400,
-        msg: undefined
-      } as IResponseWithStatus;
-    }, next);
-  };
-
-  public static async UpdateCompanyDetails(this: void, req: any, res: Response, next: NextFunction) {
+  public static async UploadLogo(req: CompanyUploadLogoRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async () => {
-        const companyAccountID = req.companyAccountID;
+        const { companyAccountID } = req;
+
+        Helpers.requireParameters(companyAccountID);
+        Helpers.requireParameters(req.body.logo);
+
+        Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
+
+        await AppDataSource.createQueryBuilder()
+          .update(Company)
+          .set({
+            logo: Buffer.from(req.body.logo, 'utf8'),
+          })
+          .where('id = :id', { id: companyAccountID })
+          .execute();
+
+        Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
+
+        return {
+          status: 200,
+          msg: undefined,
+        } as IResponseWithStatus;
+      },
+      () => ({
+        status: 400,
+        msg: undefined,
+      } as IResponseWithStatus),
+      next,
+    );
+  }
+
+  public static async GetCompanyLogoStatus(
+    this: void,
+    req: CheckCompanyLogoRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async () => {
+        const companyLogo = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(Company)
+            .createQueryBuilder()
+            .select(['Company.logo'])
+            .where('Company.id = :id', { id: parseInt(req.companyAccountID, 10) })
+            .getOne(),
+          `Failed to find logo for COMPANY=${req.companyAccountID}.`,
+        );
+
+        if (!companyLogo) {
+          return {
+            status: 404,
+            msg: undefined,
+          } as IResponseWithStatus;
+        }
+
+        return {
+          status: 200,
+          msg: undefined,
+        } as IResponseWithStatus;
+      },
+      () => ({
+        status: 400,
+        msg: undefined,
+      } as IResponseWithStatus),
+      next,
+    );
+  }
+
+  public static async UpdateCompanyDetails(
+    this: void,
+    req: UpdateCompanyDetailsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async () => {
+        const { companyAccountID } = req;
 
         // check if required parameters are supplied
         Helpers.requireParameters(companyAccountID);
@@ -863,7 +924,7 @@ export default class CompanyFunctions {
             name: req.body.name,
             location: req.body.location,
             description: req.body.description,
-            logo: req.body.logo,
+            logo: Buffer.from(req.body.logo, 'utf8'),
           })
           .where('id = :id', { id: companyAccountID })
           .execute();
@@ -875,12 +936,10 @@ export default class CompanyFunctions {
           msg: undefined,
         } as IResponseWithStatus;
       },
-      () => {
-        return {
-          status: 400,
-          msg: undefined,
-        } as IResponseWithStatus;
-      },
+      () => ({
+        status: 400,
+        msg: undefined,
+      } as IResponseWithStatus),
       next,
     );
   }

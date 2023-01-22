@@ -1,9 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Company } from './company';
-import { JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements } from '../types/job-field';
+import {
+  Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,
+} from 'typeorm';
+import Company from './company';
+import {
+  JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements,
+} from '../types/job-field';
 
 @Entity()
-export class Job {
+export default class Job {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -95,8 +99,8 @@ export class Job {
   public company: Company;
 
   @CreateDateColumn()
-  createdAt: Date;
+    createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+    updatedAt: Date;
 }
