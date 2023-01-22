@@ -1,0 +1,70 @@
+/* ticker tape carousel */
+@keyframes carousel-right-container {
+  0% {
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes carousel-left-container {
+  0% {
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.carouselAnimationSecond {
+  animation-name: carousel-right-container;
+  left: 100%;
+}
+
+.carouselAnimationFirst {
+  animation-name: carousel-left-container;
+}
+
+.sponsorContainer {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.carouselBarLeft {
+  left: 0;
+  top: 0;
+  background-image: linear-gradient(
+    to right,
+    #f6f9fc 30%,
+    rgba(255, 255, 255, 0)
+  );
+  height: 100%;
+  width: 2.5rem;
+  position: absolute;
+  z-index: 1;
+}
+
+.carouselBarRight {
+  right: 0;
+  top: 0;
+  background-image: linear-gradient(
+    to left,
+    #f6f9fc 30%,
+    rgba(255, 255, 255, 0)
+  );
+  height: 100%;
+  width: 2.5rem;
+  position: absolute;
+  z-index: 1;
+}

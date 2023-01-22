@@ -1,0 +1,6 @@
+.breadcrumbItem:not(:last-child)::after {
+  content: '/';
+  margin: 0 .5em;
+  color: black;
+  font-weight: bold;
+}
