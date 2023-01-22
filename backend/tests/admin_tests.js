@@ -142,6 +142,7 @@ describe("admin", () => {
         password: "testPassword",
         location: "Sydney",
         name: "Such Company, Big Wow",
+        logo: Buffer.from("test string", 'utf8').toString('base64'),   // base64 encoded string
       };
     
       await server
@@ -413,6 +414,7 @@ describe("admin", () => {
         password: "testPassword",
         location: "Sydney",
         name: "Such Company, Huge Wow",
+        logo: Buffer.from("test string", 'utf8').toString('base64'),   // base64 encoded string
       };
 
       await server
@@ -730,6 +732,7 @@ describe("admin", () => {
         password: "testPassword",
         location: "Sydney",
         name: "Such Company, Huge Wow, Testing Wow",
+        logo: Buffer.from("test string", 'utf8').toString('base64'),   // base64 encoded string
       };
 
       await server

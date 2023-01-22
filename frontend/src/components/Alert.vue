@@ -41,7 +41,7 @@ const props = defineProps({
   },
   alertMsg: {
     type: String,
-    required: false,
+    required: true,
   },
   isOpen: {
     type: Boolean,

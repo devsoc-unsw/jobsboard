@@ -151,7 +151,7 @@ import { ref } from 'vue';
 import { JobMode, StudentDemographic, JobType, WamRequirements, WorkingRights } from '@/constants/job-fields';
 import Modal from '@/components/modals/Modal.vue';
 
-const props = defineProps({
+defineProps({
   jobTitle: {
     type: String,
     default: '',
@@ -202,13 +202,11 @@ const props = defineProps({
   },
 });
 
-const jobModeObject = ref<typeof JobMode>(JobMode);
-const jobTypeObject = ref<typeof JobType>(JobType);
-const wamRequirementsObject = ref<typeof WamRequirements>(WamRequirements);
-const workingRightsObject = ref<typeof WorkingRights>(WorkingRights);
-const studentDemographicObject = ref<typeof StudentDemographic>(
-  StudentDemographic,
-);
+const jobModeObject = ref(JobMode);
+const jobTypeObject = ref(JobType);
+const wamRequirementsObject = ref(WamRequirements);
+const workingRightsObject = ref(WorkingRights);
+const studentDemographicObject = ref(StudentDemographic);
 </script>
 
 <style scoped lang="scss">

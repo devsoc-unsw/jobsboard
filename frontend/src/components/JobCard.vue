@@ -66,13 +66,11 @@
   import { JobType, WorkingRights, JobMode } from '@/constants/job-fields';
   import router from '@/router';
 
-  const workingRightsObject = ref<typeof WorkingRights>(
-    WorkingRights,
-  );
-  const jobTypeObject = ref<typeof JobType>(JobType);
-  const jobModeObject = ref<typeof JobMode>(JobMode);
+  const workingRightsObject = ref(WorkingRights);
+  const jobTypeObject = ref(JobType);
+  const jobModeObject = ref(JobMode);
 
-  const props = defineProps({
+  defineProps({
     jobID: {
       type: Number,
       required: true,

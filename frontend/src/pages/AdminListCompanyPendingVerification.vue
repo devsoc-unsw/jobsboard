@@ -92,14 +92,14 @@ import Breadcrumbs from '@/components/Breadcrumbs.vue';
 const apiTokenStore = useApiTokenStore();
 const router = useRouter();
 
-const toastType = ref<string>('');
-const toastMsg = ref<string>('');
-const isToastOpen = ref<boolean>(false);
+const toastType = ref('');
+const toastMsg = ref('');
+const isToastOpen = ref(false);
 
-const isModalShown = ref<boolean>(false);
-const currentCompanyShown = ref<string>('');
-const currentCompanyLocation = ref<string>('');
-const currentCompanyDescription = ref<string>('');
+const isModalShown = ref(false);
+const currentCompanyShown = ref('');
+const currentCompanyLocation = ref('');
+const currentCompanyDescription = ref('');
 
 const companies = ref<any>([]);
 
@@ -136,8 +136,8 @@ onMounted(async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': apiTokenStore.getApiToken(),
-      } as HeadersInit,
+        Authorization: apiTokenStore.getApiToken(),
+      },
     },
   );
 

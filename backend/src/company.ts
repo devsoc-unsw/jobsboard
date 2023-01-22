@@ -110,11 +110,13 @@ export default class CompanyFunctions {
           name: req.body.name,
           password: req.body.password,
           username: req.body.username,
+          logo: req.body.logo,
         };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
         Helpers.requireParameters(msg.name);
         Helpers.requireParameters(msg.location);
+        Helpers.requireParameters(msg.logo);
         Logger.Info(
           `Attempting to create company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
         );
@@ -140,6 +142,7 @@ export default class CompanyFunctions {
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
+        newCompany.logo = msg.logo;
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;
         newCompanyAccount.hash = Secrets.hash(msg.password);
@@ -658,7 +661,7 @@ export default class CompanyFunctions {
           `
         We received a request to reset the password for your JobsBoard account.
         <br>
-        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/password-reset/${token}">link</a>.
+        To continue, please click the following <a href="https://jobsboard.csesoc.unsw.edu.au/company/reset/${token}">link</a>.
         <br>
         <p>If you did not request a password reset for your account, simply ignore this message.</p>
         <p>Best regards,</p>

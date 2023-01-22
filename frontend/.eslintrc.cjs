@@ -3,11 +3,11 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-  },  
+  },
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
-    sourceType: "module",
+    sourceType: 'module',
   },
   plugins: [
     '@typescript-eslint',
@@ -16,11 +16,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
-    "plugin:vue/recommended"
+    'plugin:vue/recommended',
   ],
-  globals: {
-    'HeadersInit': true,
-  },
   rules: {
     'vue/no-v-html': 'off', // enabled to render html from free text editor
     'vue/no-reserved-component-names': 'off',
@@ -55,22 +52,22 @@ module.exports = {
     'semi-spacing': 'error',
     'space-before-blocks': 'error',
     'space-before-function-paren': ['error', { 'named': 'never', 'asyncArrow': 'always' }],
-    
-    // vue related rules 
+
+    // vue related rules
     'vue/html-quotes': ['error', 'single'],
     'vue/keyword-spacing': 'error',
     'vue/key-spacing': 'error',
     'vue/object-curly-spacing': ['error', 'always'],
     'vue/template-curly-spacing': 'error',
     'vue/space-in-parens': 'error',
-    'vue/max-len': ['error', { 
+    'vue/max-len': ['error', {
       'code': 80,
-      'tabWidth': 2, 
+      'tabWidth': 2,
       'ignoreUrls': true,
       'ignoreTemplateLiterals': true,
       'ignoreStrings': true,
       'ignoreHTMLAttributeValues': true,
-      'ignoreHTMLTextContents': true 
+      'ignoreHTMLTextContents': true,
     }],
 
     'vue/func-call-spacing': 'error',
@@ -81,6 +78,6 @@ module.exports = {
     'vue/brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
     'vue/comma-dangle': ['error', 'always-multiline'],
     'vue/comma-spacing': 'error',
-    'vue/attribute-hyphenation': 'off'
-  }
+    'vue/attribute-hyphenation': 'off',
+  },
 };

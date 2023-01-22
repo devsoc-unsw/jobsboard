@@ -214,37 +214,35 @@ const router = useRouter();
 const route = useRoute();
 const apiTokenStore = useApiTokenStore();
 
-const companyID = ref<string>('');
-const role = ref<string>('');
-const company = ref<string>('');
-const companyDescription = ref<string>('');
-const description = ref<string>('');
+const companyID = ref('');
+const role = ref('');
+const company = ref('');
+const companyDescription = ref('');
+const description = ref('');
 const jobs = ref<any[]>([]);
-const location = ref<string>('');
-const applicationLink = ref<string>('');
+const location = ref('');
+const applicationLink = ref('');
 const jobMode = ref<keyof typeof JobMode>('hybrid');
-const jobModeObject = ref<typeof JobMode>(JobMode);
+const jobModeObject = ref(JobMode);
 const studentDemographic = ref<keyof typeof StudentDemographic>('all');
-const studentDemographicObject = ref<typeof StudentDemographic>(
-  StudentDemographic,
-);
+const studentDemographicObject = ref(StudentDemographic);
 const jobType = ref<keyof typeof JobType>('intern');
-const jobTypeObject = ref<typeof JobType>(JobType);
+const jobTypeObject = ref(JobType);
 const workingRights = ref<keyof typeof WorkingRights>('all');
-const workingRightsObject = ref<typeof WorkingRights>(WorkingRights);
+const workingRightsObject = ref(WorkingRights);
 const wamRequirements = ref<keyof typeof WamRequirements>('none');
-const wamRequirementsObject = ref<typeof WamRequirements>(WamRequirements);
-const additionalInfo = ref<string>('');
-const isPaid = ref<boolean>(true);
-const expiryDate = ref<string>('');
-const alertMsg = ref<string>('');
-const isAlertOpen = ref<boolean>(false);
-const jobInfoReady = ref<boolean>(false);
-const isJobDescriptionShown = ref<boolean>(true);
+const wamRequirementsObject = ref(WamRequirements);
+const additionalInfo = ref('');
+const isPaid = ref(true);
+const expiryDate = ref('');
+const alertMsg = ref('');
+const isAlertOpen = ref(false);
+const jobInfoReady = ref(false);
+const isJobDescriptionShown = ref(true);
 
 const fetchJob = async () => {
   // determine whether there is an API key present and redirect if not present
-  if (apiTokenStore.getApiToken() === undefined) {
+  if (!apiTokenStore.getApiToken()) {
     router.push('/login');
     return;
   }
@@ -256,8 +254,8 @@ const fetchJob = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
 
   if (response.ok) {
@@ -303,8 +301,8 @@ const fetchJob = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': apiTokenStore.getApiToken(),
-    } as HeadersInit,
+      Authorization: apiTokenStore.getApiToken(),
+    },
   });
 
   if (jobResponse.ok) {
