@@ -56,6 +56,7 @@ const HomePage = () => {
           src={BigBlob}
           className="absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2"
           alt="big blob"
+          width={100}
           style={{
             height: '100%',
             width: 'unset'
@@ -64,7 +65,7 @@ const HomePage = () => {
         <div className="flex justify-around align-middle mx-auto gap-7">
           <div className="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
             <p className="text-lg text-white">CSESoc presents</p>
-            <h1 className="text-[#143A6C] font-bold text-6xl leading-[72px] m-0">Jobs Board</h1>
+            <h1 className="text-[#143A6C] font-bold text-6xl leading-[72px] m-0">Jobsboard</h1>
             <p className="text-lg text-white mt-3">
               Connecting UNSW students with top employers since 2018.
             </p>
@@ -87,7 +88,7 @@ const HomePage = () => {
               </Link>
             </div>
           </div>
-          <Image alt="Jobsboard" width="200" src={JobsboardLogo} className="sm:hidden" />
+          <Image alt="Jobsboard" width={200} src={JobsboardLogo} className="sm:hidden" />
         </div>
       </div>
       <div className={container.pageContainer}>
@@ -142,7 +143,7 @@ const HomePage = () => {
               {featuredJobs.map((job) => (
                 <SwiperSlide key={job.title}>
                   <FeaturedJobCard
-                    title={job.title}
+                    title={job.role}
                     description={job.description}
                     tag={job.workingRights}
                     imgSrc={job.logo}
@@ -182,10 +183,10 @@ const HomePage = () => {
 
           <h3 className="font-bold text-3xl mb-0 text-jb-headings">Looking for More?</h3>
           <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
-            If you&apos;re a CSE student with a keen interest in Jobs Board and looking to get
+            If you&apos;re a CSE student with a keen interest in Jobsboard and looking to get
             involved, keep an eye out for our recruitment announcements on CSESoc&apos;s socials.
             Otherwise, you can also contribute by suggesting cool new features or even make a pull
-            request on the Jobs Board repo.
+            request on the Jobsboard repo.
           </p>
           <div className="mt-8 flex justify-center gap-5 mb-28 mx-24 sm:m-0">
             <Button onClick={() => setOpenModal(true)}>Join the Team</Button>

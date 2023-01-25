@@ -23,7 +23,8 @@ const FeaturedJobCard = ({ title, description, tag, imgSrc }: FeaturedJobCardPro
               <Image
                 src={imgSrc}
                 className="select-none pointer-events-none object-contain w-full py-4"
-                height={180}
+                width={100}
+                height={100}
                 alt="sponsor logo"
               />
             ) : (

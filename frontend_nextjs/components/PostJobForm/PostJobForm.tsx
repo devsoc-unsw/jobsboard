@@ -178,12 +178,15 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
     } catch (e) {
       setAlertType('error');
       setAlertMsg('Something went wrong. Please try again!');
+      setAlertOpen(true);
       if (e instanceof AxiosError) {
         if (e.response?.status === 401) {
           setAlertMsg('Invalid user credentials. Redirecting to login page.');
           setTimeout(() => {
             router.push(`/${admin ? 'admin' : 'company'}/login`);
           }, 3000);
+        } else if (e.response?.status === 403) {
+          setAlertMsg('Failed to post job request as your account has not yet been verified.');
         }
       }
       window.scrollTo({
@@ -522,6 +525,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
                   onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="HD"
+                  checked={wamRequirements === 'HD'}
                   className="self-center mr-2 w-auto"
                 />
                 <label htmlFor="applicantWam_HD">High Distinction | 85 and above</label>
@@ -532,6 +536,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
                   onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="D"
+                  checked={wamRequirements === 'D'}
                   className="self-center mr-2 w-auto"
                 />
                 <label htmlFor="applicantWam_D">Distinction | 75 and above</label>
@@ -542,6 +547,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
                   onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="C"
+                  checked={wamRequirements === 'C'}
                   className="self-center mr-2 w-auto"
                 />
                 <label htmlFor="applicantWam_C">Credit | 65 and above</label>
@@ -552,6 +558,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
                   onChange={handleOnChangeWamRequirements}
                   type="radio"
                   value="none"
+                  checked={wamRequirements === 'none'}
                   className="self-center mr-2 w-auto"
                 />
                 <label htmlFor="applicantWam_none">No preference</label>

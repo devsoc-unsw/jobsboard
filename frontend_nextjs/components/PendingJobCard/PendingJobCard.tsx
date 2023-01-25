@@ -141,6 +141,8 @@ const PendingJobCard = ({
             src={googleLogo}
             className="h-auto max-w-[100px] max-h-[90px] mr-8 self-center"
             alt="job logo"
+            width={100}
+            height={100}
           />
           <div className="flex flex-col text-left pt-3 grow min-w-[200px]">
             <h2 className="font-bold text-jb-headings">{role}</h2>

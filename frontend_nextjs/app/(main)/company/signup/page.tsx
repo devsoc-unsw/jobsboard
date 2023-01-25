@@ -13,6 +13,7 @@ import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
 import Image from 'next/image';
+import { base64 } from 'config/base64';
 
 const CompanySignupPage = () => {
   const router = useRouter();
@@ -30,19 +31,12 @@ const CompanySignupPage = () => {
   const [preview, setPreview] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
-  const toBase64 = (file: File) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const updateLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadLogo = e.target.files![0];
-    setLogo(uploadLogo);
-    setPreview(URL.createObjectURL(uploadLogo));
+    if (e.target.files?.length) {
+      const uploadLogo = e.target.files[0];
+      setLogo(uploadLogo);
+      setPreview(URL.createObjectURL(uploadLogo));
+    }
   };
 
   const validateInput = () => {
@@ -72,7 +66,7 @@ const CompanySignupPage = () => {
       setLoading(false);
       return;
     }
-    const convertedFile = await toBase64(logo);
+    const convertedFile = await base64(logo);
     try {
       await api.put(
         '/company',
