@@ -165,7 +165,7 @@ export default class CompanyFunctions {
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
-        newCompany.logo = Buffer.from(msg.logo, 'utf8');
+        newCompany.logo = Buffer.from(msg.logo, 'base64');
 
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import JobBoard from 'components/JobBoard/JobBoard';
 import api from 'config/api';
+import { base64 } from 'config/base64';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
@@ -36,15 +37,6 @@ const CompanyDashboardPage = () => {
     }
   };
 
-  const toBase64 = (file: Blob) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const updateLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
       const uploadLogo = e.target.files[0];
@@ -70,7 +62,7 @@ const CompanyDashboardPage = () => {
       return;
     }
 
-    const convertedFile = await toBase64(logo);
+    const convertedFile = await base64(logo);
     try {
       await api.put(
         '/company/update/logo',
