@@ -70,7 +70,7 @@ const TeamPage = () => {
       title: '2022 Subcommittee Member',
       involvement: 'Frontend',
       funFact:
-        'Hello! When I am not doing work for university or Jobs Board I like to either go out and play badminton with my local club or spend my time watching netflix.',
+        'Hello! When I am not doing work for university or Jobsboard I like to either go out and play badminton with my local club or spend my time watching netflix.',
       linkedin: 'https://www.linkedin.com/in/jihaoy/',
       gh: 'https://github.com/samyu1204',
       photo:
@@ -103,7 +103,7 @@ const TeamPage = () => {
       <div className="text-center">
         <h2 className="font-bold text-4xl drop-shadow-xl mb-10 text-jb-headings mt-4">
           Interested about the people behind <br />
-          Jobs Board?
+          Jobsboard?
         </h2>
         <h4 className="mb-3 text-jb-subheadings text-xl">
           Hi there! We&apos;re the jobsboard team and we want <br />
