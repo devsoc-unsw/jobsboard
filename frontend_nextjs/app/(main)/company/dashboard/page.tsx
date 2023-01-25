@@ -17,8 +17,8 @@ const CompanyDashboardPage = () => {
   const [expiredJobs, setExpiredJobs] = useState<HiddenJob[]>([]);
   const [boardStatus, setBoardStatus] = useState('postedJobs');
   const [openModal, setOpenModal] = useState(false);
-  const [logo, setLogo] = useState<any>(null);
-  const [preview, setPreview] = useState<any>(null);
+  const [logo, setLogo] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>('');
 
   const getCompanyJobs = async () => {
     try {
@@ -46,9 +46,11 @@ const CompanyDashboardPage = () => {
   };
 
   const updateLogo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadLogo = e.target.files![0];
-    setLogo(uploadLogo);
-    setPreview(URL.createObjectURL(uploadLogo));
+    if (e.target.files?.length) {
+      const uploadLogo = e.target.files[0];
+      setLogo(uploadLogo);
+      setPreview(URL.createObjectURL(uploadLogo));
+    }
   };
 
   const checkCompanyLogoStatus = async () => {
@@ -64,11 +66,11 @@ const CompanyDashboardPage = () => {
   };
 
   const uploadLogo = async () => {
-    if (!logo.value) {
+    if (!logo) {
       return;
     }
 
-    const convertedFile = await toBase64(logo.value);
+    const convertedFile = await toBase64(logo);
     try {
       await api.put(
         '/company/update/logo',
