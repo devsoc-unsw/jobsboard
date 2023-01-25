@@ -96,7 +96,7 @@ const Breadcrumbs = () => {
             breadcrumb.link &&
             'text-jb-placeholder font-bold cursor-pointer text-base duration-200 ease-linear hover:text-jb-textlink-hovered'
           } ${styles.breadcrumbItem}`}
-          key={idx}
+          key={breadcrumb.name}
         >
           <Link href={breadcrumbList[idx].link}>
             {breadcrumb.name === 'Home' ? (

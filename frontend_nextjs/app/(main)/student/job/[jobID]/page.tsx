@@ -85,7 +85,9 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
       // setCompanyDescription(job.company.description)
       setLocation(job.company.location);
       // setCompanyID(job.company.id)
-      setCompanyLogo(Buffer.from(job.company.logo.data, 'base64').toString('base64'));
+      setCompanyLogo(
+        job.company.logo ? Buffer.from(job.company.logo.data, 'base64').toString('base64') : ''
+      );
       setApplicationLink(job.applicationLink);
       setJobMode(job.mode);
       setStudentDemographic(job.studentDemographic);
@@ -113,6 +115,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
       });
       setJobs(updatedJobs);
     } catch (e) {
+      console.log(e);
       setAlertMsg('Unable to load jobs at this time. Please try again later.');
       setAlertOpen(true);
       window.scrollTo({
@@ -175,7 +178,8 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
                   width={300}
                   height={300}
                   // TODO fix company logo
-                  src={`${companyLogo.replace('dataimage/jpegbase64/', 'data:image/jpeg,base64,')}`}
+                  src=""
+                  // src={`${companyLogo.replace('dataimage/jpegbase64/', 'data:image/jpeg,base64,')}`}
                   alt=""
                 />
               ) : (

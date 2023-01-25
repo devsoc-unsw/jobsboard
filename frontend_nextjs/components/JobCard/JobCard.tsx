@@ -39,8 +39,10 @@ const JobCard = ({
           {jobLogo ? (
             <Image
               src={jobLogo}
-              className="h-[100px] max-w-[180px] m-auto my-4 object-contain"
+              className="m-auto my-4 object-contain"
               alt="sponsor logo"
+              width={180}
+              height={100}
             />
           ) : (
             <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />

@@ -46,6 +46,8 @@ const SponsorCarousel = () => {
               <div className="grow-1 shrink-1 basis-[200px] min-w-0 m-5" key={company}>
                 <Image
                   className="select-none pointer-events-none object-contain w-full"
+                  width={100}
+                  height={100}
                   src={logo}
                   loading="lazy"
                   alt={company}
@@ -59,6 +61,8 @@ const SponsorCarousel = () => {
                 <Image
                   className="select-none pointer-events-none object-contain w-full"
                   src={logo}
+                  width={100}
+                  height={100}
                   loading="lazy"
                   alt={company}
                 />

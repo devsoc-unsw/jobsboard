@@ -56,6 +56,7 @@ const HomePage = () => {
           src={BigBlob}
           className="absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2"
           alt="big blob"
+          width={100}
           style={{
             height: '100%',
             width: 'unset'
@@ -87,7 +88,7 @@ const HomePage = () => {
               </Link>
             </div>
           </div>
-          <Image alt="Jobsboard" width="200" src={JobsboardLogo} className="sm:hidden" />
+          <Image alt="Jobsboard" width={200} src={JobsboardLogo} className="sm:hidden" />
         </div>
       </div>
       <div className={container.pageContainer}>
@@ -142,7 +143,7 @@ const HomePage = () => {
               {featuredJobs.map((job) => (
                 <SwiperSlide key={job.title}>
                   <FeaturedJobCard
-                    title={job.title}
+                    title={job.role}
                     description={job.description}
                     tag={job.workingRights}
                     imgSrc={job.logo}
