@@ -171,12 +171,12 @@ const HomePage = () => {
           <div className="flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col sm:gap-4">
             <div>
               <Link href="/company/signup">
-                <Button>Join Us</Button>
+                <Button variant="primary">Join Us</Button>
               </Link>
             </div>
             <div>
               <Link href="/company/login">
-                <Button>Post a Job</Button>
+                <Button variant="primary">Post a Job</Button>
               </Link>
             </div>
           </div>
@@ -189,9 +189,11 @@ const HomePage = () => {
             request on the Jobsboard repo.
           </p>
           <div className="mt-8 flex justify-center gap-5 mb-28 mx-24 sm:m-0">
-            <Button onClick={() => setOpenModal(true)}>Join the Team</Button>
+            <Button variant="primary" onClick={() => setOpenModal(true)}>
+              Join the Team
+            </Button>
             <a href="https://github.com/csesoc/jobs-board" target="_blank" rel="noreferrer">
-              <Button>Source Code</Button>
+              <Button variant="primary">Source Code</Button>
             </a>
           </div>
           <div className="mt-20 flex justify-center">

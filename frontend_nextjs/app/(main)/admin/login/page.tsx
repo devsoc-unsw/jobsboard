@@ -94,7 +94,9 @@ const AdminLoginPage = () => {
             />
           </div>
         </form>
-        {loading ? <Spinner /> : <Button onClick={performLogin}>Log In</Button>}
+        <Button variant="primary" onClick={performLogin} loading={loading}>
+          Log In
+        </Button>
         <p className="text-lg text-jb-subheadings mt-6 mb-4 mx-[18%] sm:mx-8">
           Or return to&nbsp;
           <Link

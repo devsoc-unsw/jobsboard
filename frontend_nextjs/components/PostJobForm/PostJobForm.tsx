@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
-import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
@@ -579,19 +578,17 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
           - What type of role is this? Eg: Frontend, Backend, Fullstack, Site Reliability Engineer, etc.
           - Is your company able to sponsor the applicant"s visa if needed?`}
         />
-        {loading ? (
-          <Spinner />
-        ) : (
-          <div className="flex flex-col gap-5">
-            <button
-              className="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
-              onClick={() => setOpenModal(true)}
-            >
-              Preview
-            </button>
-            <Button onClick={submitJobPost}>Post Job</Button>
-          </div>
-        )}
+        <div className="flex flex-col gap-5">
+          <button
+            className="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
+            onClick={() => setOpenModal(true)}
+          >
+            Preview
+          </button>
+          <Button variant="primary" onClick={submitJobPost} loading={loading}>
+            Post Job
+          </Button>
+        </div>
       </div>
     </div>
   );
