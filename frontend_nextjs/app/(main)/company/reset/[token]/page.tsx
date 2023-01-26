@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
+import Button from 'ui/Button/Button';
 
 type CompanyResetPageProps = {
   params: {
@@ -119,16 +120,9 @@ const CompanyResetPage = ({ params }: CompanyResetPageProps) => {
         />
         <Label htmlFor="confirmPassword">Confirm Password</Label>
       </div>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <button
-          className="btn btn-blue-filled w-40 h-11 my-4 p-2"
-          onClick={performCompanyPasswordReset}
-        >
-          Reset Password
-        </button>
-      )}
+      <Button variant="primary" onClick={performCompanyPasswordReset} loading={loading}>
+        Reset Password
+      </Button>
     </div>
   );
 };

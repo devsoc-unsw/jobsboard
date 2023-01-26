@@ -10,7 +10,8 @@ import AppProvider from './AppProvider';
 
 const assistant = Assistant({
   weight: ['200', '300', '400', '500', '600', '700', '800'],
-  display: 'swap'
+  display: 'swap',
+  subsets: ['latin']
 });
 
 type RootLayoutProps = {

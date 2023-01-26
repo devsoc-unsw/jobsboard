@@ -186,7 +186,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
                 <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
               )}
               <Link href={applicationLink} target="_blank" rel="noreferrer">
-                <Button>Apply</Button>
+                <Button variant="primary">Apply</Button>
               </Link>
             </div>
             <div className="flex flex-col text-left">

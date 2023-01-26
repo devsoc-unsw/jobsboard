@@ -270,7 +270,9 @@ const CompanySignupPage = () => {
           Company Login
         </Link>
       </p>
-      {loading ? <Spinner /> : <Button onClick={performSignup}>Sign Up</Button>}
+      <Button variant="primary" onClick={performSignup} loading={loading}>
+        Sign Up
+      </Button>
     </div>
   );
 };

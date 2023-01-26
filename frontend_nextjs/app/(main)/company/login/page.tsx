@@ -125,7 +125,9 @@ const CompanyLoginPage = () => {
             Create one!
           </Link>
         </p>
-        {loading ? <Spinner /> : <Button onClick={performLogin}>Log In</Button>}
+        <Button variant="primary" onClick={performLogin} loading={loading}>
+          Log In
+        </Button>
       </div>
     </div>
   );
