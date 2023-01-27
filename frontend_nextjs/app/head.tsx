@@ -1,6 +1,9 @@
+import { getCssText } from '../stitches.config';
+
 export default function Head() {
   return (
     <>
+      <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       <link rel="icon" href="/icons/favicon.ico" />
       <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />

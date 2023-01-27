@@ -21,7 +21,6 @@ type RootLayoutProps = {
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html>
-      <head />
       <body className={assistant.className}>
         <AppProvider>
           {children}
