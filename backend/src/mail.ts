@@ -1,21 +1,19 @@
 import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
-// import dotenv from "dotenv";
-// import EmailTemplates from "email-templates";
 
-import { AppDataSource } from './index';
-
-// libraries
+import { AppDataSource } from './config';
 import Logger from './logging';
 import Helpers from './helpers';
-
-// entities
-import { MailRequest } from './entity/mail_request';
+import MailRequest from './entity/mail_request';
 
 export default class MailFunctions {
   public static async SendTestEmail(this: void, _: Request, res: Response) {
     try {
-      const mailAddingSuccessful = await MailFunctions.AddMailToQueue('', 'Scheduled emailing', `Message contents.`);
+      const mailAddingSuccessful = await MailFunctions.AddMailToQueue(
+        '',
+        'Scheduled emailing',
+        'Message contents.',
+      );
       if (mailAddingSuccessful) {
         Logger.Info('Successfully scheduled email request.');
       } else {
@@ -27,7 +25,7 @@ export default class MailFunctions {
     }
   }
 
-  public static async InitMailQueueScheduler(limitOfEmailsPerDay: number) {
+  public static InitMailQueueScheduler(limitOfEmailsPerDay: number) {
     if (limitOfEmailsPerDay <= 0) {
       throw new Error('Limit of emails per day cannot be less than or equal to zero.');
     }
@@ -55,20 +53,21 @@ export default class MailFunctions {
     if (process.env.NODE_ENV === 'production') {
       mailTransporter.verify((error: Error, _: boolean) => {
         if (error) {
-          Logger.Error(`Mail verification unsuccessful. Reason: ${error}`);
+          Logger.Error(`Mail verification unsuccessful. Reason: ${error.message}`);
           throw new Error('Failed to initialise mail service.');
         }
       });
     }
-    setInterval(async () => {
+
+    const SendMailRequest = async () => {
+      const mailRequest = await AppDataSource.getRepository(MailRequest)
+        .createQueryBuilder()
+        .where('MailRequest.sent = :sent', { sent: false })
+        .orderBy('MailRequest.createdAt', 'ASC')
+        .getOne();
+      if (mailRequest == null) throw new Error('No mail request to send');
+
       try {
-        const mailRequest = await Helpers.doSuccessfullyOrFail(async () => {
-          return await AppDataSource.getRepository(MailRequest)
-            .createQueryBuilder()
-            .where('MailRequest.sent = :sent', { sent: false })
-            .orderBy('MailRequest.createdAt', 'ASC')
-            .getOne();
-        }, `No mail request to send`);
         if (process.env.NODE_ENV === 'production') {
           mailTransporter.sendMail(
             {
@@ -92,34 +91,39 @@ export default class MailFunctions {
           .where('id = :id', { id: mailRequest.id })
           .execute();
       } catch (error) {
-        // Couldn't find mail to send.
-        return;
+        Logger.Error(`Could not find mail with ID=${mailRequest.id} to send`);
       }
-    }, mailSendingIntervalRate);
+    };
+
+    setTimeout(() => SendMailRequest, mailSendingIntervalRate);
   }
 
-  public static async AddMailToQueue(recipient: string, subject: string, content: string): Promise<boolean> {
+  public static async AddMailToQueue(
+    recipient: string,
+    subject: string,
+    content: string,
+  ): Promise<boolean> {
     try {
       // check parameters
       try {
         Helpers.requireParameters(process.env.MAIL_USERNAME);
       } catch (error) {
-        Logger.Error(`[DEBUG] Mail username parameter checking failed`);
+        Logger.Error('[DEBUG] Mail username parameter checking failed');
       }
       try {
         Helpers.requireParameters(recipient);
       } catch (error) {
-        Logger.Error(`[DEBUG] Recipient parameter checking failed`);
+        Logger.Error('[DEBUG] Recipient parameter checking failed');
       }
       try {
         Helpers.requireParameters(subject);
       } catch (error) {
-        Logger.Error(`[DEBUG] Subject parameter checking failed`);
+        Logger.Error('[DEBUG] Subject parameter checking failed');
       }
       try {
         Helpers.requireParameters(content);
       } catch (error) {
-        Logger.Error(`[DEBUG] Content parameter checking failed`);
+        Logger.Error('[DEBUG] Content parameter checking failed');
       }
       const newMailRequest: MailRequest = new MailRequest();
       newMailRequest.sender = process.env.MAIL_USERNAME;
@@ -161,8 +165,8 @@ export default class MailFunctions {
       Logger.Info('[DEBUG] Saved CSESoc admin mail request');
 
       return true;
-    } catch (error) {
-      Logger.Error(`AddMailToQueue FAILED with error ${error}`);
+    } catch (error: unknown) {
+      Logger.Error(`AddMailToQueue FAILED with error ${(error as Error).message}`);
       return false;
     }
   }

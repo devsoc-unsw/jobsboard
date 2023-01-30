@@ -1,25 +1,28 @@
-import Logger from './logging';
 import { Response, NextFunction } from 'express';
-import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from './types/job-field';
+import Logger from './logging';
+import {
+  JobMode,
+  JobType,
+  StudentDemographic,
+  WamRequirements,
+  WorkingRights,
+} from './types/job-field';
 
 interface IResponseWithStatus {
-  msg: any;
+  msg: unknown;
   status: number;
 }
 
 export default class Helpers {
-  public static requireParameters(result: any): void {
-    // if a single required parameter is undefined, the result field should evaluate to
-    // undefined
+  public static requireParameters(result: unknown): void {
     if (result === undefined) {
       throw new Error('Missing parameters.');
     }
-    // convert it to a string
-    result = result.toString();
-    if (result.trim() === '') {
+    const str = result.toString();
+    if (str.trim() === '') {
       throw new Error('Parameter is an empty string.');
     }
-    if (/^\s+$/.test(result)) {
+    if (/^\s+$/.test(str)) {
       throw new Error('Parameter is just whitespace.');
     }
   }
@@ -29,6 +32,7 @@ export default class Helpers {
     // What: valid url regular expression
     // When: 2019-12-24
     if (
+      // eslint-disable-next-line no-useless-escape
       /(((https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/.test(
         value,
       )
@@ -43,35 +47,59 @@ export default class Helpers {
     throw new Error(`Invalid mailto or HTTP[S] application link: ${value}`);
   }
 
-  public static async doSuccessfullyOrFail(func: Function, failMessage: string) {
-    const result = await func();
-    if (result === undefined) {
-      // Logger.Error(failMessage);
-      throw new Error(failMessage);
-    }
-    return result;
-  }
+  // public static doSuccessfullyOrThrow<TArgs extends unknown[], TReturn>(
+  //   func: async (...parameters : TArgs) => TReturn, failMessage: string)
+  //   : Promise<(...parameters: TArgs) => TReturn>
+  // {
+  //   const result = await func(...parameters);
+  //   if (result === undefined) throw new Error(failMessage);
+  // }
 
-  public static async catchAndLogError(res: Response, func: Function, funcOnError: Function, next: NextFunction) {
+  public static async doSuccessfullyOrFail
+    <TReturn>(
+    func: () => Promise<TReturn>,
+    failMessage: string,
+  ): Promise<TReturn>
+    {
+      const res = await func();
+      if (res === undefined) {
+        Logger.Error(failMessage);
+        throw new Error(failMessage);
+      }
+      return res;
+    }
+
+  public static async catchAndLogError(
+    res: Response,
+    func: () => Promise<IResponseWithStatus>,
+    funcOnError: () => IResponseWithStatus,
+    next?: NextFunction,
+  ) {
     let response: IResponseWithStatus;
     try {
       response = await func();
-    } catch (error) {
-      Logger.Error(`EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
-      response = await funcOnError();
+    }
+    catch (error: unknown) {
+      if (error instanceof Error) {
+        Logger.Error(`EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
+      }
+      else {
+        Logger.Error('Unknown error was thrown');
+      }
+      response = funcOnError();
     }
     if (!res.headersSent) {
       if (response.msg === undefined) {
-        await res.sendStatus(response.status);
-      } else {
-        await res.status(response.status).send(response.msg);
+        res.sendStatus(response.status);
       }
-    } else {
-      Logger.Error(`Not performing any further action as headers are already sent.`);
+      else {
+        res.status(response.status).send(response.msg);
+      }
     }
-    if (next) {
-      await next();
+    else {
+      Logger.Error('Not performing any further action as headers are already sent.');
     }
+    if (next) next();
   }
 
   public static doesMatchZidFormat(result: string) {
@@ -86,17 +114,17 @@ export default class Helpers {
     }
   }
 
-  public static isValidJobMode(value: any): void {
+  public static isValidJobMode(value: JobMode): void {
     this.requireParameters(value);
     if (!Object.values(JobMode).includes(value)) {
       throw new Error(`Invalid JobMode=${value} provided.`);
     }
   }
 
-  public static isValidStudentDemographic(studentDemographic: any): void {
+  public static isValidStudentDemographic(studentDemographic: Array<StudentDemographic>): void {
     this.requireParameters(studentDemographic);
     if (!Array.isArray(studentDemographic)) {
-      throw new Error(`studentDemographic=${studentDemographic} is not an array.`);
+      throw new Error('studentDemographic is not an array.');
     }
     studentDemographic.forEach((value) => {
       if (!Object.values(StudentDemographic).includes(value)) {
@@ -105,17 +133,17 @@ export default class Helpers {
     });
   }
 
-  public static isValidJobType(value: any): void {
+  public static isValidJobType(value: JobType): void {
     this.requireParameters(value);
     if (!Object.values(JobType).includes(value)) {
       throw new Error(`Invalid JobType=${value} provided.`);
     }
   }
 
-  public static isValidWorkingRights(workingRights: any): void {
+  public static isValidWorkingRights(workingRights: Array<WorkingRights>): void {
     this.requireParameters(workingRights);
     if (!Array.isArray(workingRights)) {
-      throw new Error(`workingRights=${workingRights} is not an array.`);
+      throw new Error('workingRights is not an array.');
     }
     workingRights.forEach((value) => {
       if (!Object.values(WorkingRights).includes(value)) {
@@ -124,7 +152,7 @@ export default class Helpers {
     });
   }
 
-  public static isValidWamRequirement(value: any): void {
+  public static isValidWamRequirement(value: WamRequirements): void {
     this.requireParameters(value);
     if (!Object.values(WamRequirements).includes(value)) {
       throw new Error(`Invalid WamRequirements=${value} provided.`);

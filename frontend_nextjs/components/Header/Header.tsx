@@ -28,11 +28,11 @@ const Header = ({ style }: HeaderProps) => {
            bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]"
     >
       <Link href="/">
-        <Image className="cursor-pointer" src={logo} width={175} alt="CSESoc" />
+        <Image className="cursor-pointer" src={logo} width={150} alt="CSESoc" />
       </Link>
-      <div className="flex justify-evenly items-center">
-        <div className="group fill-black cursor-pointer w-[20%] mr-5 sm:mr-2.5 relative inline-block">
-          <Image className="rotate-220" src={moon} alt="Toggle Theme" />
+      <div className="flex justify-evenly items-center gap-5">
+        <div className="group cursor-pointer relative">
+          <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
           {/* Tooltip */}
           <span
             className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}

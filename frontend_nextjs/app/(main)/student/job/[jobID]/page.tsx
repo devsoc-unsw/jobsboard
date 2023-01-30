@@ -22,6 +22,7 @@ import {
   WorkingRights as WR,
   StudentDemographic as SD
 } from 'constants/jobFields';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
@@ -43,6 +44,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
   // const [companyDescription, setCompanyDescription] = useState('')
   const [description, setDescription] = useState('');
   const [jobs, setJobs] = useState<(CompanyJob | HiddenJob)[]>([]);
+  const [companyLogo, setCompanyLogo] = useState<string>('');
   const [location, setLocation] = useState('');
   const [applicationLink, setApplicationLink] = useState('');
   const [jobMode, setJobMode] = useState('hybrid');
@@ -83,6 +85,9 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
       // setCompanyDescription(job.company.description)
       setLocation(job.company.location);
       // setCompanyID(job.company.id)
+      setCompanyLogo(
+        job.company.logo ? Buffer.from(job.company.logo.data, 'base64').toString('base64') : ''
+      );
       setApplicationLink(job.applicationLink);
       setJobMode(job.mode);
       setStudentDemographic(job.studentDemographic);
@@ -110,6 +115,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
       });
       setJobs(updatedJobs);
     } catch (e) {
+      console.log(e);
       setAlertMsg('Unable to load jobs at this time. Please try again later.');
       setAlertOpen(true);
       window.scrollTo({
@@ -137,8 +143,6 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
       });
     }, 100);
   }, []);
-
-  console.log({ workingRights });
 
   return (
     <div>
@@ -169,10 +173,20 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
         <div className="flex flex-col items-center w-3/4 h-full sm:w-full">
           <div className="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
             <div className="flex flex-col mr-8 justify-center">
-              {/* <!-- TODO: to be replaced with company logo --> */}
-              <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
+              {companyLogo ? (
+                <Image
+                  width={300}
+                  height={300}
+                  // TODO fix company logo
+                  src=""
+                  // src={`${companyLogo.replace('dataimage/jpegbase64/', 'data:image/jpeg,base64,')}`}
+                  alt=""
+                />
+              ) : (
+                <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
+              )}
               <Link href={applicationLink} target="_blank" rel="noreferrer">
-                <Button>Apply</Button>
+                <Button variant="primary">Apply</Button>
               </Link>
             </div>
             <div className="flex flex-col text-left">

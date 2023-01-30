@@ -7,10 +7,10 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { Company } from './company';
+import Company from './company';
 
 @Entity()
-export class CompanyAccount {
+export default class CompanyAccount {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -39,8 +39,8 @@ export class CompanyAccount {
   public latestValidResetToken: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+    createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+    updatedAt: Date;
 }

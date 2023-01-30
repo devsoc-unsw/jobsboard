@@ -28,11 +28,11 @@ const RecruitmentModal = ({ open, onClose }: RecruitmentModalProps) => {
         {/* <!-- Modal body --> */}
         <div className="flex items-start flex-col p-6 space-y-6 text-jb-subheadings text-lg text-justify">
           <p>
-            Here at Jobs Board, we pride ourselves on our great work ethic, teamwork and
-            camaraderie. Some of our members have even gone on to work for companies such as Canva
-            and Optiver! As such, we are always on the look out for keen-minded individuals who are
-            as passionate about the project as we are. If you have experience in the following, do
-            consider applying.
+            Here at Jobsboard, we pride ourselves on our great work ethic, teamwork and camaraderie.
+            Some of our members have even gone on to work for companies such as Canva and Optiver!
+            As such, we are always on the look out for keen-minded individuals who are as passionate
+            about the project as we are. If you have experience in the following, do consider
+            applying.
           </p>
           <div className="flex w-full justify-center gap-28 py-5">
             <div>

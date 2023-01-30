@@ -1,24 +1,32 @@
 import 'reflect-metadata';
 
-import { AppDataSource } from './index';
+import { AppDataSource } from './config';
 import Logger from './logging';
-import { AdminAccount } from './entity/admin_account';
-import { Company } from './entity/company';
-import { CompanyAccount } from './entity/company_account';
-import { Job } from './entity/job';
-import { Statistics } from './entity/statistics';
+import AdminAccount from './entity/admin_account';
+import Company from './entity/company';
+import CompanyAccount from './entity/company_account';
+import Job from './entity/job';
+import Statistics from './entity/statistics';
 import Secrets from './secrets';
-import { JobMode, JobType, StudentDemographic, WamRequirements, WorkingRights } from './types/job-field';
+import {
+  JobMode,
+  JobType,
+  StudentDemographic,
+  WamRequirements,
+  WorkingRights,
+} from './types/job-field';
 import { AdminAccountInterface, CompanyAccountInterface } from './tests/test-types';
 import testdata from './tests/default_test_data.json';
 
 const CreateAdminAccounts = async (admins: AdminAccountInterface[]) => {
-  admins.forEach(async (admin) => {
+  const promises = [];
+  for (let i = 0; i < admins.length; i += 1) {
     const adminAccount = new AdminAccount();
-    adminAccount.username = admin.username;
-    adminAccount.hash = Secrets.hash(admin.password);
-    await AppDataSource.manager.save(adminAccount);
-  });
+    adminAccount.username = admins[i].username;
+    adminAccount.hash = Secrets.hash(admins[i].password);
+    promises.push(AppDataSource.manager.save(adminAccount));
+  }
+  await Promise.all(promises);
 };
 
 const ProcessCompanyAccounts = (companies: CompanyAccountInterface[]) => {
@@ -64,12 +72,15 @@ const CreateTestObjectsFromJSON = async () => {
   const companyAccs = ProcessCompanyAccounts(testdata.companies);
   ProcessNewJobs(companyAccs);
 
-  for (const companyUsername in companyAccs) {
-    await AppDataSource.manager.save(companyAccs[companyUsername]);
+  const accounts = Object.values(companyAccs);
+  const promises = [];
+  for (let i = 0; i < accounts.length; i += 1) {
+    promises.push(AppDataSource.manager.save(accounts[i]));
   }
+  await Promise.all(promises);
 };
 
-export async function seedDB(activeEntities: any[]) {
+export default async function seedDB() {
   Logger.Info('SEEDING DATABASE');
   // clear all tables
   if (process.env.NODE_ENV === 'development') {
@@ -247,80 +258,96 @@ export async function seedDB(activeEntities: any[]) {
   companyAccount3.company = company3;
 
   // normal approved job
-  const companyAccount3_job1 = new Job();
-  companyAccount3_job1.role = 'approved job';
-  companyAccount3_job1.description = 'Java is not poggers';
-  companyAccount3_job1.applicationLink = 'https://sampleapplicationlink.net';
-  companyAccount3_job1.company = company3;
-  companyAccount3_job1.approved = true;
-  companyAccount3_job1.expiry = new Date('2030-01-10');
-  companyAccount3_job1.mode = JobMode.Remote;
-  companyAccount3_job1.studentDemographic = [StudentDemographic.All];
-  companyAccount3_job1.jobType = JobType.Intern;
-  companyAccount3_job1.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  companyAccount3_job1.wamRequirements = WamRequirements.HD;
-  companyAccount3_job1.additionalInfo = '';
-  companyAccount3_job1.isPaid = true;
-  companyAccount3_job1.createdAt = new Date('2020-10-10');
+  const companyAccount3Job1 = new Job();
+  companyAccount3Job1.role = 'approved job';
+  companyAccount3Job1.description = 'Java is not poggers';
+  companyAccount3Job1.applicationLink = 'https://sampleapplicationlink.net';
+  companyAccount3Job1.company = company3;
+  companyAccount3Job1.approved = true;
+  companyAccount3Job1.expiry = new Date('2030-01-10');
+  companyAccount3Job1.mode = JobMode.Remote;
+  companyAccount3Job1.studentDemographic = [StudentDemographic.All];
+  companyAccount3Job1.jobType = JobType.Intern;
+  companyAccount3Job1.workingRights = [
+    WorkingRights.AusCtz,
+    WorkingRights.AusPermRes,
+    WorkingRights.AusStudVisa,
+  ];
+  companyAccount3Job1.wamRequirements = WamRequirements.HD;
+  companyAccount3Job1.additionalInfo = '';
+  companyAccount3Job1.isPaid = true;
+  companyAccount3Job1.createdAt = new Date('2020-10-10');
 
   // approved but expired job
-  const companyAccount3_job2 = new Job();
-  companyAccount3_job2.role = 'expired job';
-  companyAccount3_job2.description = 'Java is not poggers';
-  companyAccount3_job2.applicationLink = 'https://sampleapplicationlink.net';
-  companyAccount3_job2.company = company3;
-  companyAccount3_job2.approved = true;
-  companyAccount3_job2.expiry = new Date('2003-01-28');
-  companyAccount3_job2.mode = JobMode.Remote;
-  companyAccount3_job2.studentDemographic = [StudentDemographic.All];
-  companyAccount3_job2.jobType = JobType.Intern;
-  companyAccount3_job2.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  companyAccount3_job2.wamRequirements = WamRequirements.HD;
-  companyAccount3_job2.additionalInfo = '';
-  companyAccount3_job2.isPaid = true;
-  companyAccount3_job2.createdAt = new Date('2020-10-10');
+  const companyAccount3Job2 = new Job();
+  companyAccount3Job2.role = 'expired job';
+  companyAccount3Job2.description = 'Java is not poggers';
+  companyAccount3Job2.applicationLink = 'https://sampleapplicationlink.net';
+  companyAccount3Job2.company = company3;
+  companyAccount3Job2.approved = true;
+  companyAccount3Job2.expiry = new Date('2003-01-28');
+  companyAccount3Job2.mode = JobMode.Remote;
+  companyAccount3Job2.studentDemographic = [StudentDemographic.All];
+  companyAccount3Job2.jobType = JobType.Intern;
+  companyAccount3Job2.workingRights = [
+    WorkingRights.AusCtz,
+    WorkingRights.AusPermRes,
+    WorkingRights.AusStudVisa,
+  ];
+  companyAccount3Job2.wamRequirements = WamRequirements.HD;
+  companyAccount3Job2.additionalInfo = '';
+  companyAccount3Job2.isPaid = true;
+  companyAccount3Job2.createdAt = new Date('2020-10-10');
 
   // approved but hidden job
-  const companyAccount3_job3 = new Job();
-  companyAccount3_job3.role = 'hidden job';
-  companyAccount3_job3.description = 'Java is not poggers';
-  companyAccount3_job3.applicationLink = 'https://sampleapplicationlink.net';
-  companyAccount3_job3.company = company3;
-  companyAccount3_job3.approved = true;
-  companyAccount3_job3.expiry = new Date('2003-01-28');
-  companyAccount3_job3.mode = JobMode.Remote;
-  companyAccount3_job3.studentDemographic = [StudentDemographic.All];
-  companyAccount3_job3.jobType = JobType.Intern;
-  companyAccount3_job3.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  companyAccount3_job3.wamRequirements = WamRequirements.HD;
-  companyAccount3_job3.additionalInfo = '';
-  companyAccount3_job3.isPaid = true;
-  companyAccount3_job3.hidden = true;
-  companyAccount3_job3.createdAt = new Date('2020-10-10');
+  const companyAccount3Job3 = new Job();
+  companyAccount3Job3.role = 'hidden job';
+  companyAccount3Job3.description = 'Java is not poggers';
+  companyAccount3Job3.applicationLink = 'https://sampleapplicationlink.net';
+  companyAccount3Job3.company = company3;
+  companyAccount3Job3.approved = true;
+  companyAccount3Job3.expiry = new Date('2003-01-28');
+  companyAccount3Job3.mode = JobMode.Remote;
+  companyAccount3Job3.studentDemographic = [StudentDemographic.All];
+  companyAccount3Job3.jobType = JobType.Intern;
+  companyAccount3Job3.workingRights = [
+    WorkingRights.AusCtz,
+    WorkingRights.AusPermRes,
+    WorkingRights.AusStudVisa,
+  ];
+  companyAccount3Job3.wamRequirements = WamRequirements.HD;
+  companyAccount3Job3.additionalInfo = '';
+  companyAccount3Job3.isPaid = true;
+  companyAccount3Job3.hidden = true;
+  companyAccount3Job3.createdAt = new Date('2020-10-10');
 
   // approved by deleted job
-  const companyAccount3_job4 = new Job();
-  companyAccount3_job4.role = 'deleted job';
-  companyAccount3_job4.description = 'Java is not poggers';
-  companyAccount3_job4.applicationLink = 'https://sampleapplicationlink.net';
-  companyAccount3_job4.company = company3;
-  companyAccount3_job4.approved = true;
-  companyAccount3_job4.expiry = new Date('2003-01-28');
-  companyAccount3_job4.mode = JobMode.Remote;
-  companyAccount3_job4.studentDemographic = [StudentDemographic.All];
-  companyAccount3_job4.jobType = JobType.Intern;
-  companyAccount3_job4.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
-  companyAccount3_job4.wamRequirements = WamRequirements.HD;
-  companyAccount3_job4.additionalInfo = '';
-  companyAccount3_job4.isPaid = true;
-  companyAccount3_job4.deleted = true;
-  companyAccount3_job4.createdAt = new Date('2020-10-10');
+  const companyAccount3Job4 = new Job();
+  companyAccount3Job4.role = 'deleted job';
+  companyAccount3Job4.description = 'Java is not poggers';
+  companyAccount3Job4.applicationLink = 'https://sampleapplicationlink.net';
+  companyAccount3Job4.company = company3;
+  companyAccount3Job4.approved = true;
+  companyAccount3Job4.expiry = new Date('2003-01-28');
+  companyAccount3Job4.mode = JobMode.Remote;
+  companyAccount3Job4.studentDemographic = [StudentDemographic.All];
+  companyAccount3Job4.jobType = JobType.Intern;
+  companyAccount3Job4.workingRights = [
+    WorkingRights.AusCtz,
+    WorkingRights.AusPermRes,
+    WorkingRights.AusStudVisa,
+  ];
+  companyAccount3Job4.wamRequirements = WamRequirements.HD;
+  companyAccount3Job4.additionalInfo = '';
+  companyAccount3Job4.isPaid = true;
+  companyAccount3Job4.deleted = true;
+  companyAccount3Job4.createdAt = new Date('2020-10-10');
 
   companyAccount3.company.jobs = [
-    companyAccount3_job1,
-    companyAccount3_job2,
-    companyAccount3_job3,
-    companyAccount3_job4,
+    companyAccount3Job1,
+    companyAccount3Job2,
+    companyAccount3Job3,
+    companyAccount3Job4,
   ];
 
   await AppDataSource.manager.save(companyAccount3);

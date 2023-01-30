@@ -1,0 +1,36 @@
+{
+    "short_name": "Jobsboard",
+    "name": "CSESoc Jobsboard",
+    "description": "Connecting UNSW students with top employers since 2018.",
+    "icons": [
+      {
+        "src": "/icons/favicon-16x16.png",
+        "type": "image/png",
+        "sizes": "16x16"
+      }, 
+      {
+        "src": "/icons/favicon-32x32.png",
+        "type": "image/png",
+        "sizes": "32x32"
+      }, 
+      {
+        "src": "/icons/apple-touch-icon.png",
+        "type": "image/png",
+        "sizes": "180x180" 
+      },
+      {
+        "src": "/icons/android-chrome-192x192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/icons/android-chrome-512x512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#2c8bf4",
+    "background_color": "#ffffff"
+  }

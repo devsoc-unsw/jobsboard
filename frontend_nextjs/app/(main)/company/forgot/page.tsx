@@ -5,6 +5,7 @@ import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import Button from 'ui/Button/Button';
 
 const CompanyForgotPage = () => {
   const [email, setEmail] = useState('');
@@ -82,17 +83,9 @@ const CompanyForgotPage = () => {
           Email
         </label>
       </div>
-      {loading ? (
-        <Spinner />
-      ) : (
-        <button
-          className="btn btn-blue-filled w-40 h-11 my-4 p-2"
-          onClick={performCompanyPasswordForgot}
-        >
-          Forgot Password
-        </button>
-      )}
-
+      <Button variant="primary" loading={loading} onClick={performCompanyPasswordForgot}>
+        Forgot Password
+      </Button>
       <div className="flex flex-row justify-evenly items-center pt-12 w-1/4 sm:flex-col xl:w-2/5 md:w-1/2">
         <p className="flex flex-col text-jb-subheadings pb-0 sm:pb-4">
           Not a company?

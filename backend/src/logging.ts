@@ -1,6 +1,9 @@
+/* eslint-disable */
+// ! will hopefully be rewritten or discarded so no need to lint it
+
 import winston from 'winston';
-import { Logs } from './entity/logs';
-import { AppDataSource } from './index';
+import Logs from './entity/logs';
+import { AppDataSource } from './config';
 
 export default class Logger {
   public static Init(): void {
@@ -26,6 +29,7 @@ export default class Logger {
   }
 
   private static loggerName = 'logger';
+
   private static logger: winston.Logger;
 
   // this is intentionally async and it's not used with an await so as not to

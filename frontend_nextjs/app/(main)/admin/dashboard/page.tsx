@@ -141,7 +141,7 @@ const AdminDashboardPage = () => {
           before verifying.
         </p>
         <Link href="/admin/company">
-          <Button>
+          <Button variant="primary">
             <FontAwesomeIcon icon={faUserShield} />
             <span className="mx-3">Verify Company</span>
             <FontAwesomeIcon icon={faAngleRight} />
@@ -157,7 +157,7 @@ const AdminDashboardPage = () => {
           <span className="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>.
         </p>
         <Link href="/admin/jobs">
-          <Button>
+          <Button variant="primary">
             <FontAwesomeIcon icon={faBriefcase} />
             <span className="mx-3">Verify Job Post</span>
             <FontAwesomeIcon icon={faAngleRight} />
@@ -174,7 +174,7 @@ const AdminDashboardPage = () => {
           that you have their explicit permission before doing so.
         </p>
         <Link href="/admin/post">
-          <Button>
+          <Button variant="primary">
             <FontAwesomeIcon icon={faBriefcase} />
             <span className="mx-3">Post Job</span>
             <FontAwesomeIcon icon={faAngleRight} />

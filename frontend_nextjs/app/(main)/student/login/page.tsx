@@ -3,7 +3,6 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
-import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -102,7 +101,9 @@ const StudentLoginPage = () => {
             Company Login
           </Link>
         </p>
-        {loading ? <Spinner /> : <Button onClick={performLogin}>Log In</Button>}
+        <Button variant="primary" loading={loading} onClick={performLogin}>
+          Log In
+        </Button>
       </div>
     </div>
   );
