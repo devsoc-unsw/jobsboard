@@ -1,4 +1,6 @@
 {
+  // Tell typescript about the types folder
+  "types": ["types"],
   "compilerOptions": {
     "baseUrl": ".",
     "target": "es5",

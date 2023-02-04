@@ -5,6 +5,7 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Assistant } from '@next/font/google';
 import AppProvider from './AppProvider';
 import { getCssText } from 'stitches.config';
+import globalStyles from '../styles/globalStyles';
 
 config.autoAddCss = false;
 const assistant = Assistant({
@@ -18,11 +19,14 @@ type RootLayoutProps = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => {
+  // useServerInsertedHTML(() => {
+  //   return <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />;
+  // });
+
+  // globalStyles();
   return (
     <html>
-      <head>
-        <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
-      </head>
+      {/* <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} /> */}
       <body className={assistant.className}>
         <AppProvider>
           {children}
