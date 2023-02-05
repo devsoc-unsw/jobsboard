@@ -45,11 +45,16 @@
     "exec": "ts-node ./src/index.ts"
   },
   "scripts": {
+    "build": "tsc",
+    "build:dev": "tsc --incremental",
     "start:dev": "nodemon",
+    "prestart": "yarn run build",
     "dev": "nodemon -w ./dist yarn run watch",
     "serve": "nodemon -w ./src yarn run watch",
     "watch": "ts-node src/index.ts",
     "watch:test": "sleep 7 && ./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
+    "test": "nodemon -w ./src -w ./tests -x yarn run watch:test",
+    "travis:test": "./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
     "format": "prettier './src/**/*.ts'",
     "format:fix": "prettier --write './src/**/*.ts'",
     "lint": "eslint './src/**/*.ts'",
