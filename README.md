@@ -59,20 +59,20 @@ Jobs Board was made with 🤍 by CSE students, for CSE students.
   DB_PASSWORD=mysecretpassword
   DB_NAME=postgres
 ```
+
 2. Navigate into both the `/frontend` and `/backend` folders and run `yarn install`
 
 #### Frontend
 1. Navigate into the `/frontend` folder and run `yarn run serve`
 
 #### Backend
-1. Start the database by running `docker compose up -d db`
+1. Start a postgres database on port 5432 on your local computer
 2. Navigate into the `/backend` folder and run `yarn run serve`
 
 ####  Backend Testing
 1. Navigate into the `/backend` folder
-2. Start the database by running `docker compose up db`
-3. Start the api by running `docker compose up api`
-4. Start the tests by running `yarn run test`
+2. Run `docker compose build test`
+3. Run `docker compose up test`
 
 #### Using `yarn`
 1. Navigate into both the `/frontend` and `/backend` folders.
