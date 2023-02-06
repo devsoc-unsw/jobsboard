@@ -6,12 +6,10 @@ import JobBoard from 'components/JobBoard/JobBoard';
 import api from 'config/api';
 import { base64 } from 'config/base64';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import { CompanyJob, CompanyJobsPayload, HiddenJob, HiddenJobsPayload } from 'types/api';
 
 const CompanyDashboardPage = () => {
-  const router = useRouter();
   const { apiToken } = useContext(AppContext);
 
   const [jobs, setJobs] = useState<CompanyJob[]>([]);
@@ -91,9 +89,7 @@ const CompanyDashboardPage = () => {
 
       setExpiredJobs(res.data.hiddenJobs);
     } catch (e) {
-      setTimeout(() => {
-        router.push('/company/login');
-      }, 1000);
+      console.error('Error at getHiddenJobs');
     }
   };
 
