@@ -17,11 +17,14 @@ const AppProvider = ({ children }: AppProviderProps) => {
       value={{
         apiToken: apiToken,
         setApiToken: (token) => {
-          cookies.set(authTokenKey, token);
+          cookies.set(authTokenKey, token, {
+            path: '/',
+            sameSite: true
+          });
           setApiToken(token);
         },
         resetApiToken: () => {
-          cookies.remove(authTokenKey);
+          cookies.remove(authTokenKey, { path: '/' });
           setApiToken(null);
         }
       }}
