@@ -1,9 +1,10 @@
 'use client';
+
 import React, { useEffect } from 'react';
-import Robot from 'assets/misc/404_Robot.png';
 import Image from 'next/image';
-import styles from './not-found.module.css';
 import { useRouter } from 'next/navigation';
+import Robot from 'assets/misc/404_Robot.png';
+import styles from './not-found.module.css';
 
 const NotFoundPage = () => {
   const router = useRouter();

@@ -1,4 +1,6 @@
 'use client';
+
+import React, { useContext, useEffect, useState } from 'react';
 import {
   faAngleRight,
   faBell,
@@ -9,12 +11,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
-import Alert from 'components/Alert/Alert';
-import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
 import Button from 'ui/Button/Button';
+import Alert from 'components/Alert/Alert';
+import api from 'config/api';
 
 const AdminDashboardPage = () => {
   const router = useRouter();

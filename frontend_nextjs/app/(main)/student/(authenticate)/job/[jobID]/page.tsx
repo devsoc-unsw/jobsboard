@@ -1,4 +1,6 @@
 'use client';
+
+import React, { useContext, useEffect, useState } from 'react';
 import {
   faAddressCard,
   faBuilding,
@@ -11,22 +13,21 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
-import Alert from 'components/Alert/Alert';
-import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
-import api from 'config/api';
 import {
   JobMode,
   JobType,
+  StudentDemographic as SD,
   WamRequirements,
-  WorkingRights as WR,
-  StudentDemographic as SD
+  WorkingRights as WR
 } from 'constants/jobFields';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
 import { CompanyJob, HiddenJob } from 'types/api';
 import Button from 'ui/Button/Button';
+import Alert from 'components/Alert/Alert';
+import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
+import api from 'config/api';
 
 type StudentJobPageProps = {
   params: {
@@ -35,7 +36,7 @@ type StudentJobPageProps = {
 };
 
 const StudentJobPage = ({ params }: StudentJobPageProps) => {
-  const jobID = params.jobID;
+  const { jobID } = params;
 
   // const [companyID, setCompanyID] = useState('')
   const [role, setRole] = useState('');
@@ -76,7 +77,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
           Authorization: apiToken
         }
       });
-      const job = res.data.job;
+      const { job } = res.data;
 
       setRole(job.role);
       setCompany(job.company.name);
@@ -107,9 +108,9 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
       console.log({ jobRes });
 
       // TODO(ad-t): Fix below, as it will always be true
-      const updatedJobs = jobRes.data.companyJobs.filter((job: any) => {
-        const jobResultID = parseInt(job.id, 10);
-        const currentJobID = parseInt(jobID as string, 10);
+      const updatedJobs = jobRes.data.companyJobs.filter((j: any) => {
+        const jobResultID = parseInt(j.id, 10);
+        const currentJobID = parseInt(jobID, 10);
         return jobResultID !== currentJobID;
       });
       setJobs(updatedJobs);
@@ -247,6 +248,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
             <ul className="flex -mb-px justify-start list-inside list-none">
               <li className="mr-2">
                 <button
+                  type="button"
                   className={`inline-block p-4 ${
                     isJobDescriptionShown
                       ? 'text-jb-textlink font-black'
@@ -259,6 +261,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
               </li>
               <li className="mr-2">
                 <button
+                  type="button"
                   className={`inline-block p-4 ${
                     !isJobDescriptionShown
                       ? 'text-jb-textlink font-black'

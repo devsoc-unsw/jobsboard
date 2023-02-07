@@ -1,10 +1,11 @@
-import Footer from 'components/Footer/Footer';
-import 'styles/globals.css';
+import React from 'react';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Assistant } from '@next/font/google';
-import AppProvider from './AppProvider';
 import { getCssText } from 'stitches.config';
+import Footer from 'components/Footer/Footer';
+import AppProvider from './AppProvider';
+import 'styles/globals.css';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 config.autoAddCss = false;
 const assistant = Assistant({
@@ -19,7 +20,7 @@ type RootLayoutProps = {
 
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
-    <html>
+    <html lang="en">
       <head>
         <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       </head>

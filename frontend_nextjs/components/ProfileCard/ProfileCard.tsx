@@ -1,6 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 type ProfileCardProps = {
   name: string;
@@ -26,7 +26,7 @@ const ProfileCard = ({
       <div className="flex mb-16">
         {/* <!-- Left View --> */}
         <div className="w-24 h-24">
-          <img alt="profile picture" src={photo} className="w-28 h-28" />
+          <img alt={name} src={photo} className="w-28 h-28" />
           <div className="flex justify-items-center gap-3 mt-6">
             <a href={linkedin} target="__blank">
               <FontAwesomeIcon icon={faLinkedin} size="2x" className="text-blue-700 h-8" />

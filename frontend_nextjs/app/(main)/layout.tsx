@@ -1,6 +1,7 @@
+import React from 'react';
+import container from 'styles/container.module.css';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import Header from 'components/Header/Header';
-import container from 'styles/container.module.css';
 
 type MainRootLayoutProps = {
   children: React.ReactNode;

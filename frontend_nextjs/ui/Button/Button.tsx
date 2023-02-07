@@ -13,15 +13,20 @@ const Button = ({ onClick, children, disabled, loading, variant }: ButtonProps) 
   const getBgColor = () => {
     if (variant === 'primary') {
       return 'bg-jb-textlink';
-    } else if (variant === 'secondary') {
+    }
+    if (variant === 'secondary') {
       return 'bg-gray-200';
-    } else if (variant === 'tertiary') {
+    }
+    if (variant === 'tertiary') {
       return 'bg-none';
-    } else if (variant === 'danger') {
+    }
+    if (variant === 'danger') {
       return 'bg-jb-red';
-    } else if (variant === 'success') {
+    }
+    if (variant === 'success') {
       return 'bg-jb-green';
     }
+    return '';
   };
 
   const getTextColor = () => {
@@ -34,6 +39,7 @@ const Button = ({ onClick, children, disabled, loading, variant }: ButtonProps) 
   return (
     <button
       onClick={onClick}
+      type="button"
       disabled={disabled || loading}
       className={`${getBgColor()} ${getTextColor()} rounded-md px-8 py-3 font-bold text-base border-0
                     shadow-btn duration-200 ease-linear ${

@@ -1,6 +1,7 @@
 'use client';
-import PostJobForm from 'components/PostJobForm/PostJobForm';
+
 import React from 'react';
+import PostJobForm from 'components/PostJobForm/PostJobForm';
 
 const AdminPostPage = () => {
   return (

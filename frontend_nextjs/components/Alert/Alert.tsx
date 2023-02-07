@@ -1,6 +1,6 @@
+import React from 'react';
 import { faCircleInfo, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import styles from './styles.module.css';
 
 export type AlertType = 'error' | 'success';

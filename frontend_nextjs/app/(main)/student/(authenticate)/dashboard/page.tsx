@@ -1,12 +1,6 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
-import BenefitCard from 'components/BenefitCard/BenefitCard';
-import Spinner from 'ui/Spinner/Spinner';
-import api from 'config/api';
+
 import React, { useContext, useEffect, useState } from 'react';
-import JobCard from 'components/JobCard/JobCard';
-import ErrorBox from 'components/ErrorBox/ErrorBox';
 import {
   faClipboard,
   faCode,
@@ -14,6 +8,13 @@ import {
   faMoneyBills,
   faPeopleGroup
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AppContext from 'app/AppContext';
+import Spinner from 'ui/Spinner/Spinner';
+import BenefitCard from 'components/BenefitCard/BenefitCard';
+import ErrorBox from 'components/ErrorBox/ErrorBox';
+import JobCard from 'components/JobCard/JobCard';
+import api from 'config/api';
 
 const StudentDashboardPage = () => {
   const { apiToken } = useContext(AppContext);
@@ -123,14 +124,14 @@ const StudentDashboardPage = () => {
             {filteredJobs.map((job) => (
               <JobCard
                 key={job.key}
-                jobID={job.id}
-                jobLogo={job.logo}
-                jobTitle={job.company.name}
-                jobRole={job.role}
+                id={job.id}
+                logo={job.logo}
+                company={job.company.name}
+                role={job.role}
                 jobType={job.jobType}
-                jobTag={job.workingRights}
-                jobLocation={job.company.location}
-                jobMode={job.mode}
+                workingRights={job.workingRights}
+                location={job.company.location}
+                mode={job.mode}
               />
             ))}
           </div>

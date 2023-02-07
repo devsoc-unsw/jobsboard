@@ -1,19 +1,19 @@
 'use client';
+
+import React, { useContext, useState } from 'react';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
-import Alert, { AlertType } from 'components/Alert/Alert';
-import Spinner from 'ui/Spinner/Spinner';
-import api from 'config/api';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
-import Image from 'next/image';
-import { base64 } from 'config/base64';
+import Alert, { AlertType } from 'components/Alert/Alert';
+import api from 'config/api';
+import base64 from 'config/base64';
 
 const CompanySignupPage = () => {
   const router = useRouter();
@@ -45,12 +45,14 @@ const CompanySignupPage = () => {
       setAlertType('error');
       setAlertMsg('One or more fields are empty. Please try again');
       return false;
-    } else if (!username.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
+    }
+    if (!username.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/)) {
       setAlertOpen(true);
       setAlertType('error');
       setAlertMsg('Please enter a valid email address');
       return false;
-    } else if (password !== confirmPassword) {
+    }
+    if (password !== confirmPassword) {
       setAlertOpen(true);
       setAlertType('error');
       setAlertMsg('Passwords do not match. Please try again');
@@ -236,9 +238,9 @@ const CompanySignupPage = () => {
                       >
                         <path
                           d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         />
                       </svg>
                       <p className="text-lg font-bold justify-center">Upload logo</p>

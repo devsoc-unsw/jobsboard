@@ -1,6 +1,6 @@
+import React from 'react';
 import JobPostCard from 'components/JobPostCard/JobPostCard';
 import JobProfileCard from 'components/JobProfileCard/JobProfileCard';
-import React from 'react';
 
 type JobBoardProps = {
   jobList: any[];

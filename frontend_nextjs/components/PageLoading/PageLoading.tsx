@@ -1,7 +1,7 @@
 import React from 'react';
+import Image from 'next/image';
 import jobsboardLogo from 'assets/logos/JobsboardLogo.png';
 import S from './styles';
-import Image from 'next/image';
 
 const PageLoading = () => (
   <S.PageWrapper>

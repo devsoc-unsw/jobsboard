@@ -1,25 +1,25 @@
 'use client';
-import BigBlob from 'assets/misc/BigBlob.svg';
-import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
-import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
-import Header from 'components/Header/Header';
 
-import container from 'styles/container.module.css';
-import { useEffect, useState } from 'react';
-import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
+import React, { useEffect, useState } from 'react';
 import { faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
-import api from 'config/api';
-import FeaturedJobCard from 'components/FeaturedJobCard/FeaturedJobCard';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
+import Link from 'next/link';
+import container from 'styles/container.module.css';
 import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Button from 'ui/Button/Button';
+import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
+import BigBlob from 'assets/misc/BigBlob.svg';
+import FeaturedJobCard from 'components/FeaturedJobCard/FeaturedJobCard';
+import Header from 'components/Header/Header';
+import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
+import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
+import api from 'config/api';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import Link from 'next/link';
-import Button from 'ui/Button/Button';
 
 const HomePage = () => {
   const [featuredJobs, setFeaturedJobs] = useState<any[]>([]);
@@ -72,6 +72,7 @@ const HomePage = () => {
             <div className="justify-start flex gap-5 mt-4 sm:justify-center sm:flex-wrap">
               <Link href="/student/login">
                 <button
+                  type="button"
                   className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
                 >
@@ -80,6 +81,7 @@ const HomePage = () => {
               </Link>
               <Link href="/company/login">
                 <button
+                  type="button"
                   className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
                 >
@@ -118,10 +120,10 @@ const HomePage = () => {
             </Link>
             .
           </p>
-          {!!featuredJobs.length ? (
+          {featuredJobs.length ? (
             <Swiper
               slidesPerView={1}
-              navigation={true}
+              navigation
               pagination={{
                 clickable: true
               }}
@@ -145,7 +147,7 @@ const HomePage = () => {
                   <FeaturedJobCard
                     title={job.role}
                     description={job.description}
-                    tag={job.workingRights}
+                    workingRights={job.workingRights}
                     imgSrc={job.logo}
                   />
                 </SwiperSlide>

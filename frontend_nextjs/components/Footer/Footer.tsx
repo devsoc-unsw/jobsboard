@@ -1,9 +1,6 @@
 'use client';
-import Image from 'next/image';
-import logo from 'assets/logos/csesocwhite.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import container from 'styles/container.module.css';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
+import React from 'react';
 import {
   faDiscord,
   faFacebook,
@@ -12,7 +9,12 @@ import {
   faLinkedin,
   faYoutube
 } from '@fortawesome/free-brands-svg-icons';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
 import Link from 'next/link';
+import container from 'styles/container.module.css';
+import logo from 'assets/logos/csesocwhite.png';
 
 const Footer = () => {
   const socials = [

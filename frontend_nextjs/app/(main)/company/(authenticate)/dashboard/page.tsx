@@ -1,13 +1,14 @@
 'use client';
+
+import React, { useContext, useEffect, useState } from 'react';
 import { faBars, faCloudUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import Image from 'next/image';
+import { CompanyJob, CompanyJobsPayload, HiddenJob, HiddenJobsPayload } from 'types/api';
 import JobBoard from 'components/JobBoard/JobBoard';
 import api from 'config/api';
-import { base64 } from 'config/base64';
-import Image from 'next/image';
-import React, { useContext, useEffect, useState } from 'react';
-import { CompanyJob, CompanyJobsPayload, HiddenJob, HiddenJobsPayload } from 'types/api';
+import base64 from 'config/base64';
 
 const CompanyDashboardPage = () => {
   const { apiToken } = useContext(AppContext);
@@ -145,12 +146,14 @@ const CompanyDashboardPage = () => {
                 {/* <!-- Modal footer --> */}
                 <div className="flex flex-row justify-end p-6 space-x-2 rounded-b border-gray-600">
                   <button
+                    type="button"
                     className="bg-red-600 rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-md-hovered"
                     onClick={() => setOpenModal(false)}
                   >
                     Cancel
                   </button>
                   <button
+                    type="button"
                     className="bg-jb-textlink rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
                     onClick={uploadLogo}
                   >

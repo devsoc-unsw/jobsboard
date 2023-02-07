@@ -1,4 +1,6 @@
-export default function Head() {
+import React from 'react';
+
+const Head = () => {
   return (
     <>
       <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -13,4 +15,6 @@ export default function Head() {
       <title>Jobsboard</title>
     </>
   );
-}
+};
+
+export default Head;

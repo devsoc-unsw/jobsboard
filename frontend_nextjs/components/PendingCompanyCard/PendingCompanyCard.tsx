@@ -1,14 +1,12 @@
+import React, { useContext } from 'react';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
-import api from 'config/api';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useContext } from 'react';
+import api from 'config/api';
 
 type PendingCompanyCardProps = {
   companyName: string;
   location: string;
-  description: string;
   logo: string;
   companyAccountID: string;
   onClick(): void;
@@ -43,10 +41,10 @@ const PendingCompanyCard = ({
       setApiToken(res.data.token);
       onAlert('success', 'Company verified!');
       onRemove();
-    } catch (e) {
+    } catch (err) {
       onAlert('error', 'Error in processing verification. Please try again later.');
-      if (e instanceof AxiosError) {
-        if (e.response?.status === 401) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
           onAlert(
             'error',
             'You are not authorized to perform this action. Redirecting to home page.'
@@ -59,10 +57,14 @@ const PendingCompanyCard = ({
     }
   };
 
+  console.log(logo);
+
   return (
     <div
       className="flex flex-col p-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105 cursor-pointer"
       onClick={onClick}
+      role="button"
+      tabIndex={0}
     >
       <div className="flex flex-row items-center">
         {/* TODO!: fix logo */}
@@ -80,6 +82,7 @@ const PendingCompanyCard = ({
           <h3 className="text-jb-subheadings text-lg truncate">{location}</h3>
         </div>
         <button
+          type="button"
           className="bg-jb-accept-button rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
               shadow-btn duration-200 ease-linear cursor-pointer hover:shadow-btn-hovered"
           onClick={verifyCompany}

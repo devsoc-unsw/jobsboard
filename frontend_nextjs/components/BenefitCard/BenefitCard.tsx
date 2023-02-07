@@ -1,6 +1,6 @@
+import React from 'react';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 
 type BenefitCardProps = {
   title: string;

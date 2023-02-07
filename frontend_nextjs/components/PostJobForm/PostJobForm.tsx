@@ -1,18 +1,19 @@
 'use client';
+
+import React, { useContext, useEffect, useState } from 'react';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import { AxiosError } from 'axios';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import { StudentDemographic, WorkingRights } from 'types/api';
+import Button from 'ui/Button/Button';
+import Input from 'ui/Input/Input';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
-import { useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
-import { StudentDemographic, WorkingRights } from 'types/api';
-import Button from 'ui/Button/Button';
-import { AxiosError } from 'axios';
-import Input from 'ui/Input/Input';
-import dynamic from 'next/dynamic';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -92,7 +93,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
         });
       }
     };
-    admin && setup();
+    if (admin) setup();
   }, []);
 
   const submitJobPost = async () => {
@@ -125,7 +126,10 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
     jobDate.setMinutes(59);
 
     // ensure that there is a selected company
-    if (admin && (parseInt(selectedCompanyID, 10) < 0 || isNaN(parseInt(selectedCompanyID, 10)))) {
+    if (
+      admin &&
+      (parseInt(selectedCompanyID, 10) < 0 || Number.isNaN(parseInt(selectedCompanyID, 10)))
+    ) {
       // error message
       setAlertType('error');
       setAlertMsg('Please select a valid company.');
@@ -163,7 +167,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
         }
       );
 
-      admin && setApiToken(res.data.token);
+      if (admin) setApiToken(res.data.token);
       setAlertType('success');
       setAlertMsg('Job successfully posted! Redirecting to your dashboard...');
       setAlertOpen(true);
@@ -580,6 +584,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
         />
         <div className="flex flex-col gap-5">
           <button
+            type="button"
             className="border-none text-jb-textlink font-bold bg-jb-background mt-6 cursor-pointer hover:text-jb-textlink-hovered"
             onClick={() => setOpenModal(true)}
           >

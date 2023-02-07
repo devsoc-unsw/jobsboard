@@ -1,3 +1,4 @@
+import React, { useContext, useState } from 'react';
 import {
   faCircleDollarToSlot,
   faLocationDot,
@@ -8,12 +9,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
-import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
-import api from 'config/api';
 import { JobMode, JobType } from 'constants/jobFields';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
 import { StudentDemographic, WorkingRights } from 'types/api';
+import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
+import api from 'config/api';
 import styles from './styles.module.css';
 
 type JobProfileCardProps = {
@@ -56,7 +56,7 @@ const JobProfileCard = ({
   const jobTypeObject = JobType;
   const jobModeObject = JobMode;
 
-  const closeJobModal = async () => {
+  const closeJobModal = () => {
     setOpenModal(false);
   };
 
@@ -99,6 +99,8 @@ const JobProfileCard = ({
       <div
         className={`${styles.box} relative mt-6 ml-6 mb-8 rounded-xl w-[190px] h-[230px] cursor-pointer px-6`}
         onClick={() => setOpenModal(true)}
+        role="button"
+        tabIndex={0}
       >
         <div className="text-left">
           <h1 className="font-bold text-xl text-[#1a324e] text-center leading-[60px] mb-[-6px] truncate">
@@ -145,6 +147,8 @@ const JobProfileCard = ({
           <div
             className="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center cursor-pointer"
             onClick={deleteJob}
+            role="button"
+            tabIndex={0}
           >
             <div>
               <FontAwesomeIcon icon={faTrashAlt} className="text-[#FF7060]" size="1x" />
