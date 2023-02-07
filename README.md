@@ -51,6 +51,8 @@ yarn
 API_BASE_URL=http://localhost:8080/
 ```
 
+> CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. We do not represent the School, Faculty, or University. This website seeks to be a centralised platform for students looking for employment opportunities, but its information has not been officially endorsed by  the University, Faculty, School, or the Computer Science and Engineering Society.  You should confirm with the employer that any information
+received through this website is correct.
 The environment variable `API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead. If the backend is not running locally or if `API_BASE_URL` is not provided, it will use `https://jobsboard.staging.csesoc.unsw.edu.au/api` base URL instead as a fallback option.
 
 3. Start up the frontend
@@ -60,40 +62,20 @@ yarn dev
 
 3. Navigate to [localhost:3000](http://localhost:3000/) to see the frontend running locally!
 
-For more information on the frontend, read the frontend's [README.md](./frontend/README.md)
+<h2 id="documentation">Documentation</h2>
 
-### Running the backend locally 
-1. Navigate to the `backend` directory and install the required dependencies
-```
-cd backend
-yarn
-```
+### Running the project locally
+Navigate to the `/backend` folder and create a `.env` file with the following contents:
 
-2. Set up the required environment variables by creating a `.env` file in the `backend` directory with the following contents:
 ```
-NODE_ENV=development
-SERVER_PORT=8080
-DB_HOST=db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=mysecretpassword
-DB_NAME=postgres
+  NODE_ENV=development
+  SERVER_PORT=8080
 ```
 
-3. Build the database docker container and start it via docker.
-```
-docker compose build db
-docker compose up -d db
-```
-
-4. Start up the frontend
-```
-yarn serve
-```
-
-5. Navigate to [localhost:8080](http://localhost:8080/) to see the backend running locally! Visit [localhost:8080/docs](http://localhost:8080/docs) to see the API docs.
-
-For more information on the backend, read the backend's [README.md](./backend/README.md)
+#### Using `yarn`
+1. Navigate into both the `/frontend` and `/backend` folders.
+2. Run `yarn install` in both directories.
+3. Run `yarn run serve`
 
 ### Using Docker
 1. Navigate to the root of the project.
@@ -104,16 +86,57 @@ For more information on the backend, read the backend's [README.md](./backend/RE
 
 >*When developing locally, always remember to change the `apiRoot` in `frontend/src/config/config.ts` to `localhost`. When pr is ready for submission, change it back to the production or staging `apiRoot`*
 
+### Local Development Guide
+1. Navigate to the `/backend` folder and create a `.env` file with the following contents:
+
+```
+  NODE_ENV=development
+  SERVER_PORT=8080
+  DB_HOST=localhost
+  DB_PORT=5432
+  DB_USER=postgres
+  DB_PASSWORD=mysecretpassword
+  DB_NAME=postgres
+```
+
+2. Navigate into both the `/frontend` and `/backend` folders and run `yarn install`
+
+#### Frontend
+1. Navigate into the `/frontend` folder and run `yarn run serve`
+
+#### Backend
+1. Start a postgres database on port 5432 on your local computer
+2. Navigate into the `/backend` folder and run `yarn run serve`
+
+####  Backend Testing
+1. Navigate into the `/backend` folder
+2. Run `docker compose build test`
+3. Run `docker compose up test`
+
+#### Using `yarn`
+1. Navigate into both the `/frontend` and `/backend` folders.
+2. Run `yarn install` in both directories.
+3. Run `yarn run serve`
+
+### Finished your work
+Always double check before submitting your pr
+1. Run `docker compose build` and ensure the build completes successfully
+2. Run `docker compose up` and ensure all tests pass
+
 ### Pushing
 Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
 
 ### API Docs
-After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/). 
+After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/).
 When adding, modifying or removing routes from `backend/src/index.ts`, update the documentation at `backend/src/docs/openapi.json` accordingly to by following the existing format.
 
 ### Code Style & Linting
 #### Frontend
 
+Coming
+
 #### Backend
-- Run `yarn format:fix` to automatically amend all formatting issues **(recommended)**
-- Run `yarn lint:fix` to automatically amend all semantic issues **(recommended)**
+- Run `yarn run lint` to see both style and linting issues in `.ts` files within the `backend` directory at once
+- Run `yarn run lint:fix` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
+- Run `yarn run prettier` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
+- Run `yarn run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier` **(recommended)**

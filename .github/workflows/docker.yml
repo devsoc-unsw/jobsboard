@@ -64,8 +64,8 @@ jobs:
           git checkout -b update/jobsboard/${{ github.sha }}
           yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-frontend:${{ github.sha }}"' apps/projects/jobsboard/staging/deploy-frontend.yml
           yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-backend:${{ github.sha }}"' apps/projects/jobsboard/staging/deploy-backend.yml
-          git add . 
-          git commit -m "feat(jobsboard/staging): update images" 
+          git add .
+          git commit -m "feat(jobsboard/staging): update images"
           git push -u origin update/jobsboard/${{ github.sha }}
           gh pr create --title "feat(jobsboard/staging): update images" --body "Updates the images for the jobsboard deployment to commit csesoc/jobsboard@${{ github.sha }}." > URL
           gh pr merge $(cat URL) --squash -d
@@ -95,8 +95,8 @@ jobs:
           git checkout -b update/jobsboard/${{ github.sha }}
           yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-frontend:${{ github.sha }}"' apps/projects/jobsboard/prod/deploy-frontend.yml
           yq -i '.items[0].spec.template.spec.containers[0].image = "ghcr.io/csesoc/jobs-board-backend:${{ github.sha }}"' apps/projects/jobsboard/prod/deploy-backend.yml
-          git add . 
-          git commit -m "feat(jobsboard/prod): update images" 
+          git add .
+          git commit -m "feat(jobsboard/prod): update images"
           git push -u origin update/jobsboard/${{ github.sha }}
           gh pr create --title "feat(jobsboard/prod): update images" --body "Updates the images for the jobs-board deployment to commit csesoc/jobs-board@${{ github.sha }}." > URL
           gh pr merge $(cat URL) --squash -d
