@@ -1,11 +1,11 @@
 import React from 'react';
-import GoogleLogo from 'assets/companies/googleLogo.png';
-import AmazonLogo from 'assets/companies/amazonLogo.png';
-import PearlerLogo from 'assets/companies/PearlerLogo.png';
-import CanvaLogo from 'assets/companies/canvaLogo.png';
-import JaneStreetLogo from 'assets/companies/janeStreetLogo.png';
-import AtlassianLogo from 'assets/companies/atlassianLogo.png';
 import Image from 'next/image';
+import AmazonLogo from 'assets/companies/amazonLogo.png';
+import AtlassianLogo from 'assets/companies/atlassianLogo.png';
+import CanvaLogo from 'assets/companies/canvaLogo.png';
+import GoogleLogo from 'assets/companies/googleLogo.png';
+import JaneStreetLogo from 'assets/companies/janeStreetLogo.png';
+import PearlerLogo from 'assets/companies/PearlerLogo.png';
 import styles from './SponsorCarousel.module.css';
 
 const sponsors = [

@@ -1,13 +1,13 @@
 'use client';
-import { AxiosError } from 'axios';
-import Alert, { AlertType } from 'components/Alert/Alert';
-import Spinner from 'ui/Spinner/Spinner';
-import api from 'config/api';
-import { useRouter } from 'next/navigation';
+
 import React, { useState } from 'react';
+import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
+import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
-import Button from 'ui/Button/Button';
+import Alert, { AlertType } from 'components/Alert/Alert';
+import api from 'config/api';
 
 type CompanyResetPageProps = {
   params: {
@@ -16,7 +16,7 @@ type CompanyResetPageProps = {
 };
 
 const CompanyResetPage = ({ params }: CompanyResetPageProps) => {
-  const token = params.token;
+  const { token } = params;
 
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

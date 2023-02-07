@@ -1,5 +1,5 @@
-import ProfileCard from 'components/ProfileCard/ProfileCard';
 import React from 'react';
+import ProfileCard from 'components/ProfileCard/ProfileCard';
 
 const TeamPage = () => {
   const members = [

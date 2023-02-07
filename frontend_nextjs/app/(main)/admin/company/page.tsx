@@ -1,13 +1,14 @@
 'use client';
+
+import React, { useContext, useEffect, useState } from 'react';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 import PendingCompanyCard from 'components/PendingCompanyCard/PendingCompanyCard';
 import Toast, { ToastType } from 'components/Toast/Toast';
 import api from 'config/api';
-import { useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
 
 const AdminCompanyPage = () => {
   const { apiToken, setApiToken } = useContext(AppContext);
@@ -105,6 +106,7 @@ const AdminCompanyPage = () => {
                 {/* <!-- Modal footer --> */}
                 <div className="flex flex-row justify-end p-6 space-x-2 rounded-b border-t border-gray-600">
                   <button
+                    type="button"
                     className="bg-jb-textlink rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
                     onClick={() => setOpenModal(false)}
                   >
@@ -130,7 +132,6 @@ const AdminCompanyPage = () => {
             companyAccountID={company.id}
             companyName={company.company.name}
             location={company.company.location}
-            description={company.company.description}
             logo={company.company.logo}
             onClick={() =>
               triggerModal(

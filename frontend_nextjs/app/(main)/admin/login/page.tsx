@@ -1,17 +1,17 @@
 'use client';
+
+import React, { useContext, useState } from 'react';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
-import Alert from 'components/Alert/Alert';
-import api from 'config/api';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
 import { AuthenticationPayload } from 'types/student';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
-import Spinner from 'ui/Spinner/Spinner';
+import Alert from 'components/Alert/Alert';
+import api from 'config/api';
 
 const AdminLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);

@@ -1,7 +1,8 @@
 'use client';
-import { authTokenKey } from 'config/api';
+
 import React, { useState } from 'react';
 import Cookies from 'universal-cookie';
+import { authTokenKey } from 'config/api';
 import AppContext from './AppContext';
 
 type AppProviderProps = {
@@ -14,8 +15,9 @@ const AppProvider = ({ children }: AppProviderProps) => {
 
   return (
     <AppContext.Provider
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       value={{
-        apiToken: apiToken,
+        apiToken,
         setApiToken: (token) => {
           cookies.set(authTokenKey, token, {
             path: '/',

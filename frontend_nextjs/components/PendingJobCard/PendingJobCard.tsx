@@ -1,14 +1,14 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
-import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
-import api from 'config/api';
-// import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
 // import googleLogo from 'assets/companies/googleLogo.png';
 import { faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import { StudentDemographic, WorkingRights } from 'types/api';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
+// import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { StudentDemographic, WorkingRights } from 'types/api';
+import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
+import api from 'config/api';
 
 type PendingJobCardProps = {
   company: string;
@@ -70,10 +70,10 @@ const PendingJobCard = ({
       onRemove();
       onSuccess('Job successfully approved!');
       onError('');
-    } catch (e) {
+    } catch (err) {
       onError('Something went wrong. Please try again.');
-      if (e instanceof AxiosError) {
-        if (e.response?.status === 401) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
           onSuccess('');
           onError('Invalid user credentials. Redirecting to home page.');
           setTimeout(() => {
@@ -100,10 +100,10 @@ const PendingJobCard = ({
       setApiToken(res.data.token);
       onRemove();
       onSuccess('Job successfully rejected!');
-    } catch (e) {
+    } catch (err) {
       onError('Something went wrong. Please try again!');
-      if (e instanceof AxiosError) {
-        if (e.response?.status === 401) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 401) {
           onError('Invalid user credentials. Redirecting to home page.');
           setTimeout(() => {
             router.push('/');
@@ -133,6 +133,7 @@ const PendingJobCard = ({
       <br />
       <div>
         <button
+          type="button"
           className="flex flex-row p-4 shadow-card rounded-md w-full sm:flex-wrap hover-anim bg-white"
           onClick={() => setOpenModal(true)}
         >
@@ -156,10 +157,10 @@ const PendingJobCard = ({
             </p>
           </div>
           <div className="sm:flex mx-auto">
-            <button className="btn btn-green w-36 h-10 p-2 my-2" onClick={approveJob}>
+            <button type="button" className="btn btn-green w-36 h-10 p-2 my-2" onClick={approveJob}>
               Approve
             </button>
-            <button className="btn btn-red w-36 h-10 p-2 my-2" onClick={rejectJob}>
+            <button type="button" className="btn btn-red w-36 h-10 p-2 my-2" onClick={rejectJob}>
               Reject
             </button>
           </div>

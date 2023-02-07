@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   faAddressCard,
   faCalendar,
@@ -9,15 +10,14 @@ import {
   faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Modal from 'components/Modal/Modal';
 import {
   JobMode as JobModeObj,
   StudentDemographic as StudentDemographicObj,
   WamRequirements as WamRequirementsObj,
   WorkingRights as WorkingRightsObj
 } from 'constants/jobFields';
-import React from 'react';
 import { StudentDemographic, WorkingRights } from 'types/api';
+import Modal from 'components/Modal/Modal';
 
 type JobDescriptionModalProps = {
   title: string;

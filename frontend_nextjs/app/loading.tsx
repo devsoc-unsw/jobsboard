@@ -1,3 +1,4 @@
+import React from 'react';
 import PageLoading from 'components/PageLoading/PageLoading';
 
 const Loading = () => {

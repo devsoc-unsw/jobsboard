@@ -1,11 +1,11 @@
 'use client';
-import { AxiosError } from 'axios';
-import Alert, { AlertType } from 'components/Alert/Alert';
-import Spinner from 'ui/Spinner/Spinner';
-import api from 'config/api';
-import Link from 'next/link';
+
 import React, { useState } from 'react';
+import { AxiosError } from 'axios';
+import Link from 'next/link';
 import Button from 'ui/Button/Button';
+import Alert, { AlertType } from 'components/Alert/Alert';
+import api from 'config/api';
 
 const CompanyForgotPage = () => {
   const [email, setEmail] = useState('');

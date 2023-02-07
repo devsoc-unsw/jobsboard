@@ -1,7 +1,7 @@
+import React from 'react';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Modal from 'components/Modal/Modal';
-import React from 'react';
 
 type RecruitmentModalProps = {
   open: boolean;
