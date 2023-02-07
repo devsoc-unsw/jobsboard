@@ -11,10 +11,10 @@
         "lint:fix": "eslint --ext .vue src --fix"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "6.2.1",
-        "@fortawesome/free-brands-svg-icons": "6.2.1",
-        "@fortawesome/free-regular-svg-icons": "6.2.1",
-        "@fortawesome/free-solid-svg-icons": "6.2.1",
+        "@fortawesome/fontawesome-svg-core": "6.3.0",
+        "@fortawesome/free-brands-svg-icons": "6.3.0",
+        "@fortawesome/free-regular-svg-icons": "6.3.0",
+        "@fortawesome/free-solid-svg-icons": "6.3.0",
         "@fortawesome/vue-fontawesome": "3.0.2",
         "@vueup/vue-quill": "1.1.0",
         "autoprefixer": "10.4.13",
