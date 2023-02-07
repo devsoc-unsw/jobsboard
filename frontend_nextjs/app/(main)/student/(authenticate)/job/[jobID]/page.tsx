@@ -11,7 +11,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
-import { AxiosError } from 'axios';
 import Alert from 'components/Alert/Alert';
 import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
 import api from 'config/api';
@@ -122,14 +121,6 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
         top: 0,
         behavior: 'smooth'
       });
-      if (e instanceof AxiosError) {
-        if (e.response?.status === 401) {
-          setAlertMsg('Login expired. Redirecting to login page.');
-          setTimeout(() => {
-            router.push('/company/login');
-          }, 3000);
-        }
-      }
     }
   };
 

@@ -2,10 +2,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useState } from 'react';
-import googleLogo from 'assets/companies/googleLogo.png';
+// import googleLogo from 'assets/companies/googleLogo.png';
 import { faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { StudentDemographic, WorkingRights } from 'types/api';
 import { AxiosError } from 'axios';
@@ -137,13 +137,13 @@ const PendingJobCard = ({
           onClick={() => setOpenModal(true)}
         >
           {/* <!-- TODO: to be replaced with company logo --> */}
-          <Image
+          {/* <Image
             src={googleLogo}
             className="h-auto max-w-[100px] max-h-[90px] mr-8 self-center"
             alt="job logo"
             width={100}
             height={100}
-          />
+          /> */}
           <div className="flex flex-col text-left pt-3 grow min-w-[200px]">
             <h2 className="font-bold text-jb-headings">{role}</h2>
             <p>

@@ -4,7 +4,6 @@ import AppContext from 'app/AppContext';
 import BenefitCard from 'components/BenefitCard/BenefitCard';
 import Spinner from 'ui/Spinner/Spinner';
 import api from 'config/api';
-import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import JobCard from 'components/JobCard/JobCard';
 import ErrorBox from 'components/ErrorBox/ErrorBox';
@@ -15,10 +14,8 @@ import {
   faMoneyBills,
   faPeopleGroup
 } from '@fortawesome/free-solid-svg-icons';
-import { AxiosError } from 'axios';
 
 const StudentDashboardPage = () => {
-  const router = useRouter();
   const { apiToken } = useContext(AppContext);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -42,14 +39,6 @@ const StudentDashboardPage = () => {
         setErrorMsg('Unable to load jobs at this time. Please try again later.');
         setError(true);
         window.scrollTo(0, 10);
-        if (e instanceof AxiosError) {
-          if (e.response?.status === 401) {
-            setErrorMsg('Login expired. Redirecting to login page.');
-            setTimeout(() => {
-              router.push('/company/login');
-            }, 3000);
-          }
-        }
       }
       setLoading(false);
     };
