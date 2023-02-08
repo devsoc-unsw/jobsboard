@@ -7,9 +7,13 @@ import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
-import { AdminCompaniesPayload, AdminCompany } from 'types/admin';
-import { StudentDemographic, WorkingRights } from 'types/api';
-import { AuthenticationPayload } from 'types/authentication';
+import {
+  AdminCompaniesPayload,
+  AdminCompany,
+  AuthenticationPayload,
+  StudentDemographic,
+  WorkingRights
+} from 'types/api';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Alert, { AlertType } from 'components/Alert/Alert';
@@ -30,7 +34,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
   const [description, setDescription] = useState('');
   const [applicationLink, setApplicationLink] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
-  const [isPaidPosition, setIsPaidPosition] = useState('');
+  const [isPaid, setIsPaid] = useState<boolean | null>(null);
   const [jobType, setJobType] = useState('');
   const [jobMode, setJobMode] = useState('');
   const [workingRights, setWorkingRights] = useState<WorkingRights[]>([]);
@@ -106,7 +110,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
       !description.length ||
       !applicationLink.length ||
       !expiryDate.length ||
-      !isPaidPosition.length ||
+      isPaid === null ||
       !jobType.length ||
       !jobMode.length ||
       !workingRights.length ||
@@ -154,7 +158,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
           description,
           applicationLink,
           expiry: jobDate.valueOf(),
-          isPaid: isPaidPosition,
+          isPaid,
           jobMode,
           studentDemographic,
           jobType,
@@ -225,7 +229,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
         description={description}
         applicationLink={applicationLink}
         expiry={expiryDate}
-        isPaid={isPaidPosition}
+        isPaid={!!isPaid}
         jobType={jobType}
         jobMode={jobMode}
         workingRights={workingRights}
@@ -290,7 +294,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
               <option value="" disabled selected>
                 Please select an option
               </option>
-              {Object.values(verifiedCompanies).map((company: any) => (
+              {Object.values(verifiedCompanies).map((company) => (
                 <option key={company.id} value={company.id}>
                   {company.name} - {company.location}
                 </option>
@@ -347,8 +351,8 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
             </h2>
             <select
               id="paidPosition"
-              value={isPaidPosition}
-              onChange={(e) => setIsPaidPosition(e.target.value)}
+              value={isPaid ? 'true' : 'false'}
+              onChange={(e) => setIsPaid(e.target.value === 'true')}
               name="paidPosition"
               className="font-bold border-l-4 border-jb-textlink rounded-md p-4 mb-2 shadow-md w-full text-md focus:outline-jb-textlink border-r-transparent border-r-8 bg-white"
             >

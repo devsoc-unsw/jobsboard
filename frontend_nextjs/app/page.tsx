@@ -54,6 +54,7 @@ const HomePage = () => {
       />
       <div className="relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]">
         <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={BigBlob}
           className="absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2"
           alt="big blob"

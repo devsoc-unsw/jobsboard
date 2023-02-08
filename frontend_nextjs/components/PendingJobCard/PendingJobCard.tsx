@@ -6,8 +6,7 @@ import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 // import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { StudentDemographic, WorkingRights } from 'types/api';
-import { AuthenticationPayload } from 'types/authentication';
+import { AuthenticationPayload, StudentDemographic, WorkingRights } from 'types/api';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
 

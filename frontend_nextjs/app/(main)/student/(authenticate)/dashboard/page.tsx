@@ -52,12 +52,14 @@ const StudentDashboardPage = () => {
     if (!path) return object;
     const properties = path.split('.');
     const indexKey = properties.shift() || '';
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     return getValue(object[indexKey], properties.join('.'));
   };
 
   const searchKeys = ['role', 'jobType', 'company.name', 'company.location', 'mode'];
   const filteredJobs = jobs.filter((job) => {
     return searchKeys.some((key) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       return getValue(job, key).toLowerCase().includes(query);
     });
   });

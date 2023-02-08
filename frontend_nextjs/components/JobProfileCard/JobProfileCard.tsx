@@ -12,14 +12,15 @@ import { AxiosError } from 'axios';
 import { JobMode, JobType } from 'constants/jobFields';
 import { useRouter } from 'next/navigation';
 import { StudentDemographic, WorkingRights } from 'types/api';
+import { BoardStatus } from 'components/JobBoard/JobBoard';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
 import styles from './styles.module.css';
 
 type JobProfileCardProps = {
-  jobID: number;
+  id: number;
   role: string;
-  isPaidPosition: string;
+  isPaid: boolean;
   jobType: string;
   mode: string;
   expiry: string;
@@ -29,13 +30,13 @@ type JobProfileCardProps = {
   studentDemographic: StudentDemographic[];
   wamRequirements: string;
   additionalInfo: string;
-  listName: string;
+  status: BoardStatus;
 };
 
 const JobProfileCard = ({
-  jobID,
+  id,
   role,
-  isPaidPosition,
+  isPaid,
   jobType,
   mode,
   expiry,
@@ -45,7 +46,7 @@ const JobProfileCard = ({
   studentDemographic,
   wamRequirements,
   additionalInfo,
-  listName
+  status
 }: JobProfileCardProps) => {
   const [openModal, setOpenModal] = useState(false);
 
@@ -62,12 +63,12 @@ const JobProfileCard = ({
 
   const deleteJob = async () => {
     try {
-      await api.delete(`/company/job/${jobID}`, {
+      await api.delete(`/company/job/${id}`, {
         headers: {
           Authorization: apiToken
         }
       });
-      listName === 'postedJobs' && closeJobModal();
+      if (status === 'postedJobs') closeJobModal();
     } catch (e) {
       if (e instanceof AxiosError) {
         if (e.response?.status === 401) {
@@ -87,7 +88,7 @@ const JobProfileCard = ({
         description={description}
         applicationLink={applicationLink}
         expiry={expiry}
-        isPaid={isPaidPosition}
+        isPaid={isPaid}
         jobType={jobType}
         jobMode={mode}
         workingRights={workingRights}
@@ -133,9 +134,7 @@ const JobProfileCard = ({
               <p className="ml-3 text-jb-subheadings truncate">
                 {studentDemographic.length === 2 ? 'Penult & Final' : 'All Students'}
               </p>
-              <p className="ml-3 text-jb-subheadings truncate">
-                {isPaidPosition ? 'Paid' : 'Not Paid'}
-              </p>
+              <p className="ml-3 text-jb-subheadings truncate">{isPaid ? 'Paid' : 'Not Paid'}</p>
             </div>
           </div>
 
@@ -143,7 +142,7 @@ const JobProfileCard = ({
             Expiry Date: {new Date(expiry).toLocaleDateString()}
           </p>
         </div>
-        {listName === 'postedJobs' && (
+        {status === 'postedJobs' && (
           <div
             className="w-[105px] h-[25px] mt-4 rounded-lg flex justify-center cursor-pointer"
             onClick={deleteJob}

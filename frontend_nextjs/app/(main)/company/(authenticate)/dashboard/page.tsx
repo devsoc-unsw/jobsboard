@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Image from 'next/image';
 import { CompanyHiddenJobsPayload, CompanyJobsPayload, HiddenJob, Job } from 'types/api';
-import JobBoard from 'components/JobBoard/JobBoard';
+import JobBoard, { BoardStatus } from 'components/JobBoard/JobBoard';
 import api from 'config/api';
 import base64 from 'config/base64';
 
@@ -15,7 +15,7 @@ const CompanyDashboardPage = () => {
 
   const [jobs, setJobs] = useState<Job[]>([]);
   const [expiredJobs, setExpiredJobs] = useState<HiddenJob[]>([]);
-  const [boardStatus, setBoardStatus] = useState('postedJobs');
+  const [boardStatus, setBoardStatus] = useState<BoardStatus>('postedJobs');
   const [openModal, setOpenModal] = useState(false);
   const [logo, setLogo] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>('');
@@ -181,7 +181,7 @@ const CompanyDashboardPage = () => {
             <div>
               <select
                 id="board"
-                onChange={(e) => setBoardStatus(e.target.value)}
+                onChange={(e) => setBoardStatus(e.target.value as BoardStatus)}
                 name="boards"
                 className="bg-[#F6F9FC] ml-4 font-bold text-lg"
               >
@@ -194,7 +194,7 @@ const CompanyDashboardPage = () => {
         {/* <!-- Board --> */}
         <JobBoard
           jobList={boardStatus === 'postedJobs' ? jobs : expiredJobs}
-          listName={boardStatus}
+          status={boardStatus}
         />
 
         <h1 className="font-bold text-4xl text-jb-headings text-center leading-[72px] mt-14">

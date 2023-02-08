@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { AuthenticationPayload } from 'types/authentication';
+import { AuthenticationPayload } from 'types/api';
 import api from 'config/api';
 
 type PendingCompanyCardProps = {
