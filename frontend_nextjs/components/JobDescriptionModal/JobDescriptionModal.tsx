@@ -20,11 +20,11 @@ import { StudentDemographic, WorkingRights } from 'types/api';
 import Modal from 'components/Modal/Modal';
 
 type JobDescriptionModalProps = {
-  title: string;
+  role: string;
   description: string;
   applicationLink: string;
-  expiryDate: string;
-  isPaidPosition: string;
+  expiry: string;
+  isPaid: boolean;
   jobType: string;
   jobMode: string;
   workingRights: WorkingRights[];
@@ -36,11 +36,11 @@ type JobDescriptionModalProps = {
 };
 
 const JobDescriptionModal = ({
-  title,
+  role,
   description,
   applicationLink,
-  expiryDate,
-  isPaidPosition,
+  expiry,
+  isPaid,
   jobType,
   jobMode,
   workingRights,
@@ -55,7 +55,7 @@ const JobDescriptionModal = ({
       <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 max-h-[80%] my-auto overflow-auto">
         {/* <!-- Modal header --> */}
         <div className="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{role}</h2>
           <button
             type="button"
             className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -85,14 +85,14 @@ const JobDescriptionModal = ({
               <FontAwesomeIcon icon={faCircleDollarToSlot} className="mr-1" />
               Is this position paid?&nbsp;
               <span className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                {isPaidPosition === 'true' ? 'Yes' : 'No'}
+                {isPaid ? 'Yes' : 'No'}
               </span>
             </h3>
             <h3 className="text-l font-medium text-gray-900 dark:text-white">
               <FontAwesomeIcon icon={faCalendar} className="mr-1" />
               Application Expiry Date:&nbsp;
               <span className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                {new Date(expiryDate).toLocaleDateString()}
+                {new Date(expiry).toLocaleDateString()}
               </span>
             </h3>
             <h3 className="text-l font-medium text-gray-900 dark:text-white">

@@ -83,11 +83,11 @@ const JobProfileCard = ({
     <div>
       <JobDescriptionModal
         open={openModal}
-        title={role}
+        role={role}
         description={description}
         applicationLink={applicationLink}
-        expiryDate={expiry}
-        isPaidPosition={isPaidPosition}
+        expiry={expiry}
+        isPaid={isPaidPosition}
         jobType={jobType}
         jobMode={mode}
         workingRights={workingRights}

@@ -13,6 +13,7 @@ import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { AdminPendingCompaniesPayload, AdminPendingJobsPayload } from 'types/api';
 import Button from 'ui/Button/Button';
 import Alert from 'components/Alert/Alert';
 import api from 'config/api';
@@ -30,7 +31,7 @@ const AdminDashboardPage = () => {
   const fetchInfo = async () => {
     try {
       // Get the number of companies pending verification
-      const res = await api.get('/admin/pending/companies', {
+      const res = await api.get<AdminPendingCompaniesPayload>('/admin/pending/companies', {
         headers: {
           Authorization: apiToken
         }
@@ -56,7 +57,7 @@ const AdminDashboardPage = () => {
 
     try {
       // Get the number of jobs pending verification
-      const pendingJobsRes = await api.get('/admin/jobs/pending', {
+      const pendingJobsRes = await api.get<AdminPendingJobsPayload>('/admin/jobs/pending', {
         headers: {
           Authorization: apiToken
         }

@@ -13,8 +13,8 @@ import styles from './styles.module.css';
 
 type JobCardProps = {
   id: number;
-  company: number;
-  logo: string;
+  company: string;
+  logo: Buffer;
   jobType: string;
   workingRights: string[];
   location: string;
@@ -38,7 +38,8 @@ const JobCard = ({
         <div className="flex m-5 justify-center">
           {logo ? (
             <Image
-              src={logo}
+              // TODO fix logo
+              src={logo.toString()}
               className="m-auto my-4 object-contain"
               alt="sponsor logo"
               width={180}

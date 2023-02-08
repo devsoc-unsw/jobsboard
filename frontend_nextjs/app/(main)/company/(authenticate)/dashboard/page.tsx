@@ -5,7 +5,7 @@ import { faBars, faCloudUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Image from 'next/image';
-import { CompanyJob, CompanyJobsPayload, HiddenJob, HiddenJobsPayload } from 'types/api';
+import { CompanyHiddenJobsPayload, CompanyJobsPayload, HiddenJob, Job } from 'types/api';
 import JobBoard from 'components/JobBoard/JobBoard';
 import api from 'config/api';
 import base64 from 'config/base64';
@@ -13,7 +13,7 @@ import base64 from 'config/base64';
 const CompanyDashboardPage = () => {
   const { apiToken } = useContext(AppContext);
 
-  const [jobs, setJobs] = useState<CompanyJob[]>([]);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [expiredJobs, setExpiredJobs] = useState<HiddenJob[]>([]);
   const [boardStatus, setBoardStatus] = useState('postedJobs');
   const [openModal, setOpenModal] = useState(false);
@@ -46,6 +46,7 @@ const CompanyDashboardPage = () => {
 
   const checkCompanyLogoStatus = async () => {
     try {
+      // TODO check this route exists?
       await api.get('/company/logo/status', {
         headers: {
           Authorization: apiToken
@@ -82,7 +83,7 @@ const CompanyDashboardPage = () => {
 
   const getHiddenJobs = async () => {
     try {
-      const res = await api.get<HiddenJobsPayload>('/job/company/hidden', {
+      const res = await api.get<CompanyHiddenJobsPayload>('/job/company/hidden', {
         headers: {
           Authorization: apiToken
         }

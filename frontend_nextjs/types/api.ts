@@ -1,3 +1,4 @@
+// global types
 export enum JobMode {
   Onsite = 'onsite',
   Hybrid = 'hybrid',
@@ -32,46 +33,102 @@ export enum WamRequirements {
   None = 'none'
 }
 
-// /companyJobs
-export type CompanyJob = {
+// root tyoes
+export type FeaturedJob = {
   id: number;
+  logo: string;
   role: string;
   description: string;
+  workingRights: WorkingRights[];
   applicationLink: string;
-  status: string;
-  additionalInfo: string;
-  expiry: string;
-  mode: string;
+  company: string;
+};
+
+export type FeaturedJobsPayload = {
+  featuredJobs: FeaturedJob[];
+};
+
+// authentication types
+export type AuthenticationPayload = {
+  token: string;
+};
+
+// student types
+export type Job = {
+  id: number;
+  role: string;
+  mode: JobMode;
   studentDemographic: StudentDemographic[];
-  jobType: string;
+  jobType: JobType;
   workingRights: WorkingRights[];
   wamRequirements: WamRequirements;
+  additionalInfo: string;
+  description: string;
+  applicationLink: string;
   isPaid: boolean;
+  expiry: string;
+};
+
+export type JobWithCompany = Job & {
+  company: Company;
+};
+
+export type JobPayload = {
+  job: JobWithCompany;
+};
+
+export type JobsPayload = {
+  jobs: JobWithCompany[];
+};
+
+// company types
+export type Company = {
+  id: number;
+  name: string;
+  location: string;
+  description: string;
+  logo: Buffer;
+  sponsor: boolean;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type CompanyJobsPayload = {
-  companyJobs: CompanyJob[];
+  companyJobs: Job[];
 };
 
-// /job/company/hidden
-export type HiddenJob = {
-  id: number;
-  role: string;
-  mode: string;
-  studentDemographic: StudentDemographic[];
-  jobType: string;
-  workingRights: WorkingRights[];
-  wamRequirements: WamRequirements;
-  additionalInfo: string;
-  description: string;
-  applicationLink: string;
-  isPaid: boolean;
+export type HiddenJob = Job & {
   approved: boolean;
-  hidden: boolean;
   deleted: boolean;
-  expiry: string;
+  hidden: boolean;
 };
 
-export type HiddenJobsPayload = {
+export type CompanyHiddenJobsPayload = {
   hiddenJobs: HiddenJob[];
+};
+
+// admin types
+export type AdminPendingCompany = {
+  company: Company;
+  id: number;
+};
+
+export type AdminCompany = {
+  id: number;
+  location: string;
+  name: string;
+};
+
+export type AdminPendingCompaniesPayload = {
+  pendingCompanyVerifications: AdminPendingCompany[];
+  token: string;
+};
+
+export type AdminPendingJobsPayload = {
+  pendingJobs: JobWithCompany[];
+  token: string;
+};
+
+export type AdminCompaniesPayload = {
+  companies: AdminCompany[];
 };

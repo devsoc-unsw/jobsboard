@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { AuthenticationPayload } from 'types/student';
+import { AuthenticationPayload } from 'types/api';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';

@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
+import { JobsPayload, JobWithCompany } from 'types/api';
 import Spinner from 'ui/Spinner/Spinner';
 import BenefitCard from 'components/BenefitCard/BenefitCard';
 import ErrorBox from 'components/ErrorBox/ErrorBox';
@@ -20,7 +21,7 @@ const StudentDashboardPage = () => {
   const { apiToken } = useContext(AppContext);
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<JobWithCompany[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +30,7 @@ const StudentDashboardPage = () => {
       // determine whether there is an API key present and redirect if not present
       // load the jobs using the api token
       try {
-        const res = await api.get(`/jobs/${jobs.length}`, {
+        const res = await api.get<JobsPayload>(`/jobs/${jobs.length}`, {
           headers: {
             Authorization: apiToken
           }
@@ -123,9 +124,9 @@ const StudentDashboardPage = () => {
           <div className="flex flex-wrap justify-center gap-7">
             {filteredJobs.map((job) => (
               <JobCard
-                key={job.key}
+                key={job.id}
                 id={job.id}
-                logo={job.logo}
+                logo={job.company.logo}
                 company={job.company.name}
                 role={job.role}
                 jobType={job.jobType}

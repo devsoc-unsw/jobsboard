@@ -8,6 +8,7 @@ import Link from 'next/link';
 import container from 'styles/container.module.css';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { FeaturedJob, FeaturedJobsPayload } from 'types/api';
 import Button from 'ui/Button/Button';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
 import BigBlob from 'assets/misc/BigBlob.svg';
@@ -22,14 +23,14 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 const HomePage = () => {
-  const [featuredJobs, setFeaturedJobs] = useState<any[]>([]);
+  const [featuredJobs, setFeaturedJobs] = useState<FeaturedJob[]>([]);
 
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const getFeaturedJobs = async () => {
       try {
-        const res = await api.get('/featured-jobs');
+        const res = await api.get<FeaturedJobsPayload>('/featured-jobs');
         setFeaturedJobs(res.data.featuredJobs);
       } catch (e) {
         console.error('Error at getFeaturedJobs', e);
@@ -143,7 +144,7 @@ const HomePage = () => {
               modules={[Pagination, Navigation]}
             >
               {featuredJobs.map((job) => (
-                <SwiperSlide key={job.title}>
+                <SwiperSlide key={job.id}>
                   <FeaturedJobCard
                     title={job.role}
                     description={job.description}
