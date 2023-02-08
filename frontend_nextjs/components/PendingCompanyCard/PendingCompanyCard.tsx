@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { AuthenticationPayload } from 'types/api';
 import api from 'config/api';
 
 type PendingCompanyCardProps = {
-  companyName: string;
+  name: string;
   location: string;
-  logo: string;
-  companyAccountID: string;
+  logo: Buffer;
+  id: number;
   onClick(): void;
   onAlert(type: string, msg: string): void;
   onRemove(): void;
@@ -19,9 +20,9 @@ const PendingCompanyCard = ({
   onRemove,
   onAlert,
   logo,
-  companyName,
+  name,
   location,
-  companyAccountID
+  id
 }: PendingCompanyCardProps) => {
   const router = useRouter();
   const { apiToken, setApiToken } = useContext(AppContext);
@@ -29,8 +30,8 @@ const PendingCompanyCard = ({
   const verifyCompany = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     try {
-      const res = await api.patch(
-        `/admin/company/${companyAccountID}/verify`,
+      const res = await api.patch<AuthenticationPayload>(
+        `/admin/company/${id}/verify`,
         {},
         {
           headers: {
@@ -78,7 +79,7 @@ const PendingCompanyCard = ({
           ></Image>
         )} */}
         <div className="flex flex-col text-left w-full truncate">
-          <h2 className="font-bold text-jb-headings text-xl truncate">{companyName}</h2>
+          <h2 className="font-bold text-jb-headings text-xl truncate">{name}</h2>
           <h3 className="text-jb-subheadings text-lg truncate">{location}</h3>
         </div>
         <button

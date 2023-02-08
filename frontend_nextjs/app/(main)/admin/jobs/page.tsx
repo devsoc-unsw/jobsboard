@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { AdminPendingJobsPayload, JobWithCompany } from 'types/api';
 import Spinner from 'ui/Spinner/Spinner';
 import PendingJobCard from 'components/PendingJobCard/PendingJobCard';
 import Toast from 'components/Toast/Toast';
@@ -16,12 +17,12 @@ const AdminJobsPage = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<JobWithCompany[]>([]);
 
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await api.get('/admin/jobs/pending', {
+        const res = await api.get<AdminPendingJobsPayload>('/admin/jobs/pending', {
           headers: {
             Authorization: apiToken
           }
@@ -71,17 +72,17 @@ const AdminJobsPage = () => {
       {loading && <Spinner />}
       {jobs.map((job) => (
         <PendingJobCard
-          key={job.key}
+          key={job.id}
           company={job.company.name}
           location={job.company.location}
-          jobID={job.id}
+          id={job.id}
           role={job.role}
           description={job.description}
           applicationLink={job.applicationLink}
-          expiryDate={job.expiry}
-          isPaidPosition={job.isPaid}
+          expiry={job.expiry}
+          isPaid={job.isPaid}
           jobType={job.jobType}
-          jobMode={job.mode}
+          mode={job.mode}
           workingRights={job.workingRights}
           studentDemographic={job.studentDemographic}
           wamRequirements={job.wamRequirements}

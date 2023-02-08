@@ -41,17 +41,10 @@
   "jsx-a11y/click-events-have-key-events": ["off"],
   "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
   "@typescript-eslint/no-floating-promises": ["off"],
-  "@typescript-eslint/no-unsafe-member-access": ["off"], // TODO remove this
-  "@typescript-eslint/no-unsafe-assignment": "off", // TODO remove this
-  "@typescript-eslint/no-explicit-any": "off", // TODO remove this
-  "@typescript-eslint/no-unsafe-call": "off", // TODO remove this
-  "@typescript-eslint/no-unused-expressions": "off", // TODO remove this
-  "@typescript-eslint/no-unsafe-return": "off", // TODO remove this
-  "@typescript-eslint/no-unsafe-argument": "off", // TODO remove this
-  "@typescript-eslint/restrict-template-expressions": "off", // TODO remove this
   "jsx-a11y/label-has-associated-control": ["off"], // TODO remove this
-  "react-hooks/exhaustive-deps": ["warn"],
-  "react-hooks/rules-of-hooks": ["warn"] // Checks rules of Hooks
+  "react-hooks/exhaustive-deps": ["warn"], // TODO make this error
+  "react-hooks/rules-of-hooks": ["warn"], // TODO make this error? - checks rules of Hooks
+  "import/no-cycle": ["warn"] // TODO should be error?
   }
 }
   

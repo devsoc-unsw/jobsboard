@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import { AdminPendingCompaniesPayload, AdminPendingCompany } from 'types/api';
 import PendingCompanyCard from 'components/PendingCompanyCard/PendingCompanyCard';
 import Toast, { ToastType } from 'components/Toast/Toast';
 import api from 'config/api';
@@ -23,7 +24,7 @@ const AdminCompanyPage = () => {
   const [currentCompanyLocation, setCurrentCompanyLocation] = useState('');
   const [currentCompanyDescription, setCurrentCompanyDescription] = useState('');
 
-  const [companies, setCompanies] = useState<any[]>([]);
+  const [companies, setCompanies] = useState<AdminPendingCompany[]>([]);
 
   const triggerAlert = (type: ToastType, msg: string) => {
     // window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -35,9 +36,9 @@ const AdminCompanyPage = () => {
     }, 3000);
   };
 
-  const triggerModal = (companyName: string, location: string, companyDescription: string) => {
+  const triggerModal = (name: string, location: string, companyDescription: string) => {
     setOpenModal(true);
-    setCurrentCompanyShown(companyName);
+    setCurrentCompanyShown(name);
     setCurrentCompanyLocation(location);
     setCurrentCompanyDescription(companyDescription);
   };
@@ -45,7 +46,7 @@ const AdminCompanyPage = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const res = await api.get(`/admin/pending/companies`, {
+        const res = await api.get<AdminPendingCompaniesPayload>(`/admin/pending/companies`, {
           headers: {
             Authorization: apiToken
           }
@@ -129,8 +130,8 @@ const AdminCompanyPage = () => {
         {companies.map((company) => (
           <PendingCompanyCard
             key={company.id}
-            companyAccountID={company.id}
-            companyName={company.company.name}
+            id={company.id}
+            name={company.company.name}
             location={company.company.location}
             logo={company.company.logo}
             onClick={() =>

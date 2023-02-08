@@ -21,7 +21,7 @@ const pulse = keyframes({
 const LoadingLogo = styled('div', {
   width: '200px',
   borderRadius: '50%',
-  animation: `${pulse} 1.5s infinite`
+  animation: `${pulse()} 1.5s infinite`
 });
 
 export default { PageWrapper, LoadingLogo };

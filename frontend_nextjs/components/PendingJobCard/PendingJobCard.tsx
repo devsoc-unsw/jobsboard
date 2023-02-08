@@ -6,21 +6,21 @@ import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 // import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { StudentDemographic, WorkingRights } from 'types/api';
+import { AuthenticationPayload, StudentDemographic, WorkingRights } from 'types/api';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
 
 type PendingJobCardProps = {
   company: string;
   location: string;
-  jobID: number;
+  id: number;
   role: string;
   description: string;
   applicationLink: string;
-  expiryDate: string;
-  isPaidPosition: string;
+  expiry: string;
+  isPaid: boolean;
   jobType: string;
-  jobMode: string;
+  mode: string;
   workingRights: WorkingRights[];
   studentDemographic: StudentDemographic[];
   wamRequirements: string;
@@ -33,14 +33,14 @@ type PendingJobCardProps = {
 const PendingJobCard = ({
   company,
   location,
-  jobID,
+  id,
   role,
   description,
   applicationLink,
-  expiryDate,
-  isPaidPosition,
+  expiry,
+  isPaid,
   jobType,
-  jobMode,
+  mode: jobMode,
   workingRights,
   studentDemographic,
   wamRequirements,
@@ -57,8 +57,8 @@ const PendingJobCard = ({
   const approveJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     try {
-      const res = await api.patch(
-        `/job/${jobID}/approve`,
+      const res = await api.patch<AuthenticationPayload>(
+        `/job/${id}/approve`,
         {},
         {
           headers: {
@@ -88,8 +88,8 @@ const PendingJobCard = ({
   const rejectJob = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     try {
-      const res = await api.patch(
-        `/job/${jobID}/reject`,
+      const res = await api.patch<AuthenticationPayload>(
+        `/job/${id}/reject`,
         {},
         {
           headers: {
@@ -117,11 +117,11 @@ const PendingJobCard = ({
     <div>
       <JobDescriptionModal
         open={openModal}
-        title={role}
+        role={role}
         description={description}
         applicationLink={applicationLink}
-        expiryDate={expiryDate}
-        isPaidPosition={isPaidPosition}
+        expiry={expiry}
+        isPaid={isPaid}
         jobType={jobType}
         jobMode={jobMode}
         workingRights={workingRights}

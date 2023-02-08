@@ -33,6 +33,7 @@ const Header = ({ style }: HeaderProps) => {
       </Link>
       <div className="flex justify-evenly items-center gap-5">
         <div className="group cursor-pointer relative">
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
           {/* Tooltip */}
           <span

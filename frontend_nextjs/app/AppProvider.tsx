@@ -11,7 +11,9 @@ type AppProviderProps = {
 
 const AppProvider = ({ children }: AppProviderProps) => {
   const cookies = new Cookies();
-  const [apiToken, setApiToken] = useState<string | null>(cookies.get(authTokenKey));
+  const [apiToken, setApiToken] = useState<string | null>(
+    (cookies.get(authTokenKey) as string) || null
+  );
 
   return (
     <AppContext.Provider
