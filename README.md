@@ -10,7 +10,7 @@
   <a href="https://jobsboard.csesoc.unsw.edu.au/">Visit Jobs Board</a> •
   <a href="#about">About</a> •
   <a href="#team">Team</a> •
-  <a href="#installation">Installation</a>
+  <a href="#installation">Installation</a>  •
   <a href="#documentation">Documentation</a>
 </p>
 
