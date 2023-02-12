@@ -11,6 +11,7 @@
   <a href="#about">About</a> •
   <a href="#team">Team</a> •
   <a href="#installation">Installation</a>
+  <a href="#documentation">Documentation</a>
 </p>
 
 > CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. We do not represent the School, Faculty, or University. This website seeks to be a centralised platform for students looking for employment opportunities, but its information has not been officially endorsed by  the University, Faculty, School, or the Computer Science and Engineering Society.  You should confirm with the employer that any information received through this website is correct.
@@ -51,72 +52,104 @@ yarn
 API_BASE_URL=http://localhost:8080/
 ```
 
-> CSESoc is the constituent student society of UNSW's School of Computer Science and Engineering. We do not represent the School, Faculty, or University. This website seeks to be a centralised platform for students looking for employment opportunities, but its information has not been officially endorsed by  the University, Faculty, School, or the Computer Science and Engineering Society.  You should confirm with the employer that any information
-received through this website is correct.
-The environment variable `API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead. If the backend is not running locally or if `API_BASE_URL` is not provided, it will use `https://jobsboard.staging.csesoc.unsw.edu.au/api` base URL instead as a fallback option.
+The environment variable `API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead (http://localhost:8080/). If the backend is not running locally or if `API_BASE_URL` is not provided, `https://jobsboard.staging.csesoc.unsw.edu.au/api` will be used as the base URL as a fallback option.
 
 3. Start up the frontend
 ```
 yarn dev
 ```
 
-3. Navigate to [localhost:3000](http://localhost:3000/) to see the frontend running locally!
+4. Navigate to [localhost:3000](http://localhost:3000/) to see the frontend running locally!
 
-<h2 id="documentation">Documentation</h2>
-
-### Running the project locally
-Navigate to the `/backend` folder and create a `.env` file with the following contents:
-
+### Running the backend locally 
+1. Navigate to the `backend` directory and install the required dependencies
 ```
-  NODE_ENV=development
-  SERVER_PORT=8080
+cd backend
+yarn
 ```
 
-#### Using `yarn`
-1. Navigate into both the `/frontend` and `/backend` folders.
-2. Run `yarn install` in both directories.
-3. Run `yarn run serve`
+2. Set up the required environment variables by creating a `.env` file in the `backend` directory with the following contents:
+```
+NODE_ENV=development
+SERVER_PORT=8080
+DB_HOST=db
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=mysecretpassword
+DB_NAME=postgres
+```
+
+3. Build the database docker container and start it via docker.
+```
+docker compose build db
+docker compose up -d db
+```
+
+4. Start up the backend
+```
+yarn serve
+```
+
+5. Navigate to [localhost:8080](http://localhost:8080/) to see the backend running locally! Visit [localhost:8080/docs](http://localhost:8080/docs) to see the API docs.
+
+### Running the backend in production mode
+
+> Only use this section if you are working on a function that needs the mail queue initialised. This assumes that you are using Gmail as the test account when trying to send emails.
+
+1. Ensure that your 2-FA for Gmail is enabled.
+
+2. Generate an App Password by following [this](https://support.google.com/mail/answer/185833?hl=en) (Focus on the “Create & Use App Passwords” section). 
+
+3. Navigate to the `docker-compose.yml` file and add this in under the api environment:
+```
+NODE_ENV=production
+SERVER_PORT=8080
+JOBS_BOARD_API_URL=http://127.0.0.1:8080
+MAIL_SMTP_SERVER=smtp.gmail.com
+MAIL_SMTP_SERVER_PORT=465
+MAIL_USERNAME=<REPLACE WITH YOUR EMAIL ADDRESS>
+MAIL_PASSWORD=<REPLACE WITH YOUR APP PASSWORD FROM STEP 2>
+```
+
+4. For the frontend, ensure you set the environment variable in `frontend/.env` to use `http://localhost:8080/`
+
+5. Navigate to `mail.ts` and modify the `secure` field in the `transportOptions` object config to `true` as shown below:
+```
+const transportOptions = {
+  host: process.env.MAIL_SMTP_SERVER,
+  port: parseInt(process.env.MAIL_SMTP_SERVER_PORT, 10),
+  secure: true, // SET THIS TO TRUE
+  auth: {
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
+  },
+  requireTLS: true,
+};
+```
+
 
 ### Using Docker
 1. Navigate to the root of the project.
 2. Run `docker-compose build` to build all containers or `docker-compose build [container-name]` for a specific container specified in the compose file.
 3. Run `docker-compose up` to start all containers or `docker-compose up [container-name]` for starting a specific container specified in the compose file.
 
-> *To view which containers you would like to build/start, refer to `/docker-compose.yml`*
+> To view which containers you would like to build/start, refer to [docker-compose.yml](./docker-compose.yml)
 
->*When developing locally, always remember to change the `apiRoot` in `frontend/src/config/config.ts` to `localhost`. When pr is ready for submission, change it back to the production or staging `apiRoot`*
+## Documentation
 
-### Local Development Guide
-1. Navigate to the `/backend` folder and create a `.env` file with the following contents:
-
-```
-  NODE_ENV=development
-  SERVER_PORT=8080
-  DB_HOST=localhost
-  DB_PORT=5432
-  DB_USER=postgres
-  DB_PASSWORD=mysecretpassword
-  DB_NAME=postgres
-```
-
-2. Navigate into both the `/frontend` and `/backend` folders and run `yarn install`
+### Running tests
 
 #### Frontend
-1. Navigate into the `/frontend` folder and run `yarn run serve`
-
-#### Backend
-1. Start a postgres database on port 5432 on your local computer
-2. Navigate into the `/backend` folder and run `yarn run serve`
+*We do not have tests yet... :(*
 
 ####  Backend Testing
 1. Navigate into the `/backend` folder
 2. Run `docker compose build test`
 3. Run `docker compose up test`
 
-#### Using `yarn`
-1. Navigate into both the `/frontend` and `/backend` folders.
-2. Run `yarn install` in both directories.
-3. Run `yarn run serve`
+>  Use the logs in the terminal or the Docker Desktop GUI to check your tests.
+
+> The reason docker is used when testing is because we're given a guarantee that the conditions are exactly the same every time and because it emulates what the behaviour will be on prod running in the container - which there are difference
 
 ### Finished your work
 Always double check before submitting your pr
