@@ -31,6 +31,7 @@ Jobs Board was made with 🤍 by CSE students, for CSE students. Jobsboard is a 
 - [Git](https://github.com/git-guides/install-git)
 - [Nodejs](https://nodejs.org/en/download/package-manager/) and [yarn](https://yarnpkg.com/)
 - [Docker](https://www.docker.com/)
+- [PostgreSQL](https://www.postgresql.org/download/)
 
 ### Setting Up
 
@@ -61,7 +62,7 @@ yarn dev
 
 4. Navigate to [localhost:3000](http://localhost:3000/) to see the frontend running locally!
 
-### Running the backend locally 
+### Running the backend locally
 1. Navigate to the `backend` directory and install the required dependencies
 ```
 cd backend
@@ -92,13 +93,15 @@ yarn serve
 
 5. Navigate to [localhost:8080](http://localhost:8080/) to see the backend running locally! Visit [localhost:8080/docs](http://localhost:8080/docs) to see the API docs.
 
+> Make sure that the apiRoot in /frontend/config/config.ts points to the local instance..
+
 ### Running the backend in production mode
 
 > Only use this section if you are working on a function that needs the mail queue initialised. This assumes that you are using Gmail as the test account when trying to send emails.
 
 1. Ensure that your 2-FA for Gmail is enabled.
 
-2. Generate an App Password by following [this](https://support.google.com/mail/answer/185833?hl=en) (Focus on the “Create & Use App Passwords” section). 
+2. Generate an App Password by following [this](https://support.google.com/mail/answer/185833?hl=en) (Focus on the “Create & Use App Passwords” section).
 
 3. Navigate to the `docker-compose.yml` file and add this in under the api environment:
 ```
