@@ -47,14 +47,6 @@ export default class Helpers {
     throw new Error(`Invalid mailto or HTTP[S] application link: ${value}`);
   }
 
-  // public static doSuccessfullyOrThrow<TArgs extends unknown[], TReturn>(
-  //   func: async (...parameters : TArgs) => TReturn, failMessage: string)
-  //   : Promise<(...parameters: TArgs) => TReturn>
-  // {
-  //   const result = await func(...parameters);
-  //   if (result === undefined) throw new Error(failMessage);
-  // }
-
   public static async doSuccessfullyOrFail
     <TReturn>(
     func: () => Promise<TReturn>,
