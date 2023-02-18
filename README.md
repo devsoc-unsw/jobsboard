@@ -73,7 +73,7 @@ yarn
 ```
 NODE_ENV=development
 SERVER_PORT=8080
-DB_HOST=db
+DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=mysecretpassword
