@@ -1,4 +1,5 @@
 import fs from 'fs';
+import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 
 import Logger from './logging';
@@ -12,6 +13,8 @@ import Student from './entity/student';
 import MailRequest from './entity/mail_request';
 import Logs from './entity/logs';
 import Statistics from './entity/statistics';
+
+dotenv.config();
 
 export const activeEntities = [
   Company,

@@ -471,6 +471,39 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
+app.get(
+  'check-token-student-valid',
+  cors(corsOptions),
+  (req: AuthRequest, res, next) => {
+    (async () => {
+      await Auth.AuthenticateStudent(req, res,next);
+    }) ();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.get(
+  'check-token-admin-valid',
+  cors(corsOptions),
+  (req: AuthRequest, res, next) => {
+    (async () => {
+      await Auth.AuthenticateAdmin(req, res, next);
+    }) ();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.get(
+  'check-token-company-valid',
+  cors(corsOptions),
+  (req: AuthRequest, res, next) => {
+    (async () => {
+      await Auth.AuthenticateCompany(req, res, next);
+    }) ();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
 if (process.env.NODE_ENV === 'development') {
   app.post('/email', (req, res) => {
     (async () => {
