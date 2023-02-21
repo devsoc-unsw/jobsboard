@@ -1,5 +1,5 @@
-import { Response, NextFunction } from 'express';
-import { Client } from 'ldapts';
+import { Response, NextFunction, response } from 'express';
+// import { Client } from 'ldapts';
 import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
@@ -212,13 +212,29 @@ export default class Auth {
         // check if it matches the zID format, throw otherwise.
         Helpers.doesMatchZidFormat(zID);
 
-        const client = new Client({
-          url: 'ldaps://ad.unsw.edu.au',
-          // tlsOptions: {
-          //   minVersion: 'TLSv1.2',
-          // },
-        });
-        await client.bind(`${zID}@ad.unsw.edu.au`, password);
+        // const client = new Client({
+        //   url: 'ldaps://ad.unsw.edu.au',
+        //   // tlsOptions: {
+        //   //   minVersion: 'TLSv1.2',
+        //   // },
+        // });
+        // await client.bind(`${zID}@ad.unsw.edu.au`, password);
+        const payload = { zID, password };
+        const verifyResponse: any = await fetch('https://verify.csesoc.unsw.edu.au/v1', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          });
+        }
+
+        if (verifyResponse.status === 503) {
+          Logger.Info(`Failed to login STUDENT=${zID} due to INVALID CREDENTIALS`);
+          return false;
+        }
+
         Logger.Info(`STUDENT=${zID} is logged in`);
         return true;
       }
