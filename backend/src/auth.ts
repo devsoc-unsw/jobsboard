@@ -1,4 +1,4 @@
-import { Response, NextFunction, response } from 'express';
+import { Response, NextFunction } from 'express';
 // import { Client } from 'ldapts';
 import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
@@ -220,23 +220,23 @@ export default class Auth {
         // });
         // await client.bind(`${zID}@ad.unsw.edu.au`, password);
         const payload = { zID, password };
-        const verifyResponse: any = await fetch('https://verify.csesoc.unsw.edu.au/v1', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-          });
+        const verifyResponse = await fetch('https://verify.csesoc.unsw.edu.au/v1', {
+          method: 'POST',
+          headers: {
+            // just to make the linter happy
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (verifyResponse.status === 200) {
+          Logger.Info(`STUDENT=${zID} is logged in`);
+          return true;
         }
 
-        if (verifyResponse.status === 503) {
-          Logger.Info(`Failed to login STUDENT=${zID} due to INVALID CREDENTIALS`);
-          return false;
-        }
-
-        Logger.Info(`STUDENT=${zID} is logged in`);
-        return true;
+        Logger.Info(`Failed to login STUDENT=${zID}, error code ${verifyResponse.status}`);
+        return false;
       }
       // if unexpected characters are found, immediately reject
       Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);
