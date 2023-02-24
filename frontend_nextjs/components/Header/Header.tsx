@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import AppContext from 'app/AppContext';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,13 +9,21 @@ import logo from 'assets/logos/csesocwhite.png';
 import moon from 'assets/misc/moon.svg';
 import styles from './styles.module.css';
 
-type HeaderProps = {
-  style?: React.CSSProperties;
+type DarkModeProperty = {
+  isDarkMode: boolean;
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Header = ({ style }: HeaderProps) => {
+type HeaderProps = {
+  style?: React.CSSProperties;
+  darkMode: DarkModeProperty;
+};
+
+const Header = ({ style, darkMode }: HeaderProps) => {
   const router = useRouter();
   const { apiToken, resetApiToken } = useContext(AppContext);
+
+  const { isDarkMode, setDarkMode } = darkMode;
 
   const handleLogout = () => {
     resetApiToken();
@@ -26,22 +34,28 @@ const Header = ({ style }: HeaderProps) => {
     <div
       style={style}
       className="flex justify-evenly items-center py-4
-           bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]"
+           bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#8fcc61]
+           dark:bg-gradient-to-br dark:from-[#09203F] dark:to-[#537895]"
     >
       <Link href="/">
         <Image className="cursor-pointer" src={logo} width={150} alt="CSESoc" />
       </Link>
       <div className="flex justify-evenly items-center gap-5">
-        <div className="group cursor-pointer relative">
+        <button
+          type="button"
+          className="group cursor-pointer relative"
+          onClick={() => {setDarkMode(!isDarkMode)}}
+        >
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
           {/* Tooltip */}
           <span
-            className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
+            className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 p-1 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
           >
-            Coming soon
+            {!isDarkMode ? "Enable Dark Mode" : "Disable Dark Mode"}
           </span>
-        </div>
+        </button>
+
         {!apiToken ? (
           <Link href="/student/login">
             <button
