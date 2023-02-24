@@ -27,6 +27,9 @@ const HomePage = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
+  /* Dark mode */
+  const [isDarkMode, setDarkMode] = useState(false);
+
   useEffect(() => {
     const getFeaturedJobs = async () => {
       try {
@@ -51,6 +54,7 @@ const HomePage = () => {
           zIndex: 100,
           width: '100%'
         }}
+        darkMode={{ isDarkMode, setDarkMode }}
       />
       <div className="relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]">
         <Image
