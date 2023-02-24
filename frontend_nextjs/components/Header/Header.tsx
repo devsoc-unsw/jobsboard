@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AppContext from 'app/AppContext';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -34,8 +34,7 @@ const Header = ({ style, darkMode }: HeaderProps) => {
     <div
       style={style}
       className="flex justify-evenly items-center py-4
-           bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#8fcc61]
-           dark:bg-gradient-to-br dark:from-[#09203F] dark:to-[#537895]"
+           bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]"
     >
       <Link href="/">
         <Image className="cursor-pointer" src={logo} width={150} alt="CSESoc" />
