@@ -51,7 +51,7 @@ const Footer = () => {
   ];
 
   return (
-    <div className="bg-jb-blue md:flex-col text-white py-5">
+    <div className="bg-jb-blue dark:bg-jb-dark-blue md:flex-col text-white py-5">
       <div className={`flex justify-between items-center ${container.pageContainer}`}>
         <div className="flex flex-col items-center font-bold gap-3">
           <Image alt="logo" src={logo} width={250} />
