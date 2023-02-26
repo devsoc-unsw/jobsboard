@@ -45,13 +45,8 @@ const HomePage = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-      document.body.style.backgroundColor = '#33363D';
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.body.style.backgroundColor = '#FFFFFF';
-    }
+    if (darkMode) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
   }, [darkMode]);
 
   return (

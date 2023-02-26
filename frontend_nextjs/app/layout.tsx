@@ -24,7 +24,9 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <head>
         <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       </head>
-      <body className={assistant.className}>
+      <body
+        className={assistant.className + "bg-[#FFFFFF] dark:bg-[#33363D]"}
+      >
         <AppProvider>
           {children}
           <Footer />
