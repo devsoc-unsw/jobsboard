@@ -9,21 +9,21 @@ import logo from 'assets/logos/csesocwhite.png';
 import moon from 'assets/misc/moon.svg';
 import styles from './styles.module.css';
 
-type DarkModeProperty = {
-  isDarkMode: boolean;
+type DarkModeProperties = {
+  darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type HeaderProps = {
   style?: React.CSSProperties;
-  darkMode: DarkModeProperty;
+  dark: DarkModeProperties;
 };
 
-const Header = ({ style, darkMode }: HeaderProps) => {
+const Header = ({ style, dark }: HeaderProps) => {
   const router = useRouter();
   const { apiToken, resetApiToken } = useContext(AppContext);
 
-  const { isDarkMode, setDarkMode } = darkMode;
+  const { darkMode, setDarkMode } = dark;
 
   const handleLogout = () => {
     resetApiToken();
@@ -43,7 +43,7 @@ const Header = ({ style, darkMode }: HeaderProps) => {
         <button
           type="button"
           className="group cursor-pointer relative"
-          onClick={() => {setDarkMode(!isDarkMode)}}
+          onClick={() => {setDarkMode(!darkMode)}}
         >
           {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
           <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
@@ -51,7 +51,7 @@ const Header = ({ style, darkMode }: HeaderProps) => {
           <span
             className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 p-1 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
           >
-            {!isDarkMode ? "Enable Dark Mode" : "Disable Dark Mode"}
+            {!darkMode ? "Enable Dark Mode" : "Disable Dark Mode"}
           </span>
         </button>
 

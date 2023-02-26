@@ -42,17 +42,17 @@ const HomePage = () => {
   const [openModal, setOpenModal] = useState(false);
 
   /* Dark mode */
-  const [isDarkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if (isDarkMode) {
+    if (darkMode) {
       document.documentElement.classList.add('dark');
       document.body.style.backgroundColor = '#33363D';
     } else {
       document.documentElement.classList.remove('dark');
       document.body.style.backgroundColor = '#FFFFFF';
     }
-  }, [isDarkMode]);
+  }, [darkMode]);
 
   return (
     <div className="text-center">
@@ -65,12 +65,12 @@ const HomePage = () => {
           zIndex: 100,
           width: '100%'
         }}
-        darkMode={{ isDarkMode, setDarkMode }}
+        dark={{ darkMode, setDarkMode }}
       />
       <div className="relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]">
         <Image
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          src={!isDarkMode ? BigBlob : BigBlobDark}
+          src={!darkMode ? BigBlob : BigBlobDark}
           className="absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2"
           alt="big blob"
           width={100}
