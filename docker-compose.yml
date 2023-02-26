@@ -49,7 +49,7 @@ services:
       context: ./frontend_nextjs
     image: webpersonal.azurecr.io/jb-frontend:latest
     ports:
-      - "3000:3000"
+      - "3000:80"
     expose:
       - 3000
   db:

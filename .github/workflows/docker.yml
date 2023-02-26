@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [backend, frontend]
+        component: [backend, frontend_nextjs]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
