@@ -3,7 +3,7 @@
   "lockFileMaintenance": { "enabled": true, "automerge": true },
   "prHourlyLimit": 2,
   "labels": ["dependencies"],
-  "baseBranches": ["develop"],
+  "baseBranches": ["dev"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
