@@ -21,6 +21,7 @@ module.exports = {
     extend: {
       backgroundColor: {
         'jb-background': '#f6f9fc',
+        'jb-dark-background': '#33363d',
         'jb-blue': '#2c8bf4',
         'jb-dark-blue': '#314963',
         'jb-btn-hovered': '#1f7ade',
@@ -62,7 +63,6 @@ module.exports = {
           'max-width': 'none'
         },
         body: {
-          background: '#f6f9fc',
           margin: '0',
           height: '100%'
         }
