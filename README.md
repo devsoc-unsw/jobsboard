@@ -93,8 +93,6 @@ yarn serve
 
 5. Navigate to [localhost:8080](http://localhost:8080/) to see the backend running locally! Visit [localhost:8080/docs](http://localhost:8080/docs) to see the API docs.
 
-> Make sure that the apiRoot in /frontend/config/config.ts points to the local instance..
-
 ### Running the backend in production mode
 
 > Only use this section if you are working on a function that needs the mail queue initialised. This assumes that you are using Gmail as the test account when trying to send emails.
