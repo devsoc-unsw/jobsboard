@@ -12,6 +12,7 @@ import { FeaturedJob, FeaturedJobsPayload } from 'types/api';
 import Button from 'ui/Button/Button';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
 import BigBlob from 'assets/misc/BigBlob.svg';
+import BigBlobDark from 'assets/misc/BigBlobDark.svg';
 import FeaturedJobCard from 'components/FeaturedJobCard/FeaturedJobCard';
 import Header from 'components/Header/Header';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
@@ -21,8 +22,6 @@ import api from 'config/api';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-// Dark Mode blob
-import BigBlobDark from 'assets/misc/BigBlob_dark.svg';
 
 const HomePage = () => {
   const [featuredJobs, setFeaturedJobs] = useState<FeaturedJob[]>([]);
