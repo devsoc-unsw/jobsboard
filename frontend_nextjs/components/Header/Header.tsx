@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import logo from 'assets/logos/csesocwhite.png';
 import moon from 'assets/misc/moon.svg';
+import { inDev } from 'config/dev';
 import styles from './styles.module.css';
 
 type HeaderProps = {
@@ -32,16 +33,18 @@ const Header = ({ style }: HeaderProps) => {
         <Image className="cursor-pointer" src={logo} width={150} alt="CSESoc" />
       </Link>
       <div className="flex justify-evenly items-center gap-5">
-        <div className="group cursor-pointer relative">
-          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-          <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
-          {/* Tooltip */}
-          <span
-            className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
-          >
-            Coming soon
-          </span>
-        </div>
+        {inDev && (
+          <div className="group cursor-pointer relative">
+            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+            <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
+            {/* Tooltip */}
+            <span
+              className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
+            >
+              Coming soon
+            </span>
+          </div>
+        )}
         {!apiToken ? (
           <Link href="/student/login">
             <button
