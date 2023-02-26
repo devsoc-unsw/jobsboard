@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production next start",
     "lint": "eslint ./**/*.{ts,tsx}",
     "lint:fix": "eslint --fix ./**/*.{ts,tsx}",
     "prettier": "prettier ./**/*.{ts,tsx}",
