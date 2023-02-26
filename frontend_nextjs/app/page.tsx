@@ -76,9 +76,9 @@ const HomePage = () => {
         />
         <div className="flex justify-around align-middle mx-auto gap-7">
           <div className="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
-            <p className="text-lg text-[#F9F7F1]">CSESoc presents</p>
+            <p className="text-lg text-white">CSESoc presents</p>
             <h1 className="text-[#143A6C] dark:text-[#F9F7F1] font-bold text-6xl leading-[72px] m-0">Jobsboard</h1>
-            <p className="text-lg text-[#F9F7F1] mt-3">
+            <p className="text-lg text-white mt-3">
               Connecting UNSW students with top employers since 2018.
             </p>
             <div className="justify-start flex gap-5 mt-4 sm:justify-center sm:flex-wrap">
