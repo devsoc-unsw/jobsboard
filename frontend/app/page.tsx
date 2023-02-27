@@ -78,7 +78,9 @@ const HomePage = () => {
           <div className="flex justify-around align-middle mx-auto gap-7">
             <div className="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
               <p className="text-lg text-white">CSESoc presents</p>
-              <h1 className="text-[#143A6C] dark:text-[#F9F7F1] font-bold text-6xl leading-[72px] m-0">Jobsboard</h1>
+              <h1 className="text-[#143A6C] dark:text-[#F9F7F1] font-bold text-6xl leading-[72px] m-0">
+                Jobsboard
+              </h1>
               <p className="text-lg text-white mt-3">
                 Connecting UNSW students with top employers since 2018.
               </p>
@@ -109,10 +111,12 @@ const HomePage = () => {
         <div className={container.pageContainer}>
           {/* <!-- Sponsors --> */}
           <div className="my-12 mx-auto">
-            <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">Our Sponsors</h3>
+            <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
+              Our Sponsors
+            </h3>
             <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
-              We aim to give you a pleasant student working experience by partnering up with only the
-              best.
+              We aim to give you a pleasant student working experience by partnering up with only
+              the best.
             </p>
             <SponsorCarousel />
             <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
@@ -169,7 +173,9 @@ const HomePage = () => {
             ) : (
               <div className="mb-28" />
             )}
-            <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">Want to Post a Job?</h3>
+            <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
+              Want to Post a Job?
+            </h3>
             <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
               Are you a company looking to advertise with us? We&apos;d absolutely love to hear from
               you. In the meantime, you can also check out&nbsp;
@@ -196,7 +202,9 @@ const HomePage = () => {
               </div>
             </div>
 
-            <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">Looking for More?</h3>
+            <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
+              Looking for More?
+            </h3>
             <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
               If you&apos;re a CSE student with a keen interest in Jobsboard and looking to get
               involved, keep an eye out for our recruitment announcements on CSESoc&apos;s socials.

@@ -48,7 +48,7 @@ const Header = ({ style }: HeaderProps) => {
             <span
               className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 p-1 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
             >
-              {!darkMode ? "Enable Dark Mode" : "Disable Dark Mode"}
+              {!darkMode ? 'Enable Dark Mode' : 'Disable Dark Mode'}
             </span>
           </button>
         )}

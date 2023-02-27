@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext } from 'react';
 
 type Context = {
   darkMode: boolean | null;
@@ -7,7 +7,7 @@ type Context = {
 
 const DarkModeContext = createContext<Context>({
   darkMode: null,
-  setDarkMode: () => undefined,
+  setDarkMode: () => undefined
 });
 
 export default DarkModeContext;
