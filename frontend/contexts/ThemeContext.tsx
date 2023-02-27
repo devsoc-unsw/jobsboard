@@ -5,9 +5,9 @@ type Context = {
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const DarkModeContext = createContext<Context>({
+const ThemeContext = createContext<Context>({
   darkMode: null,
   setDarkMode: () => undefined
 });
 
-export default DarkModeContext;
+export default ThemeContext;

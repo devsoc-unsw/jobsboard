@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import DarkModeContext from 'context/DarkModeContext';
+import ThemeContext from 'contexts/ThemeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import container from 'styles/container.module.css';
@@ -51,7 +51,7 @@ const HomePage = () => {
   }, [darkMode]);
 
   return (
-    <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
+    <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
       <div className="text-center">
         <RecruitmentModal open={openModal} onClose={() => setOpenModal(false)} />
         <Header
@@ -236,7 +236,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-    </DarkModeContext.Provider>
+    </ThemeContext.Provider>
   );
 };
 

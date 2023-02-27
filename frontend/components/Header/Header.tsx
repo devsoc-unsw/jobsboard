@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import AppContext from 'app/AppContext';
-import DarkModeContext from 'context/DarkModeContext';
+import ThemeContext from 'contexts/ThemeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -24,7 +24,7 @@ const Header = ({ style }: HeaderProps) => {
     router.push('/student/login');
   };
 
-  const { darkMode, setDarkMode } = useContext(DarkModeContext);
+  const { darkMode, setDarkMode } = useContext(ThemeContext);
 
   return (
     <div
