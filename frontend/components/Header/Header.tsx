@@ -2,6 +2,7 @@
 
 import React, { useContext } from 'react';
 import AppContext from 'app/AppContext';
+import DarkModeContext from 'context/DarkModeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,26 +11,20 @@ import moon from 'assets/misc/moon.svg';
 import { inDev } from 'config/dev';
 import styles from './styles.module.css';
 
-type DarkModeProperties = {
-  darkMode: boolean;
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
 type HeaderProps = {
   style?: React.CSSProperties;
-  dark: DarkModeProperties;
 };
 
-const Header = ({ style, dark }: HeaderProps) => {
+const Header = ({ style }: HeaderProps) => {
   const router = useRouter();
   const { apiToken, resetApiToken } = useContext(AppContext);
-
-  const { darkMode, setDarkMode } = dark;
 
   const handleLogout = () => {
     resetApiToken();
     router.push('/student/login');
   };
+
+  const { darkMode, setDarkMode } = useContext(DarkModeContext);
 
   return (
     <div
