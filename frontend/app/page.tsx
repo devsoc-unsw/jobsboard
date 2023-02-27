@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import DarkModeContext from 'context/DarkModeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import container from 'styles/container.module.css';
@@ -18,7 +19,6 @@ import Header from 'components/Header/Header';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
 import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
 import api from 'config/api';
-import DarkModeContext from 'context/DarkModeContext';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
