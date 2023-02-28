@@ -20,7 +20,7 @@ const NotFoundPage = () => {
         className="filter invert w-1/5 mt-10 mb-16 md:w-3/5 sm:w-1/2 xs:w-3/5"
         src={Robot}
         width={100}
-        alt="logo"
+        alt="404 robot"
       />
       <h1 className="text-5xl font-bold text-jb-headings">Page not Found</h1>
       <p className="text-xl text-jb-subheadings my-10 mx-[25%] md:mx-auto">

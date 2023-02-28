@@ -1,15 +1,87 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faLocationDot, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { AdminPendingCompaniesPayload, AdminPendingCompany } from 'types/api';
+import AppContext from 'app/AppContext';
 import PendingCompanyCard from 'components/PendingCompanyCard/PendingCompanyCard';
 import Toast, { ToastType } from 'components/Toast/Toast';
 import api from 'config/api';
+import { AdminPendingCompaniesPayload, AdminPendingCompany } from 'types/api';
+
+type PendingCompanyModalProps = {
+  location: string;
+  username: string;
+  name: string;
+  description: string;
+  createdAt: string;
+  open: boolean;
+  onClose(): void;
+};
+
+const PendingCompanyModal = ({
+  location,
+  username,
+  name,
+  description,
+  createdAt,
+  open,
+  onClose
+}: PendingCompanyModalProps) => {
+  return open ? (
+    <div>
+      {/* <!-- Modal backdrop --> */}
+      <div className="opacity-25 fixed inset-0 z-40 bg-black" />
+      {/* <!-- Modal --> */}
+      <div
+        tabIndex={-1}
+        className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+      >
+        <div className="relative p-4 w-1/2 mx-auto max-w-full">
+          {/* <!-- Modal content --> */}
+          <div className="relative rounded-lg bg-white text-jb-subheadings">
+            {/* <!-- Modal header --> */}
+            <div className="flex flex-col justify-between items-left p-5 rounded-t border-b border-gray-600">
+              <h2 className="text-xl text-left mb-4 text-jb-headings font-bold">{name}</h2>
+              <div className="flex flex-row items-center">
+                <FontAwesomeIcon icon={faUser} className="h-4 mr-4" />
+                <h3 className="text-lg font-medium text-left">{username}</h3>
+              </div>
+              <div className="flex flex-row items-center">
+                <FontAwesomeIcon icon={faLocationDot} className="h-4 mr-4" />
+                <h3 className="text-lg font-medium text-left">{location}</h3>
+              </div>
+              <div className="flex flex-row items-center">
+                <FontAwesomeIcon icon={faClock} className="h-4 mr-4" />
+                <h3 className="text-lg font-medium text-left">{createdAt}</h3>
+              </div>
+            </div>
+            {/* <!-- Modal body --> */}
+            <div className="flex w-full p-6">
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: description || ''
+                }}
+              />
+            </div>
+            {/* <!-- Modal footer --> */}
+            <div className="flex flex-row justify-end p-6 space-x-2 rounded-b border-t border-gray-600">
+              <button
+                type="button"
+                className="bg-jb-textlink rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
+                onClick={onClose}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null;
+};
 
 const AdminCompanyPage = () => {
   const { apiToken, setApiToken } = useContext(AppContext);
@@ -20,14 +92,10 @@ const AdminCompanyPage = () => {
   const [toastOpen, setToastOpen] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
-  const [currentCompanyShown, setCurrentCompanyShown] = useState('');
-  const [currentCompanyLocation, setCurrentCompanyLocation] = useState('');
-  const [currentCompanyDescription, setCurrentCompanyDescription] = useState('');
-
+  const [currCompany, setCurrCompany] = useState<AdminPendingCompany | null>(null);
   const [companies, setCompanies] = useState<AdminPendingCompany[]>([]);
 
-  const triggerAlert = (type: ToastType, msg: string) => {
-    // window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleAlert = (type: ToastType, msg: string) => {
     setToastType(type);
     setToastMsg(msg);
     setToastOpen(true);
@@ -36,11 +104,9 @@ const AdminCompanyPage = () => {
     }, 3000);
   };
 
-  const triggerModal = (name: string, location: string, companyDescription: string) => {
+  const handleShowModal = (pendingCompany: AdminPendingCompany) => {
+    setCurrCompany(pendingCompany);
     setOpenModal(true);
-    setCurrentCompanyShown(name);
-    setCurrentCompanyLocation(location);
-    setCurrentCompanyDescription(companyDescription);
   };
 
   useEffect(() => {
@@ -74,50 +140,16 @@ const AdminCompanyPage = () => {
   return (
     <div>
       {toastOpen && <Toast message={toastMsg} type={toastType} />}
-      {openModal && (
-        <div>
-          {/* <!-- Modal backdrop --> */}
-          <div className="opacity-25 fixed inset-0 z-40 bg-black" />
-          {/* <!-- Modal --> */}
-          <div
-            tabIndex={-1}
-            className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-          >
-            <div className="relative p-4 w-1/2 mx-auto max-w-full">
-              {/* <!-- Modal content --> */}
-              <div className="relative rounded-lg bg-white text-jb-subheadings">
-                {/* <!-- Modal header --> */}
-                <div className="flex flex-col justify-between items-left p-5 rounded-t border-b border-gray-600">
-                  <h2 className="text-xl text-left mb-4 text-jb-headings font-bold">
-                    {currentCompanyShown}
-                  </h2>
-                  <div className="flex flex-row items-center">
-                    <FontAwesomeIcon icon={faLocationDot} className="h-4 mr-4" />
-                    <h3 className="text-lg font-medium text-left">{currentCompanyLocation}</h3>
-                  </div>
-                </div>
-                {/* <!-- Modal body --> */}
-                <div className="flex w-full p-6">
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: currentCompanyDescription
-                    }}
-                  />
-                </div>
-                {/* <!-- Modal footer --> */}
-                <div className="flex flex-row justify-end p-6 space-x-2 rounded-b border-t border-gray-600">
-                  <button
-                    type="button"
-                    className="bg-jb-textlink rounded-md text-white font-bold text-base border-0 px-6 py-2 shadow-md duration-200 ease-linear cursor-pointer hover:bg-jb-btn-hovered hover:shadow-md-hovered"
-                    onClick={() => setOpenModal(false)}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      {currCompany && (
+        <PendingCompanyModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          location={currCompany.company.location}
+          username={currCompany.username}
+          name={currCompany.company.name}
+          description={currCompany.company.description}
+          createdAt={currCompany.company.createdAt}
+        />
       )}
       <div className="flex flex-col px-8 items-center">
         <h1 className="text-jb-headings font-bold text-3xl mt-10 mb-4">
@@ -131,17 +163,12 @@ const AdminCompanyPage = () => {
           <PendingCompanyCard
             key={company.id}
             id={company.id}
+            username={company.username}
             name={company.company.name}
             location={company.company.location}
             logo={company.company.logo}
-            onClick={() =>
-              triggerModal(
-                company.company.name,
-                company.company.location,
-                company.company.description
-              )
-            }
-            onAlert={triggerAlert}
+            onClick={() => handleShowModal(company)}
+            onAlert={handleAlert}
             onRemove={() =>
               setCompanies((prevState) => prevState.filter((c) => c.id !== company.id))
             }

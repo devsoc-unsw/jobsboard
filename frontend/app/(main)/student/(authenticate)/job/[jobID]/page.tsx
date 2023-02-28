@@ -12,7 +12,13 @@ import {
   faUser
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import AppContext from 'app/AppContext';
+import Alert from 'components/Alert/Alert';
+import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
+import api from 'config/api';
 import {
   JobMode,
   JobType,
@@ -20,15 +26,9 @@ import {
   WamRequirements,
   WorkingRights as WR
 } from 'constants/jobFields';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { CompanyJobsPayload, Job, JobPayload, JobWithCompany } from 'types/api';
 import Button from 'ui/Button/Button';
 import Spinner from 'ui/Spinner/Spinner';
-import Alert from 'components/Alert/Alert';
-import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
-import api from 'config/api';
 
 type StudentJobPageProps = {
   params: {

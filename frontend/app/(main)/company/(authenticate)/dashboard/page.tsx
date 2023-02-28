@@ -3,12 +3,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { faBars, faCloudUpload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import Image from 'next/image';
-import { CompanyHiddenJobsPayload, CompanyJobsPayload, HiddenJob, Job } from 'types/api';
+import AppContext from 'app/AppContext';
 import JobBoard, { BoardStatus } from 'components/JobBoard/JobBoard';
 import api from 'config/api';
 import base64 from 'config/base64';
+import { CompanyHiddenJobsPayload, CompanyJobsPayload, HiddenJob, Job } from 'types/api';
 
 const CompanyDashboardPage = () => {
   const { apiToken } = useContext(AppContext);

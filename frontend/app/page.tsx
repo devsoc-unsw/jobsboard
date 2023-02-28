@@ -8,8 +8,6 @@ import Link from 'next/link';
 import container from 'styles/container.module.css';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FeaturedJob, FeaturedJobsPayload } from 'types/api';
-import Button from 'ui/Button/Button';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
 import BigBlob from 'assets/misc/BigBlob.svg';
 import FeaturedJobCard from 'components/FeaturedJobCard/FeaturedJobCard';
@@ -17,6 +15,8 @@ import Header from 'components/Header/Header';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
 import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
 import api from 'config/api';
+import { FeaturedJob, FeaturedJobsPayload } from 'types/api';
+import Button from 'ui/Button/Button';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
