@@ -47,7 +47,7 @@ const StudentLoginPage = () => {
     <div>
       <div className="h-full flex flex-col justify-center items-center py-16">
         <h1 className="font-bold text-3xl text-jb-headings">Student Login</h1>
-        <p className="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
+        <p className="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8 text-center">
           Enter your zID in the format zXXXXXXX and your zPassword.
         </p>
 

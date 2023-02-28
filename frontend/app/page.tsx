@@ -172,17 +172,13 @@ const HomePage = () => {
             </a>
             &nbsp;that have partnered with us.
           </p>
-          <div className="flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col sm:gap-4">
-            <div>
-              <Link href="/company/signup">
-                <Button variant="primary">Join Us</Button>
-              </Link>
-            </div>
-            <div>
-              <Link href="/company/login">
-                <Button variant="primary">Post a Job</Button>
-              </Link>
-            </div>
+          <div className="flex flex-row items-center justify-evenly mt-8 mb-28 mx-24 sm:mb-8 sm:flex-col sm:gap-4">
+            <Link href="/company/signup">
+              <Button variant="primary">Join Us</Button>
+            </Link>
+            <Link href="/company/login">
+              <Button variant="primary">Post a Job</Button>
+            </Link>
           </div>
 
           <h3 className="font-bold text-3xl mb-0 text-jb-headings">Looking for More?</h3>
