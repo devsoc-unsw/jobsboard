@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { AxiosError } from 'axios';
 import Link from 'next/link';
-import Button from 'ui/Button/Button';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import api from 'config/api';
+import Button from 'ui/Button/Button';
 
 const CompanyForgotPage = () => {
   const [email, setEmail] = useState('');

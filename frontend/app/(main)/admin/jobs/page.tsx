@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useContext, useEffect, useState } from 'react';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { AdminPendingJobsPayload, JobWithCompany } from 'types/api';
-import Spinner from 'ui/Spinner/Spinner';
+import AppContext from 'app/AppContext';
 import PendingJobCard from 'components/PendingJobCard/PendingJobCard';
 import Toast from 'components/Toast/Toast';
 import api from 'config/api';
+import { AdminPendingJobsPayload, JobWithCompany } from 'types/api';
+import Spinner from 'ui/Spinner/Spinner';
 
 const AdminJobsPage = () => {
   const router = useRouter();

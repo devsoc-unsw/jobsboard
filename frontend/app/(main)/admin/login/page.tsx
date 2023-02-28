@@ -3,15 +3,15 @@
 import React, { useContext, useState } from 'react';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import AppContext from 'app/AppContext';
+import Alert from 'components/Alert/Alert';
+import api from 'config/api';
 import { AuthenticationPayload } from 'types/api';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
-import Alert from 'components/Alert/Alert';
-import api from 'config/api';
 
 const AdminLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -47,7 +47,7 @@ const AdminLoginPage = () => {
     <div>
       <div className="h-full flex flex-col justify-center items-center py-16">
         <h1 className="font-bold text-3xl text-jb-headings">Admin Login</h1>
-        <p className="text-lg text-jb-subheadings my-4">
+        <p className="text-lg text-jb-subheadings my-4 text-center">
           Enter your username and password. If there are any problems, please get in touch with a
           project lead.
         </p>

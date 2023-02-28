@@ -10,12 +10,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
-import { JobsPayload, JobWithCompany } from 'types/api';
-import Spinner from 'ui/Spinner/Spinner';
 import BenefitCard from 'components/BenefitCard/BenefitCard';
 import ErrorBox from 'components/ErrorBox/ErrorBox';
 import JobCard from 'components/JobCard/JobCard';
 import api from 'config/api';
+import { JobsPayload, JobWithCompany } from 'types/api';
+import Spinner from 'ui/Spinner/Spinner';
 
 const StudentDashboardPage = () => {
   const { apiToken } = useContext(AppContext);
@@ -100,8 +100,8 @@ const StudentDashboardPage = () => {
           />
         </div>
 
-        <div className="flex items-center my-8 justify-between sm:flex-wrap sm:justify-center">
-          <div className="flex items-center sm:mb-4">
+        <div className="flex flex-wrap gap-4 items-center my-8 justify-between sm:flex-wrap sm:justify-center">
+          <div className="flex items-center">
             <FontAwesomeIcon icon={faClipboard} />
             <p className="ml-2 font-bold">{filteredJobs.length} Jobs Found</p>
           </div>

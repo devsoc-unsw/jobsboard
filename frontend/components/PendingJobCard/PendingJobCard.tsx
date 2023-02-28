@@ -2,13 +2,13 @@ import React, { useContext, useState } from 'react';
 // import googleLogo from 'assets/companies/googleLogo.png';
 import { faBuilding, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 // import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { AuthenticationPayload, StudentDemographic, WorkingRights } from 'types/api';
+import AppContext from 'app/AppContext';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
+import { AuthenticationPayload, StudentDemographic, WorkingRights } from 'types/api';
 
 type PendingJobCardProps = {
   company: string;

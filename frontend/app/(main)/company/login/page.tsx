@@ -3,15 +3,15 @@
 import React, { useContext, useState } from 'react';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import AppContext from 'app/AppContext';
+import Alert from 'components/Alert/Alert';
+import api from 'config/api';
 import { AuthenticationPayload } from 'types/api';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
-import Alert from 'components/Alert/Alert';
-import api from 'config/api';
 
 const CompanyLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);
@@ -47,7 +47,7 @@ const CompanyLoginPage = () => {
     <div>
       <div className="h-full flex flex-col justify-center items-center py-16">
         <h1 className="font-bold text-3xl text-jb-headings">Company Login</h1>
-        <p className="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8">
+        <p className="text-lg text-jb-subheadings my-4 mx-[18%] sm:mx-8 text-center">
           Enter your email in the format example@company.com and your password.
         </p>
 

@@ -87,7 +87,7 @@ export type Company = {
   name: string;
   location: string;
   description: string;
-  logo: Buffer;
+  logo: string;
   sponsor: boolean;
   createdAt: string;
   updatedAt: string;
@@ -111,6 +111,7 @@ export type CompanyHiddenJobsPayload = {
 export type AdminPendingCompany = {
   company: Company;
   id: number;
+  username: string;
 };
 
 export type AdminCompany = {

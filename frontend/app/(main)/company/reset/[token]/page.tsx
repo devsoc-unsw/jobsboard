@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
+import Alert, { AlertType } from 'components/Alert/Alert';
+import api from 'config/api';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
-import Alert, { AlertType } from 'components/Alert/Alert';
-import api from 'config/api';
 
 type CompanyResetPageProps = {
   params: {
