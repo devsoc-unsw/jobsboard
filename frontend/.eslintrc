@@ -27,7 +27,7 @@
               // packages
               "^@?\\w",
               // absolute imports
-              "^(assets|components|config|hooks|pages|reducers)",
+              "^(app|assets|components|config|constants|tyoes|ui)",
               // absolute path or other imports that is not matched by the other groups
               "^",
               // relative imports
