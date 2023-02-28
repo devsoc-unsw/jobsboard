@@ -221,7 +221,7 @@ export default class Auth {
           body: JSON.stringify(payload),
         });
 
-        if (verifyResponse.status === 200) {
+        if (verifyResponse.ok) {
           Logger.Info(`STUDENT=${zID} is logged in`);
           return true;
         }
