@@ -280,7 +280,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
         />
         {/* <!-- input fields --> */}
         {admin && (
-          <div>
+          <>
             <h2 className="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">
               Select Company
             </h2>
@@ -300,7 +300,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
                 </option>
               ))}
             </select>
-          </div>
+          </>
         )}
         <h2 className="text-xl text-jb-headings mt-4 mb-2 font-bold self-start lg:self-center">
           Job Title

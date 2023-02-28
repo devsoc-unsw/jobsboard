@@ -47,7 +47,7 @@ const AdminLoginPage = () => {
     <div>
       <div className="h-full flex flex-col justify-center items-center py-16">
         <h1 className="font-bold text-3xl text-jb-headings">Admin Login</h1>
-        <p className="text-lg text-jb-subheadings my-4">
+        <p className="text-lg text-jb-subheadings my-4 text-center">
           Enter your username and password. If there are any problems, please get in touch with a
           project lead.
         </p>
