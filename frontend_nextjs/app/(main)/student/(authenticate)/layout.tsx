@@ -16,7 +16,7 @@ async function authenticate() {
     });
     if (res.status === 200) return true;
   } catch (e) {
-    console.log('Error at authenticate');
+    console.log('Error at authentucate');
   }
   return false;
 }
