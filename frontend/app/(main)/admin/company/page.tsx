@@ -3,13 +3,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { faClock, faLocationDot, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { AdminPendingCompaniesPayload, AdminPendingCompany } from 'types/api';
+import AppContext from 'app/AppContext';
 import PendingCompanyCard from 'components/PendingCompanyCard/PendingCompanyCard';
 import Toast, { ToastType } from 'components/Toast/Toast';
 import api from 'config/api';
+import { AdminPendingCompaniesPayload, AdminPendingCompany } from 'types/api';
 
 type PendingCompanyModalProps = {
   location: string;

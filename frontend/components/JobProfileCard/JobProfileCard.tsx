@@ -7,14 +7,14 @@ import {
   faUserGroup
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
-import { JobMode, JobType } from 'constants/jobFields';
 import { useRouter } from 'next/navigation';
-import { StudentDemographic, WorkingRights } from 'types/api';
+import AppContext from 'app/AppContext';
 import { BoardStatus } from 'components/JobBoard/JobBoard';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';
+import { JobMode, JobType } from 'constants/jobFields';
+import { StudentDemographic, WorkingRights } from 'types/api';
 import styles from './styles.module.css';
 
 type JobProfileCardProps = {

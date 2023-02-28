@@ -3,10 +3,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import AppContext from 'app/AppContext';
+import Alert, { AlertType } from 'components/Alert/Alert';
+import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
+import api from 'config/api';
 import {
   AdminCompaniesPayload,
   AdminCompany,
@@ -16,9 +19,6 @@ import {
 } from 'types/api';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
-import Alert, { AlertType } from 'components/Alert/Alert';
-import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
-import api from 'config/api';
 import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });

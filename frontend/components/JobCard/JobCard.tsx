@@ -6,9 +6,9 @@ import {
   faLocationDot
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { JobMode, JobType, WorkingRights } from 'constants/jobFields';
 import Image from 'next/image';
 import Link from 'next/link';
+import { JobMode, JobType, WorkingRights } from 'constants/jobFields';
 import styles from './styles.module.css';
 
 type JobCardProps = {

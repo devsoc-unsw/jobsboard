@@ -3,15 +3,15 @@
 import React, { useContext, useState } from 'react';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import AppContext from 'app/AppContext';
+import Alert from 'components/Alert/Alert';
+import api from 'config/api';
 import { AuthenticationPayload } from 'types/api';
 import Button from 'ui/Button/Button';
 import Input from 'ui/Input/Input';
 import Label from 'ui/Label/Label';
-import Alert from 'components/Alert/Alert';
-import api from 'config/api';
 
 const StudentLoginPage = () => {
   const [hidePassword, setHidePassword] = useState(true);

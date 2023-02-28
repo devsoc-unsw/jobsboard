@@ -10,12 +10,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AppContext from 'app/AppContext';
-import { JobsPayload, JobWithCompany } from 'types/api';
-import Spinner from 'ui/Spinner/Spinner';
 import BenefitCard from 'components/BenefitCard/BenefitCard';
 import ErrorBox from 'components/ErrorBox/ErrorBox';
 import JobCard from 'components/JobCard/JobCard';
 import api from 'config/api';
+import { JobsPayload, JobWithCompany } from 'types/api';
+import Spinner from 'ui/Spinner/Spinner';
 
 const StudentDashboardPage = () => {
   const { apiToken } = useContext(AppContext);

@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { AuthenticationPayload } from 'types/api';
+import AppContext from 'app/AppContext';
 import api from 'config/api';
+import { AuthenticationPayload } from 'types/api';
 
 type PendingCompanyCardProps = {
   name: string;

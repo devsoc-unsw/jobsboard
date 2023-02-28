@@ -3,17 +3,17 @@
 import React, { useContext, useState } from 'react';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import Button from 'ui/Button/Button';
-import Input from 'ui/Input/Input';
-import Label from 'ui/Label/Label';
+import AppContext from 'app/AppContext';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import api from 'config/api';
 import base64 from 'config/base64';
+import Button from 'ui/Button/Button';
+import Input from 'ui/Input/Input';
+import Label from 'ui/Label/Label';
 
 const CompanySignupPage = () => {
   const router = useRouter();
