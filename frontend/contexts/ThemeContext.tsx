@@ -1,13 +1,13 @@
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 
 type Context = {
-  darkMode: boolean | null;
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
 };
 
 const ThemeContext = createContext<Context>({
-  darkMode: null,
-  setDarkMode: () => undefined
+  theme: 'light',
+  toggleTheme: () => undefined
 });
 
 export default ThemeContext;
