@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
 import AppContext from 'app/AppContext';
 import { AxiosError } from 'axios';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { AuthenticationPayload } from 'types/api';
 import api from 'config/api';
 
 type PendingCompanyCardProps = {
   name: string;
+  username: string;
   location: string;
-  logo: Buffer;
+  logo: string;
   id: number;
   onClick(): void;
   onAlert(type: string, msg: string): void;
@@ -20,6 +22,7 @@ const PendingCompanyCard = ({
   onRemove,
   onAlert,
   logo,
+  username,
   name,
   location,
   id
@@ -58,28 +61,18 @@ const PendingCompanyCard = ({
     }
   };
 
-  console.log(logo);
-
   return (
     <div
-      className="flex flex-col p-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105 cursor-pointer"
+      className="flex flex-col p-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105 cursor-pointer bg-white"
       onClick={onClick}
       role="button"
       tabIndex={0}
     >
       <div className="flex flex-row items-center">
-        {/* TODO!: fix logo */}
-        {/* {logo && (
-          <Image
-            src=""
-            src={'data:image/png;base64,' + Buffer.from(logo.data).toString('base64')}
-            width={12}
-            height={12}
-            alt="company logo"
-          ></Image>
-        )} */}
+        {logo && <Image src={logo} width={12} height={12} alt={name} />}
         <div className="flex flex-col text-left w-full truncate">
           <h2 className="font-bold text-jb-headings text-xl truncate">{name}</h2>
+          <h3 className="text-jb-subheadings text-lg truncate">{username}</h3>
           <h3 className="text-jb-subheadings text-lg truncate">{location}</h3>
         </div>
         <button
