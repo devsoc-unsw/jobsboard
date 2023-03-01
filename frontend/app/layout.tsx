@@ -25,14 +25,14 @@ const RootLayout = ({ children }: RootLayoutProps) => {
       <head>
         <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
       </head>
-      <ThemeProvider>
-        <body className={assistant.className}>
+      <body className={assistant.className}>
+        <ThemeProvider>
           <AppProvider>
             {children}
             <Footer />
           </AppProvider>
-        </body>
-      </ThemeProvider>
+        </ThemeProvider>
+      </body>
     </html>
   );
 };
