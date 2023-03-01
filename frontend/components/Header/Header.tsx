@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useContext } from 'react';
+import ThemeContext from 'contexts/ThemeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,6 +24,8 @@ const Header = ({ style }: HeaderProps) => {
     router.push('/student/login');
   };
 
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
     <div
       style={style}
@@ -34,16 +37,16 @@ const Header = ({ style }: HeaderProps) => {
       </Link>
       <div className="flex justify-evenly items-center gap-5">
         {inDev && (
-          <div className="group cursor-pointer relative">
+          <button type="button" className="group cursor-pointer relative" onClick={toggleTheme}>
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
             {/* Tooltip */}
             <span
-              className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
+              className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 p-1 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
             >
-              Coming soon
+              {theme === 'light' ? 'Enable Dark Mode' : 'Disable Dark Mode'}
             </span>
-          </div>
+          </button>
         )}
         {!apiToken ? (
           <Link href="/student/login">
