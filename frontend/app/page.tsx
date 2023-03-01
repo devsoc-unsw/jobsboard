@@ -42,7 +42,6 @@ const HomePage = () => {
 
   const [openModal, setOpenModal] = useState(false);
 
-  /* Dark Mode */
   const { theme } = useContext(ThemeContext);
 
   return (

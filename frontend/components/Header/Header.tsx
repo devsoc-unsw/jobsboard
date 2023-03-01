@@ -24,9 +24,7 @@ const Header = ({ style }: HeaderProps) => {
     router.push('/student/login');
   };
 
-  /* Dark Mode */
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const handleThemeToggle = () => toggleTheme();
 
   return (
     <div
@@ -39,11 +37,7 @@ const Header = ({ style }: HeaderProps) => {
       </Link>
       <div className="flex justify-evenly items-center gap-5">
         {inDev && (
-          <button
-            type="button"
-            className="group cursor-pointer relative"
-            onClick={handleThemeToggle}
-          >
+          <button type="button" className="group cursor-pointer relative" onClick={toggleTheme}>
             {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
             <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
             {/* Tooltip */}
