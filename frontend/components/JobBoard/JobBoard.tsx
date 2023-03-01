@@ -1,7 +1,7 @@
 import React from 'react';
-import { Job } from 'types/api';
 import JobPostCard from 'components/JobPostCard/JobPostCard';
 import JobProfileCard from 'components/JobProfileCard/JobProfileCard';
+import { Job } from 'types/api';
 
 export type BoardStatus = 'postedJobs' | 'expiredJobs';
 

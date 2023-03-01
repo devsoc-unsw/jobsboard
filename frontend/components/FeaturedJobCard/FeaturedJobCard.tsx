@@ -1,9 +1,9 @@
 import React from 'react';
 import { faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { WorkingRights } from 'constants/jobFields';
 import Image from 'next/image';
 import Link from 'next/link';
+import { WorkingRights } from 'constants/jobFields';
 import styles from './styles.module.css';
 
 type FeaturedJobCardProps = {

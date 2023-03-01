@@ -9,8 +9,6 @@ import Link from 'next/link';
 import container from 'styles/container.module.css';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FeaturedJob, FeaturedJobsPayload } from 'types/api';
-import Button from 'ui/Button/Button';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
 import BigBlob from 'assets/misc/BigBlob.svg';
 import BigBlobDark from 'assets/misc/BigBlobDark.svg';
@@ -19,6 +17,8 @@ import Header from 'components/Header/Header';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
 import SponsorCarousel from 'components/SponsorCarousel/SponsorCarousel';
 import api from 'config/api';
+import { FeaturedJob, FeaturedJobsPayload } from 'types/api';
+import Button from 'ui/Button/Button';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -182,17 +182,13 @@ const HomePage = () => {
             </a>
             &nbsp;that have partnered with us.
           </p>
-          <div className="flex flex-row justify-evenly mt-8 mb-28 mx-24 sm:m-0 sm:flex-col sm:gap-4">
-            <div>
-              <Link href="/company/signup">
-                <Button variant="primary">Join Us</Button>
-              </Link>
-            </div>
-            <div>
-              <Link href="/company/login">
-                <Button variant="primary">Post a Job</Button>
-              </Link>
-            </div>
+          <div className="flex flex-row items-center justify-evenly mt-8 mb-28 mx-24 sm:mb-8 sm:flex-col sm:gap-4">
+            <Link href="/company/signup">
+              <Button variant="primary">Join Us</Button>
+            </Link>
+            <Link href="/company/login">
+              <Button variant="primary">Post a Job</Button>
+            </Link>
           </div>
 
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">

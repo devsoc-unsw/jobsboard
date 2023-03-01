@@ -1,5 +1,4 @@
 import { Response, NextFunction } from 'express';
-import { Client } from 'ldapts';
 import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
@@ -212,15 +211,27 @@ export default class Auth {
         // check if it matches the zID format, throw otherwise.
         Helpers.doesMatchZidFormat(zID);
 
-        const client = new Client({
-          url: 'ldaps://ad.unsw.edu.au',
-          // tlsOptions: {
-          //   minVersion: 'TLSv1.2',
-          // },
+        const payload = { zid: zID, zpass: password };
+        const verifyResponse = await fetch('https://verify.csesoc.unsw.edu.au/v1', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         });
-        await client.bind(`${zID}@ad.unsw.edu.au`, password);
-        Logger.Info(`STUDENT=${zID} is logged in`);
-        return true;
+
+        if (verifyResponse.ok) {
+          Logger.Info(`STUDENT=${zID} is logged in`);
+          return true;
+        }
+
+        if (verifyResponse.status === 401) {
+          Logger.Info(`Failed to login STUDENT=${zID} due to INCORRECT PASSWORD`);
+        } else {
+          Logger.Info(`Failed to login STUDENT=${zID} due to ERROR CODE ${verifyResponse.status}`);
+        }
+        return false;
       }
       // if unexpected characters are found, immediately reject
       Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);

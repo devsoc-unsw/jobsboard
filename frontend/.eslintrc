@@ -16,35 +16,40 @@
   },
   "rules": {
     "import/order": "off", // disabled for simple-import-sort plugin
-    "react/function-component-definition": ["error", { "namedComponents": "arrow-function", "unnamedComponents": "arrow-function" }],
+    "react/function-component-definition": [
+      "error",
+      { "namedComponents": "arrow-function", "unnamedComponents": "arrow-function" }
+    ],
     "react/require-default-props": ["off"], // off since we have typescript instead
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_$" }],
-    "simple-import-sort/imports": ["error", {
-      "groups": [
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
           [
-              // react based packages
-              "^react",
-              // packages
-              "^@?\\w",
-              // absolute imports
-              "^(assets|components|config|hooks|pages|reducers)",
-              // absolute path or other imports that is not matched by the other groups
-              "^",
-              // relative imports
-              "^\\.",
-              // side effect imports
-              "^\\u0000"
-            ]
-      ]
-  }],
-  "simple-import-sort/exports": ["error"],
-  "jsx-a11y/click-events-have-key-events": ["off"],
-  "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
-  "@typescript-eslint/no-floating-promises": ["off"],
-  "jsx-a11y/label-has-associated-control": ["off"], // TODO remove this
-  "react-hooks/exhaustive-deps": ["warn"], // TODO make this error
-  "react-hooks/rules-of-hooks": ["warn"], // TODO make this error? - checks rules of Hooks
-  "import/no-cycle": ["warn"] // TODO should be error?
+            // react based packages
+            "^react",
+            // packages
+            "^@?\\w",
+            // absolute imports
+            "^(app|assets|components|config|constants|types|ui)",
+            // absolute path or other imports that is not matched by the other groups
+            "^",
+            // relative imports
+            "^\\.",
+            // side effect imports
+            "^\\u0000"
+          ]
+        ]
+      }
+    ],
+    "simple-import-sort/exports": ["error"],
+    "jsx-a11y/click-events-have-key-events": ["off"],
+    "@typescript-eslint/no-misused-promises": ["error", { "checksVoidReturn": false }],
+    "@typescript-eslint/no-floating-promises": ["off"],
+    "jsx-a11y/label-has-associated-control": ["off"], // TODO remove this
+    "react-hooks/exhaustive-deps": ["warn"], // TODO make this error
+    "react-hooks/rules-of-hooks": ["warn"], // TODO make this error? - checks rules of Hooks
+    "import/no-cycle": ["warn"] // TODO should be error?
   }
 }
-  

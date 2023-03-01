@@ -12,7 +12,13 @@ import {
   faUser
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import AppContext from 'app/AppContext';
+import Alert from 'components/Alert/Alert';
+import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
+import api from 'config/api';
 import {
   JobMode,
   JobType,
@@ -20,15 +26,9 @@ import {
   WamRequirements,
   WorkingRights as WR
 } from 'constants/jobFields';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { CompanyJobsPayload, Job, JobPayload, JobWithCompany } from 'types/api';
 import Button from 'ui/Button/Button';
 import Spinner from 'ui/Spinner/Spinner';
-import Alert from 'components/Alert/Alert';
-import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
-import api from 'config/api';
 
 type StudentJobPageProps = {
   params: {
@@ -79,7 +79,6 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
       );
       setCompanyJobs(otherCompanyJobs);
     } catch (e) {
-      console.log(e);
       setAlertMsg('Unable to load jobs at this time. Please try again later.');
       setAlertOpen(true);
       window.scrollTo({
@@ -134,17 +133,10 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
               </div>
             </div>
             <div className="flex flex-col items-center w-3/4 h-full sm:w-full">
-              <div className="flex flex-row p-4 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
-                <div className="flex flex-col mr-8 justify-center">
+              <div className="flex flex-row p-4 gap-8 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
+                <div className="flex flex-col justify-center items-center gap-4">
                   {job.company.logo ? (
-                    <Image
-                      width={300}
-                      height={300}
-                      // TODO fix company logo
-                      src=""
-                      // src={`${companyLogo.replace('dataimage/jpegbase64/', 'data:image/jpeg,base64,')}`}
-                      alt=""
-                    />
+                    <Image width={300} height={300} src={job.company.logo} alt={job.company.name} />
                   ) : (
                     <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
                   )}

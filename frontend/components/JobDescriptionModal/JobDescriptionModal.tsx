@@ -10,6 +10,7 @@ import {
   faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Modal from 'components/Modal/Modal';
 import {
   JobMode as JobModeObj,
   StudentDemographic as StudentDemographicObj,
@@ -17,7 +18,6 @@ import {
   WorkingRights as WorkingRightsObj
 } from 'constants/jobFields';
 import { StudentDemographic, WorkingRights } from 'types/api';
-import Modal from 'components/Modal/Modal';
 
 type JobDescriptionModalProps = {
   role: string;
