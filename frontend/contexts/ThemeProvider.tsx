@@ -18,8 +18,9 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
         toggleTheme: () => {
           if (darkMode) document.documentElement.classList.remove('dark');
           else document.documentElement.classList.add('dark');
+
           // Note that this setter is below the above state change as
-          //  theme state value does not update immediately
+          // theme state value does not update immediately
           setDarkMode(!darkMode);
         }
       }}
