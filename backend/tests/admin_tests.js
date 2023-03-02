@@ -144,7 +144,6 @@ describe("admin", () => {
         name: "Such Company, Big Wow",
         logo: Buffer.from("test string", 'utf8').toString('base64'),   // base64 encoded string
       };
-    
       await server
       .put("/company")
       .send(newCompanyCredentials)
@@ -846,7 +845,6 @@ describe("admin", () => {
         .set('Authorization', this.adminToken)
         .send({
           role: "some generic SWE role",
-          // description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
           expiry: getFutureDateValue(),
           isPaid: true,
@@ -1162,7 +1160,7 @@ describe("admin", () => {
       }
     );
   });
-  
+
   describe("retrieving the number of verified registered companies", () => {
     before( async function() {
       // login as a student
@@ -1170,27 +1168,27 @@ describe("admin", () => {
       .post("/authenticate/student")
       .send({ zID: "literally", password: "anything" })
       .then(response => response.body.token);
-      
-      // login as a verified company 
+
+      // login as a verified company
       this.companyToken1 = await server
       .post("/authenticate/company")
       .send({ username: "test", password: "test" })
       .then(response => response.body.token);
-      
-      // login as a non verified company 
+
+      // login as a non verified company
       this.companyToken2 = await server
       .post("/authenticate/company")
       .send({ username: "test2", password: "test2" })
       .then(response => response.body.token);
-      
+
       // login as an admin
       this.adminToken = await server
       .post("/authenticate/admin")
       .send({ username: "admin", password: "incorrect pony plug paperclip" })
       .then(response => response.body.token);
     });
-    
-    it("result cannot be retrieved using a student account", 
+
+    it("result cannot be retrieved using a student account",
       function (done) {
         server
         .get("/company/stats/verifiedCompanies")
@@ -1202,8 +1200,8 @@ describe("admin", () => {
         });
       }
     );
-    
-    it("result cannot be retrieved using a verfied company account", 
+
+    it("result cannot be retrieved using a verfied company account",
       function (done) {
         server
         .get("/company/stats/verifiedCompanies")
@@ -1215,8 +1213,8 @@ describe("admin", () => {
         });
       }
     );
-    
-    it("result cannot be retrieved using an unverified company account", 
+
+    it("result cannot be retrieved using an unverified company account",
       function (done) {
         server
         .get("/company/stats/verifiedCompanies")
@@ -1228,8 +1226,8 @@ describe("admin", () => {
         });
       }
     );
-    
-    it("result successfully retrieved using an admin account", 
+
+    it("result successfully retrieved using an admin account",
       function (done) {
         server
         .get("/company/stats/verifiedCompanies")
@@ -1237,50 +1235,50 @@ describe("admin", () => {
         .expect(200)
         .end( function(_, res) {
           expect(res.status).to.equal(200);
-          // prior to this test running, there is only guarantee that one verified company 
+          // prior to this test running, there is only guarantee that one verified company
           // will have been created (dev.ts)
           expect(res.body.num).to.be.at.least(1);
           done();
         });
       }
-    ); 
+    );
   })
-  
+
   describe("retrive the number of approved jobs in a year", () => {
-    
+
     before( async function() {
       // login as a student
       this.studentToken = await server
       .post("/authenticate/student")
       .send({ zID: "literally", password: "anything" })
       .then(response => response.body.token);
-      
-      // login as a verified company 
+
+      // login as a verified company
       this.companyToken1 = await server
       .post("/authenticate/company")
       .send({ username: "test", password: "test" })
       .then(response => response.body.token);
-      
-      // login as a non verified company 
+
+      // login as a non verified company
       this.companyToken2 = await server
       .post("/authenticate/company")
       .send({ username: "test2", password: "test2" })
       .then(response => response.body.token);
-      
+
       // login as an admin
       this.adminToken = await server
       .post("/authenticate/admin")
       .send({ username: "admin", password: "incorrect pony plug paperclip" })
       .then(response => response.body.token);
-      
+
       // remove job 8
       await server
       .delete("/company/job/8")
       .set("Authorization", this.companyToken1)
-      .expect(200);     
+      .expect(200);
     });
-    
-    it("result cannot be retrieved using a student account", 
+
+    it("result cannot be retrieved using a student account",
       function (done) {
         server
         .get("/job/stats/approvedJobPosts/2022")
@@ -1292,8 +1290,8 @@ describe("admin", () => {
         });
       }
     );
-    
-    it("result cannot be retrieved using a verfied company account", 
+
+    it("result cannot be retrieved using a verfied company account",
       function (done) {
         server
         .get("/job/stats/approvedJobPosts/2022")
@@ -1305,8 +1303,8 @@ describe("admin", () => {
         });
       }
     );
-    
-    it("result cannot be retrieved using an unverified company account", 
+
+    it("result cannot be retrieved using an unverified company account",
       function (done) {
         server
         .get("/job/stats/approvedJobPosts/2022")
@@ -1318,8 +1316,8 @@ describe("admin", () => {
         });
       }
     );
-    
-    it("successfully retrives the one remaining verified job from 1999", 
+
+    it("successfully retrives the one remaining verified job from 1999",
       function (done) {
         server
         .get("/job/stats/approvedJobPosts/1999")
@@ -1332,8 +1330,8 @@ describe("admin", () => {
         });
       }
     );
-    
-    it ("successfully retrives the number of approved jobs from dev.ts", 
+
+    it ("successfully retrives the number of approved jobs from dev.ts",
       function (done) {
         server
         .get("/job/stats/approvedJobPosts/2000")
@@ -1346,30 +1344,30 @@ describe("admin", () => {
         });
       }
     );
-  }); 
-  
+  });
+
   describe("test retrieving all hidden jobs in the system as an admini", () => {
-    
+
     before( async function() {
       // login as a student
       this.studentToken = await server
       .post("/authenticate/student")
       .send({ zID: "literally", password: "anything" })
       .then(response => response.body.token);
-      
-      // login as a verified company 
+
+      // login as a verified company
       this.companyToken1 = await server
       .post("/authenticate/company")
       .send({ username: "test3", password: "test3" })
       .then(response => response.body.token);
-      
+
       // login as an admin
       this.adminToken = await server
       .post("/authenticate/admin")
       .send({ username: "admin", password: "incorrect pony plug paperclip" })
       .then(response => response.body.token);
     });
-    
+
     it("fails to retrieve hidden jobs using a student token",
       function(done) {
         server
@@ -1382,8 +1380,8 @@ describe("admin", () => {
           });
       }
     );
-    
-    it("fails to retrive hidden jobs using a company token", 
+
+    it("fails to retrive hidden jobs using a company token",
       function(done) {
         server
           .get("/job/admin/hidden")
@@ -1395,8 +1393,8 @@ describe("admin", () => {
           })
       }
     );
-    
-    it("successfully retrieves hidden jobs using an admin token", 
+
+    it("successfully retrieves hidden jobs using an admin token",
       function(done) {
         server
           .get("/job/admin/hidden")
@@ -1406,9 +1404,7 @@ describe("admin", () => {
             expect(res.status).to.equal(200);
             done();
           })
-      }    
+      }
     )
   });
 });
-
-
