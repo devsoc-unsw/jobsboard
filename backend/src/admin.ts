@@ -37,28 +37,39 @@ export default class AdminFunctions {
           } as IResponseWithStatus;
         }
 
-        const jobToApprove = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .where('Job.approved = :approved', { approved: false })
-            .andWhere('Job.hidden = :hidden', { hidden: false })
-            .andWhere('Job.id = :id', { id: jobID })
-            .getOne(),
-          `Failed to find job ID=${jobID}`,
-        );
+        const jobToApprove = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .where('Job.approved = :approved', { approved: false })
+          .andWhere('Job.hidden = :hidden', { hidden: false })
+          .andWhere('Job.id = :id', { id: jobID })
+          .getOne();
 
-        jobToApprove.company = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToApprove).loadOne(),
+        if (!jobToApprove) {
+          throw new Error(`Failed to find job with ID=${jobID} to approve`);
+        }
+
+        const jobPoster = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToApprove).loadOne<Company>(),
           `Failed to find company record owning JOB=${jobID}`,
         );
 
-        jobToApprove.company.companyAccount = await Helpers.doSuccessfullyOrFail(
+        if (!jobPoster) {
+          throw new Error(`Failed to find company record owning JOB=${jobID}`);
+        }
+
+        jobToApprove.company = jobPoster;
+
+        const jobPosterAcc = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.createQueryBuilder()
             .relation(Company, 'companyAccount')
             .of(jobToApprove.company)
-            .loadOne(),
+            .loadOne<CompanyAccount>(),
           `Failed to find company account owning JOB=${jobID}`,
         );
+        if (!jobPosterAcc) {
+          throw new Error(`Failed to find company account owning JOB=${jobID}`);
+        }
+        jobToApprove.company.companyAccount = jobPosterAcc;
 
         await AppDataSource.createQueryBuilder()
           .update(Job)
@@ -140,22 +151,33 @@ export default class AdminFunctions {
             .where('Job.approved = :approved', { approved: false })
             .andWhere('Job.hidden = :hidden', { hidden: false })
             .andWhere('Job.id = :id', { id: jobID })
-            .getOne(),
+            .getOneOrFail(),
           `Failed to find job ID=${jobID}`,
         );
 
-        jobToReject.company = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToReject).loadOne(),
+        const jobPoster = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Job, 'company')
+            .of(jobToReject)
+            .loadOne<Company>(),
           `Failed to find company record owning JOB=${jobID}`,
         );
+        if (!jobPoster) {
+          throw new Error(`Failed to find company record owning JOB=${jobID}`);
+        }
+        jobToReject.company = jobPoster;
 
-        jobToReject.company.companyAccount = await Helpers.doSuccessfullyOrFail(
+        const jobPosterAcc = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.createQueryBuilder()
             .relation(Company, 'companyAccount')
             .of(jobToReject.company)
-            .loadOne(),
+            .loadOne<CompanyAccount>(),
           `Failed to find company account owning JOB=${jobID}`,
         );
+        if (!jobPosterAcc) {
+          throw new Error(`Failed to find company account owning JOB=${jobID}`);
+        }
+        jobToReject.company.companyAccount = jobPosterAcc;
 
         await AppDataSource.createQueryBuilder()
           .update(Job)
@@ -298,7 +320,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             .createQueryBuilder()
             .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
             .andWhere('CompanyAccount.verified = :verified', { verified: false })
-            .getOne(),
+            .getOneOrFail(),
           `Couldn't find any pending company verifications for COMPANY_ACCOUNT=${req.params.companyAccountID}.`,
         );
 
@@ -406,37 +428,39 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       async () => {
         const { companyID } = req.params;
         Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
+
         const company = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Company)
             .createQueryBuilder()
             .where('Company.id = :id', { id: companyID })
-            .getOne(),
+            .getOneOrFail(),
           `Couldn't get request company object ID=${companyID} as Admin ID=${req.adminID}`,
         );
 
-        // get it's associated company account to verify
-        company.companyAccount = await Helpers.doSuccessfullyOrFail(
+        const companyAccount = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.createQueryBuilder()
             .relation(Company, 'companyAccount')
             .of(company)
-            .loadOne(),
-          `Could not get the related company account for company ID=${company.id}`,
+            .loadOne<CompanyAccount>(),
+          `Could not get the related company account for company ID=${companyID}`,
         );
+
+        if (!companyAccount) {
+          throw new Error(`Could not get the related company account for company ID=${company.id}`);
+        }
+        company.companyAccount = companyAccount;
 
         company.jobs = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.createQueryBuilder().relation(Company, 'jobs').of(company).loadMany(),
           `Failed to find jobs for COMPANY_ACCOUNT=${companyID}`,
         );
 
-        // verify whether the associated company account is verified
         if (!company.companyAccount.verified) {
           throw new Error(
             `Admin ID=${req.adminID} attempted to create a job post for company ID=${companyID} however it was not a verified company`,
           );
         }
 
-        // create the job now
-        // ensure required parameters are present
         const msg = {
           applicationLink: req.body.applicationLink.trim(),
           description: req.body.description.trim(),
@@ -486,16 +510,22 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         // mark this job as one that the admin has created
         newJob.adminCreated = true;
 
-        await MailFunctions.AddMailToQueue(
-          process.env.MAIL_USERNAME,
-          'CSESoc Jobs Board - CSESoc has created a job on your behalf',
-          `
-        Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
-          <br>
-        <p>Best regards,</p>
-        <p>CSESoc Jobs Board Administrator</p>
-        `,
-        );
+        if (process.env.MAIL_USERNAME) {
+          await MailFunctions.AddMailToQueue(
+            process.env.MAIL_USERNAME,
+            'CSESoc Jobs Board - CSESoc has created a job on your behalf',
+            `
+          Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
+            <br>
+          <p>Best regards,</p>
+          <p>CSESoc Jobs Board Administrator</p>
+          `,
+          );
+        }
+        else
+        {
+          throw new Error('Missing MAIL_USERNAME environment variable');
+        }
 
         company.jobs.push(newJob);
 
@@ -540,7 +570,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(`Retrieving the number of verified companies as ADMIN=${req.adminID}`);
 
         const verifiedCompanies = await Helpers.doSuccessfullyOrFail(
@@ -567,7 +597,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       () => ({
         status: 400,
         msg: undefined,
-      } as IResponseWithStatus),
+      }),
       next,
     );
   }
@@ -711,7 +741,13 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           if (!resMap.has(key)) {
             resMap.set(key, []);
           }
-          resMap.get(key).push(job);
+          const companyJobs = resMap.get(key);
+          if (companyJobs) {
+            companyJobs.push(job);
+          }
+          else {
+            Logger.Error(`Failed to retrieve jobs for company ${key}`);
+          }
         });
 
         Logger.Info(`ADMIN=${adminID} successfully to retrieved all the hidden jobs`);

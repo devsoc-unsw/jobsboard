@@ -21,7 +21,6 @@ import {
   AdminCreateJobRequest,
   AdminJobRequest,
   AuthoriseStudentRequest,
-  AuthRequest,
   CheckCompanyLogoRequest,
   CompanyGetJobsRequest,
   CompanyGetResetTokenRequest,
@@ -43,6 +42,9 @@ import {
   UpdateCompanyDetailsRequest,
   VerifyCompanyAccountRequest,
   SearchJobRequest,
+  StudentAuthRequest,
+  CompanyAuthRequest,
+  AdminAuthRequest,
 } from './interfaces/interfaces';
 
 dotenv.config();
@@ -63,7 +65,7 @@ if (process.env.NODE_ENV !== 'development') {
   // the current URL to be consumed
   const whitelist = ['https://jobsboard.csesoc.unsw.edu.au'];
   corsOptions = {
-    origin: (origin: string, callback: (error: Error, status?: boolean) => void) => {
+    origin: (origin: string, callback: (error: Error | null, status?: boolean) => void) => {
       if (whitelist.indexOf(origin) !== -1) {
         callback(null, true);
       }
@@ -188,7 +190,7 @@ app.get(
 app.post(
   '/authenticate/student',
   cors(corsOptions),
-  (req: AuthRequest, res, next) => {
+  (req: StudentAuthRequest, res, next) => {
     (async () => {
       await Auth.AuthenticateStudent(req, res, next);
     })();
@@ -211,7 +213,7 @@ app.put(
 app.post(
   '/authenticate/company',
   cors(corsOptions),
-  (req: AuthRequest, res, next) => {
+  (req: CompanyAuthRequest, res, next) => {
     (async () => {
       await Auth.AuthenticateCompany(req, res, next);
     })();
@@ -308,7 +310,7 @@ app.put(
 app.post(
   '/authenticate/admin',
   cors(corsOptions),
-  (req: AuthRequest, res, next) => {
+  (req: AdminAuthRequest, res, next) => {
     (async () => {
       await Auth.AuthenticateAdmin(req, res, next);
     })();
@@ -491,6 +493,8 @@ app.listen(port, () => {
     if (process.env.NODE_ENV === 'production') {
       MailFunctions.InitMailQueueScheduler(2000);
     }
-    Logger.Info(`SERVER STARTED AT PORT=${port}`);
+    if (port) {
+      Logger.Info(`SERVER STARTED AT PORT=${port}`);
+    }
   })();
 });

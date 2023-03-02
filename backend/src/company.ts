@@ -27,6 +27,7 @@ import {
   CheckCompanyLogoRequest,
   UpdateCompanyDetailsRequest,
 } from './interfaces/interfaces';
+import Middleware from './middleware';
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(
@@ -165,7 +166,9 @@ export default class CompanyFunctions {
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
-        newCompany.logo = Buffer.from(msg.logo, 'utf8');
+        if (msg.logo) {
+          newCompany.logo = Buffer.from(msg.logo, 'utf8');
+        }
 
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;
@@ -266,8 +269,7 @@ export default class CompanyFunctions {
         newJob.additionalInfo = msg.additionalInfo;
         newJob.wamRequirements = msg.wamRequirements;
 
-        // get the company and the list of its jobs
-        const companyAccount: CompanyAccount = await AppDataSource.getRepository(CompanyAccount)
+        const companyAccount = await AppDataSource.getRepository(CompanyAccount)
           .createQueryBuilder()
           .leftJoinAndSelect('CompanyAccount.company', 'company')
           .leftJoinAndSelect('company.jobs', 'job')
@@ -506,7 +508,7 @@ export default class CompanyFunctions {
         const newJob = await AppDataSource.getRepository(Job)
           .createQueryBuilder('job')
           .where('job.id = :id', { id: jobInfo.id })
-          .getOne();
+          .getOneOrFail();
 
         if (!CompanyFunctions.isJobUpdated(newJob, jobInfo)) {
           return {
@@ -633,7 +635,7 @@ export default class CompanyFunctions {
             .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
             .andWhere('Job.id = :jobID', { jobID: req.params.jobID })
             .andWhere('Job.deleted = :deleted', { deleted: false })
-            .getOne(),
+            .getOneOrFail(),
           `Failed to find JOB=${req.params.jobID} for COMPANY_ACCOUNT=${req.companyAccountID}`,
         );
 
@@ -683,7 +685,7 @@ export default class CompanyFunctions {
           async () => AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder('company_account')
             .where('company_account.username = :username', { username: receipientEmail })
-            .getOne(),
+            .getOneOrFail(),
           `Failed to find company account with USERNAME=${receipientEmail}`,
         );
         // create new token
@@ -746,7 +748,7 @@ export default class CompanyFunctions {
             .createQueryBuilder('company_account')
             .select(['company_account.latestValidResetToken'])
             .where('company_account.username = :username', { username })
-            .getOne(),
+            .getOneOrFail(),
           `Failed to find password reset token for COMPANY=${username}`,
         );
 
@@ -784,13 +786,13 @@ export default class CompanyFunctions {
 
         Helpers.requireParameters(msg.newPassword);
 
-        const jwt: IToken = JWT.get(req.get('Authorization'));
+        const jwt = Middleware.getJWTToken(req);
         // get the id of the company making this request
         const companyAccount = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder('company_account')
             .where('company_account.id = :id', { id: jwt.id })
-            .getOne(),
+            .getOneOrFail(),
           `Failed to find company account with ID=${jwt.id}`,
         );
 

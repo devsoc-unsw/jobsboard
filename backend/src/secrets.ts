@@ -13,7 +13,11 @@ export default class Secrets {
 
   public static decrypt(msg: string): string {
     const splitText = msg.split(':');
-    const iv = Buffer.from(splitText.shift(), 'hex');
+    const shiftedSplitText = splitText.shift();
+    if (!shiftedSplitText) {
+      throw new Error('Invalid encrypted text.');
+    }
+    const iv = Buffer.from(shiftedSplitText, 'hex');
     const encrypted = Buffer.from(splitText.join(':'), 'hex');
     const decipher = crypto.createDecipheriv(this.algorithm, Buffer.from(this.key), iv);
     let decrypted = decipher.update(encrypted);

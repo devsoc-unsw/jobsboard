@@ -8,7 +8,7 @@ import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import Logger from './logging';
 import Secrets from './secrets';
-import { AuthRequest } from './interfaces/interfaces';
+import { CompanyAuthRequest, StudentAuthRequest, AdminAuthRequest } from './interfaces/interfaces';
 
 // auth token data structures
 interface IToken {
@@ -28,10 +28,9 @@ enum AccountType {
 export { IToken, AccountType };
 
 export default class Auth {
-  // Student-based authentication functions
   public static async AuthenticateStudent(
     this: void,
-    req: AuthRequest,
+    req: StudentAuthRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -93,7 +92,7 @@ export default class Auth {
   // Company-based authentication functions
   public static async AuthenticateCompany(
     this: void,
-    req: AuthRequest,
+    req: CompanyAuthRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -103,14 +102,16 @@ export default class Auth {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
-        // check if account exists
-        const companyQuery = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(CompanyAccount)
-            .createQueryBuilder()
-            .where('CompanyAccount.username = :username', { username: msg.username })
-            .getOne(),
-          `Couldn't find company with username: ${msg.username}`,
-        );
+
+        const companyQuery = await AppDataSource.getRepository(CompanyAccount)
+          .createQueryBuilder()
+          .where('CompanyAccount.username = :username', { username: msg.username })
+          .getOne();
+
+        if (!companyQuery) {
+          throw new Error(`Couldn't find company with username: ${msg.username}`);
+        }
+
         try {
           if (
             !Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
@@ -152,7 +153,7 @@ export default class Auth {
   // admin-based authentication functions
   public static async AuthenticateAdmin(
     this: void,
-    req: AuthRequest,
+    req: AdminAuthRequest,
     res: Response,
     next: NextFunction,
   ) {
@@ -168,6 +169,10 @@ export default class Auth {
           .createQueryBuilder()
           .where('AdminAccount.username = :username', { username: msg.username })
           .getOne();
+
+        if (!adminQuery) {
+          throw new Error(`Couldn't find admin with username: ${msg.username}`);
+        }
 
         try {
           if (

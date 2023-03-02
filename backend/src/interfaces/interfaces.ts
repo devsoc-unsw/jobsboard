@@ -77,8 +77,12 @@ interface Logo {
 }
 
 interface AuthBody {
-  username?: string;
-  zID?: string;
+  username: string;
+  password: string;
+}
+
+interface StudentAuthBody {
+  zID: string;
   password: string;
 }
 
@@ -99,7 +103,9 @@ export interface AuthoriseAdminRequest extends Request, JbToken, AdminID {}
 export interface PasswordResetRequest extends Request, CompanyAccountID {}
 
 // * Auth Functions
-export type AuthRequest = Request<Record<string, never>, never, AuthBody>;
+export type CompanyAuthRequest = Request<Record<string, never>, never, AuthBody>;
+export type StudentAuthRequest = Request<Record<string, never>, never, StudentAuthBody>;
+export type AdminAuthRequest = CompanyAuthRequest;
 
 // * Admin Functions
 type AdminRequestBase = AdminID & JbToken;

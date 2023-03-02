@@ -27,7 +27,6 @@ export default class Middleware {
 
   private static verifyTokenProperties(req: Request, jwt: IToken) {
     if (Date.now() - jwt.lastRequestTimestamp > 20 * 60 * 1000) {
-      // token has expired, is now considered invalid
       Logger.Info(`EXPIRED TOKEN=${jwt.toString()}`);
       throw new Error('Token has expired.');
     }
@@ -36,6 +35,14 @@ export default class Middleware {
       Logger.Info(`MISMATCHED IP ADDRESS=${req.ip} COMPARED TO TOKEN=${jwt.toString()}`);
       throw new Error('IP address has changed.');
     }
+  }
+
+  public static getJWTToken(req: Request): IToken {
+    const rawJWT = req.get('Authorization');
+    if (!rawJWT) {
+      throw new Error('Missing Authorization header.');
+    }
+    return JWT.get(rawJWT);
   }
 
   private static updateTokenProperties(req: Request, jwt: IToken): IToken {
@@ -52,19 +59,20 @@ export default class Middleware {
     next: NextFunction,
   ) {
     try {
-      // get JWT for student
       const rawJWT = req.get('Authorization');
-      const jwt: IToken = JWT.get(rawJWT);
-      // ensure the token is of the correct type
+      const jwt = Middleware.getJWTToken(req);
+
       Middleware.verifyAccountType(jwt.type, AccountType.Student);
-      // verify that this token is the latest valid token for this account
       const studentQuery = await AppDataSource.getRepository(Student)
         .createQueryBuilder()
         .where('Student.zID = :zID', { zID: jwt.id })
         .getOne();
-      // check whether the tokens are equivalent
-      const tokenAsString = rawJWT;
-      if (tokenAsString !== studentQuery.latestValidToken) {
+
+      if (!studentQuery) {
+        throw new Error('Student not found.');
+      }
+
+      if (rawJWT !== studentQuery.latestValidToken) {
         // tokens don't match, therefore the token is invalid and authentication
         // is rejected
         throw new Error("Provided student token doesn't match current tracked token");
@@ -88,9 +96,8 @@ export default class Middleware {
       next();
     }
     catch (error: unknown) {
-      // if there are any errors, send a forbidden
       res.sendStatus(401);
-      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Middleware.genericLoggingMiddleware(req, res, () => {});
       Logger.Error(`Authentication Middleware Error (student): ${(error as Error).message}`);
     }
   }
@@ -102,11 +109,9 @@ export default class Middleware {
     next: NextFunction,
   ) {
     try {
-      // get JWT
-      const jwt = JWT.get(req.get('Authorization'));
-      // ensure the token is of the correct type
+      const jwt = Middleware.getJWTToken(req);
+
       Middleware.verifyAccountType(jwt.type, AccountType.Company);
-      // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
       // update token properties if they appear to be consistent
       /*
@@ -115,12 +120,10 @@ export default class Middleware {
       */
       // add the companyID field to the request object
       req.companyAccountID = jwt.id.toString();
-      // continue
       next();
     } catch (error) {
-      // if there are any errors, send a forbidden
       res.sendStatus(401);
-      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Middleware.genericLoggingMiddleware(req, res, () => {});
       Logger.Error(`Authentication Middleware Error (company): ${(error as Error).toString()}`);
     }
   }
@@ -132,22 +135,16 @@ export default class Middleware {
     next: NextFunction,
   ) {
     try {
-      // get JWT
-      const jwt: IToken = JWT.get(req.get('Authorization'));
-      // ensure the token is of the correct type
+      const jwt = Middleware.getJWTToken(req);
+
       Middleware.verifyAccountType(jwt.type, AccountType.Admin);
-      // check if it follows required policies
       Middleware.verifyTokenProperties(req, jwt);
-      // update token properties if they appear to be consistent
       req.newJbToken = JWT.create(Middleware.updateTokenProperties(req, jwt));
-      // add the admin id to the request
       req.adminID = jwt.id.toString();
-      // continue
       next();
     } catch (error) {
-      // send forbidden on any errors
       res.sendStatus(401);
-      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Middleware.genericLoggingMiddleware(req, res, () => {});
       Logger.Error(`Authentication Middleware Error (admin): ${(error as Error).toString()}`);
     }
   }
@@ -160,29 +157,28 @@ export default class Middleware {
   ) {
     try {
       const jwtString = req.get('Authorization');
-      const jwt: IToken = JWT.get(req.get('Authorization'));
+      const jwt = Middleware.getJWTToken(req);
 
       Middleware.verifyAccountType(jwt.type, AccountType.Company);
-      // verify that this token is the latest valid token for this account
+
       const companyQuery = await AppDataSource.getRepository(CompanyAccount)
         .createQueryBuilder()
         .where('CompanyAccount.id = :id', { id: jwt.id })
         .getOne();
-      // check whether the tokens are equivalent
+
+      if (!companyQuery) {
+        throw new Error('Company not found.');
+      }
+
       if (jwtString !== companyQuery.latestValidResetToken) {
-        // tokens don't match, therefore the token is invalid and authentication
-        // is rejected
         throw new Error("Provided password reset token doesn't match current tracked token");
       }
-      // check that token has not expired
       Middleware.verifyTokenProperties(req, jwt);
       req.companyAccountID = jwt.id.toString();
-      // continue
       next();
     } catch (error) {
-      // if there are any errors, send a forbidden
       res.sendStatus(401);
-      Middleware.genericLoggingMiddleware(req, res, undefined);
+      Middleware.genericLoggingMiddleware(req, res, () => {});
       Logger.Error(
         `Authentication Middleware Error (reset password request): ${(error as Error).toString()}`,
       );

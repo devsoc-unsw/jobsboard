@@ -39,6 +39,11 @@ export default class MailFunctions {
 
     const mailSendingIntervalRate = (1000 * 60 * 60 * 24) / limitOfEmailsPerDay;
     Logger.Info(`Mail sending rate set to once every ${mailSendingIntervalRate} ms.`);
+
+    if (!process.env.MAIL_SMTP_SERVER_PORT) {
+      throw new Error('Missing MAIL_SMTP_SERVER_PORT environment variable');
+    }
+
     const transportOptions = {
       host: process.env.MAIL_SMTP_SERVER,
       port: parseInt(process.env.MAIL_SMTP_SERVER_PORT, 10),
@@ -49,9 +54,10 @@ export default class MailFunctions {
       },
       requireTLS: true,
     };
+
     const mailTransporter = nodemailer.createTransport(transportOptions);
     if (process.env.NODE_ENV === 'production') {
-      mailTransporter.verify((error: Error, _: boolean) => {
+      mailTransporter.verify((error: Error | null, _: boolean) => {
         if (error) {
           Logger.Error(`Mail verification unsuccessful. Reason: ${error.message}`);
           throw new Error('Failed to initialise mail service.');
@@ -79,7 +85,12 @@ export default class MailFunctions {
             },
             () => Logger.Info(`Successfully sent EMAIL=${mailRequest.id}`),
           );
-        } else {
+        }
+        else {
+          if (!process.env.NODE_ENV) {
+            throw new Error('Missing NODE_ENV environment variable');
+          }
+
           Logger.Info(`NODE_ENV is not production (currently ${
             process.env.NODE_ENV
           }), therefore no email will be sent. Here is the email that would have been sent:
@@ -104,7 +115,6 @@ export default class MailFunctions {
     content: string,
   ): Promise<boolean> {
     try {
-      // check parameters
       try {
         Helpers.requireParameters(process.env.MAIL_USERNAME);
       } catch (error) {
@@ -125,6 +135,11 @@ export default class MailFunctions {
       } catch (error) {
         Logger.Error('[DEBUG] Content parameter checking failed');
       }
+
+      if (!process.env.MAIL_USERNAME) {
+        return false;
+      }
+
       const newMailRequest: MailRequest = new MailRequest();
       newMailRequest.sender = process.env.MAIL_USERNAME;
       newMailRequest.recipient = recipient;

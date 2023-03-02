@@ -120,8 +120,8 @@ export default class StudentFunctions {
       res,
       async () => {
         Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
-        Helpers.requireParameters(req.params.jobID);
-        const jobInfo: Job = await AppDataSource.getRepository(Job)
+
+        const jobInfo = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
           .select([
             'company.name',
@@ -145,6 +145,8 @@ export default class StudentFunctions {
           .andWhere('Job.id = :id', { id: parseInt(req.params.jobID, 10) })
           .andWhere('Job.deleted = :deleted', { deleted: false })
           .getOne();
+
+        Logger.Info(`STUDENT=${req.studentZID} found individual JOB=${req.params.jobID}`);
 
         return {
           status: 200,
@@ -205,7 +207,7 @@ export default class StudentFunctions {
           }
           const newJob: {
             id: number,
-            logo: string,
+            logo?: string,
             role: string,
             description: string,
             workingRights: WorkingRights[],
@@ -213,7 +215,7 @@ export default class StudentFunctions {
             company: string,
           } = {
             id: job.id,
-            logo: job.company.logo ? job.company.logo.toString() : null,
+            logo: job.company.logo ? job.company.logo.toString() : undefined,
             role: job.role,
             description: job.description,
             workingRights: job.workingRights,

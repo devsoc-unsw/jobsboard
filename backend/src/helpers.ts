@@ -15,7 +15,7 @@ interface IResponseWithStatus {
 
 export default class Helpers {
   public static requireParameters(result: unknown): void {
-    if (result === undefined) {
+    if (!result) {
       throw new Error('Missing parameters.');
     }
     const str = result.toString();
@@ -73,7 +73,9 @@ export default class Helpers {
     }
     catch (error: unknown) {
       if (error instanceof Error) {
-        Logger.Error(`EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
+        if (error.stack) {
+          Logger.Error(`EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
+        }
       }
       else {
         Logger.Error('Unknown error was thrown');
