@@ -58,7 +58,11 @@
     "format": "prettier './src/**/*.ts'",
     "format:fix": "prettier --write './src/**/*.ts'",
     "lint": "eslint './src/**/*.ts'",
-    "lint:fix": "eslint --fix './src/**/*.ts'"
+    "lint:fix": "eslint --fix './src/**/*.ts'",
+    "db:stop": "docker stop jobs-board-db-1",
+    "db:start": "docker compose up -d db",
+    "api:start": "docker compose up -d api",
+    "api:stop": "docker stop jobs-board-api-1"
   },
   "devDependencies": {
     "@types/cors": "2.8.13",

@@ -24,6 +24,7 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=mysecretpassword
       - DB_NAME=postgres
+      - MAIL_USERNAME=test@jobsboard.com
   frontend-prod:
     build:
       context: ./frontend
@@ -61,7 +62,6 @@ services:
       dockerfile: test.dockerfile
       context: ./backend
     links:
-      - db
       - api
 
 volumes:
