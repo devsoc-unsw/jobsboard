@@ -2,6 +2,7 @@
 const plugin = require('tailwindcss/plugin');
 
 module.exports = {
+  darkMode: 'class',
   content: ['./**/*.{ts,tsx}'],
   theme: {
     fontWeight: {
@@ -20,13 +21,17 @@ module.exports = {
     extend: {
       backgroundColor: {
         'jb-background': '#f6f9fc',
+        'jb-dark-background': '#33363d',
         'jb-blue': '#2c8bf4',
+        'jb-dark-blue': '#314963',
         'jb-btn-hovered': '#1f7ade',
         'jb-accept-button': '#388e3c'
       },
       colors: {
         'jb-headings': '#0c3149',
+        'jb-dark-headings': '#f4fcfe',
         'jb-subheadings': '#415d6d',
+        'jb-dark-subheadings': '#415d6d',
         'jb-placeholder': '#606060',
         'jb-textlink': '#2c8bf4',
         'jb-textlink-hovered': '#1f7ade',
@@ -58,7 +63,6 @@ module.exports = {
           'max-width': 'none'
         },
         body: {
-          background: '#f6f9fc',
           margin: '0',
           height: '100%'
         }

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { faChevronCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ThemeContext from 'contexts/ThemeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import container from 'styles/container.module.css';
@@ -10,6 +11,7 @@ import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import JobsboardLogo from 'assets/logos/JobsboardLogo.png';
 import BigBlob from 'assets/misc/BigBlob.svg';
+import BigBlobDark from 'assets/misc/BigBlobDark.svg';
 import FeaturedJobCard from 'components/FeaturedJobCard/FeaturedJobCard';
 import Header from 'components/Header/Header';
 import RecruitmentModal from 'components/RecruitmentModal/RecruitmentModal';
@@ -25,8 +27,6 @@ import 'swiper/css/navigation';
 const HomePage = () => {
   const [featuredJobs, setFeaturedJobs] = useState<FeaturedJob[]>([]);
 
-  const [openModal, setOpenModal] = useState(false);
-
   useEffect(() => {
     const getFeaturedJobs = async () => {
       try {
@@ -39,6 +39,10 @@ const HomePage = () => {
 
     getFeaturedJobs();
   }, []);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const { theme } = useContext(ThemeContext);
 
   return (
     <div className="text-center">
@@ -55,7 +59,7 @@ const HomePage = () => {
       <div className="relative h-[80vh] overflow-hidden flex flex-col justify-center items-center xs:h-[100vh]">
         <Image
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          src={BigBlob}
+          src={theme === 'light' ? BigBlob : BigBlobDark}
           className="absolute top-1/2 left-1/2 h-full -z-10 -translate-x-1/2 -translate-y-1/2"
           alt="big blob"
           width={100}
@@ -67,7 +71,9 @@ const HomePage = () => {
         <div className="flex justify-around align-middle mx-auto gap-7">
           <div className="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
             <p className="text-lg text-white">CSESoc presents</p>
-            <h1 className="text-[#143A6C] font-bold text-6xl leading-[72px] m-0">Jobsboard</h1>
+            <h1 className="text-[#143A6C] dark:text-[#F9F7F1] font-bold text-6xl leading-[72px] m-0">
+              Jobsboard
+            </h1>
             <p className="text-lg text-white mt-3">
               Connecting UNSW students with top employers since 2018.
             </p>
@@ -75,7 +81,7 @@ const HomePage = () => {
               <Link href="/student/login">
                 <button
                   type="button"
-                  className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
+                  className="bg-[#264C79] dark:bg-[#2C8BF4] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
                 >
                   Explore
@@ -84,7 +90,7 @@ const HomePage = () => {
               <Link href="/company/login">
                 <button
                   type="button"
-                  className="bg-[#264c79] rounded-xl shadow-md text-white text-lg py-[3px] px-8
+                  className="bg-[#264C79] dark:bg-[#2C8BF4] rounded-xl shadow-md text-white text-lg py-[3px] px-8
                         hover:duration-500 hover:translate-y-[-2px] hover:shadow-lg"
                 >
                   Advertise
@@ -98,20 +104,22 @@ const HomePage = () => {
       <div className={container.pageContainer}>
         {/* <!-- Sponsors --> */}
         <div className="my-12 mx-auto">
-          <h3 className="font-bold text-3xl mb-0 text-jb-headings">Our Sponsors</h3>
-          <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
+          <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
+            Our Sponsors
+          </h3>
+          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             We aim to give you a pleasant student working experience by partnering up with only the
             best.
           </p>
           <SponsorCarousel />
-          <h3 className="font-bold text-3xl mb-0 text-jb-headings">
+          <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Discover Featured Student Jobs and Internships
           </h3>
-          <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
+          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             Spent hours trying to find something that suited you? Look no further, we&apos;ve got
             you covered with some amazing opportunities.
           </p>
-          <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
+          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             Check out the full list of open jobs&nbsp;
             <Link
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
@@ -158,8 +166,10 @@ const HomePage = () => {
           ) : (
             <div className="mb-28" />
           )}
-          <h3 className="font-bold text-3xl mb-0 text-jb-headings">Want to Post a Job?</h3>
-          <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
+          <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
+            Want to Post a Job?
+          </h3>
+          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             Are you a company looking to advertise with us? We&apos;d absolutely love to hear from
             you. In the meantime, you can also check out&nbsp;
             <a
@@ -181,8 +191,10 @@ const HomePage = () => {
             </Link>
           </div>
 
-          <h3 className="font-bold text-3xl mb-0 text-jb-headings">Looking for More?</h3>
-          <p className="text-lg text-jb-subheadings my-4 mx-16 sm:mx-0">
+          <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
+            Looking for More?
+          </h3>
+          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             If you&apos;re a CSE student with a keen interest in Jobsboard and looking to get
             involved, keep an eye out for our recruitment announcements on CSESoc&apos;s socials.
             Otherwise, you can also contribute by suggesting cool new features or even make a pull
@@ -199,7 +211,7 @@ const HomePage = () => {
           <div className="mt-20 flex justify-center">
             <FontAwesomeIcon
               icon={faChevronCircleUp}
-              className="fill-[0c3149] cursor-pointer text-[#0c3149]"
+              className="cursor-pointer text-[#0c3149] dark:text-[#f3f3f3]"
               size="3x"
               onClick={() => {
                 window.scrollTo({

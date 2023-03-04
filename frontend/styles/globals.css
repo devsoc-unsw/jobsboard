@@ -62,6 +62,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  @apply bg-jb-background dark:bg-jb-dark-background;
 }
 
 a {
