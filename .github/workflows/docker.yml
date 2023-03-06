@@ -54,7 +54,7 @@ jobs:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
       - name: Install yq
-        uses: mikefarah/yq@v4.31.1
+        uses: mikefarah/yq@v4.31.2
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -85,7 +85,7 @@ jobs:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
       - name: Install yq
-        uses: mikefarah/yq@v4.31.1
+        uses: mikefarah/yq@v4.31.2
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
