@@ -165,7 +165,7 @@ export default class CompanyFunctions {
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
-        newCompany.logo = Buffer.from(msg.logo, 'utf8');
+        newCompany.logo = msg.logo;
 
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;
@@ -836,9 +836,7 @@ export default class CompanyFunctions {
 
         await AppDataSource.createQueryBuilder()
           .update(Company)
-          .set({
-            logo: Buffer.from(req.body.logo, 'utf8'),
-          })
+          .set({ logo: req.body.logo })
           .where('id = :id', { id: companyAccountID })
           .execute();
 

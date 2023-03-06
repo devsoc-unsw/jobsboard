@@ -29,10 +29,10 @@ export default class Company {
   public description: string;
 
   @Column({
-    type: 'bytea',
+    type: 'text',
     nullable: true,
   })
-  public logo: Buffer;
+  public logo: string;
 
   @Column({
     default: false,
