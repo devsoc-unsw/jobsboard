@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { faBuilding } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AxiosError } from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -68,8 +70,12 @@ const PendingCompanyCard = ({
       role="button"
       tabIndex={0}
     >
-      <div className="flex flex-row items-center">
-        {logo && <Image src={logo} width={12} height={12} alt={name} />}
+      <div className="flex flex-row items-center gap-5">
+        {logo ? (
+          <Image src={logo} width={80} height={80} alt={name} />
+        ) : (
+          <FontAwesomeIcon icon={faBuilding} size="5x" />
+        )}
         <div className="flex flex-col text-left w-full truncate">
           <h2 className="font-bold text-jb-headings text-xl truncate">{name}</h2>
           <h3 className="text-jb-subheadings text-lg truncate">{username}</h3>
