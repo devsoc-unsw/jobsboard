@@ -1,12 +1,12 @@
 import { createContext } from 'react';
 
-type Context = {
+export type AppContextProps = {
   apiToken: string | null;
   setApiToken: (apiToken: string) => void;
   resetApiToken: () => void;
 };
 
-const AppContext = createContext<Context>({
+const AppContext = createContext<AppContextProps>({
   apiToken: null,
   setApiToken: () => undefined,
   resetApiToken: () => undefined

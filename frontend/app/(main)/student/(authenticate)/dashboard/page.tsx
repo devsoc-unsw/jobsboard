@@ -9,7 +9,7 @@ import {
   faPeopleGroup
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import AppContext from 'app/AppContext';
+import AppContext from 'contexts/AppContext';
 import BenefitCard from 'components/BenefitCard/BenefitCard';
 import ErrorBox from 'components/ErrorBox/ErrorBox';
 import JobCard from 'components/JobCard/JobCard';

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import ThemeContext from './ThemeContext';
+import React, { useMemo, useState } from 'react';
+import ThemeContext, { ThemeContextProps } from './ThemeContext';
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -10,24 +10,20 @@ type ThemeProviderProps = {
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [darkMode, setDarkMode] = useState(false);
 
-  return (
-    <ThemeContext.Provider
-      // eslint-disable-next-line react/jsx-no-constructed-context-values
-      value={{
-        theme: darkMode ? 'dark' : 'light',
-        toggleTheme: () => {
-          if (darkMode) document.documentElement.classList.remove('dark');
-          else document.documentElement.classList.add('dark');
+  const value = useMemo(
+    (): ThemeContextProps => ({
+      theme: darkMode ? 'dark' : 'light',
+      toggleTheme: () => {
+        if (darkMode) document.documentElement.classList.remove('dark');
+        else document.documentElement.classList.add('dark');
 
-          // Note that this setter is below the above state change as
-          // theme state value does not update immediately
-          setDarkMode(!darkMode);
-        }
-      }}
-    >
-      {children}
-    </ThemeContext.Provider>
+        setDarkMode((prevState) => !prevState);
+      }
+    }),
+    [darkMode]
   );
+
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
 export default ThemeProvider;

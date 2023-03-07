@@ -2,8 +2,8 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
+import AppContext from 'contexts/AppContext';
 import { useRouter } from 'next/navigation';
-import AppContext from 'app/AppContext';
 import PendingJobCard from 'components/PendingJobCard/PendingJobCard';
 import Toast from 'components/Toast/Toast';
 import api from 'config/api';

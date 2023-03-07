@@ -10,9 +10,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AxiosError } from 'axios';
+import AppContext from 'contexts/AppContext';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
 import api from 'config/api';
 import { AdminPendingCompaniesPayload, AdminPendingJobsPayload } from 'types/api';
