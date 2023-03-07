@@ -4,7 +4,7 @@ import { Assistant } from '@next/font/google';
 import ThemeProvider from 'contexts/ThemeProvider';
 import { getCssText } from 'stitches.config';
 import Footer from 'components/Footer/Footer';
-import AppProvider from './AppProvider';
+import AppProvider from '../contexts/AppProvider';
 import 'styles/globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 

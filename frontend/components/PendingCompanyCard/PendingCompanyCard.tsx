@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { AxiosError } from 'axios';
+import AppContext from 'contexts/AppContext';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import AppContext from 'app/AppContext';
 import api from 'config/api';
 import { AuthenticationPayload } from 'types/api';
 

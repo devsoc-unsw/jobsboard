@@ -8,8 +8,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AxiosError } from 'axios';
+import AppContext from 'contexts/AppContext';
 import { useRouter } from 'next/navigation';
-import AppContext from 'app/AppContext';
 import { BoardStatus } from 'components/JobBoard/JobBoard';
 import JobDescriptionModal from 'components/JobDescriptionModal/JobDescriptionModal';
 import api from 'config/api';

@@ -12,10 +12,10 @@ import {
   faUser
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AppContext from 'contexts/AppContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import AppContext from 'app/AppContext';
 import Alert from 'components/Alert/Alert';
 import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
 import api from 'config/api';
