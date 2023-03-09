@@ -257,7 +257,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         const pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
           const pendingCompanyAccounts = await AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder()
-            .select('CompanyAccount.id')
+            .select(['CompanyAccount.id', 'CompanyAccount.username'])
             .where('CompanyAccount.verified = :verified', { verified: false })
             .innerJoinAndSelect('CompanyAccount.company', 'c')
             .getMany();

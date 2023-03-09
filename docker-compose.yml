@@ -24,18 +24,6 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=mysecretpassword
       - DB_NAME=postgres
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: dev.dockerfile
-    image: webpersonal.azurecr.io/jb-frontend:latest
-    volumes:
-      - ./frontend/src:/app/src
-    ports:
-      - 3001:3001
-    expose:
-      - 3001
   frontend-prod:
     build:
       context: ./frontend
@@ -44,14 +32,17 @@ services:
       - 8081:80
     expose:
       - 8081
-  frontend-v2:
+  frontend-vue:
     build:
-      context: ./frontend_nextjs
+      context: ./frontend_vue
+      dockerfile: dev.dockerfile
     image: webpersonal.azurecr.io/jb-frontend:latest
+    volumes:
+      - ./frontend/src:/app/src
     ports:
-      - "3000:3000"
+      - 3001:3001
     expose:
-      - 3000
+      - 3001
   db:
     image: postgres:14.7-alpine # this is the image that we want to run (aka app)
     restart: always

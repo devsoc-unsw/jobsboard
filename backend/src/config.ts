@@ -13,6 +13,7 @@ import Student from './entity/student';
 import MailRequest from './entity/mail_request';
 import Logs from './entity/logs';
 import Statistics from './entity/statistics';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -26,6 +27,8 @@ export const activeEntities = [
   Logs,
   Statistics,
 ];
+
+dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

@@ -73,7 +73,7 @@ yarn
 ```
 NODE_ENV=development
 SERVER_PORT=8080
-DB_HOST=db
+DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=mysecretpassword
@@ -92,8 +92,6 @@ yarn serve
 ```
 
 5. Navigate to [localhost:8080](http://localhost:8080/) to see the backend running locally! Visit [localhost:8080/docs](http://localhost:8080/docs) to see the API docs.
-
-> Make sure that the apiRoot in /frontend/config/config.ts points to the local instance..
 
 ### Running the backend in production mode
 
