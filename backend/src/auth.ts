@@ -8,6 +8,7 @@ import JWT from './jwt';
 import Logger from './logging';
 import Secrets from './secrets';
 import { CompanyAuthRequest, StudentAuthRequest, AdminAuthRequest } from './interfaces/interfaces';
+import environment from './environment';
 
 // auth token data structures
 interface IToken {
@@ -211,7 +212,7 @@ export default class Auth {
 
   // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
-    if (process.env.NODE_ENV !== 'development') {
+    if (environment.data().NODE_ENV !== 'development') {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
         // check if it matches the zID format, throw otherwise.
         Helpers.doesMatchZidFormat(zID);

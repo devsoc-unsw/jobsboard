@@ -15,6 +15,7 @@ import {
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
 } from './interfaces/interfaces';
+import environment from './environment';
 
 export default class AdminFunctions {
   public static async ApproveJobRequest(
@@ -49,7 +50,10 @@ export default class AdminFunctions {
         }
 
         const jobPoster = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToApprove).loadOne<Company>(),
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Job, 'company')
+            .of(jobToApprove)
+            .loadOne<Company>(),
           `Failed to find company record owning JOB=${jobID}`,
         );
 
@@ -510,23 +514,16 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         // mark this job as one that the admin has created
         newJob.adminCreated = true;
 
-        if (process.env.MAIL_USERNAME) {
-          await MailFunctions.AddMailToQueue(
-            process.env.MAIL_USERNAME,
-            'CSESoc Jobs Board - CSESoc has created a job on your behalf',
-            `
+        await MailFunctions.AddMailToQueue(
+          environment.data().MAIL_USERNAME,
+          'CSESoc Jobs Board - CSESoc has created a job on your behalf',
+          `
           Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
-            <br>
+          <br>
           <p>Best regards,</p>
           <p>CSESoc Jobs Board Administrator</p>
           `,
-          );
-        }
-        else
-        {
-          throw new Error('Missing MAIL_USERNAME environment variable');
-        }
-
+        );
         company.jobs.push(newJob);
 
         await AppDataSource.manager.save(company);
@@ -744,8 +741,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           const companyJobs = resMap.get(key);
           if (companyJobs) {
             companyJobs.push(job);
-          }
-          else {
+          } else {
             Logger.Error(`Failed to retrieve jobs for company ${key}`);
           }
         });

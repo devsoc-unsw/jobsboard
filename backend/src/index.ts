@@ -1,5 +1,4 @@
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
@@ -15,6 +14,7 @@ import CompanyFunctions from './company';
 import StudentFunctions from './student';
 import MailFunctions from './mail';
 import openapi from './docs/openapi.json';
+import environment from './environment';
 
 import {
   AdminApprovedJobPostsRequest,
@@ -47,20 +47,23 @@ import {
   AdminAuthRequest,
 } from './interfaces/interfaces';
 
-dotenv.config();
+// console.log(ev);
+
 Logger.Init();
 
 const app = express();
-const port = process.env.SERVER_PORT;
+const port = environment.data().SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({
-  limit: '5mb',
-  extended: true,
-}));
+app.use(
+  express.urlencoded({
+    limit: '5mb',
+    extended: true,
+  }),
+);
 app.use(helmet());
 
 let corsOptions;
-if (process.env.NODE_ENV !== 'development') {
+if (environment.data().NODE_ENV !== 'development') {
   // assuming production, set up a particular config and allow only requests from
   // the current URL to be consumed
   const whitelist = ['https://jobsboard.csesoc.unsw.edu.au'];
@@ -68,8 +71,7 @@ if (process.env.NODE_ENV !== 'development') {
     origin: (origin: string, callback: (error: Error | null, status?: boolean) => void) => {
       if (whitelist.indexOf(origin) !== -1) {
         callback(null, true);
-      }
-      else {
+      } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -473,7 +475,7 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
-if (process.env.NODE_ENV === 'development') {
+if (environment.data().NODE_ENV === 'development') {
   app.post('/email', (req, res) => {
     (async () => {
       await MailFunctions.SendTestEmail(req, res);
@@ -484,13 +486,12 @@ if (process.env.NODE_ENV === 'development') {
 
 app.listen(port, () => {
   (async () => {
-    if (process.env.NODE_ENV === 'development') {
+    if (environment.data().NODE_ENV === 'development') {
       await bootstrap();
-    }
-    else {
+    } else {
       await AppDataSource.initialize();
     }
-    if (process.env.NODE_ENV === 'production') {
+    if (environment.data().NODE_ENV === 'production') {
       MailFunctions.InitMailQueueScheduler(2000);
     }
     if (port) {

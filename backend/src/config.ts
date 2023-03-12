@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { DataSource } from 'typeorm';
-import dotenv from 'dotenv';
-
+// import dotenv from 'dotenv';
+import environment from './environment';
 import Logger from './logging';
 
 // custom entities
@@ -14,7 +14,7 @@ import MailRequest from './entity/mail_request';
 import Logs from './entity/logs';
 import Statistics from './entity/statistics';
 
-dotenv.config();
+// dotenv.config();
 
 export const activeEntities = [
   Company,
@@ -27,13 +27,15 @@ export const activeEntities = [
   Statistics,
 ];
 
+console.log(environment.data());
+
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: environment.data().DB_HOST,
+  port: Number(environment.data().DB_PORT),
+  username: environment.data().DB_USER,
+  password: environment.data().DB_PASSWORD,
+  database: environment.data().DB_NAME,
   synchronize: true,
   logging: false,
   entities: activeEntities,
