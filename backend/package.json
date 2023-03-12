@@ -4,11 +4,6 @@
   "main": "dist/index.js",
   "license": "MIT",
   "dependencies": {
-    "@tanstack/react-query": "^4.24.10",
-    "@trpc/client": "^10.14.0",
-    "@trpc/next": "^10.14.0",
-    "@trpc/react-query": "^10.14.0",
-    "@trpc/server": "^10.14.0",
     "core-js": "^3.6.4",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
