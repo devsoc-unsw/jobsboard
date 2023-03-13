@@ -15,7 +15,7 @@ const getFutureDateValue = () => {
 
 describe("authentication", () => {
   describe("students", () => {
-    it("fails when there is no json message", 
+    it("fails when there is no json message",
       function (done) {
         server.post("/authenticate/student")
           .send({})
@@ -68,7 +68,7 @@ describe("authentication", () => {
 
   describe("company", () => {
     describe("authentication", () => {
-      it("fails when there is no json message", 
+      it("fails when there is no json message",
         function (done) {
           server.post("/authenticate/company")
             .send({})
@@ -113,7 +113,7 @@ describe("authentication", () => {
 
   describe("admin", () => {
     describe("authentication", () => {
-      it("fails when there is no json message", 
+      it("fails when there is no json message",
         function (done) {
           server.post("/authenticate/admin")
             .send({})
@@ -169,7 +169,7 @@ describe("authentication", () => {
       before( async function() {
         this.unverifiedCompanyToken = await server
           .post("/authenticate/company")
-          .send({ username: "test2", password: "test2" })   
+          .send({ username: "test2", password: "test2" })
           .expect(200)
           .then(response => response.body.token);
 
@@ -239,7 +239,7 @@ describe("authentication", () => {
             });
         }
       );
-      
+
       describe("using an unverified company account", () => {
         it(
           "fails when requesting to add a job with a valid web link",
@@ -257,7 +257,7 @@ describe("authentication", () => {
                 studentDemographic: ["penultimate", "final_year"],
                 jobType: "intern",
                 workingRights: ["aus_ctz", "aus_perm_res"],
-                wamRequirements: "C"        
+                wamRequirements: "C"
               })
               .expect(403)
               .end( function (_, res) {
@@ -283,7 +283,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(200)
             .end( function (_, res) {
@@ -309,7 +309,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -335,7 +335,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -387,7 +387,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -412,7 +412,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -437,7 +437,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -496,7 +496,7 @@ describe("authentication", () => {
                 studentDemographic: ["penultimate", "final_year"],
                 jobType: "intern",
                 workingRights: ["aus_ctz", "aus_perm_res"],
-                wamRequirements: "C"        
+                wamRequirements: "C"
               })
               .expect(403)
               .end( function (_, res) {
@@ -522,7 +522,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(200)
             .end( function (_, res) {
@@ -548,7 +548,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -574,7 +574,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -600,7 +600,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -626,7 +626,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -651,7 +651,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -676,7 +676,7 @@ describe("authentication", () => {
               studentDemographic: ["penultimate", "final_year"],
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
+              wamRequirements: "C"
             })
             .expect(400)
             .end( function (_, res) {
@@ -885,7 +885,7 @@ describe("authentication", () => {
               jobType: "intern",
               workingRights: ["aus_ctz", "aus_perm_res"],
               wamRequirements: "C"
-      
+
             })
             .expect(400)
             .end( function (_, res) {
