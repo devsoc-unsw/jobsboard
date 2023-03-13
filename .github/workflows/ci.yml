@@ -1,10 +1,9 @@
 name: CI
 on:
-  workflow_dispatch:
-  # pull_request:
-  #   branches:
-  #     - "main"
-  #     - "renovate/*"
+  pull_request:
+    branches:
+      - "main"
+      - "renovate/*"
 
 jobs:
   test:
@@ -19,9 +18,20 @@ jobs:
           platforms: arm64
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Build containers
-        run: docker-compose build
-      - name: Run api and db
-        run: docker-compose up -d db api
       - name: Run tests
-        run: docker-compose run --rm test
+        run: docker-compose run test
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: Install
+        run: yarn install
+      - name: Run linting
+        run: yarn run lint
+      - name: Run prettier
+        run: yarn run format
