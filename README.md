@@ -148,9 +148,11 @@ const transportOptions = {
 2. Run `docker compose build test`
 3. Run `docker compose up test`
 
->  Use the logs in the terminal or the Docker Desktop GUI to check your tests.
+> Make sure to stop the server and db before rerunning the tests either using the the Docker Desktop GUI or by running `docker stop jobs-board_api_1` and `docker stop jobs-board_db_1` in your terminal.
 
-> The reason docker is used when testing is because we're given a guarantee that the conditions are exactly the same every time and because it emulates what the behaviour will be on prod running in the container - which there are difference
+> Use the logs in the terminal or the Docker Desktop GUI to check your tests.
+
+> The reason docker is used when testing is because we're given a guarantee that the conditions are exactly the same every time and because it emulates what the behaviour will be on prod running in the container - which there are difference.
 
 ### Finished your work
 Always double check before submitting your pr
