@@ -30,8 +30,11 @@ jobs:
         with:
           node-version: "18"
       - name: Install
+        working-directory: ./backend
         run: yarn install
       - name: Run linting
+        working-directory: ./backend
         run: yarn run lint
       - name: Run prettier
+        working-directory: ./backend
         run: yarn run format
