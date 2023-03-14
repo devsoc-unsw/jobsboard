@@ -13,7 +13,7 @@ type JobListingMinimalProps = {
 const JobListingMinimal = ({ id: jobID, role, company, location }: JobListingMinimalProps) => {
   return (
     // <!-- TODO: replace router push with window.open instead? -->
-    <Link href={`/student/job/${jobID}`}>
+    <Link href={`/student/job/${jobID}`} className="mx-4 min-w-[160px]">
       <button
         type="button"
         className="flex flex-row mb-4 items-center p-4 shadow-card rounded-md w-full md:flex-col"
