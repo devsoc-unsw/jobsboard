@@ -1,4 +1,5 @@
 import { Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
@@ -36,7 +37,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = req.body;
         Helpers.requireParameters(msg.zID);
         Helpers.requireParameters(msg.password);
@@ -75,16 +76,16 @@ export default class Auth {
           }
 
           return {
-            status: 200,
+            status: StatusCodes.OK,
             msg: {
               token,
             },
-          } as IResponseWithStatus;
+          };
         }
         Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
         throw new Error('Invalid credentials');
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -98,7 +99,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
@@ -134,16 +135,16 @@ export default class Auth {
             .execute();
           // credentials match, so grant them a token
           return {
-            status: 200,
+            status: StatusCodes.OK,
             msg: {
               token,
             },
-          } as IResponseWithStatus;
+          };
         } catch (error) {
-          return { status: 401, msg: undefined } as IResponseWithStatus;
+          return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
         }
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -157,7 +158,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
@@ -190,16 +191,16 @@ export default class Auth {
             .where('id = :id', { id: adminQuery.id })
             .execute();
           return {
-            status: 200,
+            status: StatusCodes.OK,
             msg: {
               token,
             },
-          } as IResponseWithStatus;
+          };
         } catch (error) {
-          return { status: 401, msg: undefined } as IResponseWithStatus;
+          return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
         }
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -226,7 +227,7 @@ export default class Auth {
           return true;
         }
 
-        if (verifyResponse.status === 401) {
+        if (verifyResponse.status === StatusCodes.UNAUTHORIZED) {
           Logger.Info(`Failed to login STUDENT=${zID} due to INCORRECT PASSWORD`);
         } else {
           Logger.Info(`Failed to login STUDENT=${zID} due to ERROR CODE ${verifyResponse.status}`);
