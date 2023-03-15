@@ -15,6 +15,7 @@ import CompanyFunctions from './company';
 import StudentFunctions from './student';
 import MailFunctions from './mail';
 import openapi from './docs/openapi.json';
+import ev from './environment';
 
 import {
   AdminApprovedJobPostsRequest,
@@ -48,8 +49,10 @@ import {
 dotenv.config();
 Logger.Init();
 
+console.log(ev.data());
+
 const app = express();
-const port = process.env.SERVER_PORT;
+const port = ev.data().SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({
   limit: '5mb',
@@ -58,7 +61,7 @@ app.use(express.urlencoded({
 app.use(helmet());
 
 let corsOptions;
-if (process.env.NODE_ENV !== 'development') {
+if (ev.data().NODE_ENV !== 'development') {
   // assuming production, set up a particular config and allow only requests from
   // the current URL to be consumed
   const whitelist = ['https://jobsboard.csesoc.unsw.edu.au'];
@@ -471,7 +474,7 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
-if (process.env.NODE_ENV === 'development') {
+if (ev.data().NODE_ENV === 'development') {
   app.post('/email', (req, res) => {
     (async () => {
       await MailFunctions.SendTestEmail(req, res);
@@ -482,13 +485,13 @@ if (process.env.NODE_ENV === 'development') {
 
 app.listen(port, () => {
   (async () => {
-    if (process.env.NODE_ENV === 'development') {
+    if (ev.data().NODE_ENV === 'development') {
       await bootstrap();
     }
     else {
       await AppDataSource.initialize();
     }
-    if (process.env.NODE_ENV === 'production') {
+    if (ev.data().NODE_ENV === 'production') {
       MailFunctions.InitMailQueueScheduler(2000);
     }
     Logger.Info(`SERVER STARTED AT PORT=${port}`);
