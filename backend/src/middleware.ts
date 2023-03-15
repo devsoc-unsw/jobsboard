@@ -11,6 +11,7 @@ import {
   AuthoriseAdminRequest,
   PasswordResetRequest,
 } from './interfaces/interfaces';
+import ev from './environment';
 
 export default class Middleware {
   public static genericLoggingMiddleware(
@@ -197,7 +198,7 @@ export default class Middleware {
   }
 
   public static privateRouteWrapper(this: void, req: Request, res: Response, next: NextFunction) {
-    if (process.env.NODE_ENV === 'development') {
+    if (ev.data().NODE_ENV === 'development') {
       next();
     }
   }

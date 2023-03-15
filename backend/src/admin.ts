@@ -15,6 +15,7 @@ import {
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
 } from './interfaces/interfaces';
+import ev from './environment';
 
 export default class AdminFunctions {
   public static async ApproveJobRequest(
@@ -487,7 +488,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         newJob.adminCreated = true;
 
         await MailFunctions.AddMailToQueue(
-          process.env.MAIL_USERNAME,
+          ev.data().MAIL_USERNAME,
           'CSESoc Jobs Board - CSESoc has created a job on your behalf',
           `
         Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
