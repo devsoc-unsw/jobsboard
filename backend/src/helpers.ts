@@ -1,4 +1,5 @@
 import { Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import Logger from './logging';
 import {
   JobMode,
@@ -10,7 +11,7 @@ import {
 
 interface IResponseWithStatus {
   msg: unknown;
-  status: number;
+  status: StatusCodes;
 }
 
 export default class Helpers {
