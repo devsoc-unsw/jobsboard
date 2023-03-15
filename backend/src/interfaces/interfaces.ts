@@ -111,6 +111,9 @@ export interface AdminJobRequest extends Request<JobIDParams>, AdminRequestBase 
 export interface VerifyCompanyAccountRequest
   extends Request<CompanyAccountIdParams>, AdminRequestBase {}
 
+export interface UnverifyCompanyAccountRequest
+  extends Request<CompanyAccountIdParams>, AdminRequestBase {}
+
 export interface AdminCreateJobRequest
   extends Request<JobIDParams, never, JobInfo>, AdminRequestBase {}
 

@@ -12,6 +12,7 @@ import {
   AdminJobRequest,
   GeneralAdminRequest,
   VerifyCompanyAccountRequest,
+  UnverifyCompanyAccountRequest,
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
 } from './interfaces/interfaces';
@@ -338,6 +339,57 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         `,
         );
         Logger.Info(`Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);
+        return {
+          status: 200,
+          msg: {
+            token: req.newJbToken,
+          },
+        } as IResponseWithStatus;
+      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
+      next,
+    );
+  }
+
+  public static async UnverifyCompanyAccount(
+    this: void,
+    req: UnverifyCompanyAccountRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async () => {
+        Logger.Info(
+          `Admin ID=${req.adminID} attempting to unverify COMPANY=${req.params.companyAccountID}`,
+        );
+        const pendingCompany = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder()
+            .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
+            .andWhere('CompanyAccount.verified = :verified', { verified: true })
+            .getOne(),
+          `Couldn't find any verified companies for COMPANY_ACCOUNT=${req.params.companyAccountID}.`,
+        );
+
+        await AppDataSource.createQueryBuilder()
+          .update(CompanyAccount)
+          .set({ verified: false })
+          .where('id = :id', { id: pendingCompany.id })
+          .execute();
+
+        // TODO:
+        // send an email confirming that the account has been unverified
+        // await MailFunctions.AddMailToQueue(
+        //   pendingCompany.username,
+        //   'CSESoc Jobs Board - Your account has been unverified'
+        // );
+        Logger.Info(`Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`);
         return {
           status: 200,
           msg: {
