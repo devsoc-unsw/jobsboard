@@ -42,14 +42,14 @@ Jobs Board was made with 🤍 by CSE students, for CSE students. Jobsboard is a 
     ```
 2. Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 3. Set up the neccessary environment variables
-   - Frontend (optional):
-      - Create a `.env` file in the `frontend` directory with the following contents:
-         ```
-          API_BASE_URL=http://localhost:8080/
-          ```
-          The environment variable `API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead (http://localhost:8080/). If the backend is not running locally or if `API_BASE_URL` is not provided, `https://jobsboard.staging.csesoc.unsw.edu.au/api` will be used as the base URL as a fallback option.
-    - Backend:
-      - Create a `.env` file in the `backend` directory with the following contents:
+   - **Frontend** (optional):
+      Create a `.env` file in the `frontend` directory with the following contents:
+       ```
+        API_BASE_URL=http://localhost:8080/
+        ```
+        The environment variable `API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead (http://localhost:8080/). If the backend is not running locally or if `API_BASE_URL` is not provided, `https://jobsboard.staging.csesoc.unsw.edu.au/api` will be used as the base URL as a fallback option.
+    - **Backend**:
+      Create a `.env` file in the `backend` directory with the following contents:
          ```
           NODE_ENV=development
           SERVER_PORT=8080
@@ -58,7 +58,12 @@ Jobs Board was made with 🤍 by CSE students, for CSE students. Jobsboard is a 
           DB_USER=postgres
           DB_PASSWORD=mysecretpassword
           DB_NAME=postgres
+          MAIL_USERNAME=test@gmail.com
+          MAIL_PASSWORD=password
+          MAIL_SMTP_SERVER=smtp.gmail.com
+          MAIL_SMTP_SERVER_PORT=465
          ```
+      > If having `DB_HOST=localhost` result in errors such as `ECONREFUSED`, change it to `DB_HOST=db`.
 4. Navigate to the `frontend` and `backend` directories and install the required dependencies by running `yarn`
 
 <br />
@@ -144,7 +149,7 @@ const transportOptions = {
 
 #### Backend
 **Without Docker**
-1. Go to `backend/tests/config.js` and set `apiUrl` to `http://localhost:8080`. Remember to set it back to the original once you're ready to push your pr.
+1. Go to `backend/tests/config.js` and set `apiUrl` to `http://localhost:8080`. If this is your first time, run `git update-index --skip-worktree tests/config.js` to prevent git from tracking this file in the future.
 2. Navigate to the `backend` directory and run the following commands in your terminal
     ```
     yarn serve
