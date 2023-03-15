@@ -527,10 +527,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           msg: { num: numVerifiedCompanies },
         };
       },
-      () => ({
-        status: StatusCodes.BAD_REQUEST,
-        msg: undefined,
-      }),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }

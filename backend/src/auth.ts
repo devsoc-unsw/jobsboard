@@ -77,9 +77,7 @@ export default class Auth {
 
           return {
             status: StatusCodes.OK,
-            msg: {
-              token,
-            },
+            msg: { token },
           };
         }
         Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
@@ -136,9 +134,7 @@ export default class Auth {
           // credentials match, so grant them a token
           return {
             status: StatusCodes.OK,
-            msg: {
-              token,
-            },
+            msg: { token },
           };
         } catch (error) {
           return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
@@ -192,9 +188,7 @@ export default class Auth {
             .execute();
           return {
             status: StatusCodes.OK,
-            msg: {
-              token,
-            },
+            msg: { token },
           };
         } catch (error) {
           return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
