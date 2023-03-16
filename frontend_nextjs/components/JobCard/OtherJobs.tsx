@@ -15,7 +15,7 @@ const JobCard = ({
 }: JobCardProps) => {
   const outsideClass = className ? className : ""
   return (
-    <div className={outsideClass + " flex flex-col py-4 px-2 h-full max-h-80 bg-white rounded-lg overflow-y-auto shadow-card sm:hidden"}>
+    <div className={outsideClass + " flex flex-col py-4 px-2 h-full max-h-80 bg-white rounded-lg overflow-y-auto shadow-card"}>
       <h2
         className={`font-bold text-lg text-center text-jb-headings ${
           companyJobs.length === 0 ? 'my-auto' : 'mb-4'

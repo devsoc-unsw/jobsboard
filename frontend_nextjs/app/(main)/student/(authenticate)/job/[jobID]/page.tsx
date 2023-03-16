@@ -102,7 +102,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
   return (
     <div>
       {job ? (
-        <>
+        <div>
           <Alert
             type="error"
             message={alertMsg}
@@ -110,7 +110,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
             onClose={() => setAlertOpen(false)}
           />
           <div className="flex md:flex-col justify-center mb-10">
-            <div className="flex flex-col md:flex-row md:items-center h-full">
+            <div className="flex flex-col md:flex-row md:items-center sticky md:static top-4 max-h-screen overflow-y-auto mr-4">
               {job.company.logo ? (
                 <Image
                   width={300}
@@ -186,7 +186,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
                     href={job.applicationLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex justify-center"
+                    className="flex justify-center my-4"
                   >
                     <Button variant="primary">
                       <b className="text-sm">Apply for this job</b>
@@ -196,7 +196,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
 
               <OtherJobs className='md:hidden' job={job} companyJobs={companyJobs} />
             </div>
-            <div className="flex flex-col w-3/4 sm:w-full md:mb-4">
+            <div className="flex flex-col w-3/4 md:w-full md:mb-4 ">
               <h1 className="font-bold text-3xl my-4 text-jb-headings">
                 {job.role}
               </h1>
@@ -229,7 +229,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
             <OtherJobs className='hidden md:flex' job={job} companyJobs={companyJobs} />
 
           </div>
-        </>
+        </div>
       ) : (
         <Spinner />
       )}
