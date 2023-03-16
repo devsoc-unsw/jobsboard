@@ -43,11 +43,11 @@ Jobs Board was made with 🤍 by CSE students, for CSE students. Jobsboard is a 
 2. Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 3. Set up the neccessary environment variables
    - **Frontend** (optional):
-      Create a `.env` file in the `frontend` directory with the following contents:
+      Create a `.env.local` file in the `frontend` directory with the following contents:
        ```
-        API_BASE_URL=http://localhost:8080/
+        NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/
         ```
-        The environment variable `API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead (http://localhost:8080/). If the backend is not running locally or if `API_BASE_URL` is not provided, `https://jobsboard.staging.csesoc.unsw.edu.au/api` will be used as the base URL as a fallback option.
+        The environment variable `NEXT_PUBLIC_API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead (http://localhost:8080/). If the backend is not running locally or if `NEXT_PUBLIC_API_BASE_URL` is not provided, `https://jobsboard.staging.csesoc.unsw.edu.au/api` will be used as the base URL as a fallback option.
     - **Backend**:
       Create a `.env` file in the `backend` directory with the following contents:
          ```
