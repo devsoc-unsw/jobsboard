@@ -1,5 +1,6 @@
 
 import supertest from 'supertest';
+import { StatusCodes } from 'http-status-codes';
 import { config } from '../config';
 import { AppDataSource } from '../../src/config';
 import seedDB from '../../src/dev';
@@ -20,7 +21,7 @@ describe('Student Authentication', function () {
         zID: '',
         password: '',
       })
-      .expect(400)
+      .expect(StatusCodes.BAD_REQUEST)
     }
   );
 
@@ -31,7 +32,7 @@ describe('Student Authentication', function () {
       .send({
         hello: 'world',
       })
-      .expect(400)
+      .expect(StatusCodes.BAD_REQUEST)
     }
   );
 
@@ -43,7 +44,7 @@ describe('Student Authentication', function () {
           zID: 'new-student',
           password: 'password',
         })
-        .expect(200)
+        .expect(StatusCodes.OK)
         .then(res => res.body.token)
 
       console.log(studentToken);
@@ -53,7 +54,7 @@ describe('Student Authentication', function () {
       await server
         .get('jobs/0')
         .set('Authorization', studentToken)
-        .expect(200)
+        .expect(StatusCodes.OK);
     }
   );
 
