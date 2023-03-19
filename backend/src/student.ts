@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import Fuse from 'fuse.js';
-
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
@@ -74,7 +74,7 @@ export default class StudentFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { offset } = req.params;
         Logger.Info(`STUDENT=${req.studentZID} getting paginated jobs with OFFSET=${offset}`);
         Helpers.requireParameters(offset);
@@ -94,18 +94,14 @@ export default class StudentFunctions {
         const fixedJobs = MapJobsToObjects(jobs);
 
         return {
-          status: 200,
-          msg: {
-            jobs: fixedJobs,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { jobs: fixedJobs },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -118,7 +114,7 @@ export default class StudentFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobInfo: Job = await AppDataSource.getRepository(Job)
@@ -147,19 +143,14 @@ export default class StudentFunctions {
           .getOne();
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            job: jobInfo,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, job: jobInfo },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -172,7 +163,7 @@ export default class StudentFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info('Attempting to get featured jobs');
 
         let jobs = await AppDataSource.getRepository(Job)
@@ -224,19 +215,14 @@ export default class StudentFunctions {
         });
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            featuredJobs,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, featuredJobs },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -308,16 +294,14 @@ export default class StudentFunctions {
         const filteredResult = fuseInstance.search(queryString);
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            searchResult: filteredResult,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, searchResult: filteredResult },
+        };
       },
       () => ({
-        status: 400,
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }

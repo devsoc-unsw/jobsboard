@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { Brackets } from 'typeorm';
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Company from './entity/company';
 import CompanyAccount from './entity/company_account';
@@ -37,7 +38,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(
           `STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`,
         );
@@ -49,19 +50,17 @@ export default class CompanyFunctions {
           .getOne();
 
         return {
-          status: 200,
+          status: StatusCodes.OK,
           msg: {
             token: req.newJbToken,
             companyInfo,
           },
-        } as IResponseWithStatus;
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -74,7 +73,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(`STUDENT=${req.studentZID} getting jobs for COMPANY=${req.params.companyID}`);
         const companyJobs = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
@@ -100,19 +99,17 @@ export default class CompanyFunctions {
           .getMany();
 
         return {
-          status: 200,
+          status: StatusCodes.OK,
           msg: {
             token: req.newJbToken,
             companyJobs,
           },
-        } as IResponseWithStatus;
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -125,7 +122,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = {
           location: req.body.location,
           name: req.body.name,
@@ -156,10 +153,7 @@ export default class CompanyFunctions {
           .getOne();
         if (companyAccountUsernameSearchResult !== null || companyNameSearchResult !== null) {
           // company exists, send conflict error
-          return {
-            status: 409,
-            msg: undefined,
-          } as IResponseWithStatus;
+          return { status: StatusCodes.CONFLICT, msg: undefined };
         }
 
         const newCompany = new Company();
@@ -195,15 +189,9 @@ export default class CompanyFunctions {
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -216,14 +204,12 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         if (req.companyAccountID === undefined) {
           return {
-            status: 401,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.UNAUTHORIZED,
+            msg: { token: req.newJbToken },
+          };
         }
         // ensure required parameters are present
         const msg = {
@@ -278,11 +264,9 @@ export default class CompanyFunctions {
         // prevent job from being posted since the provided company account is not verified
         if (companyAccount === null) {
           return {
-            status: 403,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.FORBIDDEN,
+            msg: { token: req.newJbToken },
+          };
         }
 
         // add the new job to the list and commit to db
@@ -313,19 +297,14 @@ export default class CompanyFunctions {
         `,
         );
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            id: newJobID,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, id: newJobID },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -338,7 +317,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const companyID = req.companyAccountID;
         Helpers.requireParameters(companyID);
 
@@ -380,19 +359,14 @@ export default class CompanyFunctions {
         );
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            hiddenJobs,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, hiddenJobs },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -427,7 +401,7 @@ export default class CompanyFunctions {
   public static async EditJob(this: void, req: EditJobRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const companyId = req.companyAccountID;
         Helpers.requireParameters(companyId);
 
@@ -475,11 +449,9 @@ export default class CompanyFunctions {
 
         if (oldJob === null) {
           return {
-            status: 403,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.FORBIDDEN,
+            msg: { token: req.newJbToken },
+          };
         }
 
         // update the db
@@ -510,24 +482,16 @@ export default class CompanyFunctions {
 
         if (!CompanyFunctions.isJobUpdated(newJob, jobInfo)) {
           return {
-            status: 403,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.FORBIDDEN,
+            msg: { token: req.newJbToken },
+          };
         }
 
         Logger.Info(`COMPANY=${companyId} sucessfully edited JOB=${jobInfo.id}`);
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -540,7 +504,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(`COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`);
         const companyJobs = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Job)
@@ -597,19 +561,14 @@ export default class CompanyFunctions {
         });
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            companyJobs: fixedCompanyJobs,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, companyJobs: fixedCompanyJobs },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -622,7 +581,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(
           `COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`,
         );
@@ -647,18 +606,14 @@ export default class CompanyFunctions {
         Logger.Info(`COMPANY=${req.companyAccountID} marked JOB=${req.params.jobID} as deleted`);
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -671,7 +626,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         // check for required params
         const receipientEmail = req.body.username;
         Helpers.requireParameters(receipientEmail);
@@ -712,17 +667,12 @@ export default class CompanyFunctions {
         <p>The JobsBoard Team</p>
         `,
         );
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -735,7 +685,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { username } = req.params;
         Helpers.requireParameters(username);
 
@@ -754,16 +704,11 @@ export default class CompanyFunctions {
         Helpers.requireParameters(resetToken.latestValidResetToken);
 
         return {
-          status: 200,
-          msg: {
-            token: resetToken.latestValidResetToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: resetToken.latestValidResetToken },
+        };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -776,7 +721,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         // check if required parameters are supplied
         const msg = {
           newPassword: req.body.newPassword,
@@ -810,15 +755,9 @@ export default class CompanyFunctions {
           .where('id = :id', { id: companyAccount.id })
           .execute();
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -826,7 +765,7 @@ export default class CompanyFunctions {
   public static async UploadLogo(req: CompanyUploadLogoRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { companyAccountID } = req;
 
         Helpers.requireParameters(companyAccountID);
@@ -842,15 +781,9 @@ export default class CompanyFunctions {
 
         Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -863,7 +796,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const companyLogo = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Company)
             .createQueryBuilder()
@@ -874,21 +807,12 @@ export default class CompanyFunctions {
         );
 
         if (!companyLogo) {
-          return {
-            status: 404,
-            msg: undefined,
-          } as IResponseWithStatus;
+          return { status: StatusCodes.NOT_FOUND, msg: undefined };
         }
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -901,7 +825,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { companyAccountID } = req;
 
         // check if required parameters are supplied
@@ -929,15 +853,9 @@ export default class CompanyFunctions {
 
         Logger.Info(`COMPANY=${companyAccountID} successfully updated it's details`);
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
