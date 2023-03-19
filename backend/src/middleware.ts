@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import JWT from './jwt';
 import Logger from './logging';
 import { AppDataSource } from './config';
@@ -88,7 +89,7 @@ export default class Middleware {
       next();
     } catch (error: unknown) {
       // if there are any errors, send a forbidden
-      res.sendStatus(401);
+      res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
       Logger.Error(`Authentication Middleware Error (student): ${(error as Error).message}`);
     }
@@ -118,7 +119,7 @@ export default class Middleware {
       next();
     } catch (error) {
       // if there are any errors, send a forbidden
-      res.sendStatus(401);
+      res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
       Logger.Error(`Authentication Middleware Error (company): ${(error as Error).toString()}`);
     }
@@ -145,7 +146,7 @@ export default class Middleware {
       next();
     } catch (error) {
       // send forbidden on any errors
-      res.sendStatus(401);
+      res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
       Logger.Error(`Authentication Middleware Error (admin): ${(error as Error).toString()}`);
     }
@@ -180,7 +181,7 @@ export default class Middleware {
       next();
     } catch (error) {
       // if there are any errors, send a forbidden
-      res.sendStatus(401);
+      res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
       Logger.Error(
         `Authentication Middleware Error (reset password request): ${(error as Error).toString()}`,
