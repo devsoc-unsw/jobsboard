@@ -19,6 +19,9 @@ module.exports = {
   ],
   rules: {
     "import/no-cycle": "warn",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["tests(new)/**/*"]}],
+    "prefer-arrow-callback": ["error", [ "tests(new)/**/*" ] ],
     "@typescript-eslint/brace-style": "off",
     "@typescript-eslint/no-floating-promises": [
       "error", { ignoreIIFE: true }
