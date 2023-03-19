@@ -7,6 +7,7 @@ import seedDB from '../../src/dev';
 
 const server = supertest.agent(config.apiUrl);
 
+// run using yarn run mocha
 describe('Student Authentication', function () {
   before(async function () {
     await AppDataSource.initialize();
