@@ -51,10 +51,12 @@ Logger.Init();
 const app = express();
 const port = process.env.SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({
-  limit: '5mb',
-  extended: true,
-}));
+app.use(
+  express.urlencoded({
+    limit: '5mb',
+    extended: true,
+  }),
+);
 app.use(helmet());
 
 let corsOptions;
@@ -66,8 +68,7 @@ if (process.env.NODE_ENV !== 'development') {
     origin: (origin: string, callback: (error: Error, status?: boolean) => void) => {
       if (whitelist.indexOf(origin) !== -1) {
         callback(null, true);
-      }
-      else {
+      } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -484,8 +485,7 @@ app.listen(port, () => {
   (async () => {
     if (process.env.NODE_ENV === 'development') {
       await bootstrap();
-    }
-    else {
+    } else {
       await AppDataSource.initialize();
     }
     if (process.env.NODE_ENV === 'production') {

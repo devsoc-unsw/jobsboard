@@ -109,10 +109,12 @@ export interface GeneralAdminRequest extends Request, AdminRequestBase {}
 export interface AdminJobRequest extends Request<JobIDParams>, AdminRequestBase {}
 
 export interface VerifyCompanyAccountRequest
-  extends Request<CompanyAccountIdParams>, AdminRequestBase {}
+  extends Request<CompanyAccountIdParams>,
+  AdminRequestBase {}
 
 export interface AdminCreateJobRequest
-  extends Request<JobIDParams, never, JobInfo>, AdminRequestBase {}
+  extends Request<JobIDParams, never, JobInfo>,
+  AdminRequestBase {}
 
 export interface AdminApprovedJobPostsRequest extends Request<YearParams>, AdminRequestBase {}
 
@@ -170,14 +172,19 @@ export interface CompanyResetPasswordEmailRequest
 
 export type CompanyGetResetTokenRequest = Request<CompanyResetEmailParams>;
 
-export type CompanyResetPasswordRequest =
-  Request<Record<string, never>, never, CompanyResetPasswordBody>;
+export type CompanyResetPasswordRequest = Request<
+Record<string, never>,
+never,
+CompanyResetPasswordBody
+>;
 
 export interface CompanyUploadLogoRequest
-  extends Request<Record<string, never>, never, Logo>, CompanyAccountID {}
+  extends Request<Record<string, never>, never, Logo>,
+  CompanyAccountID {}
 
 export interface CheckCompanyLogoRequest extends Request, CompanyAccountID {}
 
 interface UpdateCompanyBody extends CompanyBase, Logo {}
-export interface UpdateCompanyDetailsRequest extends
-  Request<Record<string, never>, never, UpdateCompanyBody>, CompanyAccountID {}
+export interface UpdateCompanyDetailsRequest
+  extends Request<Record<string, never>, never, UpdateCompanyBody>,
+  CompanyAccountID {}

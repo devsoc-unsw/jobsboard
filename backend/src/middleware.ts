@@ -86,8 +86,7 @@ export default class Middleware {
       req.studentZID = jwt.id;
       // continue
       next();
-    }
-    catch (error: unknown) {
+    } catch (error: unknown) {
       // if there are any errors, send a forbidden
       res.sendStatus(401);
       Middleware.genericLoggingMiddleware(req, res, undefined);
