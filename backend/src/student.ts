@@ -326,6 +326,7 @@ export const updateOrCreateStudent = async (zid: string, token: JWT) => {
       zID: zid,
       latestValidToken: token as string,
     });
+    
     await AppDataSource.getRepository(Student).insert(s);
 
     Logger.Info(LM, `Successfully added a new student with ZID=${zid} to the database`);
