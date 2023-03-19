@@ -3,8 +3,10 @@ import Fuse from 'fuse.js';
 
 import { AppDataSource } from './config';
 import Job from './entity/job';
+import Student from './entity/student';
 import Helpers, { IResponseWithStatus } from './helpers';
 import Logger from './logging';
+import JWT from './jwt';
 
 import {
   JobMode,
@@ -25,9 +27,9 @@ const paginatedJobLimit = 10;
 
 const MapJobsToObjects = (jobs: Job[]) => jobs.map((job: Job) => {
   const newCompany: {
-    name: string,
-    description: string,
-    location: string,
+    name: string;
+    description: string;
+    location: string;
   } = {
     name: job.company.name,
     description: job.company.description,
@@ -35,18 +37,18 @@ const MapJobsToObjects = (jobs: Job[]) => jobs.map((job: Job) => {
   };
 
   const newJob: {
-    applicationLink: string,
-    company: typeof newCompany,
-    description: string,
-    role: string,
-    id: number,
-    mode: JobMode,
-    studentDemographic: StudentDemographic[],
-    jobType: JobType,
-    workingRights: WorkingRights[],
-    additionalInfo: string,
-    wamRequirements: WamRequirements,
-    isPaid: boolean,
+    applicationLink: string;
+    company: typeof newCompany;
+    description: string;
+    role: string;
+    id: number;
+    mode: JobMode;
+    studentDemographic: StudentDemographic[];
+    jobType: JobType;
+    workingRights: WorkingRights[];
+    additionalInfo: string;
+    wamRequirements: WamRequirements;
+    isPaid: boolean;
   } = {
     applicationLink: job.applicationLink,
     company: newCompany,
@@ -194,8 +196,7 @@ export default class StudentFunctions {
         // check if there are enough jobs to feature
         if (jobs.length >= 4) {
           jobs = jobs.slice(0, 4);
-        }
-        else {
+        } else {
           jobs = jobs.slice(0, jobs.length);
         }
 
@@ -204,13 +205,13 @@ export default class StudentFunctions {
             return null;
           }
           const newJob: {
-            id: number,
-            logo: string,
-            role: string,
-            description: string,
-            workingRights: WorkingRights[],
-            applicationLink: string,
-            company: string,
+            id: number;
+            logo: string;
+            role: string;
+            description: string;
+            workingRights: WorkingRights[];
+            applicationLink: string;
+            company: string;
           } = {
             id: job.id,
             logo: job.company.logo ? job.company.logo.toString() : null,
@@ -322,3 +323,30 @@ export default class StudentFunctions {
     );
   }
 }
+
+export const updateOrCreateStudent = async (zid: string, token: JWT) => {
+  Helpers.requireParameters(zid);
+
+  const student = await AppDataSource.getRepository(Student)
+    .createQueryBuilder()
+    .where('Student.zID = :zID', { zID: zid })
+    .getOne();
+
+  if (!student) {
+    Logger.Info(`Attempting to add a new student with ZID=${zid} to the database`);
+
+    const s = AppDataSource.getRepository(Student).create({
+      zID: zid,
+      latestValidToken: token as string,
+    });
+    await AppDataSource.getRepository(Student).insert(s);
+
+    Logger.Info(`Successfully added a new student with ZID=${zid} to the database`);
+  } else {
+    await AppDataSource.createQueryBuilder()
+      .update(Student)
+      .set({ latestValidToken: token as string })
+      .where('id = :id', { id: student.id })
+      .execute();
+  }
+};

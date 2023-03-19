@@ -2,7 +2,7 @@ import { Response, NextFunction } from 'express';
 import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
-import EStudent from './entity/student';
+import { updateOrCreateStudent } from './student';
 import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import Logger from './logging';
@@ -41,7 +41,7 @@ export default class Auth {
         Helpers.requireParameters(msg.zID);
         Helpers.requireParameters(msg.password);
         const result = await Auth.authenticateStudent(msg.zID, msg.password);
-        if (result === true) {
+        if (result) {
           Logger.Info(`Successfully authenticated STUDENT=${msg.zID}`);
 
           const rawToken: IToken = {
@@ -51,28 +51,8 @@ export default class Auth {
             ipAddress: req.ip,
           };
 
-          const token: JWT = JWT.create(rawToken);
-
-          // find whether the student has logged on here before
-          const studentQuery = await AppDataSource.getRepository(EStudent)
-            .createQueryBuilder()
-            .where('Student.zID = :zID', { zID: msg.zID })
-            .getOne();
-
-          if (studentQuery === null) {
-            // never logged on here before
-            const student: EStudent = new EStudent();
-            student.zID = msg.zID;
-            student.latestValidToken = token as string;
-            await AppDataSource.manager.save(student);
-            Logger.Info(`Created student record for STUDENT=${msg.zID}`);
-          } else {
-            await AppDataSource.createQueryBuilder()
-              .update(EStudent)
-              .set({ latestValidToken: token as string })
-              .where('id = :id', { id: studentQuery.id })
-              .execute();
-          }
+          const token = JWT.create(rawToken);
+          await updateOrCreateStudent(msg.zID, token);
 
           return {
             status: 200,
