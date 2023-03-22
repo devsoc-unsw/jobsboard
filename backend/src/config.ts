@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { DataSource } from 'typeorm';
 
+import dotenv from 'dotenv';
 import Logger from './logging';
 
 // custom entities
@@ -12,7 +13,6 @@ import Student from './entity/student';
 import MailRequest from './entity/mail_request';
 import Logs from './entity/logs';
 import Statistics from './entity/statistics';
-import dotenv from 'dotenv';
 
 dotenv.config();
 
