@@ -9,6 +9,7 @@ import Toast from 'components/Toast/Toast';
 import api from 'config/api';
 import { AdminPendingJobsPayload, JobWithCompany } from 'types/api';
 import Spinner from 'ui/Spinner/Spinner';
+import Link from 'next/link';
 
 const AdminJobsPage = () => {
   const router = useRouter();
@@ -16,6 +17,7 @@ const AdminJobsPage = () => {
   const [loading, setLoading] = useState(true);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [isCurrentJobsShown, setCurrentJobsShown] = useState(true);
 
   const [jobs, setJobs] = useState<JobWithCompany[]>([]);
 
@@ -69,6 +71,40 @@ const AdminJobsPage = () => {
       <h3 className="text-base text-jb-subheadings">
         {jobs.length} Pending {jobs.length === 1 ? 'Job' : 'Jobs'}
       </h3>
+
+
+      <div className="w-full">
+        <ul className="flex -mb-px justify-start list-inside list-none">
+          <li className="mr-2">
+            <button
+              type="button"
+              className={`inline-block p-4 ${
+                isCurrentJobsShown
+                  ? 'text-jb-textlink font-black'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => console.log('click')}
+            >
+              Description
+            </button>
+          </li>
+          <li className="mr-2">
+            <button
+              type="button"
+              className={`inline-block p-4 ${
+                isCurrentJobsShown
+                  ? 'text-jb-textlink font-black'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              onClick={() => console.log('clicked')}
+            >
+              Additional Information
+            </button>
+          </li>
+        </ul>
+      </div>
+
+        
       {loading && <Spinner />}
       {jobs.map((job) => (
         <PendingJobCard

@@ -16,6 +16,9 @@ import StudentFunctions from './student';
 import MailFunctions from './mail';
 import openapi from './docs/openapi.json';
 
+import JWT from './jwt';
+import { AccountType, IToken } from './auth';
+
 import {
   AdminApprovedJobPostsRequest,
   AdminCreateJobRequest,
@@ -472,18 +475,18 @@ app.get(
 );
 
 app.get(
-  'check-token-student-valid',
+  '/check-token-student-valid',
   cors(corsOptions),
   (req: AuthRequest, res, next) => {
     (async () => {
-      await Auth.AuthenticateStudent(req, res,next);
-    }) ();
+      await Auth.AuthenticateStudent(req, res, next);
+    }) (); 
   },
   Middleware.genericLoggingMiddleware,
 );
 
 app.get(
-  'check-token-admin-valid',
+  '/check-token-admin-valid',
   cors(corsOptions),
   (req: AuthRequest, res, next) => {
     (async () => {
@@ -494,7 +497,7 @@ app.get(
 );
 
 app.get(
-  'check-token-company-valid',
+  '/check-token-company-valid',
   cors(corsOptions),
   (req: AuthRequest, res, next) => {
     (async () => {
