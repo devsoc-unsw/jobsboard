@@ -32,68 +32,70 @@ Jobs Board was made with 🤍 by CSE students, for CSE students. Jobsboard is a 
 - [Nodejs](https://nodejs.org/en/download/package-manager/) and [yarn](https://yarnpkg.com/)
 - [Docker](https://www.docker.com/)
 - [PostgreSQL](https://www.postgresql.org/download/)
+- (Recommended) Database IDE like [DataGrip](https://www.jetbrains.com/datagrip/) (Free for students)
 
 ### Setting Up
 
 1. Clone the jobs-board repo.
-```
-git clone https://github.com/csesoc/jobsboard.git
-```
+    ```
+    git clone https://github.com/csesoc/jobsboard.git
+    ```
 2. Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+3. Set up the neccessary environment variables
+   - **Frontend** (optional):
+      Create a `.env.local` file in the `frontend` directory with the following contents:
+       ```
+        NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/
+        ```
+        The environment variable `NEXT_PUBLIC_API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead (http://localhost:8080/). If the backend is not running locally or if `NEXT_PUBLIC_API_BASE_URL` is not provided, `https://jobsboard.staging.csesoc.unsw.edu.au/api` will be used as the base URL as a fallback option.
+    - **Backend**:
+      Create a `.env` file in the `backend` directory with the following contents:
+         ```
+          NODE_ENV=development
+          SERVER_PORT=8080
+          DB_HOST=localhost
+          DB_PORT=5432
+          DB_USER=postgres
+          DB_PASSWORD=mysecretpassword
+          DB_NAME=postgres
+          MAIL_USERNAME=test@gmail.com
+          MAIL_PASSWORD=password
+          MAIL_SMTP_SERVER=smtp.gmail.com
+          MAIL_SMTP_SERVER_PORT=465
+         ```
+      > If having `DB_HOST=localhost` result in errors such as `ECONREFUSED`, change it to `DB_HOST=db`.
+4. Navigate to the `frontend` and `backend` directories and install the required dependencies by running `yarn`
+
+<br />
 
 ### Running the frontend locally
-1. Navigate to the `frontend` directory and install the required dependencies
-```
-cd frontend
-yarn
-```
+1. Start up the frontend by navigating to the `frontend` directory and running `yarn dev`
 
-2. (optional) Set up the required environment variables by creating a `.env` file in the `frontend` directory with the following contents:
-```
-API_BASE_URL=http://localhost:8080/
-```
+2. Go to [localhost:3000](http://localhost:3000/) on your browser to see the frontend running locally!
 
-The environment variable `API_BASE_URL` is used as the base URL for any API requests made by the frontend. If you have the backend running locally, it should use the your local backend instead (http://localhost:8080/). If the backend is not running locally or if `API_BASE_URL` is not provided, `https://jobsboard.staging.csesoc.unsw.edu.au/api` will be used as the base URL as a fallback option.
-
-3. Start up the frontend
-```
-yarn dev
-```
-
-4. Navigate to [localhost:3000](http://localhost:3000/) to see the frontend running locally!
 
 ### Running the backend locally
-1. Navigate to the `backend` directory and install the required dependencies
-```
-cd backend
-yarn
-```
+**Without Docker**
+1. After installing PostgreSQL on your computer, open a terminal and run `psql`. Now, you should see a command prompt that may look like this `matthewliu=#`.
+2. Create a new database called `postgres` by running `create database postgres;` In the future, you can log straight into this database by running `psql -U postgres` in your terminal.
+3. Navigate to the `backend` directory and run `yarn serve` to start up the server.
 
-2. Set up the required environment variables by creating a `.env` file in the `backend` directory with the following contents:
-```
-NODE_ENV=development
-SERVER_PORT=8080
-DB_HOST=db
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=mysecretpassword
-DB_NAME=postgres
-```
+**With Docker**
+1. After installing Docker on your computer, open a terminal and run `docker compose build` to build all the containers required for Jobsboard. In the future, you will only need to run either `docker compose build api` or `docker compose build test` as you make changes to them.
+2. Start up the database by running `docker compose -d db` in your terminal.
+3. Start up the server by following step of above or run `docker compose up` in your terminal.
+> Refer to the [Using Docker](#Using-Docker) section below if you need more assisstance.
 
-3. Build the database docker container and start it via docker.
-```
-docker compose build db
-docker compose up -d db
-```
+<br />
 
-4. Start up the backend
-```
-yarn serve
-```
+Go to [localhost:8080](http://localhost:8080/) on your browser to see the backend running locally!
 
-5. Navigate to [localhost:8080](http://localhost:8080/) to see the backend running locally! Visit [localhost:8080/docs](http://localhost:8080/docs) to see the API docs.
+**API Documentation**
+After the server is started, you can access the API documentation at [localhost:8080/docs](http://localhost:8080/docs).
+When adding, modifying or removing routes from `backend/src/index.ts`, please remember to update the documentation at `backend/src/docs/openapi.json` accordingly to by following the existing format.
 
-> Make sure that the apiRoot in /frontend/config/config.ts points to the local instance..
+
+<br />
 
 ### Running the backend in production mode
 
@@ -130,41 +132,47 @@ const transportOptions = {
 };
 ```
 
+<br />
 
 ### Using Docker
 1. Navigate to the root of the project.
 2. Run `docker-compose build` to build all containers or `docker-compose build [container-name]` for a specific container specified in the compose file.
 3. Run `docker-compose up` to start all containers or `docker-compose up [container-name]` for starting a specific container specified in the compose file.
+    > To view which containers you would like to build/start, refer to [docker-compose.yml](./docker-compose.yml)
 
-> To view which containers you would like to build/start, refer to [docker-compose.yml](./docker-compose.yml)
-
-## Documentation
+<br />
 
 ### Running tests
 
 #### Frontend
 *We do not have tests yet... :(*
 
-####  Backend Testing
-1. Navigate into the `/backend` folder
-2. Run `docker compose build test`
-3. Run `docker compose up test`
+#### Backend
+**Without Docker**
+1. Go to `backend/tests/config.js` and set `apiUrl` to `http://localhost:8080`. If this is your first time, run `git update-index --skip-worktree tests/config.js` to prevent git from tracking this file in the future.
+2. Navigate to the `backend` directory and run the following commands in your terminal
+    ```
+    yarn serve
+    yarn test
+    ```
 
->  Use the logs in the terminal or the Docker Desktop GUI to check your tests.
 
-> The reason docker is used when testing is because we're given a guarantee that the conditions are exactly the same every time and because it emulates what the behaviour will be on prod running in the container - which there are difference
+**With Docker**
+Navigate to the root directory and run the following commands in your terminal
+  ```
+  docker compose build api
+  docker compose build test
+  docker compose up test
+  ```
 
-### Finished your work
-Always double check before submitting your pr
-1. Run `docker compose build` and ensure the build completes successfully
-2. Run `docker compose up` and ensure all tests pass
+> Make sure to stop the server and db before rerunning the tests either using the the Docker Desktop GUI or by running `docker stop jobs-board_api_1` and `docker stop jobs-board_db_1` in your terminal.
 
-### Pushing
-Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.
+> Use the logs in the terminal or the Docker Desktop GUI to check your tests.
 
-### API Docs
-After the api container is started, Swagger visualisation of the APIs can be accessed at [API docs](http://localhost:8080/docs/).
-When adding, modifying or removing routes from `backend/src/index.ts`, update the documentation at `backend/src/docs/openapi.json` accordingly to by following the existing format.
+
+The reason docker is used when testing is because we're given a guarantee that the conditions are exactly the same every time and because it emulates what the behaviour will be on prod running in the container - which there are difference.
+
+<br />
 
 ### Code Style & Linting
 #### Frontend
@@ -176,3 +184,16 @@ Coming
 - Run `yarn run lint:fix` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
 - Run `yarn run prettier` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
 - Run `yarn run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier` **(recommended)**
+
+
+</br >
+
+### Finished your work
+Always double check before submitting your pr
+1. Run `docker compose build` and ensure the build completes successfully
+2. Run `docker compose up` and ensure all tests pass
+
+</br >
+
+### Pushing
+Log in to your preferred container registry via command line and run `docker-compose push`, ensure that they've finished pushing and then deploy where required.

@@ -1,5 +1,5 @@
 import { Response, NextFunction } from 'express';
-import { Client } from 'ldapts';
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
@@ -37,7 +37,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = req.body;
         Helpers.requireParameters(msg.zID);
         Helpers.requireParameters(msg.password);
@@ -76,16 +76,14 @@ export default class Auth {
           }
 
           return {
-            status: 200,
-            msg: {
-              token,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.OK,
+            msg: { token },
+          };
         }
         Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
         throw new Error('Invalid credentials');
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -99,7 +97,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
@@ -135,16 +133,14 @@ export default class Auth {
             .execute();
           // credentials match, so grant them a token
           return {
-            status: 200,
-            msg: {
-              token,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.OK,
+            msg: { token },
+          };
         } catch (error) {
-          return { status: 401, msg: undefined } as IResponseWithStatus;
+          return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
         }
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -158,7 +154,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
@@ -191,16 +187,14 @@ export default class Auth {
             .where('id = :id', { id: adminQuery.id })
             .execute();
           return {
-            status: 200,
-            msg: {
-              token,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.OK,
+            msg: { token },
+          };
         } catch (error) {
-          return { status: 401, msg: undefined } as IResponseWithStatus;
+          return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
         }
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -212,15 +206,27 @@ export default class Auth {
         // check if it matches the zID format, throw otherwise.
         Helpers.doesMatchZidFormat(zID);
 
-        const client = new Client({
-          url: 'ldaps://ad.unsw.edu.au',
-          // tlsOptions: {
-          //   minVersion: 'TLSv1.2',
-          // },
+        const payload = { zid: zID, zpass: password };
+        const verifyResponse = await fetch('https://verify.csesoc.unsw.edu.au/v1', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
         });
-        await client.bind(`${zID}@ad.unsw.edu.au`, password);
-        Logger.Info(`STUDENT=${zID} is logged in`);
-        return true;
+
+        if (verifyResponse.ok) {
+          Logger.Info(`STUDENT=${zID} is logged in`);
+          return true;
+        }
+
+        if (verifyResponse.status === StatusCodes.UNAUTHORIZED) {
+          Logger.Info(`Failed to login STUDENT=${zID} due to INCORRECT PASSWORD`);
+        } else {
+          Logger.Info(`Failed to login STUDENT=${zID} due to ERROR CODE ${verifyResponse.status}`);
+        }
+        return false;
       }
       // if unexpected characters are found, immediately reject
       Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);

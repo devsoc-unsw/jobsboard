@@ -3,7 +3,7 @@
   "lockFileMaintenance": { "enabled": true, "automerge": true },
   "prHourlyLimit": 2,
   "labels": ["dependencies"],
-  "baseBranches": ["develop"],
+  "baseBranches": ["dev"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
@@ -19,7 +19,14 @@
     {
       "matchUpdateTypes": ["patch"],
       "groupName": "weekly patch updates",
-      "schedule": ["before 5am every monday"]
-    }
+      "schedule": ["before 5am every monday"],
+      "addLabels": ["deps: patches"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "groupName": "weekly minor updates",
+      "schedule": ["before 5am every monday"],
+      "addLabels": ["deps: minor"]
+    },
   ]
 }

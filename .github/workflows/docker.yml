@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.component }}
-          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
+          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/dev' }}
           platforms: linux/amd64
           file: ${{ matrix.component }}/Dockerfile
           tags: |
@@ -46,7 +46,7 @@ jobs:
     environment:
       name: Staging
       url: https://jobsboard.staging.csesoc.unsw.edu.au
-    if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' }}
+    if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/dev' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -54,7 +54,7 @@ jobs:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
       - name: Install yq
-        uses: mikefarah/yq@v4.31.1
+        uses: mikefarah/yq@v4.32.1
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -85,7 +85,7 @@ jobs:
           repository: csesoc/deployment
           token: ${{ secrets.GH_TOKEN }}
       - name: Install yq
-        uses: mikefarah/yq@v4.31.1
+        uses: mikefarah/yq@v4.32.1
       - name: Update deployment
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

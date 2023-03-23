@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { DataSource } from 'typeorm';
 
+import dotenv from 'dotenv';
 import Logger from './logging';
 
 // custom entities
@@ -23,6 +24,8 @@ export const activeEntities = [
   Logs,
   Statistics,
 ];
+
+dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

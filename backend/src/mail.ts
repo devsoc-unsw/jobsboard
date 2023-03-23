@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
-
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Logger from './logging';
 import Helpers from './helpers';
@@ -19,9 +19,9 @@ export default class MailFunctions {
       } else {
         Logger.Error('Failed to schedule email.');
       }
-      res.sendStatus(200);
+      res.sendStatus(StatusCodes.OK);
     } catch (error) {
-      res.sendStatus(400);
+      res.sendStatus(StatusCodes.BAD_REQUEST);
     }
   }
 
