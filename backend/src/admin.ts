@@ -383,6 +383,16 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .where('id = :id', { id: pendingCompany.id })
           .execute();
 
+        // Double check whether this is:
+        // 1. a valid query & does what it's supposed to
+        // 2. the changing of the fields is what it's supposed to be
+        // - if need to set approve: false, how do i do that
+        await AppDataSource.createQueryBuilder()
+          .update(Job)
+          .set({ hidden: true })
+          .where('company.id = :companyId', { id: pendingCompany.id })
+          .execute();
+
         // TODO:
         // send an email confirming that the account has been unverified
         // await MailFunctions.AddMailToQueue(
