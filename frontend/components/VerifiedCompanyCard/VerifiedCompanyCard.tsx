@@ -143,8 +143,7 @@ const VerifiedCompanyCard = ({
             type="button"
             className="bg-red-500 rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
               shadow-btn duration-200 ease-linear cursor-pointer hover:shadow-btn-hovered"
-            // onClick={() => setOpenConfirmationModal(true)}
-            onClick={unverifyCompany}
+            onClick={() => setOpenConfirmationModal(true)}
           >
             Unverify
           </button>
