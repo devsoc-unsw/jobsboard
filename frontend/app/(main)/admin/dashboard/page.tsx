@@ -141,6 +141,10 @@ const AdminDashboardPage = () => {
           Please ensure that the
           <span className="text-jb-textlink font-bold"> company is legitimate </span>
           before verifying.
+          <br />
+          You may also
+          <span className="text-jb-textlink font-bold"> unverify already-verified </span>
+          companies.
         </p>
         <Link href="/admin/company">
           <Button variant="primary">
