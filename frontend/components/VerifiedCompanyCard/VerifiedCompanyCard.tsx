@@ -119,7 +119,7 @@ const VerifiedCompanyCard = ({
   };
 
   return (
-    <div>
+    <>
       <ConfirmUnverifyModal
         open={openConfirmationModal}
         name={name}
@@ -150,7 +150,7 @@ const VerifiedCompanyCard = ({
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
