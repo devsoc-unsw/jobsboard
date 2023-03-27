@@ -10,7 +10,6 @@ describe('Student', function () {
 
   });
 
-  // reset the database
   after(function () {
 
   });

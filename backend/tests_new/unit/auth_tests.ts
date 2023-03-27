@@ -3,14 +3,20 @@ import supertest from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 import { config } from '../config';
 import { AppDataSource } from '../../src/config';
-import seedDB from '../../src/dev';
+import { seedDB } from '../test_lib/seeds/seed';
+import { createVerifiedCompanyAccount } from '../test_lib/seeds/company';
 
 const server = supertest.agent(config.apiUrl);
 
 describe('Student Authentication', function () {
   before(async function () {
-    await AppDataSource.initialize();
-    await seedDB();
+
+    const test = async () => {
+      const company = createVerifiedCompanyAccount();
+      await AppDataSource.manager.save(company);
+    };
+
+    await seedDB('empty', test);
   });
 
   it('Fails to create a student account with empty details',
@@ -50,7 +56,7 @@ describe('Student Authentication', function () {
       console.log(studentToken);
 
       // ideally, this should hit the authenticate endpoint again and check the id of the
-      // token returned matches 'new-student'. But decrypt is not working for some reason
+      // token returned matches 'new-student'. But decrypt does not work for some reason
       await server
         .get('jobs/0')
         .set('Authorization', studentToken)
@@ -58,7 +64,6 @@ describe('Student Authentication', function () {
     }
   );
 
-  // reset the database
   after(async function () {
     await AppDataSource.destroy();
   });
