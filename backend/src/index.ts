@@ -475,13 +475,10 @@ app.get(
   '/check-token-valid',
   cors(corsOptions),
   (req: VerifyTokenRequest, res, next) => {
-    (async () => {
-      await Auth.AuthenticateToken(req, res, next);
-    })();
+    Auth.AuthenticateToken(req, res, next);
   },
   Middleware.genericLoggingMiddleware,
 );
-
 
 if (process.env.NODE_ENV === 'development') {
   app.post('/email', (req, res) => {

@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { AccountType } from 'src/auth';
+import { AccountType } from '../auth';
 
 import {
   JobMode,

@@ -11,7 +11,6 @@ import Secrets from './secrets';
 import { AuthRequest, VerifyTokenRequest } from './interfaces/interfaces';
 import Middleware from './middleware';
 
-
 // auth token data structures
 interface IToken {
   id: string;
@@ -238,47 +237,46 @@ export default class Auth {
   }
 
   // check if token is valid
-  public static async AuthenticateToken(
+  public static AuthenticateToken(
     this: void,
     req: VerifyTokenRequest,
     res: Response,
     next: NextFunction,
   ) {
-    await Helpers.catchAndLogError(
-      res,
-      async (): Promise<IResponseWithStatus> => {
-    
-          const encodedJwt = req.body.jwt;
-          const accountType = req.body.accountType;
+    // const encodedJwt = req.body.jwt;
+    const { accountType } = req.body;
+    let response: IResponseWithStatus;
 
-          // currently this line does not work as jwt decryption algorithm doesn't work
-          // const jwt: IToken = JWT.get(encodedJwt);
+    // currently this line does not work as jwt decryption algorithm doesn't work
+    // const jwt: IToken = JWT.get(encodedJwt);
 
-          // hard coded example
-          const jwt: IToken = {
-            id: "test",
-            type: AccountType.Student,
-            lastRequestTimestamp: Date.now(),
-            ipAddress: "::1"
-          }
-          
-          // checks it token is valid or not
-          try {
+    // hard coded example
+    const jwt: IToken = {
+      id: 'test',
+      type: AccountType.Student,
+      lastRequestTimestamp: Date.now(),
+      ipAddress: '::1',
+    };
 
-            Middleware.verifyToken(req, jwt, accountType);
-            
-            return {
-              status: StatusCodes.OK,
-              msg: jwt
-            };
+    // checks it token is valid or not
+    try {
+      Middleware.verifyToken(req, jwt, accountType);
 
-          } catch (error) {
-            // Error thrown meaning that token is invalid.
-            return { status: StatusCodes.UNAUTHORIZED, msg: "Token is invalid" };
-          }
-      },
-      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
-      next,
-    );
+      response = {
+        status: StatusCodes.OK,
+        msg: jwt,
+      };
+    } catch (error) {
+      // Error thrown meaning that token is invalid.
+      response = { status: StatusCodes.UNAUTHORIZED, msg: 'Token is invalid' };
+    }
+
+    if (response.msg === undefined) {
+      res.sendStatus(response.status);
+    }
+    else {
+      res.status(response.status).send(response.msg);
+    }
+    next();
   }
 }
