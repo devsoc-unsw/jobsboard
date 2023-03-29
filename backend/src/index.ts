@@ -4,8 +4,6 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 import 'reflect-metadata';
-
-import Auth from './auth';
 import seedDB from './dev';
 import Logger from './logging';
 import Middleware from './middleware';
@@ -15,9 +13,7 @@ import CompanyFunctions from './company';
 import StudentFunctions from './student';
 import MailFunctions from './mail';
 import openapi from './docs/openapi.json';
-
-import JWT from './jwt';
-import { AccountType, IToken } from './auth';
+import Auth from './auth';
 
 import {
   AdminApprovedJobPostsRequest,
@@ -46,6 +42,7 @@ import {
   UpdateCompanyDetailsRequest,
   VerifyCompanyAccountRequest,
   SearchJobRequest,
+  VerifyTokenRequest,
 } from './interfaces/interfaces';
 
 dotenv.config();
@@ -475,37 +472,16 @@ app.get(
 );
 
 app.get(
-  '/check-token-student-valid',
+  '/check-token-valid',
   cors(corsOptions),
-  (req: AuthRequest, res, next) => {
+  (req: VerifyTokenRequest, res, next) => {
     (async () => {
-      await Auth.AuthenticateStudent(req, res, next);
-    }) (); 
+      await Auth.AuthenticateToken(req, res, next);
+    })();
   },
   Middleware.genericLoggingMiddleware,
 );
 
-app.get(
-  '/check-token-admin-valid',
-  cors(corsOptions),
-  (req: AuthRequest, res, next) => {
-    (async () => {
-      await Auth.AuthenticateAdmin(req, res, next);
-    }) ();
-  },
-  Middleware.genericLoggingMiddleware,
-);
-
-app.get(
-  '/check-token-company-valid',
-  cors(corsOptions),
-  (req: AuthRequest, res, next) => {
-    (async () => {
-      await Auth.AuthenticateCompany(req, res, next);
-    }) ();
-  },
-  Middleware.genericLoggingMiddleware,
-);
 
 if (process.env.NODE_ENV === 'development') {
   app.post('/email', (req, res) => {

@@ -8,7 +8,9 @@ import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import Logger from './logging';
 import Secrets from './secrets';
-import { AuthRequest } from './interfaces/interfaces';
+import { AuthRequest, VerifyTokenRequest } from './interfaces/interfaces';
+import Middleware from './middleware';
+
 
 // auth token data structures
 interface IToken {
@@ -233,5 +235,50 @@ export default class Auth {
       return false;
     }
     return true;
+  }
+
+  // check if token is valid
+  public static async AuthenticateToken(
+    this: void,
+    req: VerifyTokenRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+    
+          const encodedJwt = req.body.jwt;
+          const accountType = req.body.accountType;
+
+          // currently this line does not work as jwt decryption algorithm doesn't work
+          // const jwt: IToken = JWT.get(encodedJwt);
+
+          // hard coded example
+          const jwt: IToken = {
+            id: "test",
+            type: AccountType.Student,
+            lastRequestTimestamp: Date.now(),
+            ipAddress: "::1"
+          }
+          
+          // checks it token is valid or not
+          try {
+
+            Middleware.verifyToken(req, jwt, accountType);
+            
+            return {
+              status: StatusCodes.OK,
+              msg: jwt
+            };
+
+          } catch (error) {
+            // Error thrown meaning that token is invalid.
+            return { status: StatusCodes.UNAUTHORIZED, msg: "Token is invalid" };
+          }
+      },
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
+      next,
+    );
   }
 }
