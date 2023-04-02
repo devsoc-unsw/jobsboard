@@ -1,50 +1,128 @@
-/* eslint-disable */
-// ! will hopefully be rewritten or discarded so no need to lint it
+/* eslint-disable max-classes-per-file */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 
 import winston from 'winston';
-import Logs from './entity/logs';
-import { AppDataSource } from './config';
+import ev from './environment';
 
-export default class Logger {
-  public static Init(): void {
-    Logger.logger = winston.loggers.add(Logger.loggerName, {
+// Name of the module that wish to contain logging statements
+export class LogModule {
+  constructor(module: string) {
+    this.module = module;
+  }
+
+  public getModule = () => this.module;
+
+  private module: string;
+}
+
+// Severity of the log line
+enum LogLevel {
+  // Fatal errors that would kill the program
+  Error = 'error',
+  // Errors that are not fatal but should be looked at
+  Warn = 'warn',
+  // Default level of logging
+  Info = 'info',
+  // Use for debugging purposes
+  Debug = 'debug',
+}
+
+// Where you want the logs to be stored.
+enum LogLocation {
+  Console,
+  File,
+  Both,
+}
+
+const LM = new LogModule('LOGGER');
+
+export class Logger {
+  // Only logs with a higher severity than `logLevel` will be produced
+  // i.e. if logLevel is set to Info, only Info, Warn and Error logs will be produced.
+  private static CreateLogger = (logLevel?: LogLevel, where?: LogLocation) => {
+    const getLogLevel = () => {
+      if (ev.data().NODE_ENV === 'production') {
+        return LogLevel.Info;
+      }
+      return logLevel || LogLevel.Info;
+    };
+
+    const getTransport = () => {
+      const fileTransport = new winston.transports.File({
+        filename: 'server.log',
+        level: getLogLevel(),
+      });
+
+      const consoleTransport = new winston.transports.Console();
+
+      if (ev.data().NODE_ENV === 'production' || !where) {
+        return [fileTransport];
+      }
+
+      switch (Number(where)) {
+        case LogLocation.Console:
+          return [consoleTransport];
+        case LogLocation.File:
+          return [fileTransport];
+        case LogLocation.Both:
+          return [consoleTransport, fileTransport];
+        default:
+          break;
+      }
+
+      throw new Error('Invalid transport for creating the logger.');
+    };
+
+    const format = winston.format.printf(
+      ({
+        level, message, logModule, timestamp,
+      }) => `${timestamp} [${level}] [${logModule}] ${message}`,
+    );
+
+    const logger = winston.createLogger({
       format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.printf((i) => `[${i.level}] ${i.timestamp} - ${i.message}`),
+        winston.format.colorize(),
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        format,
       ),
-      transports: [new winston.transports.Console()],
+      levels: winston.config.syslog.levels,
+      transports: getTransport(),
     });
+
+    logger.log({
+      level: LogLevel.Info,
+      message: 'LOGGER INITIALISED\n',
+      logModule: LM.getModule(),
+    });
+
+    return logger;
+  };
+
+  public static Warn(logModule: LogModule, msg: string): void {
+    Logger.loggerFunc(LogLevel.Warn, msg, logModule);
   }
 
-  public static Info(msg: string): void {
-    Logger.loggerFunc('info', msg);
+  public static Error(logModule: LogModule, msg: string): void {
+    Logger.loggerFunc(LogLevel.Error, msg, logModule);
   }
 
-  public static Warn(msg: string): void {
-    Logger.loggerFunc('warn', msg);
+  public static Info(logModule: LogModule, msg: string): void {
+    Logger.loggerFunc(LogLevel.Info, msg, logModule);
   }
 
-  public static Error(msg: string): void {
-    Logger.loggerFunc('error', msg);
+  public static Debug(logModule: LogModule, msg: string): void {
+    Logger.loggerFunc(LogLevel.Debug, msg, logModule);
   }
 
-  private static loggerName = 'logger';
-
-  private static logger: winston.Logger;
-
-  // this is intentionally async and it's not used with an await so as not to
-  // become blocking to the functions calling it
-  private static async loggerFunc(lvl: string, msg: string) {
+  private static loggerFunc(lvl: string, msg: string, logModule: LogModule) {
     Logger.logger.log({
       level: lvl,
       message: msg,
+      logModule: logModule.getModule(),
     });
-
-    // write the log
-    await AppDataSource.createQueryBuilder()
-      .insert()
-      .into(Logs)
-      .values([{ what: msg }])
-      .execute();
   }
+
+  // feel free to pass arguments into createLogger to change the log level and where it logs to
+  // while on local development
+  private static logger: winston.Logger = this.CreateLogger();
 }
