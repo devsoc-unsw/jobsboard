@@ -1,8 +1,6 @@
 import z from 'zod';
 import dotenv from 'dotenv';
 
-import Logger from './logging';
-
 // ensure relevant environment variables exist
 const readerSchema = z.object({
   NODE_ENV: z.enum(['development', 'production']),
@@ -48,14 +46,7 @@ class Environment {
 
     const preprocessed = readerSchema.safeParse(process.env);
     if (!preprocessed.success) {
-      console.log('herasda');
-
-      Logger.Error(
-        `Couldn't process environment variables: ${JSON.stringify(
-          preprocessed,
-          null,
-        )}`,
-      );
+      console.log('Unable to read environment variables. Exiting.');
       process.exit(1);
     }
 
@@ -75,10 +66,7 @@ class Environment {
 
     const validated = envSchema.safeParse(parsed);
     if (!validated.success) {
-      Logger.Error(
-        `Invalid environment variables: ${JSON.stringify(validated, null)}`,
-      );
-      console.log('here');
+      console.error('Unable to parse environment variables into the correct types. Exiting.');
       process.exit(1);
     }
 
