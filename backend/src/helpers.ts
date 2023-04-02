@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import {
   JobMode,
   JobType,
@@ -8,6 +8,8 @@ import {
   WamRequirements,
   WorkingRights,
 } from './types/job-field';
+
+const LM = new LogModule('HELPERS');
 
 interface IResponseWithStatus {
   msg: unknown;
@@ -56,7 +58,7 @@ export default class Helpers {
     {
       const res = await func();
       if (res === undefined) {
-        Logger.Error(failMessage);
+        Logger.Error(LM, failMessage);
         throw new Error(failMessage);
       }
       return res;
@@ -74,10 +76,10 @@ export default class Helpers {
     }
     catch (error: unknown) {
       if (error instanceof Error) {
-        Logger.Error(`EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
+        Logger.Error(LM, `EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
       }
       else {
-        Logger.Error('Unknown error was thrown');
+        Logger.Error(LM, 'Unknown error was thrown');
       }
       response = funcOnError();
     }
@@ -90,7 +92,7 @@ export default class Helpers {
       }
     }
     else {
-      Logger.Error('Not performing any further action as headers are already sent.');
+      Logger.Error(LM, 'Not performing any further action as headers are already sent.');
     }
     if (next) next();
   }

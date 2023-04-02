@@ -8,7 +8,7 @@ import CompanyAccount from './entity/company_account';
 import Statistics from './entity/statistics';
 import Helpers, { IResponseWithStatus } from './helpers';
 import MailFunctions from './mail';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import {
   AdminJobRequest,
   GeneralAdminRequest,
@@ -17,6 +17,8 @@ import {
   AdminApprovedJobPostsRequest,
 } from './interfaces/interfaces';
 import ev from './environment';
+
+const LM = new LogModule('ADMIN');
 
 export default class AdminFunctions {
   public static async ApproveJobRequest(
@@ -28,11 +30,11 @@ export default class AdminFunctions {
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(`Admin ID=${req.adminID} attempting to approve JOB=${req.params.jobID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to approve JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobID = Number(req.params.jobID);
         if (Number.isNaN(jobID)) {
-          Logger.Info(`Rejected jobID ${jobID} as it is not a numeric value`);
+          Logger.Info(LM, `Rejected jobID ${jobID} as it is not a numeric value`);
           return { status: StatusCodes.BAD_REQUEST, msg: undefined };
         }
 
@@ -96,7 +98,7 @@ export default class AdminFunctions {
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        Logger.Info(`Admin ID=${req.adminID} approved JOB=${req.params.jobID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} approved JOB=${req.params.jobID}`);
         return {
           status: StatusCodes.OK,
           msg: { token: req.newJbToken },
@@ -119,7 +121,7 @@ export default class AdminFunctions {
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(`Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobID = Number(req.params.jobID);
         if (Number.isNaN(jobID)) {
@@ -165,7 +167,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        Logger.Info(`Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
         return {
           status: StatusCodes.OK,
           msg: { token: req.newJbToken },
@@ -188,7 +190,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(`ADMIN=${req.adminID} attempting to query pending jobs`);
+        Logger.Info(LM, `ADMIN=${req.adminID} attempting to query pending jobs`);
         const pendingJobs = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Job)
             .createQueryBuilder()
@@ -236,7 +238,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(`ADMIN=${req.adminID} attempting to query pending companies`);
+        Logger.Info(LM, `ADMIN=${req.adminID} attempting to query pending companies`);
         const pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
           const pendingCompanyAccounts = await AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder()
@@ -269,6 +271,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       res,
       async (): Promise<IResponseWithStatus> => {
         Logger.Info(
+          LM,
           `Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`,
         );
         const pendingCompany = await Helpers.doSuccessfullyOrFail(
@@ -315,7 +318,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        Logger.Info(`Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);
         return {
           status: StatusCodes.OK,
           msg: { token: req.newJbToken },
@@ -338,7 +341,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(`Admin ID=${req.adminID} attempting to query all companies`);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to query all companies`);
 
         const companyAccounts = await AppDataSource.getRepository(CompanyAccount)
           .createQueryBuilder()
@@ -375,7 +378,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       res,
       async (): Promise<IResponseWithStatus> => {
         const { companyID } = req.params;
-        Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
         const company = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Company)
             .createQueryBuilder()
@@ -436,6 +439,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         Helpers.isDateInTheFuture(msg.expiry);
         Helpers.validApplicationLink(msg.applicationLink);
         Logger.Info(
+          LM,
           `Attempting to create job for COMPANY=${companyID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`,
         );
 
@@ -473,6 +477,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         const newJobID: number = company.jobs[company.jobs.length - 1].id;
         Logger.Info(
+          LM,
           `Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`,
         );
 
@@ -507,7 +512,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(`Retrieving the number of verified companies as ADMIN=${req.adminID}`);
+        Logger.Info(LM, `Retrieving the number of verified companies as ADMIN=${req.adminID}`);
 
         const verifiedCompanies = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(CompanyAccount)
@@ -520,6 +525,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         const numVerifiedCompanies = verifiedCompanies.length;
 
         Logger.Info(
+          LM,
           `Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`,
         );
 
@@ -543,6 +549,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       res,
       async (): Promise<IResponseWithStatus> => {
         Logger.Info(
+          LM,
           `Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
             req.adminID
           }`,
@@ -585,6 +592,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             .execute();
 
           Logger.Info(
+            LM,
             `Sucessfully retrieved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
               req.adminID
             }`,
@@ -595,6 +603,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           };
         }
         Logger.Info(
+          LM,
           `Sucessfully retriveved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
             req.adminID
           }`,
@@ -621,7 +630,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         const { adminID } = req;
         Helpers.requireParameters(adminID);
 
-        Logger.Info(`ADMIN=${adminID} attempting to list all hidden jobs in the database`);
+        Logger.Info(LM, `ADMIN=${adminID} attempting to list all hidden jobs in the database`);
 
         const hiddenJobs = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Job)
@@ -668,7 +677,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           resMap.get(key).push(job);
         });
 
-        Logger.Info(`ADMIN=${adminID} successfully to retrieved all the hidden jobs`);
+        Logger.Info(LM, `ADMIN=${adminID} successfully to retrieved all the hidden jobs`);
 
         return {
           status: StatusCodes.OK,

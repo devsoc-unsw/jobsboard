@@ -6,7 +6,7 @@ import 'reflect-metadata';
 
 import Auth from './auth';
 import seedDB from './dev';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import ev from './environment';
 import Middleware from './middleware';
 import { AppDataSource } from './config';
@@ -45,7 +45,7 @@ import {
   SearchJobRequest,
 } from './interfaces/interfaces';
 
-Logger.Init();
+const LM = new LogModule('INDEX');
 
 const app = express();
 const port = ev.data().SERVER_PORT;
@@ -490,6 +490,6 @@ app.listen(port, () => {
     if (ev.data().NODE_ENV === 'production') {
       MailFunctions.InitMailQueueScheduler(2000);
     }
-    Logger.Info(`SERVER STARTED AT PORT=${port}`);
+    Logger.Info(LM, `SERVER STARTED AT PORT=${port}`);
   })();
 });

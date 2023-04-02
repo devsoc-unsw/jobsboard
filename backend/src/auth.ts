@@ -6,10 +6,12 @@ import CompanyAccount from './entity/company_account';
 import EStudent from './entity/student';
 import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
 import { AuthRequest } from './interfaces/interfaces';
 import ev from './environment';
+
+const LM = new LogModule('AUTH');
 
 // auth token data structures
 interface IToken {
@@ -44,7 +46,7 @@ export default class Auth {
         Helpers.requireParameters(msg.password);
         const result = await Auth.authenticateStudent(msg.zID, msg.password);
         if (result === true) {
-          Logger.Info(`Successfully authenticated STUDENT=${msg.zID}`);
+          Logger.Info(LM, `Successfully authenticated STUDENT=${msg.zID}`);
 
           const rawToken: IToken = {
             id: msg.zID,
@@ -67,7 +69,7 @@ export default class Auth {
             student.zID = msg.zID;
             student.latestValidToken = token as string;
             await AppDataSource.manager.save(student);
-            Logger.Info(`Created student record for STUDENT=${msg.zID}`);
+            Logger.Info(LM, `Created student record for STUDENT=${msg.zID}`);
           } else {
             await AppDataSource.createQueryBuilder()
               .update(EStudent)
@@ -81,7 +83,7 @@ export default class Auth {
             msg: { token },
           };
         }
-        Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
+        Logger.Info(LM, `Failed to authenticate STUDENT=${msg.zID}`);
         throw new Error('Invalid credentials');
       },
       () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
@@ -115,11 +117,12 @@ export default class Auth {
             !Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
           ) {
             Logger.Info(
+              LM,
               `Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`,
             );
             throw new Error('Invalid credentials');
           }
-          Logger.Info(`Successfully authenticated COMPANY=${msg.username}`);
+          Logger.Info(LM, `Successfully authenticated COMPANY=${msg.username}`);
           const rawToken: IToken = {
             id: companyQuery.id.toString(),
             type: AccountType.Company,
@@ -170,10 +173,13 @@ export default class Auth {
           if (
             !Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
           ) {
-            Logger.Info(`Failed to authenticate ADMIN=${msg.username} due to invalid credentials`);
+            Logger.Info(
+              LM,
+              `Failed to authenticate ADMIN=${msg.username} due to invalid credentials`,
+            );
             throw new Error('Invalid credentials');
           }
-          Logger.Info(`Successfully authenticated ADMIN=${msg.username}`);
+          Logger.Info(LM, `Successfully authenticated ADMIN=${msg.username}`);
           // credentials match, so grant them a token
           const rawToken: IToken = {
             id: adminQuery.id.toString(),
@@ -218,19 +224,22 @@ export default class Auth {
         });
 
         if (verifyResponse.ok) {
-          Logger.Info(`STUDENT=${zID} is logged in`);
+          Logger.Info(LM, `STUDENT=${zID} is logged in`);
           return true;
         }
 
         if (verifyResponse.status === StatusCodes.UNAUTHORIZED) {
-          Logger.Info(`Failed to login STUDENT=${zID} due to INCORRECT PASSWORD`);
+          Logger.Info(LM, `Failed to login STUDENT=${zID} due to INCORRECT PASSWORD`);
         } else {
-          Logger.Info(`Failed to login STUDENT=${zID} due to ERROR CODE ${verifyResponse.status}`);
+          Logger.Info(
+            LM,
+            `Failed to login STUDENT=${zID} due to ERROR CODE ${verifyResponse.status}`,
+          );
         }
         return false;
       }
       // if unexpected characters are found, immediately reject
-      Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);
+      Logger.Info(LM, `Failed to login STUDENT=${zID} due to INVALID FORMAT`);
       return false;
     }
     return true;

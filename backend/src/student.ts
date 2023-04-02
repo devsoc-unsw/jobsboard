@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 
 import {
   JobMode,
@@ -21,13 +21,15 @@ import {
   SearchJobRequest,
 } from './interfaces/interfaces';
 
+const LM = new LogModule('STUDENT');
+
 const paginatedJobLimit = 10;
 
 const MapJobsToObjects = (jobs: Job[]) => jobs.map((job: Job) => {
   const newCompany: {
-    name: string,
-    description: string,
-    location: string,
+    name: string;
+    description: string;
+    location: string;
   } = {
     name: job.company.name,
     description: job.company.description,
@@ -35,18 +37,18 @@ const MapJobsToObjects = (jobs: Job[]) => jobs.map((job: Job) => {
   };
 
   const newJob: {
-    applicationLink: string,
-    company: typeof newCompany,
-    description: string,
-    role: string,
-    id: number,
-    mode: JobMode,
-    studentDemographic: StudentDemographic[],
-    jobType: JobType,
-    workingRights: WorkingRights[],
-    additionalInfo: string,
-    wamRequirements: WamRequirements,
-    isPaid: boolean,
+    applicationLink: string;
+    company: typeof newCompany;
+    description: string;
+    role: string;
+    id: number;
+    mode: JobMode;
+    studentDemographic: StudentDemographic[];
+    jobType: JobType;
+    workingRights: WorkingRights[];
+    additionalInfo: string;
+    wamRequirements: WamRequirements;
+    isPaid: boolean;
   } = {
     applicationLink: job.applicationLink,
     company: newCompany,
@@ -76,7 +78,7 @@ export default class StudentFunctions {
       res,
       async (): Promise<IResponseWithStatus> => {
         const { offset } = req.params;
-        Logger.Info(`STUDENT=${req.studentZID} getting paginated jobs with OFFSET=${offset}`);
+        Logger.Info(LM, `STUDENT=${req.studentZID} getting paginated jobs with OFFSET=${offset}`);
         Helpers.requireParameters(offset);
 
         const jobs = await AppDataSource.getRepository(Job)
@@ -115,7 +117,7 @@ export default class StudentFunctions {
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(`STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
+        Logger.Info(LM, `STUDENT=${req.studentZID} getting individual JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobInfo: Job = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
@@ -164,7 +166,7 @@ export default class StudentFunctions {
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info('Attempting to get featured jobs');
+        Logger.Info(LM, 'Attempting to get featured jobs');
 
         let jobs = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
@@ -185,8 +187,7 @@ export default class StudentFunctions {
         // check if there are enough jobs to feature
         if (jobs.length >= 4) {
           jobs = jobs.slice(0, 4);
-        }
-        else {
+        } else {
           jobs = jobs.slice(0, jobs.length);
         }
 
@@ -195,13 +196,13 @@ export default class StudentFunctions {
             return null;
           }
           const newJob: {
-            id: number,
-            logo: string,
-            role: string,
-            description: string,
-            workingRights: WorkingRights[],
-            applicationLink: string,
-            company: string,
+            id: number;
+            logo: string;
+            role: string;
+            description: string;
+            workingRights: WorkingRights[];
+            applicationLink: string;
+            company: string;
           } = {
             id: job.id,
             logo: job.company.logo ? job.company.logo.toString() : null,
@@ -238,6 +239,7 @@ export default class StudentFunctions {
       async () => {
         Helpers.requireParameters(req.params.queryString);
         Logger.Info(
+          LM,
           `STUDENT=${req.studentZID} attempting to search for jobs with QUERYSTRING=${req.params.queryString}`,
         );
         const { queryString } = req.params;

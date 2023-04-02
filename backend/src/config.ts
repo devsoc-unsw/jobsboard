@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { DataSource } from 'typeorm';
 
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import ev from './environment';
 
 // custom entities
@@ -13,6 +13,8 @@ import Student from './entity/student';
 import MailRequest from './entity/mail_request';
 import Logs from './entity/logs';
 import Statistics from './entity/statistics';
+
+const LM = new LogModule('CONFIG');
 
 export const activeEntities = [
   Company,
@@ -42,7 +44,7 @@ export const AppDataSource = new DataSource({
 export class Config {
   public static getSecret(name: string) {
     if (!fs.existsSync(`/run/secrets/${name}`)) {
-      Logger.Error(`Unable to find secret "${name}".`);
+      Logger.Error(LM, `Unable to find secret "${name}".`);
     }
     return fs.readFileSync(`/run/secrets/${name}`, 'utf-8');
   }

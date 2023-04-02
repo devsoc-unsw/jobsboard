@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import JWT from './jwt';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import { AppDataSource } from './config';
 import { AccountType, IToken } from './auth';
 import Student from './entity/student';
@@ -14,6 +14,8 @@ import {
 } from './interfaces/interfaces';
 import ev from './environment';
 
+const LM = new LogModule('MIDDLEWARE');
+
 export default class Middleware {
   public static genericLoggingMiddleware(
     this: void,
@@ -21,7 +23,7 @@ export default class Middleware {
     resp: Response,
     next: NextFunction,
   ): void {
-    Logger.Info(`${req.method} ${resp.statusCode} - ${req.path}`);
+    Logger.Info(LM, `${req.method} ${resp.statusCode} - ${req.path}`);
     if (next) {
       next();
     }
@@ -30,12 +32,12 @@ export default class Middleware {
   private static verifyTokenProperties(req: Request, jwt: IToken) {
     if (Date.now() - jwt.lastRequestTimestamp > 20 * 60 * 1000) {
       // token has expired, is now considered invalid
-      Logger.Info(`EXPIRED TOKEN=${jwt.toString()}`);
+      Logger.Info(LM, `EXPIRED TOKEN=${jwt.toString()}`);
       throw new Error('Token has expired.');
     }
     if (req.ip !== jwt.ipAddress) {
       // TODO(ad-t): Investigate this - https://stackoverflow.com/questions/10849687/express-js-how-to-get-remote-client-address
-      Logger.Info(`MISMATCHED IP ADDRESS=${req.ip} COMPARED TO TOKEN=${jwt.toString()}`);
+      Logger.Info(LM, `MISMATCHED IP ADDRESS=${req.ip} COMPARED TO TOKEN=${jwt.toString()}`);
       throw new Error('IP address has changed.');
     }
   }
@@ -92,7 +94,7 @@ export default class Middleware {
       // if there are any errors, send a forbidden
       res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
-      Logger.Error(`Authentication Middleware Error (student): ${(error as Error).message}`);
+      Logger.Error(LM, `Authentication Middleware Error (student): ${(error as Error).message}`);
     }
   }
 
@@ -122,7 +124,7 @@ export default class Middleware {
       // if there are any errors, send a forbidden
       res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
-      Logger.Error(`Authentication Middleware Error (company): ${(error as Error).toString()}`);
+      Logger.Error(LM, `Authentication Middleware Error (company): ${(error as Error).toString()}`);
     }
   }
 
@@ -149,7 +151,7 @@ export default class Middleware {
       // send forbidden on any errors
       res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
-      Logger.Error(`Authentication Middleware Error (admin): ${(error as Error).toString()}`);
+      Logger.Error(LM, `Authentication Middleware Error (admin): ${(error as Error).toString()}`);
     }
   }
 
@@ -185,6 +187,7 @@ export default class Middleware {
       res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
       Logger.Error(
+        LM,
         `Authentication Middleware Error (reset password request): ${(error as Error).toString()}`,
       );
     }
@@ -192,7 +195,7 @@ export default class Middleware {
 
   private static verifyAccountType(val: AccountType, expected: AccountType) {
     if (val !== expected) {
-      Logger.Error('Attempted to authenticate with incorrect account type');
+      Logger.Error(LM, 'Attempted to authenticate with incorrect account type');
       throw new Error('Incorrect account type');
     }
   }
