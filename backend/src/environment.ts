@@ -46,8 +46,7 @@ class Environment {
 
     const preprocessed = readerSchema.safeParse(process.env);
     if (!preprocessed.success) {
-      console.log('Unable to read environment variables. Exiting.');
-      process.exit(1);
+      throw new Error('Unable to read environment variables. Exiting.');
     }
 
     const parsed: EV = {
@@ -66,8 +65,7 @@ class Environment {
 
     const validated = envSchema.safeParse(parsed);
     if (!validated.success) {
-      console.error('Unable to parse environment variables into the correct types. Exiting.');
-      process.exit(1);
+      throw new Error('Unable to parse environment variables into the correct types. Exiting.');
     }
 
     return validated.data;
