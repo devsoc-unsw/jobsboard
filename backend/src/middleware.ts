@@ -12,6 +12,7 @@ import {
   AuthoriseAdminRequest,
   PasswordResetRequest,
 } from './interfaces/interfaces';
+import ev from './environment';
 
 export default class Middleware {
   public static genericLoggingMiddleware(
@@ -87,8 +88,7 @@ export default class Middleware {
       req.studentZID = jwt.id;
       // continue
       next();
-    }
-    catch (error: unknown) {
+    } catch (error: unknown) {
       // if there are any errors, send a forbidden
       res.sendStatus(StatusCodes.UNAUTHORIZED);
       Middleware.genericLoggingMiddleware(req, res, undefined);
@@ -198,7 +198,7 @@ export default class Middleware {
   }
 
   public static privateRouteWrapper(this: void, req: Request, res: Response, next: NextFunction) {
-    if (process.env.NODE_ENV === 'development') {
+    if (ev.data().NODE_ENV === 'development') {
       next();
     }
   }
