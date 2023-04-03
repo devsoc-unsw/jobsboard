@@ -56,7 +56,7 @@ export class Logger {
       const consoleTransport = new winston.transports.Console();
 
       if (ev.data().NODE_ENV === 'production' || !where) {
-        return [fileTransport];
+        return [consoleTransport];
       }
 
       switch (Number(where)) {
