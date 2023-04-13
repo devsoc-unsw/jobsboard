@@ -17,7 +17,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Alert from 'components/Alert/Alert';
-import JobListingMinimal from 'components/JobListingMinimal/JobListingMinimal';
+import OtherJobs from 'components/OtherJobs/OtherJobs';
 import api from 'config/api';
 import {
   JobMode,
@@ -44,7 +44,6 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
 
   const [alertMsg, setAlertMsg] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);
-  const [isJobDescriptionShown, setIsJobDescriptionShown] = useState(true);
 
   const router = useRouter();
   const { apiToken } = useContext(AppContext);
@@ -97,6 +96,7 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
         behavior: 'smooth'
       });
     }, 100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -109,142 +109,102 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
             open={alertOpen}
             onClose={() => setAlertOpen(false)}
           />
-          <div className="flex flex-row justify-center h-screen mb-10">
-            <div className="flex flex-col py-4 px-2 h-full bg-white rounded-lg mr-4 w-1/4 overflow-y-auto shadow-card sm:hidden">
-              <h2
-                className={`font-bold text-xl text-jb-headings ${
-                  companyJobs.length === 0 ? 'my-auto' : 'mb-4'
-                }`}
-              >
-                {companyJobs.length === 0
-                  ? 'There are no other jobs from this company.'
-                  : 'Other jobs from this company'}
-              </h2>
-              <div>
-                {companyJobs.map((companyJob) => (
-                  <JobListingMinimal
-                    key={companyJob.id}
-                    id={companyJob.id}
-                    role={companyJob.role}
-                    company={job.company.name}
-                    location={job.company.location}
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-col items-center w-3/4 h-full sm:w-full">
-              <div className="flex flex-row p-4 gap-8 bg-white rounded-2xl mb-4 w-full shadow-card md:flex-col">
-                <div className="flex flex-col justify-center items-center gap-4">
-                  {job.company.logo ? (
-                    <Image width={300} height={300} src={job.company.logo} alt={job.company.name} />
+          <div className="flex md:flex-col justify-center mb-10">
+            <div className="flex flex-col md:flex-row md:items-center max-h-screen overflow-y-auto mr-6 sticky md:static top-6 self-start md:self-auto">
+              {job.company.logo ? (
+                <Image width={300} height={300} src={job.company.logo} alt={job.company.name} />
+              ) : (
+                <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
+              )}
+              <div className="flex flex-col text-left text-sm w-auto md:w-3/5">
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faBuilding} className="mr-2 w-7" />
+                  <b>Company:</b> {job.company.name}
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faLocationDot} className="mr-2 w-7" />
+                  <b>Location:</b> {job.company.location}
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faSuitcase} className="mr-2 w-7" />
+                  <b>Job Mode:</b> {JobMode[job.mode as keyof typeof JobMode]}
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faSuitcase} className="mr-2 w-7" />
+                  <b>Job Type:</b> {JobType[job.jobType as keyof typeof JobType]}
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faCalendar} className="mr-2 w-7" />
+                  <b>Expiry Date:</b> {new Date(job.expiry).toLocaleString().split(',')[0]}
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faCircleDollarToSlot} className="mr-2 w-7" />
+                  <b>Is this a paid position?</b> {job.isPaid ? 'Yes' : 'No'}
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faGraduationCap} className="mr-2 w-7" />
+                  <b>Required WAM:&nbsp;</b>
+                  {WamRequirements[job.wamRequirements as keyof typeof WamRequirements]}
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faAddressCard} className="mr-2 w-7" />
+                  <b>Required working rights:&nbsp;</b>
+                  {!['all'].every((val, idx) => val === job.workingRights[idx]) ? (
+                    <ul className="list-disc ml-16">
+                      {job.workingRights.map((r) => (
+                        <li key={r}>{WR[r as keyof typeof WR]}</li>
+                      ))}
+                    </ul>
                   ) : (
-                    <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
+                    <>None</>
                   )}
-                  <Link href={job.applicationLink} target="_blank" rel="noreferrer">
-                    <Button variant="primary">Apply</Button>
-                  </Link>
-                </div>
-                <div className="flex flex-col text-left">
-                  <h1 className="font-bold text-3xl my-4 text-jb-headings">{job.role}</h1>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faBuilding} className="mr-2 w-7" />
-                    <b>Company:</b> {job.company.name}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faLocationDot} className="mr-2 w-7" />
-                    <b>Location:</b> {job.company.location}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faSuitcase} className="mr-2 w-7" />
-                    <b>Job Mode:</b> {JobMode[job.mode as keyof typeof JobMode]}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faSuitcase} className="mr-2 w-7" />
-                    <b>Job Type:</b> {JobType[job.jobType as keyof typeof JobType]}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faCalendar} className="mr-2 w-7" />
-                    <b>Expiry Date:</b> {new Date(job.expiry).toLocaleString().split(',')[0]}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faCircleDollarToSlot} className="mr-2 w-7" />
-                    <b>Is this a paid position?</b> {job.isPaid ? 'Yes' : 'No'}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faGraduationCap} className="mr-2 w-7" />
-                    <b>Required WAM:&nbsp;</b>
-                    {WamRequirements[job.wamRequirements as keyof typeof WamRequirements]}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faAddressCard} className="mr-2 w-7" />
-                    <b>
-                      {['all'].every((val, idx) => val === job.workingRights[idx])
-                        ? 'No required working rights specified for this job listing.'
-                        : 'Must have one of the following working rights in Australia:'}
-                    </b>
-                    {!['all'].every((val, idx) => val === job.workingRights[idx]) && (
-                      <ul className="list-disc list-inside ml-12">
-                        {job.workingRights.map((r) => (
-                          <li key={r}>{WR[r as keyof typeof WR]}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </span>
-                  <span className="mb-1">
-                    <FontAwesomeIcon icon={faUser} className="mr-2 w-7" />
-                    <b>
-                      {['all'].every((val, idx) => val === job.studentDemographic[idx])
-                        ? 'This job listing is open to students at any stage of their degree.'
-                        : 'This job listing is open to only the following students:'}
-                    </b>
-                    {!['all'].every((val, idx) => val === job.studentDemographic[idx]) && (
-                      <ul className="list-disc list-inside ml-12">
-                        {job.studentDemographic.map((s) => (
-                          <li key={s}>{SD[s as keyof typeof SD]}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </span>
-                </div>
+                </span>
+                <span className="mb-1">
+                  <FontAwesomeIcon icon={faUser} className="mr-2 w-7" />
+                  <b>Preferred students:&nbsp;</b>
+                  {['all'].every((val, idx) => val === job.studentDemographic[idx]) ? (
+                    <ul className="list-disc list-inside ml-12">
+                      {job.studentDemographic.map((s) => (
+                        <li key={s}>{SD[s as keyof typeof SD]}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <>None</>
+                  )}
+                </span>
+                <Link
+                  href={job.applicationLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex justify-center my-4"
+                >
+                  <Button variant="primary">
+                    <b className="text-sm">Apply for this job</b>
+                  </Button>
+                </Link>
               </div>
-              <div className="w-full">
-                <ul className="flex -mb-px justify-start list-inside list-none">
-                  <li className="mr-2">
-                    <button
-                      type="button"
-                      className={`inline-block p-4 ${
-                        isJobDescriptionShown
-                          ? 'text-jb-textlink font-black'
-                          : 'text-gray-500 hover:text-gray-700'
-                      }`}
-                      onClick={() => setIsJobDescriptionShown(true)}
-                    >
-                      Description
-                    </button>
-                  </li>
-                  <li className="mr-2">
-                    <button
-                      type="button"
-                      className={`inline-block p-4 ${
-                        !isJobDescriptionShown
-                          ? 'text-jb-textlink font-black'
-                          : 'text-gray-500 hover:text-gray-700'
-                      }`}
-                      onClick={() => setIsJobDescriptionShown(false)}
-                    >
-                      Additional Information
-                    </button>
-                  </li>
-                </ul>
-              </div>
-              <div className="text-left h-full p-4 bg-white rounded-2xl w-full overflow-y-auto shadow-card">
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: isJobDescriptionShown ? job.description : job.additionalInfo
-                  }}
-                />
-              </div>
+              <OtherJobs className="md:hidden" job={job} companyJobs={companyJobs} />
             </div>
+            <div className="flex flex-col w-3/4 md:w-full md:mb-4 ">
+              <h1 className="font-bold text-3xl mb-4 text-jb-headings">{job.role}</h1>
+              <h2 className="font-bold text-2xl my-4 text-jb-headings">Description</h2>
+              {job.description ? (
+                // eslint-disable-next-line react/no-danger
+                <p dangerouslySetInnerHTML={{ __html: job.description }} />
+              ) : (
+                <p>This job has no description.</p>
+              )}
+              <h2 className="font-bold text-2xl my-4 text-jb-headings">Additional Information</h2>
+
+              {job.additionalInfo ? (
+                // eslint-disable-next-line react/no-danger
+                <p dangerouslySetInnerHTML={{ __html: job.additionalInfo }} />
+              ) : (
+                <p>This job has no additional information.</p>
+              )}
+            </div>
+
+            <OtherJobs className="hidden md:flex" job={job} companyJobs={companyJobs} />
           </div>
         </>
       ) : (
