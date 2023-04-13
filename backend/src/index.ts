@@ -43,6 +43,7 @@ import {
   UpdateCompanyDetailsRequest,
   VerifyCompanyAccountRequest,
   SearchJobRequest,
+  VerifyTokenRequest,
 } from './interfaces/interfaces';
 
 const LM = new LogModule('INDEX');
@@ -466,6 +467,15 @@ app.get(
     (async () => {
       await StudentFunctions.GetFeaturedJobs(req, res, next);
     })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.get(
+  '/check-token-valid',
+  cors(corsOptions),
+  (req: VerifyTokenRequest, res, next) => {
+    Auth.AuthenticateToken(req, res, next);
   },
   Middleware.genericLoggingMiddleware,
 );

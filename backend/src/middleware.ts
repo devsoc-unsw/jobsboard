@@ -11,6 +11,7 @@ import {
   AuthoriseCompanyRequest,
   AuthoriseAdminRequest,
   PasswordResetRequest,
+  VerifyTokenRequest,
 } from './interfaces/interfaces';
 import ev from './environment';
 
@@ -204,5 +205,10 @@ export default class Middleware {
     if (ev.data().NODE_ENV === 'development') {
       next();
     }
+  }
+
+  public static verifyToken(req: VerifyTokenRequest, jwt: IToken, expectedType: AccountType) {
+    Middleware.verifyAccountType(jwt.type, expectedType);
+    Middleware.verifyTokenProperties(req, jwt);
   }
 }
