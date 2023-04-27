@@ -6,8 +6,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinColumn,
+  Relation,
 } from 'typeorm';
-import Company from './company';
+import Student from './student';
 
 @Entity()
 export default class StudentProfile {
@@ -20,17 +21,12 @@ export default class StudentProfile {
   @Column()
   public hash: string;
 
-  @OneToOne((_) => Company, (company) => company.companyAccount, {
+  @OneToOne((_) => Student, (student) => student.studentProfile, {
     cascade: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  public company: Company;
-
-  @Column({
-    default: false,
-  })
-  public verified: boolean;
+  public student: Relation<Student>;
 
   @Column({ type: 'text', default: 'no token set' })
   public latestValidToken: string;
