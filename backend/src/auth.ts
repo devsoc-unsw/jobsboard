@@ -8,7 +8,8 @@ import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
-import { AuthRequest } from './interfaces/interfaces';
+import { AuthRequest, VerifyTokenRequest } from './interfaces/interfaces';
+import Middleware from './middleware';
 import ev from './environment';
 
 const LM = new LogModule('AUTH');
@@ -243,5 +244,49 @@ export default class Auth {
       return false;
     }
     return true;
+  }
+
+  // check if token is valid
+  public static AuthenticateToken(
+    this: void,
+    req: VerifyTokenRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    // const encodedJwt = req.body.jwt;
+    const { accountType } = req.body;
+    let response: IResponseWithStatus;
+
+    // currently this line does not work as jwt decryption algorithm doesn't work
+    // const jwt: IToken = JWT.get(encodedJwt);
+
+    // hard coded example
+    const jwt: IToken = {
+      id: 'test',
+      type: AccountType.Student,
+      lastRequestTimestamp: Date.now(),
+      ipAddress: '::1',
+    };
+
+    // checks it token is valid or not
+    try {
+      Middleware.verifyToken(req, jwt, accountType);
+
+      response = {
+        status: StatusCodes.OK,
+        msg: jwt,
+      };
+    } catch (error) {
+      // Error thrown meaning that token is invalid.
+      response = { status: StatusCodes.UNAUTHORIZED, msg: 'Token is invalid' };
+    }
+
+    if (response.msg === undefined) {
+      res.sendStatus(response.status);
+    }
+    else {
+      res.status(response.status).send(response.msg);
+    }
+    next();
   }
 }

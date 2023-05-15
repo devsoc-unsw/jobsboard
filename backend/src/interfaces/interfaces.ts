@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
+import { AccountType } from '../auth';
 
 import {
   JobMode,
@@ -86,6 +87,11 @@ interface Year {
   year: string;
 }
 
+interface VerifyBody {
+  jwt: string;
+  accountType: AccountType;
+}
+
 interface JobIDParams extends ParamsDictionary, JobID {}
 interface CompanyIdParams extends ParamsDictionary, CompanyID {}
 interface CompanyAccountIdParams extends ParamsDictionary, CompanyAccountID {}
@@ -100,6 +106,8 @@ export interface PasswordResetRequest extends Request, CompanyAccountID {}
 
 // * Auth Functions
 export type AuthRequest = Request<Record<string, never>, never, AuthBody>;
+
+export type VerifyTokenRequest = Request<Record<string, never>, never, VerifyBody>;
 
 // * Admin Functions
 type AdminRequestBase = AdminID & JbToken;
