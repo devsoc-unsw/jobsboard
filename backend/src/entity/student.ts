@@ -15,10 +15,10 @@ export default class Student {
 
   @Column({ unique: true })
   public zID: string;
-  
+
   @Column({ type: 'text', default: 'no token set' })
   public latestValidToken: string;
-  
+
   @OneToOne((_) => StudentProfile, (studentProfile) => studentProfile.student)
   public studentProfile: StudentProfile;
 
