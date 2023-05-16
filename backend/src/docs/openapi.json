@@ -929,6 +929,30 @@
             }
           }
         }
+      },
+      "/student/profile": {
+        "get": {
+          "summary": "Returns a student profile",
+          "description": "Query the database to find the student profile corresponding to the student zID",
+          "tags": [
+            "student"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the student profile",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/StudentProfile"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to query the database and find the student profile"
+            }
+          }
+        }
       }
     },
     "components": {
@@ -1455,6 +1479,52 @@
             "username": "A Good Company",
             "hash": "4d30494cCb4b10792FE7CBbaA2CCF861dAa0e5ad951ebC7F5ce281B8b0dAec54",
             "company": 1
+          }
+        },
+        "Student": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "zID": {
+              "type": "string"
+            },
+            "latestValidToken": {
+              "type": "string"
+            },
+            "studentProfile": {
+              "type": "integer"
+            }
+          },
+          "example": {
+            "id": 1,
+            "zID": "z5555555",
+            "latestValidToken": "some string",
+            "studentProfile": 1
+          }
+        },
+        "StudentProfile": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "startYear": {
+              "type": "integer"
+            },
+            "wam": {
+              "type": "integer"
+            },
+            "student": {
+              "type": "integer"
+            }
+          },
+          "example": {
+            "id": 1,
+            "startYear": 2023,
+            "wam": 0,
+            "student": 1
           }
         }
       }

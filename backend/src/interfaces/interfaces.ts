@@ -133,6 +133,8 @@ interface QueryString {
 interface QueryStringParams extends ParamsDictionary, QueryString {}
 export interface SearchJobRequest extends Request<QueryStringParams>, StudentZID, JbToken {}
 
+export interface StudentGetProfileRequest extends Request, StudentZID, JbToken {}
+
 // * CompanyFunctions
 
 interface CompanyResetPasswordEmailBody {

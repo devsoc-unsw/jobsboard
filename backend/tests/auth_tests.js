@@ -66,6 +66,19 @@ describe("authentication", () => {
       */
   });
 
+  describe("student profiles", () => {
+    it("fails when there is no json message", 
+      function (done) {
+        server.post("/student/profile")
+          .send({})
+          .expect(404)
+          .end( function (_, res) {
+            expect(res.status).to.equal(404);
+            done();
+          });
+      });
+  });
+
   describe("company", () => {
     describe("authentication", () => {
       it("fails when there is no json message", 

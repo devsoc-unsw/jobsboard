@@ -3,6 +3,7 @@ import Fuse from 'fuse.js';
 import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
+import EStudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
 
@@ -19,6 +20,7 @@ import {
   StudentGetJobRequest,
   StudentFeaturedJobsRequest,
   SearchJobRequest,
+  StudentGetProfileRequest,
 } from './interfaces/interfaces';
 
 const LM = new LogModule('STUDENT');
@@ -298,6 +300,37 @@ export default class StudentFunctions {
         return {
           status: StatusCodes.OK,
           msg: { token: req.newJbToken, searchResult: filteredResult },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  // Modelled after AuthenticateStudent
+  public static async GetStudentProfile(
+    this: void,
+    req: StudentGetProfileRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, 'Attempting to get student profile');
+
+        const studentProfile = await AppDataSource.getRepository(EStudentProfile)
+          .createQueryBuilder()
+          .leftJoinAndSelect('StudentProfile.student', 'student')
+          .where('student.zID = :zID', { zID: req.studentZID })
+          .getOneOrFail();
+
+        return {
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, studentProfile },
         };
       },
       () => ({
