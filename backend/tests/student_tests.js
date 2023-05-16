@@ -51,89 +51,89 @@ describe('job', () => {
         });
     });
   });
-});
 
-describe('accessing while authenticated', () => {
-  before(async function () {
-    this.token = await server
-      .post('/authenticate/student')
-      .send({ zID: 'username', password: 'password' })
-      .then((response) => response.body.token);
+  describe('accessing while authenticated', () => {
+    before(async function () {
+      this.token = await server
+        .post('/authenticate/student')
+        .send({ zID: 'username', password: 'password' })
+        .then((response) => response.body.token);
+    });
+
+    it('permits viewing of jobs with a valid token', function (done) {
+      server
+        .get('/jobs/0')
+        .set('Authorization', this.token)
+        .expect(200)
+        .end(function (_, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    });
+
+    it('permits viewing of a specific job with a valid token', function (done) {
+      server
+        .get('/job/1')
+        .set('Authorization', this.token)
+        .expect(200)
+        .end(function (err, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    });
+
+    it("user can't access list of jobs with invalid token", function (done) {
+      server
+        .get('/jobs/0')
+        .set('Authorization', 'dummy token')
+        .expect(401)
+        .end(function (_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+    });
   });
 
-  it('permits viewing of jobs with a valid token', function (done) {
-    server
-      .get('/jobs/0')
-      .set('Authorization', this.token)
-      .expect(200)
-      .end(function (_, res) {
-        expect(res.status).to.equal(200);
-        done();
-      });
-  });
+  describe('searching for jobs using Fuzzy Search', () => {
+    before(async function () {
+      this.token = await server
+        .post('/authenticate/student')
+        .send({ zID: 'username', password: 'password' })
+        .then((response) => response.body.token);
+    });
 
-  it('permits viewing of a specific job with a valid token', function (done) {
-    server
-      .get('/job/1')
-      .set('Authorization', this.token)
-      .expect(200)
-      .end(function (err, res) {
-        expect(res.status).to.equal(200);
-        done();
-      });
-  });
+    it("can't search for jobs without a token", function (done) {
+      server
+        .get('/student/job/hello')
+        .expect(401)
+        .end(function (_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+    });
 
-  it("user can't access list of jobs with invalid token", function (done) {
-    server
-      .get('/jobs/0')
-      .set('Authorization', 'dummy token')
-      .expect(401)
-      .end(function (_, res) {
-        expect(res.status).to.equal(401);
-        done();
-      });
-  });
-});
+    it("can't search for jobs without a valid student token", function (done) {
+      server
+        .get('/student/job/hello')
+        .set('Authorization', 'dummy token')
+        .expect(401)
+        .end(function (_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+    });
 
-describe('searching for jobs using Fuzzy Search', () => {
-  before(async function () {
-    this.token = await server
-      .post('/authenticate/student')
-      .send({ zID: 'username', password: 'password' })
-      .then((response) => response.body.token);
-  });
-
-  it("can't search for jobs without a token", function (done) {
-    server
-      .get('/student/job/hello')
-      .expect(401)
-      .end(function (_, res) {
-        expect(res.status).to.equal(401);
-        done();
-      });
-  });
-
-  it("can't search for jobs without a valid student token", function (done) {
-    server
-      .get('/student/job/hello')
-      .set('Authorization', 'dummy token')
-      .expect(401)
-      .end(function (_, res) {
-        expect(res.status).to.equal(401);
-        done();
-      });
-  });
-
-  it('can search for jobs with a valid student token', function (done) {
-    server
-      .get('/student/job/java')
-      .set('Authorization', this.token)
-      .expect(200)
-      .expect(200)
-      .end(function (_, res) {
-        expect(res.status).to.equal(200);
-        expect(res.body.searchResult.length != 0);
-        done();
-      });
+    it('can search for jobs with a valid student token', function (done) {
+      server
+        .get('/student/job/java')
+        .set('Authorization', this.token)
+        .expect(200)
+        .expect(200)
+        .end(function (_, res) {
+          expect(res.status).to.equal(200);
+          expect(res.body.searchResult.length != 0);
+          done();
+        });
+    });
   });
 });
