@@ -4,6 +4,7 @@ import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
 import EStudent from './entity/student';
+import StudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import { Logger, LogModule } from './logging';
@@ -68,8 +69,14 @@ export default class Auth {
             const student: EStudent = new EStudent();
             student.zID = msg.zID;
             student.latestValidToken = token as string;
+
+            // create new profile and connect to student
+            const profile: StudentProfile = new StudentProfile();
+            profile.student = student;
+            student.studentProfile = profile;
+
             await AppDataSource.manager.save(student);
-            Logger.Info(LM, `Created student record for STUDENT=${msg.zID}`);
+            Logger.Info(LM, `Created student record and profile record for STUDENT=${msg.zID}`);
           } else {
             await AppDataSource.createQueryBuilder()
               .update(EStudent)
