@@ -13,7 +13,7 @@ export default class StudentProfile {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
+  @Column({ default: 2023 })
   public startYear: number;
 
   @Column({ default: 0 })
@@ -21,6 +21,7 @@ export default class StudentProfile {
 
   @OneToOne((_) => Student, (student) => student.studentProfile, {
     onDelete: 'CASCADE',
+    nullable: true,
   })
   public student: Student;
 
