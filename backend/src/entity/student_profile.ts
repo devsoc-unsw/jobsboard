@@ -4,7 +4,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
   Column,
 } from 'typeorm';
 import Student from './student';
@@ -21,10 +20,8 @@ export default class StudentProfile {
   public wam: number;
 
   @OneToOne((_) => Student, (student) => student.studentProfile, {
-    cascade: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
   public student: Student;
 
   @CreateDateColumn()

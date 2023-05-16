@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import StudentProfile from './student_profile';
 
@@ -19,7 +20,11 @@ export default class Student {
   @Column({ type: 'text', default: 'no token set' })
   public latestValidToken: string;
 
-  @OneToOne((_) => StudentProfile, (studentProfile) => studentProfile.student)
+  @OneToOne((_) => StudentProfile, (studentProfile) => studentProfile.student, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
   public studentProfile: StudentProfile;
 
   @CreateDateColumn()
