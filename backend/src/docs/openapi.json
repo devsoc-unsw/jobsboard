@@ -891,6 +891,44 @@
             }
           }
         }
+      },
+      "/student/job/:queryString": {
+        "get": {
+          "summary": "Returns a filtered list of job posts corresponding to student query",
+          "description": "Query the database to find all the approved job posts corresponding to the constructed query string, ranked by company name, role, job mode, then job type",
+          "tags": [
+            "student"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "queryString",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "a Fuse.js query string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the relevant job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to query the database and find relevant job posts"
+            }
+          }
+        }
       }
     },
     "components": {
