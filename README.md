@@ -82,9 +82,9 @@ Jobs Board was made with 🤍 by CSE students, for CSE students. Jobsboard is a 
 
 **With Docker**
 1. After installing Docker on your computer, open a terminal and run `docker compose build` to build all the containers required for Jobsboard. In the future, you will only need to run either `docker compose build api` or `docker compose build test` as you make changes to them.
-2. Start up the database by running `docker compose -d db` in your terminal.
-3. Start up the server by following step of above or run `docker compose up` in your terminal.
-> Refer to the [Using Docker](#Using-Docker) section below if you need more assisstance.
+2. Start up the database by running `docker compose up -d db` in your terminal.
+3. Start up the server by running `docker compose up -d api` in your terminal.
+> Refer to the [Using Docker](#Using-Docker) section below if you need more assistance.
 
 <br />
 
@@ -136,8 +136,8 @@ const transportOptions = {
 
 ### Using Docker
 1. Navigate to the root of the project.
-2. Run `docker-compose build` to build all containers or `docker-compose build [container-name]` for a specific container specified in the compose file.
-3. Run `docker-compose up` to start all containers or `docker-compose up [container-name]` for starting a specific container specified in the compose file.
+2. Run `docker compose build` to build all containers or `docker compose build [container-name]` for a specific container specified in the compose file.
+3. Run `docker compose up` to start all containers or `docker compose up [container-name]` for starting a specific container specified in the compose file.
     > To view which containers you would like to build/start, refer to [docker-compose.yml](./docker-compose.yml)
 
 <br />
@@ -165,12 +165,12 @@ Navigate to the root directory and run the following commands in your terminal
   docker compose up test
   ```
 
-> Make sure to stop the server and db before rerunning the tests either using the the Docker Desktop GUI or by running `docker stop jobs-board_api_1` and `docker stop jobs-board_db_1` in your terminal.
+> Make sure to stop the server and db before rerunning the tests either using the the Docker Desktop GUI or by running `docker stop jobsboard-api-1` and `docker stop jobsboard-db-1` in your terminal.
 
 > Use the logs in the terminal or the Docker Desktop GUI to check your tests.
 
 
-The reason docker is used when testing is because we're given a guarantee that the conditions are exactly the same every time and because it emulates what the behaviour will be on prod running in the container - which there are difference.
+The reason Docker is used when testing is because we're given a guarantee that the conditions are exactly the same every time and because it emulates what the behaviour will be on prod running in the container - where there **are** differences.
 
 <br />
 
@@ -182,16 +182,16 @@ Coming
 #### Backend
 - Run `yarn run lint` to see both style and linting issues in `.ts` files within the `backend` directory at once
 - Run `yarn run lint:fix` to automatically amend all style and linting issues that would be identified by running the first command **(recommended)**
-- Run `yarn run prettier` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
-- Run `yarn run prettier:fix` to automatically amend all the style issues identified by running `npm run prettier` **(recommended)**
+- Run `yarn run format` to see all style issues in `.ts` files within the `backend` directory according to the prettier configuration file `.prettierrc`
+- Run `yarn run format:fix` to automatically amend all the style issues identified by running `npm run prettier` **(recommended)**
 
 
 </br >
 
 ### Finished your work
 Always double check before submitting your pr
-1. Run `docker compose build` and ensure the build completes successfully
-2. Run `docker compose up` and ensure all tests pass
+1. Run `docker compose build api` and `docker compose build test` and ensure the builds complete successfully
+2. Run `docker compose up test` and ensure all tests pass
 
 </br >
 
