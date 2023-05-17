@@ -143,7 +143,7 @@ const AdminDashboardPage = () => {
           before verifying.
           <br />
           You may also
-          <span className="text-jb-textlink font-bold"> unverify already-verified </span>
+          <span className="text-jb-textlink font-bold"> unverify </span>
           companies.
         </p>
         <Link href="/admin/company">
