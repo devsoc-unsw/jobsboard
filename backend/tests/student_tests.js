@@ -12,6 +12,19 @@ const config = require('./config');
 
 const server = supertest.agent(config.apiUrl);
 
+describe("student profiles", () => {
+  it("fails when there is no json message (authentication fails)", 
+    function (done) {
+      server.get("/student/profile")
+        .send({})
+        .expect(401)
+        .end( function (_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+    });
+});
+
 describe('job', () => {
   describe('accessing while unauthenticated', () => {
     it("user can't access the list of jobs when not logged in", function (done) {
