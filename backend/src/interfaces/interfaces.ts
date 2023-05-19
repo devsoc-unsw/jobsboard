@@ -52,6 +52,14 @@ interface JbToken {
   newJbToken: string;
 }
 
+export interface StudentBase extends StudentZID, JbToken {}
+
+interface StudentProfile {
+  gradYear: number;
+  wam: WamRequirements;
+  workingRights: WorkingRights;
+}
+
 interface JobID {
   jobID: string;
 }
@@ -134,6 +142,10 @@ interface QueryStringParams extends ParamsDictionary, QueryString {}
 export interface SearchJobRequest extends Request<QueryStringParams>, StudentZID, JbToken {}
 
 export interface StudentGetProfileRequest extends Request, StudentZID, JbToken {}
+export interface StudentEditProfileRequest
+  extends Request<Record<string, never>, never, StudentProfile>,
+  StudentZID,
+  JbToken {}
 
 // * CompanyFunctions
 

@@ -4,13 +4,13 @@ import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
 import EStudent from './entity/student';
-import StudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import JWT from './jwt';
 import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
 import { AuthRequest } from './interfaces/interfaces';
 import ev from './environment';
+import StudentFunctions from './student';
 
 const LM = new LogModule('AUTH');
 
@@ -66,13 +66,11 @@ export default class Auth {
 
           if (studentQuery === null) {
             // never logged on here before
-            const student: EStudent = new EStudent();
-            student.zID = msg.zID;
-            student.latestValidToken = token as string;
-            student.studentProfile = new StudentProfile();
+            await StudentFunctions.CreateStudent({
+              studentZID: msg.zID,
+              newJbToken: token as string,
+            });
 
-            await AppDataSource.manager.save(student);
-            // StudentFunctions.CreateStudent(msg.zID, token as string);
             Logger.Info(LM, `Created student record and profile record for STUDENT=${msg.zID}`);
           } else {
             await AppDataSource.createQueryBuilder()

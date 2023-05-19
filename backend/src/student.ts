@@ -3,6 +3,7 @@ import Fuse from 'fuse.js';
 import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
+import Student from './entity/student';
 import StudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
@@ -20,9 +21,9 @@ import {
   StudentGetJobRequest,
   StudentFeaturedJobsRequest,
   SearchJobRequest,
+  StudentBase,
   StudentGetProfileRequest,
 } from './interfaces/interfaces';
-import Student from './entity/student';
 
 const LM = new LogModule('STUDENT');
 
@@ -309,6 +310,24 @@ export default class StudentFunctions {
       }),
       next,
     );
+  }
+
+  public static async CreateStudent(
+    this: void,
+    req: StudentBase,
+  ) {
+    try {
+      Logger.Info(LM, 'Attempting to create new student');
+
+      const student: Student = new Student();
+      student.zID = req.studentZID;
+      student.latestValidToken = req.newJbToken;
+      student.studentProfile = new StudentProfile();
+
+      await AppDataSource.manager.save(student);
+    } catch (error) {
+      throw new Error(`Failed to create STUDENT=${req.studentZID}`);
+    }
   }
 
   // Modelled after AuthenticateStudent
