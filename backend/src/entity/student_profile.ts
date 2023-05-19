@@ -1,12 +1,11 @@
 import {
   Entity,
-  OneToOne,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
   Column,
 } from 'typeorm';
-import Student from './student';
+import { WamRequirements, WorkingRights } from '../types/job-field';
 
 @Entity()
 export default class StudentProfile {
@@ -14,16 +13,21 @@ export default class StudentProfile {
   public id: number;
 
   @Column({ default: 2023 })
-  public startYear: number;
+  public gradYear: number;
 
-  @Column({ default: 0 })
-  public wam: number;
-
-  @OneToOne((_) => Student, (student) => student.studentProfile, {
-    onDelete: 'CASCADE',
-    nullable: true,
+  @Column({
+    type: 'enum',
+    enum: WamRequirements,
+    default: WamRequirements.None,
   })
-  public student: Student;
+  public wam: WamRequirements;
+
+  @Column({
+    type: 'enum',
+    enum: WorkingRights,
+    default: WorkingRights.NoWr,
+  })
+  public workingRights: WorkingRights;
 
   @CreateDateColumn()
     createdAt: Date;
