@@ -952,6 +952,21 @@
               "description": "Failed to query the database and find the student profile"
             }
           }
+        },
+        "put": {
+          "summary": "Edits a student profile",
+          "description": "Updates the database with student profile details",
+          "tags": [
+            "student"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully edited the student profile"
+            },
+            "400": {
+              "description": "Failed to update the database with new details"
+            }
+          }
         }
       }
     },
