@@ -69,13 +69,10 @@ export default class Auth {
             const student: EStudent = new EStudent();
             student.zID = msg.zID;
             student.latestValidToken = token as string;
-
-            // create new profile and connect to student
-            const profile: StudentProfile = new StudentProfile();
-            profile.student = student;
-            student.studentProfile = profile;
+            student.studentProfile = new StudentProfile();
 
             await AppDataSource.manager.save(student);
+            // StudentFunctions.CreateStudent(msg.zID, token as string);
             Logger.Info(LM, `Created student record and profile record for STUDENT=${msg.zID}`);
           } else {
             await AppDataSource.createQueryBuilder()

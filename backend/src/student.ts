@@ -3,7 +3,7 @@ import Fuse from 'fuse.js';
 import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
-import EStudentProfile from './entity/student_profile';
+import StudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
 
@@ -22,6 +22,7 @@ import {
   SearchJobRequest,
   StudentGetProfileRequest,
 } from './interfaces/interfaces';
+import Student from './entity/student';
 
 const LM = new LogModule('STUDENT');
 
@@ -322,11 +323,24 @@ export default class StudentFunctions {
       async (): Promise<IResponseWithStatus> => {
         Logger.Info(LM, 'Attempting to get student profile');
 
-        const studentProfile = await AppDataSource.getRepository(EStudentProfile)
+        let studentProfile = await AppDataSource.getRepository(StudentProfile)
           .createQueryBuilder()
           .leftJoinAndSelect('StudentProfile.student', 'student')
           .where('student.zID = :zID', { zID: req.studentZID })
-          .getOneOrFail();
+          .getOne();
+
+        // If not exists, create new default
+        if (studentProfile === null) {
+          const student = await AppDataSource.getRepository(Student)
+            .createQueryBuilder()
+            .where('Student.zID = :zID', { zID: req.studentZID })
+            .getOne();
+
+          student.studentProfile = new StudentProfile();
+          await AppDataSource.manager.save(student);
+
+          studentProfile = student.studentProfile;
+        }
 
         return {
           status: StatusCodes.OK,
