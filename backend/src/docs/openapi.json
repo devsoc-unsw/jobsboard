@@ -1510,21 +1510,21 @@
             "id": {
               "type": "integer"
             },
-            "startYear": {
+            "gradYear": {
               "type": "integer"
             },
             "wam": {
-              "type": "integer"
+              "$ref": "#/components/schemas/WamRequirements"
             },
-            "student": {
-              "type": "integer"
+            "workingRights": {
+              "$ref": "#/components/schemas/WorkingRights"
             }
           },
           "example": {
             "id": 1,
             "startYear": 2023,
-            "wam": 0,
-            "student": 1
+            "wam": "HD",
+            "workingRights": "no_wr"
           }
         }
       }
