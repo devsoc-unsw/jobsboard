@@ -1,5 +1,19 @@
 import Secrets from './secrets';
-import { IToken } from './auth';
+
+// auth token data structures
+export interface IToken {
+  id: string;
+  type: AccountType;
+  lastRequestTimestamp: number;
+  ipAddress: string;
+}
+
+// differentiating between account types
+export enum AccountType {
+  Admin,
+  Student,
+  Company,
+}
 
 export default class JWT {
   public static create(raw: object): string {

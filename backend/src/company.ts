@@ -9,8 +9,7 @@ import Helpers, { IResponseWithStatus } from './helpers';
 import Secrets from './secrets';
 import MailFunctions from './mail';
 import { Logger, LogModule } from './logging';
-import { AccountType, IToken } from './auth';
-import JWT from './jwt';
+import JWT, { AccountType, IToken } from './jwt';
 import {
   CompanyInfoRequest,
   CompanyJobsRequest,
