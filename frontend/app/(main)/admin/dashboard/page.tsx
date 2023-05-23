@@ -156,8 +156,11 @@ const AdminDashboardPage = () => {
         <h3 className="text-2xl font-bold text-jb-headings">Job Verification</h3>
         <p className="text-md text-jb-subheadings pt-2 pb-5">
           Please ensure that all job posts complies with the
-          <span className="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>.
+          <span className="text-jb-textlink font-bold"> Australian Fair Work Act 2009</span>. You are allowed to both 
+          verify pending jobs and unapprove already approved jobs.
+
         </p>
+      
         <Link href="/admin/jobs">
           <Button variant="primary">
             <FontAwesomeIcon icon={faBriefcase} />
