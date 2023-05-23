@@ -8,7 +8,7 @@ import Helpers, { IResponseWithStatus } from './helpers';
 import JWT, { IToken, AccountType } from './jwt';
 import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
-import { AuthRequest } from './interfaces/interfaces';
+import { AuthRequest } from './types/request';
 import ev from './environment';
 
 const LM = new LogModule('AUTH');

@@ -43,17 +43,19 @@ import {
   UpdateCompanyDetailsRequest,
   VerifyCompanyAccountRequest,
   SearchJobRequest,
-} from './interfaces/interfaces';
+} from './types/request';
 
 const LM = new LogModule('INDEX');
 
 const app = express();
 const port = ev.data().SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({
-  limit: '5mb',
-  extended: true,
-}));
+app.use(
+  express.urlencoded({
+    limit: '5mb',
+    extended: true,
+  }),
+);
 app.use(helmet());
 
 let corsOptions;
@@ -65,8 +67,7 @@ if (ev.data().NODE_ENV !== 'development') {
     origin: (origin: string, callback: (error: Error, status?: boolean) => void) => {
       if (whitelist.indexOf(origin) !== -1) {
         callback(null, true);
-      }
-      else {
+      } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -483,8 +484,7 @@ app.listen(port, () => {
   (async () => {
     if (ev.data().NODE_ENV === 'development') {
       await bootstrap();
-    }
-    else {
+    } else {
       await AppDataSource.initialize();
     }
     if (ev.data().NODE_ENV === 'production') {

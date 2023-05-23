@@ -10,7 +10,7 @@ import {
   AuthoriseCompanyRequest,
   AuthoriseAdminRequest,
   PasswordResetRequest,
-} from './interfaces/interfaces';
+} from './types/request';
 import ev from './environment';
 
 const LM = new LogModule('MIDDLEWARE');

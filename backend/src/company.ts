@@ -16,7 +16,6 @@ import {
   CreateCompanyRequest,
   CreateJobRequest,
   GetHiddenJobsRequest,
-  JobInfo,
   EditJobRequest,
   CompanyGetJobsRequest,
   DeleteJobRequest,
@@ -26,7 +25,8 @@ import {
   CompanyUploadLogoRequest,
   CheckCompanyLogoRequest,
   UpdateCompanyDetailsRequest,
-} from './interfaces/interfaces';
+} from './types/request';
+import { JobInfo } from './types/shared';
 
 const LM = new LogModule('COMPANY');
 
