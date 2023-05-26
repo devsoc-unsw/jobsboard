@@ -1,9 +1,10 @@
-
 import { AppDataSource } from '../../../src/config';
-import Logger from '../../../src/logging';
+import { LogModule, Logger } from '../../../src/logging';
+
+const LM = new LogModule('TEST_SEEDER');
 
 export const seedDB = async (name: string, seeder?: () => Promise<void>) => {
-  Logger.Info(`Start seeding databse using SEED=${name}`);
+  Logger.Info(LM, `Start seeding databse using SEED=${name}`);
 
   await AppDataSource.initialize();
   await AppDataSource.synchronize(true);
@@ -12,5 +13,5 @@ export const seedDB = async (name: string, seeder?: () => Promise<void>) => {
     await seeder();
   }
 
-  Logger.Info(`Completed Seeding databse using SEED=${name}`);
+  Logger.Info(LM, `Completed Seeding databse using SEED=${name}`);
 };
