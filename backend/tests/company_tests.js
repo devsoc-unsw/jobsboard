@@ -247,12 +247,12 @@ describe("company", () => {
         .post("/authenticate/company")
         .send({ username: "test", password: "test" })
         .then(response => response.body.token);
-      
+
       this.adminToken = await server
         .post("/authenticate/admin")
         .send({ username: "admin", password: "incorrect pony plug paperclip" })
         .then(response => response.body.token);
-      
+
       this.studentToken = await server
         .post("/authenticate/student")
         .send({ zID: "z1234567", password: "test" })
@@ -318,17 +318,17 @@ describe("company", () => {
         .post("/authenticate/company")
         .send({ username: "test", password: "test" })
         .then(response => response.body.token);
-      
+
       this.adminToken = await server
         .post("/authenticate/admin")
         .send({ username: "admin", password: "incorrect pony plug paperclip" })
         .then(response => response.body.token);
-      
+
       this.studentToken = await server
         .post("/authenticate/student")
         .send({ zID: "z1234567", password: "test" })
         .then(response => response.body.token);
-      
+
       this.posts = await server
         .get("/companyjobs")
         .set("Authorization", this.companyToken)
@@ -461,12 +461,12 @@ describe("company", () => {
         .post("/authenticate/company")
         .send({ username: "test", password: "test" })
         .then(response => response.body.token);
-      
+
       this.adminToken = await server
         .post("/authenticate/admin")
         .send({ username: "admin", password: "incorrect pony plug paperclip" })
         .then(response => response.body.token);
-      
+
       this.studentToken = await server
         .post("/authenticate/student")
         .send({ zID: "z1234567", password: "test" })
@@ -476,10 +476,10 @@ describe("company", () => {
         .post("/company/forgot-password")
         .send({ username: "test2" })
         .expect(200);
-        
+
       this.passwordResetToken = await server
         .get("/company/password-reset-token/test2")
-        .then(response => response.body.token);     
+        .then(response => response.body.token);
     });
 
     it("fails if invalid token is provided",
@@ -572,23 +572,23 @@ describe("company", () => {
       }
     );
   })
-  
+
   describe("test company editing a job", () => {
-    before(async function() {
+    before(async function () {
       this.companyToken = await server
         .post("/authenticate/company")
         .send({ username: "test", password: "test" })
         .then(response => response.body.token);
     });
-    
-    it("fails without job id", 
-      function(done) {
+
+    it("fails without job id",
+      function (done) {
         server
           .put("/company/job/edit")
           .set("Authorization", this.companyToken)
-          .send({ 
+          .send({
             applicationLink: "www.google.com",
-            description: "hello world", 
+            description: "hello world",
             role: "pooper",
             expiry: "2022-06-19T06:00:55.691Z"
           })
@@ -599,91 +599,91 @@ describe("company", () => {
           })
       }
     );
-    
-    it("fails without job application link", 
-      function(done) {
-        server
-          .put("/company/job/edit")
-          .set("Authorization", this.companyToken)
-          .send({ 
-            id: 1,
-            description: "hello world", 
-            role: "pooper",
-            expiry: "2022-06-19T06:00:55.691Z"
-          })
-          .expect(400)
-          .end((err, res) => {
-            expect(res.status).to.equal(400);
-            done();
-          })
-      }
-    )
-    
-    it("fails without job description", 
-      function(done) {
-        server
-          .put("/company/job/edit")
-          .set("Authorization", this.companyToken)
-          .send({ 
-            id: 1,
-            applicationLink: "www.google.com",
-            role: "pooper",
-            expiry: "2022-06-19T06:00:55.691Z"
-          })
-          .expect(400)
-          .end((err, res) => {
-            expect(res.status).to.equal(400);
-            done();
-          })
-      }
-    )
-    
-    it("fails without job role", 
-      function(done) {
-        server
-          .put("/company/job/edit")
-          .set("Authorization", this.companyToken)
-          .send({ 
-            id: 1,
-            description: "hello world", 
-            applicationLink: "www.google.com",
-            expiry: "2022-06-19T06:00:55.691Z"
-          })
-          .expect(400)
-          .end((err, res) => {
-            expect(res.status).to.equal(400);
-            done();
-          })
-      }
-    )
-    
-    it("fails without job expiry", 
-      function(done) {
-        server
-          .put("/company/job/edit")
-          .set("Authorization", this.companyToken)
-          .send({ 
-            id: 1,
-            description: "hello world", 
-            applicationLink: "www.google.com",
-            role: "pooper",
-          })
-          .expect(400)
-          .end((err, res) => {
-            expect(res.status).to.equal(400);
-            done();
-          })
-      }
-    )
-    
-    it ("succeeds in editing a job's info", 
-      function(done) {
+
+    it("fails without job application link",
+      function (done) {
         server
           .put("/company/job/edit")
           .set("Authorization", this.companyToken)
           .send({
             id: 1,
-            description: "hello world", 
+            description: "hello world",
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+
+    it("fails without job description",
+      function (done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({
+            id: 1,
+            applicationLink: "www.google.com",
+            role: "pooper",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+
+    it("fails without job role",
+      function (done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({
+            id: 1,
+            description: "hello world",
+            applicationLink: "www.google.com",
+            expiry: "2022-06-19T06:00:55.691Z"
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+
+    it("fails without job expiry",
+      function (done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({
+            id: 1,
+            description: "hello world",
+            applicationLink: "www.google.com",
+            role: "pooper",
+          })
+          .expect(400)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            done();
+          })
+      }
+    )
+
+    it("succeeds in editing a job's info",
+      function (done) {
+        server
+          .put("/company/job/edit")
+          .set("Authorization", this.companyToken)
+          .send({
+            id: 1,
+            description: "hello world",
             applicationLink: "www.google.com",
             role: "pooper",
             expiry: "2022-06-19T06:00:55.691Z",
@@ -703,62 +703,62 @@ describe("company", () => {
       }
     )
   });
-  
+
   describe("retrieve the number of hidden jobs of a company", () => {
-    
-    before( async function() {
+
+    before(async function () {
       // login as a student
       this.studentToken = await server
-      .post("/authenticate/student")
-      .send({ zID: "literally", password: "anything" })
-      .then(response => response.body.token);
-      
-      // login as a verified company 
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+
+      // login as a verified company
       this.companyToken1 = await server
-      .post("/authenticate/company")
-      .send({ username: "test3", password: "test3" })
-      .then(response => response.body.token);
-      
+        .post("/authenticate/company")
+        .send({ username: "test3", password: "test3" })
+        .then(response => response.body.token);
+
       // login as an admin
       this.adminToken = await server
-      .post("/authenticate/admin")
-      .send({ username: "admin", password: "incorrect pony plug paperclip" })
-      .then(response => response.body.token);
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
     });
-    
+
     it("fails to retrieve hidden jobs using a student token",
-      function(done) {
+      function (done) {
         server
           .get("/job/company/hidden")
           .set("Authorization", this.studentToken)
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-        
+
     it("fails to retrieve hidden jobs using an admin token",
-      function(done) {
+      function (done) {
         server
           .get("/job/company/hidden")
           .set("Authorization", this.adminToken)
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
+
     it("successfully retrieves hidden jobs using a verified company token",
-      function(done) {
+      function (done) {
         server
           .get("/job/company/hidden")
           .set("Authorization", this.companyToken1)
           .expect(200)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(200);
             expect(res.body.hiddenJobs.length).to.equal(3);
             done();
@@ -766,30 +766,30 @@ describe("company", () => {
       }
     );
   });
-  
+
   describe("update the details of a company", () => {
-    before( async function() {
+    before(async function () {
       // login as a student
       this.studentToken = await server
-      .post("/authenticate/student")
-      .send({ zID: "literally", password: "anything" })
-      .then(response => response.body.token);
-      
-      // login as a verified company 
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+
+      // login as a verified company
       this.companyToken = await server
-      .post("/authenticate/company")
-      .send({ username: "test", password: "test" })
-      .then(response => response.body.token);
-      
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+
       // login as an admin
       this.adminToken = await server
-      .post("/authenticate/admin")
-      .send({ username: "admin", password: "incorrect pony plug paperclip" })
-      .then(response => response.body.token);
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
     });
-    
-    it("fails when updating a company's details using a student token", 
-      function(done) {
+
+    it("fails when updating a company's details using a student token",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.studentToken)
@@ -800,15 +800,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
-    it("fails when updating a company's details using an admin token", 
-      function(done) {
+
+    it("fails when updating a company's details using an admin token",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.adminToken)
@@ -819,15 +819,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
-    it("fails if not all parameters are provided", 
-      function(done) {
+
+    it("fails if not all parameters are provided",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.companyToken)
@@ -837,15 +837,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(400)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(400);
             done();
           });
       }
     );
-    
-    it("succeeds using a company token and all parameters are provided", 
-      function(done) {
+
+    it("succeeds using a company token and all parameters are provided",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.companyToken)
@@ -856,123 +856,123 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(200)
-          .end( function(_, res) {
-            expect(res.status).to.equal(200);
-            done();
-          });
-      }
-    );
-  }); 
-  
-  describe("updating the logo of a company", () => {
-    before( async function() {
-      // login as a student
-      this.studentToken = await server
-      .post("/authenticate/student")
-      .send({ zID: "literally", password: "anything" })
-      .then(response => response.body.token);
-      
-      // login as a verified company 
-      this.companyToken = await server
-      .post("/authenticate/company")
-      .send({ username: "test", password: "test" })
-      .then(response => response.body.token);
-      
-      // login as an admin
-      this.adminToken = await server
-      .post("/authenticate/admin")
-      .send({ username: "admin", password: "incorrect pony plug paperclip" })
-      .then(response => response.body.token);
-    })
-    
-    it("fails when using a student token",
-      function(done) {
-        server
-          .put("/company/update/logo")
-          .set("Authorization", this.studentToken)
-          .send({
-            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
-          })
-          .expect(401)
-          .end( function(_, res) {
-            expect(res.status).to.equal(401);
-            done();
-          });
-      }
-    );
-    
-    it("fails when using an admin token",
-      function(done) {
-        server
-          .put("/company/update/logo")
-          .set("Authorization", this.adminToken)
-          .send({
-            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
-          })
-          .expect(401)
-          .end( function(_, res) {
-            expect(res.status).to.equal(401);
-            done();
-          });
-      }
-    );
-    
-    it("fails if a logo is not provided", 
-      function(done) {
-        server
-          .put("/company/update/logo")
-          .set("Authorization", this.adminToken)
-          .send({
-            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
-          })
-          .expect(401)
-          .end( function(_, res) {
-            expect(res.status).to.equal(401);
-            done();
-          });
-      }
-    );
-    
-    it("succeeds when using a company token and the logo is provided", 
-      function(done) {
-        server
-          .put("/company/update/logo")
-          .set("Authorization", this.companyToken)
-          .send({
-            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
-          })
-          .expect(200)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(200);
             done();
           });
       }
     );
   });
-  
-  describe("update the details of a company", () => {
-    before( async function() {
+
+  describe("updating the logo of a company", () => {
+    before(async function () {
       // login as a student
       this.studentToken = await server
-      .post("/authenticate/student")
-      .send({ zID: "literally", password: "anything" })
-      .then(response => response.body.token);
-      
-      // login as a verified company 
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+
+      // login as a verified company
       this.companyToken = await server
-      .post("/authenticate/company")
-      .send({ username: "test", password: "test" })
-      .then(response => response.body.token);
-      
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+
       // login as an admin
       this.adminToken = await server
-      .post("/authenticate/admin")
-      .send({ username: "admin", password: "incorrect pony plug paperclip" })
-      .then(response => response.body.token);
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
+    })
+
+    it("fails when using a student token",
+      function (done) {
+        server
+          .put("/company/update/logo")
+          .set("Authorization", this.studentToken)
+          .send({
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
+          })
+          .expect(401)
+          .end(function (_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+
+    it("fails when using an admin token",
+      function (done) {
+        server
+          .put("/company/update/logo")
+          .set("Authorization", this.adminToken)
+          .send({
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
+          })
+          .expect(401)
+          .end(function (_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+
+    it("fails if a logo is not provided",
+      function (done) {
+        server
+          .put("/company/update/logo")
+          .set("Authorization", this.adminToken)
+          .send({
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
+          })
+          .expect(401)
+          .end(function (_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+      }
+    );
+
+    it("succeeds when using a company token and the logo is provided",
+      function (done) {
+        server
+          .put("/company/update/logo")
+          .set("Authorization", this.companyToken)
+          .send({
+            logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
+          })
+          .expect(200)
+          .end(function (_, res) {
+            expect(res.status).to.equal(200);
+            done();
+          });
+      }
+    );
+  });
+
+  describe("update the details of a company", () => {
+    before(async function () {
+      // login as a student
+      this.studentToken = await server
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+
+      // login as a verified company
+      this.companyToken = await server
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+
+      // login as an admin
+      this.adminToken = await server
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
     });
-    
-    it("fails when updating a company's details using a student token", 
-      function(done) {
+
+    it("fails when updating a company's details using a student token",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.studentToken)
@@ -983,15 +983,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
-    it("fails when updating a company's details using an admin token", 
-      function(done) {
+
+    it("fails when updating a company's details using an admin token",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.adminToken)
@@ -1002,15 +1002,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
-    it("fails if not all parameters are provided", 
-      function(done) {
+
+    it("fails if not all parameters are provided",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.companyToken)
@@ -1020,15 +1020,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(400)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(400);
             done();
           });
       }
     );
-    
-    it("succeeds using a company token and all parameters are provided", 
-      function(done) {
+
+    it("succeeds using a company token and all parameters are provided",
+      function (done) {
         server
           .put("/company/update/details")
           .set("Authorization", this.companyToken)
@@ -1039,37 +1039,37 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(200)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(200);
             done();
           });
       }
     );
-  }); 
-  
+  });
+
   describe("updating the logo of a company", () => {
-    before( async function() {
+    before(async function () {
       // login as a student
       this.studentToken = await server
-      .post("/authenticate/student")
-      .send({ zID: "literally", password: "anything" })
-      .then(response => response.body.token);
-      
-      // login as a verified company 
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+
+      // login as a verified company
       this.companyToken = await server
-      .post("/authenticate/company")
-      .send({ username: "test", password: "test" })
-      .then(response => response.body.token);
-      
+        .post("/authenticate/company")
+        .send({ username: "test", password: "test" })
+        .then(response => response.body.token);
+
       // login as an admin
       this.adminToken = await server
-      .post("/authenticate/admin")
-      .send({ username: "admin", password: "incorrect pony plug paperclip" })
-      .then(response => response.body.token);
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
     })
-    
+
     it("fails when using a student token",
-      function(done) {
+      function (done) {
         server
           .put("/company/update/logo")
           .set("Authorization", this.studentToken)
@@ -1077,15 +1077,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
+
     it("fails when using an admin token",
-      function(done) {
+      function (done) {
         server
           .put("/company/update/logo")
           .set("Authorization", this.adminToken)
@@ -1093,15 +1093,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
-    it("fails if a logo is not provided", 
-      function(done) {
+
+    it("fails if a logo is not provided",
+      function (done) {
         server
           .put("/company/update/logo")
           .set("Authorization", this.adminToken)
@@ -1109,15 +1109,15 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(401)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(401);
             done();
           });
       }
     );
-    
-    it("succeeds when using a company token and the logo is provided", 
-      function(done) {
+
+    it("succeeds when using a company token and the logo is provided",
+      function (done) {
         server
           .put("/company/update/logo")
           .set("Authorization", this.companyToken)
@@ -1125,17 +1125,17 @@ describe("company", () => {
             logo: Buffer.from("test string", 'utf8').toString('base64')   // base64 encoded string
           })
           .expect(200)
-          .end( function(_, res) {
+          .end(function (_, res) {
             expect(res.status).to.equal(200);
             done();
           });
       }
     );
-    
-    
-    
+
+
+
   });
-  
-  
-  
+
+
+
 });
