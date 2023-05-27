@@ -1,14 +1,11 @@
-import Secrets from "../../../src/secrets";
-import AdminAccount from "../../../src/entity/admin_account";
+import Secrets from '../../../src/secrets';
+import AdminAccount from '../../../src/entity/admin_account';
 
 export const createAdmin = (name: string, password: string) => {
   const admin = new AdminAccount();
-  admin.username = 'admin';
-  admin.hash = Secrets.hash('incorrect pony plug paperclip');
+  admin.username = name;
+  admin.hash = Secrets.hash(password);
   return admin;
-}
+};
 
-export const createDefaultAdmin = () => {
-  return createAdmin('admin', "incorrect pony plug paperclip");
-}
-
+export const createDefaultAdmin = () => createAdmin('admin', 'incorrect pony plug paperclip');
