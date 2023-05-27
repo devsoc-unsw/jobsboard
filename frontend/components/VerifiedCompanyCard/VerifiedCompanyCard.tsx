@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AxiosError } from 'axios';
 import AppContext from 'contexts/AppContext';
-// import Image from 'next/image';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import api from 'config/api';
 import { AuthenticationPayload } from 'types/api';
@@ -10,6 +10,9 @@ type VerifiedCompanyCardProps = {
   name: string;
   location: string;
   id: number;
+  username: string;
+  logo: string;
+  onClick(): void;
   onAlert(type: string, msg: string): void;
   onRemove(): void;
 };
@@ -75,11 +78,14 @@ const ConfirmUnverifyModal = ({ open, name, onConfirm, onCancel }: ConfirmUnveri
 };
 
 const VerifiedCompanyCard = ({
+  onClick,
   onRemove,
   onAlert,
   name,
   location,
-  id
+  id,
+  logo,
+  username
 }: VerifiedCompanyCardProps) => {
   const router = useRouter();
   const { apiToken, setApiToken } = useContext(AppContext);
@@ -129,21 +135,25 @@ const VerifiedCompanyCard = ({
 
       <div
         className="flex flex-col p-8 mb-8 shadow-card rounded-md w-[75%] transform transition duration-200 hover:scale-105 cursor-pointer bg-white"
+        onClick={onClick}
         role="button"
         tabIndex={0}
       >
         <div className="flex flex-row items-center">
-          {/* {logo && <Image src={logo} width={12} height={12} alt={name} />} */}
+          {logo && <Image src={logo} width={12} height={12} alt={name} />}
           <div className="flex flex-col text-left w-full truncate">
             <h2 className="font-bold text-jb-headings text-xl truncate">{name}</h2>
-            {/* <h3 className="text-jb-subheadings text-lg truncate">{username}</h3> */}
+            <h3 className="text-jb-subheadings text-lg truncate">{username}</h3>
             <h3 className="text-jb-subheadings text-lg truncate">{location}</h3>
           </div>
           <button
             type="button"
             className="bg-red-500 rounded-md w-28 h-11 m-2 text-white font-bold text-base border-0 mb-0
               shadow-btn duration-200 ease-linear cursor-pointer hover:shadow-btn-hovered"
-            onClick={() => setOpenConfirmationModal(true)}
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              setOpenConfirmationModal(true);
+            }}
           >
             Unverify
           </button>

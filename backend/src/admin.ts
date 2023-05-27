@@ -383,14 +383,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .where('id = :id', { id: pendingCompany.id })
           .execute();
 
-        // Double check whether this is:
-        // 1. a valid query & does what it's supposed to
-        // 2. the changing of the fields is what it's supposed to be
-        // - if need to set approve: false, how do i do that
+        // Unapprove all jobs associated with company
         await AppDataSource.createQueryBuilder()
           .update(Job)
-          .set({ hidden: true })
-          .where('company.id = :companyId', { id: pendingCompany.id })
+          .set({ approved: false })
+          .where('company.id = :companyId', { companyId: pendingCompany.id })
           .execute();
 
         // TODO:
@@ -438,6 +435,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           id: companyAccount.company.id,
           name: companyAccount.company.name,
           location: companyAccount.company.location,
+          logo: companyAccount.company.logo,
+          username: companyAccount.username,
+          createdAt: companyAccount.company.createdAt,
+          description: companyAccount.company.description,
         }));
 
         return {
