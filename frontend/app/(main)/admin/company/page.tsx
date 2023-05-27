@@ -11,12 +11,7 @@ import Tabs from 'components/Tabs/Tabs';
 import Toast, { ToastType } from 'components/Toast/Toast';
 import VerifiedCompanyCard from 'components/VerifiedCompanyCard/VerifiedCompanyCard';
 import api from 'config/api';
-import {
-  AdminCompaniesPayload,
-  AdminCompany,
-  AdminPendingCompaniesPayload,
-  AdminPendingCompany
-} from 'types/api';
+import { AdminCompaniesPayload, AdminCompany, AdminPendingCompaniesPayload } from 'types/api';
 
 type PendingCompanyModalProps = {
   location: string;
@@ -99,9 +94,8 @@ const AdminCompanyPage = () => {
   const [toastOpen, setToastOpen] = useState(false);
 
   const [openModal, setOpenModal] = useState(false);
-  const [currCompany, setCurrCompany] = useState<AdminPendingCompany | null>(null);
-  const [companies, setCompanies] = useState<AdminPendingCompany[]>([]);
-
+  const [currCompany, setCurrCompany] = useState<AdminCompany | null>(null);
+  const [unverifiedCompanies, setUnverifiedCompanies] = useState<AdminCompany[]>([]);
   const [verifiedCompanies, setVerifiedCompanies] = useState<AdminCompany[]>([]);
 
   const handleAlert = (type: ToastType, msg: string) => {
@@ -113,7 +107,7 @@ const AdminCompanyPage = () => {
     }, 3000);
   };
 
-  const handleShowModal = (pendingCompany: AdminPendingCompany) => {
+  const handleShowModal = (pendingCompany: AdminCompany) => {
     setCurrCompany(pendingCompany);
     setOpenModal(true);
   };
@@ -128,7 +122,17 @@ const AdminCompanyPage = () => {
         });
 
         setApiToken(res.data.token);
-        setCompanies(res.data.pendingCompanyVerifications);
+        setUnverifiedCompanies(
+          res.data.pendingCompanyVerifications.map((pendingCompany) => ({
+            id: pendingCompany.id,
+            location: pendingCompany.company.location,
+            username: pendingCompany.username,
+            name: pendingCompany.company.name,
+            description: pendingCompany.company.description,
+            createdAt: pendingCompany.company.createdAt,
+            logo: pendingCompany.company.logo
+          }))
+        );
       } catch (e) {
         setToastType('error');
         setToastMsg('Failed to get pending companies.');
@@ -179,11 +183,11 @@ const AdminCompanyPage = () => {
         <PendingCompanyModal
           open={openModal}
           onClose={() => setOpenModal(false)}
-          location={currCompany.company.location}
+          location={currCompany.location}
           username={currCompany.username}
-          name={currCompany.company.name}
-          description={currCompany.company.description}
-          createdAt={currCompany.company.createdAt}
+          name={currCompany.name}
+          description={currCompany.description}
+          createdAt={currCompany.createdAt}
         />
       )}
 
@@ -193,22 +197,26 @@ const AdminCompanyPage = () => {
             Pending Company Verifications
           </h1>
           <p className="text-jb-subheadings mb-12">
-            There {companies.length === 1 ? 'is' : 'are'}
-            &nbsp;currently {companies.length} pending verification(s).
+            There {unverifiedCompanies.length === 1 ? 'is' : 'are'}
+            &nbsp;currently {unverifiedCompanies.length} pending verification(s).
           </p>
-          {companies.map((company) => (
+          {unverifiedCompanies.map((company) => (
             <PendingCompanyCard
               key={company.id}
               id={company.id}
               username={company.username}
-              name={company.company.name}
-              location={company.company.location}
-              logo={company.company.logo}
+              name={company.name}
+              location={company.location}
+              logo={company.logo}
               onClick={() => handleShowModal(company)}
               onAlert={handleAlert}
-              onRemove={() =>
-                setCompanies((prevState) => prevState.filter((c) => c.id !== company.id))
-              }
+              onRemove={() => {
+                const verifiedCompany = unverifiedCompanies.find(
+                  (c) => c.id === company.id
+                ) as AdminCompany;
+                setVerifiedCompanies([...verifiedCompanies, verifiedCompany]);
+                setUnverifiedCompanies((prevState) => prevState.filter((c) => c.id !== company.id));
+              }}
             />
           ))}
         </div>
@@ -225,12 +233,19 @@ const AdminCompanyPage = () => {
             <VerifiedCompanyCard
               key={company.id}
               id={company.id}
+              username={company.username}
               name={company.name}
               location={company.location}
+              logo={company.logo}
+              onClick={() => handleShowModal(company)}
               onAlert={handleAlert}
-              onRemove={() =>
-                setVerifiedCompanies((prevState) => prevState.filter((c) => c.id !== company.id))
-              }
+              onRemove={() => {
+                const unverifiedCompany = verifiedCompanies.find(
+                  (c) => c.id === company.id
+                ) as AdminCompany;
+                setUnverifiedCompanies([...unverifiedCompanies, unverifiedCompany]);
+                setVerifiedCompanies((prevState) => prevState.filter((c) => c.id !== company.id));
+              }}
             />
           ))}
         </div>

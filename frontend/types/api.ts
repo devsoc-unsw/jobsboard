@@ -118,6 +118,10 @@ export type AdminCompany = {
   id: number;
   location: string;
   name: string;
+  logo: string;
+  username: string;
+  createdAt: string;
+  description: string;
 };
 
 export type AdminPendingCompaniesPayload = {
