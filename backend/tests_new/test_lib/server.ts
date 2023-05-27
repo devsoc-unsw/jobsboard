@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { config } from '../config';
 
 // TODO: for the future:
 // wrap AxiosResponse in a custom class to enable function chaining and passing parameters
@@ -7,7 +8,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 //  - support `send` and `set` like supertest
 export default class Server {
   private static axios: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: config.apiUrl,
     timeout: 5000,
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
   });
