@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+console.log('process.env:');
+console.log(process.env);
+
 export const env = createEnv({
   clientPrefix: undefined,
   server: {
@@ -31,6 +34,3 @@ export const env = createEnv({
   client: undefined,
   runtimeEnv: process.env,
 });
-
-console.log('process.env:');
-console.log(process.env);
