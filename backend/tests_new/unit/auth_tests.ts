@@ -1,12 +1,11 @@
-
-import supertest from 'supertest';
+import { AxiosError } from 'axios';
+import { expect } from 'chai';
 import { StatusCodes } from 'http-status-codes';
-import { config } from '../config';
 import { AppDataSource } from '../../src/config';
 import { seedDB } from '../test_lib/seeds/seed';
 import { createVerifiedCompanyAccount } from '../test_lib/seeds/company';
-
-const server = supertest.agent(config.apiUrl);
+import server from '../test_lib/server';
+import { AuthResponse } from '../../src/types/response';
 
 describe('Student Authentication', function () {
   before(async function () {
@@ -19,50 +18,44 @@ describe('Student Authentication', function () {
     await seedDB('empty', test);
   });
 
-  it('Fails to create a student account with empty details',
-    async function () {
-      const studentToken = await server
-      .post('authenticate/student')
-      .send({
+  it('Fails to create a student account with empty details', async () => {
+    try {
+      await server.post<AuthResponse>('/authenticate/student', {
         zID: '',
         password: '',
-      })
-      .expect(StatusCodes.BAD_REQUEST)
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      expect(err.response.status).to.equal(StatusCodes.BAD_REQUEST);
+      // expect(err.response.status).to.equal(StatusCodes.BAD_REQUEST);
     }
-  );
+  });
 
-  it('Fails to create a student account with invalid details',
-    async function () {
-      const studentToken = await server
-      .post('authenticate/student')
-      .send({
-        hello: 'world',
-      })
-      .expect(StatusCodes.BAD_REQUEST)
+  it('Fails to create a student account with invalid details', async () => {
+    try {
+      await server.post<AuthResponse>('/authenticate/student', {
+        hello: 'blah',
+        world: 'bleh',
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+      expect(err.response.status).to.equal(StatusCodes.BAD_REQUEST);
     }
-  );
+  });
 
-  it('Sucessfully creates new student account',
-    async function () {
-      const studentToken = await server
-        .post('authenticate/student')
-        .send({
-          zID: 'new-student',
-          password: 'password',
-        })
-        .expect(StatusCodes.OK)
-        .then(res => res.body.token)
+  it('Successfully creates a new student account', async () => {
+    const student = await server.post<AuthResponse>('/authenticate/student', {
+      zID: 'new-student',
+      password: 'password',
+    });
 
-      console.log(studentToken);
+    const { token } = student.data;
 
-      // ideally, this should hit the authenticate endpoint again and check the id of the
-      // token returned matches 'new-student'. But decrypt does not work for some reason
-      await server
-        .get('jobs/0')
-        .set('Authorization', studentToken)
-        .expect(StatusCodes.OK);
-    }
-  );
+    // TODO: ideally this should hit the authenticate endpoint that Richard is working on.
+    await server.get('jobs/0', token).then((res) => {
+      expect(res.status).to.equal(StatusCodes.OK);
+    });
+  });
 
   after(async function () {
     await AppDataSource.destroy();
