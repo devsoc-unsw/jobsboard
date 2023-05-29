@@ -3,8 +3,10 @@ import Fuse from 'fuse.js';
 import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
+import Student from './entity/student';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
+import JWT from './jwt';
 
 import {
   JobMode,
@@ -308,3 +310,30 @@ export default class StudentFunctions {
     );
   }
 }
+
+export const updateOrCreateStudent = async (zid: string, token: JWT) => {
+  Helpers.requireParameters(zid);
+
+  const student = await AppDataSource.getRepository(Student)
+    .createQueryBuilder()
+    .where('Student.zID = :zID', { zID: zid })
+    .getOne();
+
+  if (!student) {
+    Logger.Info(LM, `Attempting to add a new student with ZID=${zid} to the database`);
+
+    const s = AppDataSource.getRepository(Student).create({
+      zID: zid,
+      latestValidToken: token as string,
+    });
+    await AppDataSource.getRepository(Student).insert(s);
+
+    Logger.Info(LM, `Successfully added a new student with ZID=${zid} to the database`);
+  } else {
+    await AppDataSource.createQueryBuilder()
+      .update(Student)
+      .set({ latestValidToken: token as string })
+      .where('id = :id', { id: student.id })
+      .execute();
+  }
+};
