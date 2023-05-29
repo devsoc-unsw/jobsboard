@@ -4,6 +4,7 @@ import { createEnv } from '@t3-oss/env-core';
 
 dotenv.config();
 
+console.log('process.env: ');
 console.log(process.env);
 
 export const env = createEnv({
