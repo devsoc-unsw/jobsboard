@@ -3,6 +3,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 import 'reflect-metadata';
+// import dotenv from 'dotenv';
 
 import Auth from './auth';
 import seedDB from './dev';
@@ -44,6 +45,8 @@ import {
   VerifyCompanyAccountRequest,
   SearchJobRequest,
 } from './types/request';
+
+// dotenv.config();
 
 const LM = new LogModule('INDEX');
 
