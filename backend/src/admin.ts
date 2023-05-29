@@ -16,7 +16,7 @@ import {
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
 } from './types/request';
-import ev from './environment';
+import { env } from './environment';
 
 const LM = new LogModule('ADMIN');
 
@@ -461,7 +461,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         newJob.adminCreated = true;
 
         await MailFunctions.AddMailToQueue(
-          ev.data().MAIL_USERNAME,
+          env.MAIL_USERNAME,
           'CSESoc Jobs Board - CSESoc has created a job on your behalf',
           `
         Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.

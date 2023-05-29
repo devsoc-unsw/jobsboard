@@ -2,7 +2,7 @@ import fs from 'fs';
 import { DataSource } from 'typeorm';
 
 import { Logger, LogModule } from './logging';
-import ev from './environment';
+import { env } from './environment';
 
 // custom entities
 import AdminAccount from './entity/admin_account';
@@ -29,11 +29,11 @@ export const activeEntities = [
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: ev.data().DB_HOST,
-  port: Number(ev.data().DB_PORT),
-  username: ev.data().DB_USER,
-  password: ev.data().DB_PASSWORD,
-  database: ev.data().DB_NAME,
+  host: env.DB_HOST,
+  port: Number(env.DB_PORT),
+  username: env.DB_USER,
+  password: env.DB_PASSWORD,
+  database: env.DB_NAME,
   synchronize: true,
   logging: false,
   entities: activeEntities,

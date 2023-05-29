@@ -2,9 +2,8 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
 import winston from 'winston';
-import ev from './environment';
+import { env } from './environment';
 
-// Name of the module that wish to contain logging statements
 export class LogModule {
   constructor(module: string) {
     this.module = module;
@@ -15,19 +14,13 @@ export class LogModule {
   private module: string;
 }
 
-// Severity of the log line
 enum LogLevel {
-  // Fatal errors that would kill the program
   Error = 'error',
-  // Errors that are not fatal but should be looked at
   Warn = 'warn',
-  // Default level of logging
   Info = 'info',
-  // Use for debugging purposes
   Debug = 'debug',
 }
 
-// Where you want the logs to be stored.
 enum LogLocation {
   Console,
   File,
@@ -41,7 +34,7 @@ export class Logger {
   // i.e. if logLevel is set to Info, only Info, Warn and Error logs will be produced.
   private static CreateLogger = (logLevel?: LogLevel, where?: LogLocation) => {
     const getLogLevel = () => {
-      if (ev.data().NODE_ENV === 'production') {
+      if (env.NODE_ENV === 'production') {
         return LogLevel.Info;
       }
       return logLevel || LogLevel.Info;
@@ -55,7 +48,7 @@ export class Logger {
 
       const consoleTransport = new winston.transports.Console();
 
-      if (ev.data().NODE_ENV === 'production' || !where) {
+      if (env.NODE_ENV === 'production' || !where) {
         return [consoleTransport];
       }
 

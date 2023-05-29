@@ -9,12 +9,11 @@ import JWT, { IToken, AccountType } from './jwt';
 import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
 import { AuthRequest } from './types/request';
-import ev from './environment';
+import { env } from './environment';
 
 const LM = new LogModule('AUTH');
 
 export default class Auth {
-  // Student-based authentication functions
   public static async AuthenticateStudent(
     this: void,
     req: AuthRequest,
@@ -54,7 +53,6 @@ export default class Auth {
     );
   }
 
-  // Company-based authentication functions
   public static async AuthenticateCompany(
     this: void,
     req: AuthRequest,
@@ -112,7 +110,6 @@ export default class Auth {
     );
   }
 
-  // admin-based authentication functions
   public static async AuthenticateAdmin(
     this: void,
     req: AuthRequest,
@@ -169,9 +166,8 @@ export default class Auth {
     );
   }
 
-  // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
-    if (ev.data().NODE_ENV !== 'development') {
+    if (env.NODE_ENV !== 'development') {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
         // check if it matches the zID format, throw otherwise.
         Helpers.doesMatchZidFormat(zID);
@@ -201,7 +197,7 @@ export default class Auth {
         }
         return false;
       }
-      // if unexpected characters are found, immediately reject
+
       Logger.Info(LM, `Failed to login STUDENT=${zID} due to INVALID FORMAT`);
       return false;
     }

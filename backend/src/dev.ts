@@ -17,7 +17,7 @@ import {
 } from './types/job-field';
 import { AdminAccountInterface, CompanyAccountInterface } from './tests/test-types';
 import testdata from './tests/default_test_data.json';
-import ev from './environment';
+import { env } from './environment';
 
 const LM = new LogModule('DEV');
 
@@ -86,7 +86,7 @@ const CreateTestObjectsFromJSON = async () => {
 export default async function seedDB() {
   Logger.Info(LM, 'SEEDING DATABASE');
   // clear all tables
-  if (ev.data().NODE_ENV === 'development') {
+  if (env.NODE_ENV === 'development') {
     Logger.Info(LM, 'Clearing all tables.');
     await AppDataSource.synchronize(true);
   }

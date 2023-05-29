@@ -11,7 +11,7 @@ import {
   AuthoriseAdminRequest,
   PasswordResetRequest,
 } from './types/request';
-import ev from './environment';
+import { env } from './environment';
 
 const LM = new LogModule('MIDDLEWARE');
 
@@ -200,7 +200,7 @@ export default class Middleware {
   }
 
   public static privateRouteWrapper(this: void, req: Request, res: Response, next: NextFunction) {
-    if (ev.data().NODE_ENV === 'development') {
+    if (env.NODE_ENV === 'development') {
       next();
     }
   }
