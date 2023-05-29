@@ -20,8 +20,7 @@ module.exports = {
   rules: {
     "import/no-cycle": "warn",
     "import/prefer-default-export": "off",
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["tests(new)/**/*"]}],
-    "prefer-arrow-callback": ["error", [ "tests(new)/**/*" ] ],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["tests(new)/**/*"] }],
     "@typescript-eslint/brace-style": "off",
     "@typescript-eslint/no-floating-promises": [
       "error", { ignoreIIFE: true }
@@ -35,5 +34,13 @@ module.exports = {
       }
     ],
     "no-console": "off",
-  }
+  },
+  overrides: [
+    {
+      files: ["tests(new)/**/*"],
+      rules: {
+        "prefer-arrow-callback": "error",
+      }
+    }
+  ]
 };
