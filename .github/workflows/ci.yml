@@ -15,7 +15,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Run tests
-        run: docker-compose run test
+        run: docker compose up test --build
   lint:
     name: Lint
     runs-on: ubuntu-latest
