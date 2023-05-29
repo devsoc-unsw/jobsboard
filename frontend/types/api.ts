@@ -133,3 +133,8 @@ export type AdminPendingJobsPayload = {
 export type AdminCompaniesPayload = {
   companies: AdminCompany[];
 };
+
+export type AdminApprovedJobsPayload = {
+  approvedJobs: JobWithCompany[];
+  token: string;
+}

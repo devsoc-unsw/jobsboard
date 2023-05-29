@@ -254,7 +254,6 @@ export default class Auth {
     // checks it token is valid or not
     try {
       Middleware.verifyToken(req, jwt, accountType);
-
       response = {
         status: StatusCodes.OK,
         msg: jwt,

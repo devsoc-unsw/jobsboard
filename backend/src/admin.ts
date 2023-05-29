@@ -15,6 +15,7 @@ import {
   VerifyCompanyAccountRequest,
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
+  AdminUnapproveJobListingsRequest,
 } from './interfaces/interfaces';
 import ev from './environment';
 
@@ -694,4 +695,85 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       next,
     );
   }
+
+  public static async UnapproveJobListing(
+    this: void,
+    req: AdminUnapproveJobListingsRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to unapprove JOB=${req.params.jobID}`);
+        Helpers.requireParameters(req.params.jobID);
+        const jobID = Number(req.params.jobID);
+        if (Number.isNaN(jobID)) {
+          return { status: StatusCodes.BAD_REQUEST, msg: undefined };
+        }
+
+        const jobToRemove = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .where('Job.approved = :approved', {approved: true})
+            .andWhere('Job.id = :id', {id: jobID})
+            .getOne(),
+            `Failed to find job ID ${jobID}`
+        );
+
+        await AppDataSource.createQueryBuilder()
+          .update(Job)
+          .set({approved: false})
+          .where('Job.id = :id', {id: jobID})
+          .execute();
+
+        //TODO: email confirmation
+
+        return {
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    )
+  }
+  
+  public static async GetAllApprovedJobs(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `Admin ID=${req.adminID} getting all approved jobs`);
+
+        const approvedJobs = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .where('Job.approved = :approved', {approved: true})
+            .getMany(),
+            `Failed to find get approved jobs`
+        );
+
+        console.log(approvedJobs);
+        
+        return {
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, approvedJobs},
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    )
+  }
+  
 }

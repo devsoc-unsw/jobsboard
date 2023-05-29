@@ -124,6 +124,7 @@ export interface AdminCreateJobRequest
 
 export interface AdminApprovedJobPostsRequest extends Request<YearParams>, AdminRequestBase {}
 
+export interface AdminUnapproveJobListingsRequest extends Request<JobIDParams>, AdminRequestBase {}
 // * StudentFunctions
 
 export interface StudentPaginatedJobsRequest

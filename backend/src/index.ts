@@ -20,6 +20,7 @@ import {
   AdminApprovedJobPostsRequest,
   AdminCreateJobRequest,
   AdminJobRequest,
+  AdminUnapproveJobListingsRequest,
   AuthoriseStudentRequest,
   AuthRequest,
   CheckCompanyLogoRequest,
@@ -364,6 +365,30 @@ app.patch(
   Middleware.genericLoggingMiddleware,
 );
 
+app.patch(
+  '/job/:jobID/unapprove',
+  cors(corsOptions),
+  // Middleware.authoriseAdminMiddleware,
+  (req: AdminUnapproveJobListingsRequest, res, next) => {
+    (async () => {
+      await AdminFunctions.UnapproveJobListing(req, res, next);
+    })();
+  }, 
+  Middleware.genericLoggingMiddleware,
+  );
+
+app.get(
+  '/job/admin/approved',
+  cors(corsOptions),
+  Middleware.authoriseAdminMiddleware,
+  (req: AdminJobRequest, res, next) => {
+    (async () => {
+      await AdminFunctions.GetAllApprovedJobs(req, res, next);
+    }) ();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
 app.get(
   '/job/admin/hidden',
   cors(corsOptions),
@@ -387,6 +412,7 @@ app.get(
   },
   Middleware.genericLoggingMiddleware,
 );
+
 
 app.get(
   '/company/logo/status',

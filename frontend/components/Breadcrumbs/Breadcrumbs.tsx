@@ -75,7 +75,7 @@ const Breadcrumbs = () => {
       breadcrumb = [
         { name: 'Home', link: '/' },
         { name: 'Dashboard', link: '/admin/dashboard' },
-        { name: 'Pending Jobs', link: pathname }
+        { name: 'Job Verification', link: pathname }
       ];
     } else if (pathname === '/admin/post') {
       breadcrumb = [
