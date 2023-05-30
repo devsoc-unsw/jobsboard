@@ -7,9 +7,8 @@ import { createVerifiedCompanyAccount } from '../test_lib/seeds/company';
 import server from '../test_lib/server';
 import { AuthResponse } from '../../src/types/response';
 
-describe('Student Authentication', function () {
-  before(async function () {
-
+describe('Student Authentication', () => {
+  before(async () => {
     const test = async () => {
       const company = createVerifiedCompanyAccount();
       await AppDataSource.manager.save(company);
@@ -27,7 +26,6 @@ describe('Student Authentication', function () {
     } catch (error) {
       const err = error as AxiosError;
       expect(err.response.status).to.equal(StatusCodes.BAD_REQUEST);
-      // expect(err.response.status).to.equal(StatusCodes.BAD_REQUEST);
     }
   });
 
@@ -57,7 +55,7 @@ describe('Student Authentication', function () {
     });
   });
 
-  after(async function () {
+  after(async () => {
     await AppDataSource.destroy();
   });
 });

@@ -1,16 +1,5 @@
-import chai from 'chai';
-import supertest from 'supertest';
-import { config } from '../config';
-import { describe, it } from 'mocha';
+describe('Student', () => {
+  before(() => {});
 
-const server = supertest.agent(config.apiUrl);
-
-describe('Student', function () {
-  before(function () {
-
-  });
-
-  after(function () {
-
-  });
+  after(() => {});
 });
