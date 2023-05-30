@@ -46,8 +46,6 @@ import {
   SearchJobRequest,
 } from './types/request';
 
-// dotenv.config();
-
 const LM = new LogModule('INDEX');
 
 const port = env.SERVER_PORT;

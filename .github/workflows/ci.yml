@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   test:
-    name: Backend tests
+    name: Backend tests (old)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -14,9 +14,21 @@ jobs:
           platforms: arm64
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Run old tests
+      - name: Run tests
         run: docker-compose run test
-      - name: Run new tests
+  test-new:
+    name: Backend tests (new)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Run tests
         run: docker-compose run test-new
   lint:
     name: Lint
