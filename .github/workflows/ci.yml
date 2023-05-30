@@ -14,8 +14,10 @@ jobs:
           platforms: arm64
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Run tests
+      - name: Run old tests
         run: docker compose run test
+      - name: Run new tests
+        run: docker compose run test-new
   lint:
     name: Lint
     runs-on: ubuntu-latest
