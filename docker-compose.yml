@@ -71,7 +71,7 @@ services:
       - db
       - api
     environment: *common-variables
-  tests-new:
+  test-new:
     build:
       dockerfile: test.new.dockerfile
       context: ./backend
