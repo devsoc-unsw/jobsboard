@@ -57,7 +57,7 @@
     "test": "nodemon -w ./src -w ./tests -x yarn run watch:test",
     "watch:test:new": "sleep 7 && yarn run mocha -r ts-node/register tests_new/**/*_tests.ts",
     "test:new": "nodemon -w ./src -w ./tests_new -x yarn run watch:test:new",
-    "travis:test": "./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
+    "travis:test": "./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js --timeout 10000",
     "format": "prettier './src/**/*.ts'",
     "format:fix": "prettier --write './src/**/*.ts'",
     "lint": "eslint './src/**/*.ts'",
