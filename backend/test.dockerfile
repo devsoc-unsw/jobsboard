@@ -6,4 +6,4 @@ RUN yarn install --frozen-lockfile
 COPY "./" "/app/"
 RUN yarn build
 
-CMD sleep 45 && yarn travis:test
+CMD sleep 15 && yarn travis:test
