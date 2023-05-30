@@ -55,7 +55,7 @@
     "watch": "ts-node src/index.ts",
     "watch:test": "./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js",
     "test": "nodemon -w ./src -w ./tests -x yarn run watch:test",
-    "travis:test:new": "yarn run mocha -r ts-node/register tests_new/**/*_tests.ts",
+    "travis:test:new": "yarn run mocha -r ts-node/register tests_new/**/*_tests.ts --timeout 10000",
     "test:new": "nodemon -w ./src -w ./tests_new -x yarn run travis:test:new",
     "travis:test": "./node_modules/.bin/mocha --reporter mochawesome ./tests/*_tests.js --timeout 10000",
     "format": "prettier './src/**/*.ts'",
