@@ -67,6 +67,18 @@ services:
     links:
       - db
       - api
+    environment:
+      - NODE_ENV=development
+      - SERVER_PORT=8080
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=mysecretpassword
+      - DB_NAME=postgres
+      - MAIL_USERNAME=test@gmail.com
+      - MAIL_PASSWORD=password
+      - MAIL_SMTP_SERVER=smtp.gmail.com
+      - MAIL_SMTP_SERVER_PORT=465
 
 volumes:
   db-data: {}
