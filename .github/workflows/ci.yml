@@ -18,7 +18,7 @@ jobs:
         run: docker-compose build
       - name: Run tests
         # run: docker-compose run test
-        run: docker-compose up test
+        run: docker-compose run test
   test-new:
     name: Backend tests (new)
     runs-on: ubuntu-latest
@@ -34,8 +34,7 @@ jobs:
       - name: Build containers
         run: docker-compose build
       - name: Run tests
-        run: docker-compose up test
-        # run: docker-compose run test-new
+        run: docker-compose run test-new
   lint:
     name: Lint
     runs-on: ubuntu-latest
