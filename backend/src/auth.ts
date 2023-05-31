@@ -49,12 +49,11 @@ export default class Auth {
 
           if (studentQuery === null) {
             // never logged on here before
+            Logger.Info(LM, `Creating new student for STUDENT=${msg.zID}`);
             await StudentFunctions.CreateStudent({
               studentZID: msg.zID,
               newJbToken: token as string,
             });
-
-            Logger.Info(LM, `Created student record and profile record for STUDENT=${msg.zID}`);
           } else {
             await AppDataSource.createQueryBuilder()
               .update(EStudent)

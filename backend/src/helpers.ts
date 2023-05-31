@@ -103,9 +103,16 @@ export default class Helpers {
     }
   }
 
-  public static isDateInTheFuture(val: number) {
-    if (val <= Date.now()) {
-      throw new Error(`Attempted to create a job post with a date in the past=${val}`);
+  public static isDateInTheFuture(value: number) {
+    if (value <= Date.now()) {
+      throw new Error(`Attempted to create a job post with a date in the past=${value}`);
+    }
+  }
+
+  public static isValidGradYear(value: number): void {
+    this.requireParameters(value);
+    if (value < (new Date()).getFullYear()) {
+      throw new Error(`Graduation year occurred in the past=${value}`);
     }
   }
 

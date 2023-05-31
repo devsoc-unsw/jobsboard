@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
 import Student from './entity/student';
-import StudentProfile from './entity/student_profile';
+import EStudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
 
@@ -17,12 +17,17 @@ import {
 } from './types/job-field';
 
 import {
+  StudentBase,
+  StudentProfile,
+} from './types/shared';
+
+import {
   StudentPaginatedJobsRequest,
   StudentGetJobRequest,
   StudentFeaturedJobsRequest,
   SearchJobRequest,
-  StudentBase,
   StudentGetProfileRequest,
+  StudentEditProfileRequest,
 } from './types/request';
 
 const LM = new LogModule('STUDENT');
@@ -312,22 +317,40 @@ export default class StudentFunctions {
     );
   }
 
-  public static async CreateStudent(
-    this: void,
-    req: StudentBase,
-  ) {
-    try {
-      Logger.Info(LM, 'Attempting to create new student');
+  public static async CreateStudent(info: StudentBase) {
+    let student = await AppDataSource.getRepository(Student)
+      .createQueryBuilder()
+      .where('student.zID = :zID', { zID: info.studentZID })
+      .getOne();
 
-      const student: Student = new Student();
-      student.zID = req.studentZID;
-      student.latestValidToken = req.newJbToken;
-      student.studentProfile = new StudentProfile();
-
-      await AppDataSource.manager.save(student);
-    } catch (error) {
-      throw new Error(`Failed to create STUDENT=${req.studentZID}`);
+    if (student === null) {
+      student = new Student();
+      student.zID = info.studentZID;
+      student.latestValidToken = info.newJbToken;
     }
+
+    // Student profile and database save occurs here
+    try {
+      await this.CreateStudentProfile(student);
+    } catch (error) {
+      throw new Error(`Existing student and profile found for STUDENT=${info.studentZID}`);
+    }
+
+    Logger.Info(LM, `Created student record with profile record for STUDENT=${info.studentZID}`);
+  }
+
+  public static async CreateStudentProfile(queriedStudent: Student) {
+    // If student already has a valid profile, do nothing
+    if (queriedStudent.studentProfile !== null) {
+      throw new Error(`Existing profile found for STUDENT=${queriedStudent.zID}`);
+    }
+
+    const student = queriedStudent;
+    student.studentProfile = new EStudentProfile();
+    await AppDataSource.manager.save(student);
+
+    Logger.Info(LM, `Created student profile record for STUDENT=${queriedStudent.zID}`);
+    return student.studentProfile;
   }
 
   // Modelled after AuthenticateStudent
@@ -342,34 +365,100 @@ export default class StudentFunctions {
       async (): Promise<IResponseWithStatus> => {
         Logger.Info(LM, 'Attempting to get student profile');
 
-        let studentProfile = await AppDataSource.getRepository(StudentProfile)
+        const student = await AppDataSource.getRepository(Student)
           .createQueryBuilder()
-          .leftJoinAndSelect('StudentProfile.student', 'student')
-          .where('student.zID = :zID', { zID: req.studentZID })
-          .getOne();
+          .leftJoinAndSelect('Student.studentProfile', 'studentProfile')
+          .where('Student.zID = :zID', { zID: req.studentZID })
+          .getOneOrFail();
 
         // If not exists, create new default
-        if (studentProfile === null) {
-          const student = await AppDataSource.getRepository(Student)
-            .createQueryBuilder()
-            .where('Student.zID = :zID', { zID: req.studentZID })
-            .getOne();
-
-          student.studentProfile = new StudentProfile();
-          await AppDataSource.manager.save(student);
-
-          studentProfile = student.studentProfile;
+        if (student.studentProfile === null) {
+          student.studentProfile = await StudentFunctions.CreateStudentProfile(student);
         }
 
         return {
           status: StatusCodes.OK,
-          msg: { token: req.newJbToken, studentProfile },
+          msg: { token: req.newJbToken, studentProfile: student.studentProfile },
         };
       },
-      () => ({
-        status: StatusCodes.BAD_REQUEST,
-        msg: { token: req.newJbToken },
-      }),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: { token: req.newJbToken } }),
+      next,
+    );
+  }
+
+  private static isProfileUpdated(studentProfile: StudentProfile, newProfile: EStudentProfile) {
+    return (
+      studentProfile.gradYear === newProfile.gradYear
+      && studentProfile.wam === newProfile.wam
+      && studentProfile.workingRights === newProfile.workingRights
+    );
+  }
+
+  // Modelled after EditJob
+  public static async EditStudentProfile(
+    this: void,
+    req: StudentEditProfileRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, 'Attempting to edit student profile');
+
+        const { studentZID } = req;
+        Helpers.requireParameters(studentZID);
+
+        const studentProfile = {
+          gradYear: req.body.gradYear,
+          wam: req.body.wam,
+          workingRights: req.body.workingRights,
+        };
+
+        // verify that the required parameters exist and are valid
+        Helpers.isValidGradYear(studentProfile.gradYear);
+        Helpers.isValidWamRequirement(studentProfile.wam);
+        Helpers.isValidWorkingRights([studentProfile.workingRights]);
+
+        Logger.Info(LM, `STUDENT=${studentZID} attempting to edit profile.`);
+
+        const student = await AppDataSource.getRepository(Student)
+          .createQueryBuilder()
+          .leftJoinAndSelect('Student.studentProfile', 'studentProfile')
+          .where('Student.zID = :zID', { zID: studentZID })
+          .getOneOrFail();
+
+        // update the db
+        await AppDataSource.getRepository(EStudentProfile)
+          .createQueryBuilder('studentProfile')
+          .update(EStudentProfile)
+          .set({
+            gradYear: studentProfile.gradYear,
+            wam: studentProfile.wam,
+            workingRights: studentProfile.workingRights,
+          })
+          .where('studentProfile.id = :id', { id: student.studentProfile.id })
+          .execute();
+
+        // verify student profile has been updated
+        const newStudent = await AppDataSource.getRepository(Student)
+          .createQueryBuilder()
+          .leftJoinAndSelect('Student.studentProfile', 'studentProfile')
+          .where('Student.zID = :zID', { zID: studentZID })
+          .getOneOrFail();
+
+        if (!StudentFunctions.isProfileUpdated(req.body, newStudent.studentProfile)) {
+          return {
+            status: StatusCodes.FORBIDDEN,
+            msg: { token: req.newJbToken },
+          };
+        }
+
+        Logger.Info(LM, `STUDENT=${studentZID} sucessfully edited their profile`);
+
+        return { status: StatusCodes.OK, msg: undefined };
+      },
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
