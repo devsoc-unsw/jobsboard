@@ -490,7 +490,7 @@ app.get(
 );
 
 app.put(
-  '/student/profile',
+  '/student/profile/edit',
   cors(corsOptions),
   (req: AuthoriseStudentRequest, res, next) => {
     (async () => {
