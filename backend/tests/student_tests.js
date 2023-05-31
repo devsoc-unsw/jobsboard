@@ -13,16 +13,56 @@ const config = require('./config');
 const server = supertest.agent(config.apiUrl);
 
 describe("student profiles", () => {
-  it("fails when there is no json message (authentication fails)", 
-    function (done) {
-      server.get("/student/profile")
-        .send({})
+  describe('accessing while unauthenticated', () => {
+    it("user can't access their student profile when not logged in", function (done) {
+      server
+        .get("/student/profile")
         .expect(401)
-        .end( function (_, res) {
+        .end((_, res) => {
           expect(res.status).to.equal(401);
           done();
         });
     });
+
+    // It should be impossible to directly access a student profile unless authenticated, so this
+    // case is not tested
+  });
+
+  describe('accessing while authenticated', () => {
+    before(async function () {
+      this.token = await server
+        .post('/authenticate/student')
+        .send({ zID: 'username', password: 'password' })
+        .then((response) => response.body.token);
+    });
+
+    it('permits viewing the student profile with a valid token', function (done) {
+      server
+        .get('/student/profile')
+        .set('Authorization', this.token)
+        .expect(200)
+        .end(function (_, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    });
+
+    it('permits updating the default student profile after authenticating', function (done) {
+      server
+        .put('/student/profile/edit')
+        .set('Authorization', this.token)
+        .send({
+          gradYear: (new Date()).getFullYear() + 1,
+          wam: "HD",
+          workingRights: "aus_ctz"
+        })
+        .expect(200)
+        .end(function (_, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+    });
+  });
 });
 
 describe('job', () => {
