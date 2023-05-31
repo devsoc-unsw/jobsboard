@@ -5,31 +5,14 @@ import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
 import EStudent from './entity/student';
 import Helpers, { IResponseWithStatus } from './helpers';
-import JWT from './jwt';
+import JWT, { IToken, AccountType } from './jwt';
 import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
-import { AuthRequest } from './interfaces/interfaces';
+import { AuthRequest } from './types/request';
 import ev from './environment';
 import StudentFunctions from './student';
 
 const LM = new LogModule('AUTH');
-
-// auth token data structures
-interface IToken {
-  id: string;
-  type: AccountType;
-  lastRequestTimestamp: number;
-  ipAddress: string;
-}
-
-// differentiating between account types
-enum AccountType {
-  Admin,
-  Student,
-  Company,
-}
-
-export { IToken, AccountType };
 
 export default class Auth {
   // Student-based authentication functions

@@ -2,103 +2,27 @@ import { Request } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 
 import {
-  JobMode,
-  StudentDemographic,
-  JobType,
-  WorkingRights,
-  WamRequirements,
-} from '../types/job-field';
+  AdminID,
+  AuthBody,
+  CompanyAccountID,
+  CompanyAccountInfo,
+  CompanyBase,
+  CompanyID,
+  JbToken,
+  JobID,
+  JobInfo,
+  Logo,
+  Offset,
+  StudentZID,
+  StudentProfile,
+  Year,
+} from './shared';
 
-// * General
-
-export interface JobBase {
-  id: number;
-  role: string;
-  applicationLink: string;
-  description: string;
-  company?: CompanyBase;
-}
-
-export interface JobInfo extends JobBase {
-  expiry: number;
-  jobMode: JobMode;
-  studentDemographic: StudentDemographic[];
-  jobType: JobType;
-  workingRights: WorkingRights[];
-  isPaid: boolean;
-  additionalInfo: string;
-  wamRequirements: WamRequirements;
-}
-
-export interface CompanyBase {
-  name: string;
-  description: string;
-  location: string;
-}
-
-interface CompanyAccountInfo {
-  location: string;
-  name: string;
-  username: string;
-  password: string;
-  logo?: string;
-}
-
-interface StudentZID {
-  studentZID: string;
-}
-
-interface JbToken {
-  newJbToken: string;
-}
-
-export interface StudentBase extends StudentZID, JbToken {}
-
-interface StudentProfile {
-  gradYear: number;
-  wam: WamRequirements;
-  workingRights: WorkingRights;
-}
-
-interface JobID {
-  jobID: string;
-}
-
-interface Offset {
-  offset: string;
-}
-
-interface CompanyID {
-  companyID: string;
-}
-
-interface CompanyAccountID {
-  companyAccountID: string;
-}
-
-interface AdminID {
-  adminID: string;
-}
-
-interface Logo {
-  logo: string;
-}
-
-interface AuthBody {
-  username?: string;
-  zID?: string;
-  password: string;
-}
-
-interface Year {
-  year: string;
-}
-
-interface JobIDParams extends ParamsDictionary, JobID {}
-interface CompanyIdParams extends ParamsDictionary, CompanyID {}
-interface CompanyAccountIdParams extends ParamsDictionary, CompanyAccountID {}
-interface PaginatedJobsParams extends ParamsDictionary, Offset {}
-interface YearParams extends ParamsDictionary, Year {}
+export interface JobIDParams extends ParamsDictionary, JobID {}
+export interface CompanyIdParams extends ParamsDictionary, CompanyID {}
+export interface CompanyAccountIdParams extends ParamsDictionary, CompanyAccountID {}
+export interface PaginatedJobsParams extends ParamsDictionary, Offset {}
+export interface YearParams extends ParamsDictionary, Year {}
 
 // * Middleware
 export interface AuthoriseStudentRequest extends Request, StudentZID {}
@@ -106,10 +30,10 @@ export interface AuthoriseCompanyRequest extends Request, CompanyAccountID {}
 export interface AuthoriseAdminRequest extends Request, JbToken, AdminID {}
 export interface PasswordResetRequest extends Request, CompanyAccountID {}
 
-// * Auth Functions
+// * Auth
 export type AuthRequest = Request<Record<string, never>, never, AuthBody>;
 
-// * Admin Functions
+// * Admin
 type AdminRequestBase = AdminID & JbToken;
 
 export interface GeneralAdminRequest extends Request, AdminRequestBase {}
@@ -117,15 +41,16 @@ export interface GeneralAdminRequest extends Request, AdminRequestBase {}
 export interface AdminJobRequest extends Request<JobIDParams>, AdminRequestBase {}
 
 export interface VerifyCompanyAccountRequest
-  extends Request<CompanyAccountIdParams>, AdminRequestBase {}
+  extends Request<CompanyAccountIdParams>,
+  AdminRequestBase {}
 
 export interface AdminCreateJobRequest
-  extends Request<JobIDParams, never, JobInfo>, AdminRequestBase {}
+  extends Request<JobIDParams, never, JobInfo>,
+  AdminRequestBase {}
 
 export interface AdminApprovedJobPostsRequest extends Request<YearParams>, AdminRequestBase {}
 
-// * StudentFunctions
-
+// * Student
 export interface StudentPaginatedJobsRequest
   extends Request<PaginatedJobsParams>,
   StudentZID,
@@ -141,14 +66,14 @@ interface QueryString {
 interface QueryStringParams extends ParamsDictionary, QueryString {}
 export interface SearchJobRequest extends Request<QueryStringParams>, StudentZID, JbToken {}
 
+export interface StudentBase extends StudentZID, JbToken {}
 export interface StudentGetProfileRequest extends Request, StudentZID, JbToken {}
 export interface StudentEditProfileRequest
   extends Request<Record<string, never>, never, StudentProfile>,
   StudentZID,
   JbToken {}
 
-// * CompanyFunctions
-
+// * Company
 interface CompanyResetPasswordEmailBody {
   username: string;
 }
@@ -184,14 +109,19 @@ export interface CompanyResetPasswordEmailRequest
 
 export type CompanyGetResetTokenRequest = Request<CompanyResetEmailParams>;
 
-export type CompanyResetPasswordRequest =
-  Request<Record<string, never>, never, CompanyResetPasswordBody>;
+export type CompanyResetPasswordRequest = Request<
+Record<string, never>,
+never,
+CompanyResetPasswordBody
+>;
 
 export interface CompanyUploadLogoRequest
-  extends Request<Record<string, never>, never, Logo>, CompanyAccountID {}
+  extends Request<Record<string, never>, never, Logo>,
+  CompanyAccountID {}
 
 export interface CheckCompanyLogoRequest extends Request, CompanyAccountID {}
 
 interface UpdateCompanyBody extends CompanyBase, Logo {}
-export interface UpdateCompanyDetailsRequest extends
-  Request<Record<string, never>, never, UpdateCompanyBody>, CompanyAccountID {}
+export interface UpdateCompanyDetailsRequest
+  extends Request<Record<string, never>, never, UpdateCompanyBody>,
+  CompanyAccountID {}

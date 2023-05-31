@@ -23,7 +23,7 @@ import {
   SearchJobRequest,
   StudentBase,
   StudentGetProfileRequest,
-} from './interfaces/interfaces';
+} from './types/request';
 
 const LM = new LogModule('STUDENT');
 

@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import JWT from './jwt';
+import JWT, { AccountType, IToken } from './jwt';
 import { Logger, LogModule } from './logging';
 import { AppDataSource } from './config';
-import { AccountType, IToken } from './auth';
 import Student from './entity/student';
 import CompanyAccount from './entity/company_account';
 import {
@@ -11,7 +10,7 @@ import {
   AuthoriseCompanyRequest,
   AuthoriseAdminRequest,
   PasswordResetRequest,
-} from './interfaces/interfaces';
+} from './types/request';
 import ev from './environment';
 
 const LM = new LogModule('MIDDLEWARE');
