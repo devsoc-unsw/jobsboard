@@ -320,7 +320,7 @@ export default class StudentFunctions {
   public static async CreateStudent(info: StudentBase) {
     let student = await AppDataSource.getRepository(Student)
       .createQueryBuilder()
-      .where('student.zID = :zID', { zID: info.studentZID })
+      .where('Student.zID = :zID', { zID: info.studentZID })
       .getOne();
 
     if (student === null) {
@@ -330,19 +330,16 @@ export default class StudentFunctions {
     }
 
     // Student profile and database save occurs here
-    try {
-      await this.CreateStudentProfile(student);
-    } catch (error) {
-      throw new Error(`Existing student and profile found for STUDENT=${info.studentZID}`);
-    }
+    await this.CreateStudentProfile(student);
 
     Logger.Info(LM, `Created student record with profile record for STUDENT=${info.studentZID}`);
   }
 
   public static async CreateStudentProfile(queriedStudent: Student) {
     // If student already has a valid profile, do nothing
-    if (queriedStudent.studentProfile !== null) {
-      throw new Error(`Existing profile found for STUDENT=${queriedStudent.zID}`);
+    if (queriedStudent.studentProfile !== undefined) {
+      Logger.Info(LM, `Found existing student profile for STUDENT=${queriedStudent.zID}`);
+      return queriedStudent.studentProfile;
     }
 
     const student = queriedStudent;
@@ -353,7 +350,6 @@ export default class StudentFunctions {
     return student.studentProfile;
   }
 
-  // Modelled after AuthenticateStudent
   public static async GetStudentProfile(
     this: void,
     req: StudentGetProfileRequest,
@@ -430,14 +426,14 @@ export default class StudentFunctions {
 
         // update the db
         await AppDataSource.getRepository(EStudentProfile)
-          .createQueryBuilder('studentProfile')
+          .createQueryBuilder()
           .update(EStudentProfile)
           .set({
             gradYear: studentProfile.gradYear,
             wam: studentProfile.wam,
             workingRights: studentProfile.workingRights,
           })
-          .where('studentProfile.id = :id', { id: student.studentProfile.id })
+          .where('id = :id', { id: student.studentProfile.id })
           .execute();
 
         // verify student profile has been updated
