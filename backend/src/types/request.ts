@@ -66,7 +66,6 @@ interface QueryString {
 interface QueryStringParams extends ParamsDictionary, QueryString {}
 export interface SearchJobRequest extends Request<QueryStringParams>, StudentZID, JbToken {}
 
-export interface StudentBase extends StudentZID, JbToken {}
 export interface StudentGetProfileRequest extends Request, StudentZID, JbToken {}
 export interface StudentEditProfileRequest
   extends Request<Record<string, never>, never, StudentProfile>,
