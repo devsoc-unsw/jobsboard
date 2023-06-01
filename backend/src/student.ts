@@ -368,7 +368,7 @@ export default class StudentFunctions {
           .getOneOrFail();
 
         // If not exists, create new default
-        if (student.studentProfile === null) {
+        if (student.studentProfile === undefined) {
           student.studentProfile = await StudentFunctions.CreateStudentProfile(student);
         }
 
