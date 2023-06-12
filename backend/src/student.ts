@@ -323,31 +323,29 @@ export default class StudentFunctions {
       .where('Student.zID = :zID', { zID: info.studentZID })
       .getOne();
 
-    if (student === null) {
+    if (!student) {
       student = new Student();
       student.zID = info.studentZID;
       student.latestValidToken = info.newJbToken;
     }
 
-    // Student profile and database save occurs here
     await this.CreateStudentProfile(student);
 
     Logger.Info(LM, `Created student record with profile record for STUDENT=${info.studentZID}`);
   }
 
   public static async CreateStudentProfile(queriedStudent: Student) {
-    // If student already has a valid profile, do nothing
     if (queriedStudent.studentProfile !== undefined) {
       Logger.Info(LM, `Found existing student profile for STUDENT=${queriedStudent.zID}`);
       return queriedStudent.studentProfile;
     }
 
-    const student = queriedStudent;
-    student.studentProfile = new StudentProfile();
-    await AppDataSource.manager.save(student);
+    // eslint-disable-next-line no-param-reassign
+    queriedStudent.studentProfile = new StudentProfile();
+    await AppDataSource.manager.save(queriedStudent);
 
     Logger.Info(LM, `Created student profile record for STUDENT=${queriedStudent.zID}`);
-    return student.studentProfile;
+    return queriedStudent.studentProfile;
   }
 
   public static async GetStudentProfile(
@@ -367,7 +365,6 @@ export default class StudentFunctions {
           .where('Student.zID = :zID', { zID: req.studentZID })
           .getOneOrFail();
 
-        // If not exists, create new default
         if (student.studentProfile === undefined) {
           student.studentProfile = await StudentFunctions.CreateStudentProfile(student);
         }
@@ -390,7 +387,6 @@ export default class StudentFunctions {
     );
   }
 
-  // Modelled after EditJob
   public static async EditStudentProfile(
     this: void,
     req: StudentEditProfileRequest,
@@ -403,7 +399,6 @@ export default class StudentFunctions {
         Logger.Info(LM, 'Attempting to edit student profile');
 
         const { studentZID } = req;
-        Helpers.requireParameters(studentZID);
 
         const studentProfile = {
           gradYear: req.body.gradYear,
@@ -411,7 +406,6 @@ export default class StudentFunctions {
           workingRights: req.body.workingRights,
         };
 
-        // verify that the required parameters exist and are valid
         Helpers.isValidGradYear(studentProfile.gradYear);
         Helpers.isValidWamRequirement(studentProfile.wam);
         Helpers.isValidWorkingRights([studentProfile.workingRights]);
@@ -424,7 +418,6 @@ export default class StudentFunctions {
           .where('Student.zID = :zID', { zID: studentZID })
           .getOneOrFail();
 
-        // update the db
         await AppDataSource.getRepository(StudentProfile)
           .createQueryBuilder()
           .update(StudentProfile)

@@ -9,6 +9,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const supertest = require('supertest');
 const config = require('./config');
+const { StatusCodes } = require('http-status-codes');
 
 const server = supertest.agent(config.apiUrl);
 
@@ -17,9 +18,9 @@ describe("student profiles", () => {
     it("user can't access their student profile when not logged in", function (done) {
       server
         .get("/student/profile")
-        .expect(401)
+        .expect(StatusCodes.UNAUTHORIZED)
         .end((_, res) => {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
           done();
         });
     });
@@ -40,9 +41,9 @@ describe("student profiles", () => {
       server
         .get('/student/profile')
         .set('Authorization', this.token)
-        .expect(200)
+        .expect(StatusCodes.OK)
         .end(function (_, res) {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(StatusCodes.OK);
           done();
         });
     });
@@ -56,9 +57,9 @@ describe("student profiles", () => {
           wam: "HD",
           workingRights: "aus_ctz"
         })
-        .expect(200)
+        .expect(StatusCodes.OK)
         .end(function (_, res) {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(StatusCodes.OK);
           done();
         });
     });
@@ -70,36 +71,36 @@ describe('job', () => {
     it("user can't access the list of jobs when not logged in", function (done) {
       server
         .get('/jobs/0')
-        .expect(401)
+        .expect(StatusCodes.UNAUTHORIZED)
         .end((_, res) => {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
           done();
         });
     });
     it("user can't access a specific job when not logged in", function (done) {
       server
         .get('/job/1')
-        .expect(401)
+        .expect(StatusCodes.UNAUTHORIZED)
         .end(function (_, res) {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
           done();
         });
     });
     it("user can't access a specific job with invalid ids", function (done) {
       server
         .get('/job/undefined')
-        .expect(401)
+        .expect(StatusCodes.UNAUTHORIZED)
         .end(function (_, res) {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
           done();
         });
     });
     it('permits viewing of featured jobs when not logged in', function (done) {
       server
         .get(`/featured-jobs`)
-        .expect(200)
+        .expect(StatusCodes.OK)
         .end(function (_, res) {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(StatusCodes.OK);
           done();
         });
     });
@@ -117,9 +118,9 @@ describe('job', () => {
       server
         .get('/jobs/0')
         .set('Authorization', this.token)
-        .expect(200)
+        .expect(StatusCodes.OK)
         .end(function (_, res) {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(StatusCodes.OK);
           done();
         });
     });
@@ -128,9 +129,9 @@ describe('job', () => {
       server
         .get('/job/1')
         .set('Authorization', this.token)
-        .expect(200)
+        .expect(StatusCodes.OK)
         .end(function (err, res) {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(StatusCodes.OK);
           done();
         });
     });
@@ -139,9 +140,9 @@ describe('job', () => {
       server
         .get('/jobs/0')
         .set('Authorization', 'dummy token')
-        .expect(401)
+        .expect(StatusCodes.UNAUTHORIZED)
         .end(function (_, res) {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
           done();
         });
     });
@@ -158,9 +159,9 @@ describe('job', () => {
     it("can't search for jobs without a token", function (done) {
       server
         .get('/student/job/hello')
-        .expect(401)
+        .expect(StatusCodes.UNAUTHORIZED)
         .end(function (_, res) {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
           done();
         });
     });
@@ -169,9 +170,9 @@ describe('job', () => {
       server
         .get('/student/job/hello')
         .set('Authorization', 'dummy token')
-        .expect(401)
+        .expect(StatusCodes.UNAUTHORIZED)
         .end(function (_, res) {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(StatusCodes.UNAUTHORIZED);
           done();
         });
     });
@@ -180,10 +181,9 @@ describe('job', () => {
       server
         .get('/student/job/java')
         .set('Authorization', this.token)
-        .expect(200)
-        .expect(200)
+        .expect(StatusCodes.OK)
         .end(function (_, res) {
-          expect(res.status).to.equal(200);
+          expect(res.status).to.equal(StatusCodes.OK);
           expect(res.body.searchResult.length != 0);
           done();
         });
