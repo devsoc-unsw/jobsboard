@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
 import Student from './entity/student';
-import EStudentProfile from './entity/student_profile';
+import StudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
 
@@ -18,7 +18,7 @@ import {
 
 import {
   StudentBase,
-  StudentProfile,
+  StudentProfileInfo,
 } from './types/shared';
 
 import {
@@ -343,7 +343,7 @@ export default class StudentFunctions {
     }
 
     const student = queriedStudent;
-    student.studentProfile = new EStudentProfile();
+    student.studentProfile = new StudentProfile();
     await AppDataSource.manager.save(student);
 
     Logger.Info(LM, `Created student profile record for STUDENT=${queriedStudent.zID}`);
@@ -382,7 +382,7 @@ export default class StudentFunctions {
     );
   }
 
-  private static isProfileUpdated(studentProfile: StudentProfile, newProfile: EStudentProfile) {
+  private static isProfileUpdated(studentProfile: StudentProfileInfo, newProfile: StudentProfile) {
     return (
       studentProfile.gradYear === newProfile.gradYear
       && studentProfile.wam === newProfile.wam
@@ -425,9 +425,9 @@ export default class StudentFunctions {
           .getOneOrFail();
 
         // update the db
-        await AppDataSource.getRepository(EStudentProfile)
+        await AppDataSource.getRepository(StudentProfile)
           .createQueryBuilder()
-          .update(EStudentProfile)
+          .update(StudentProfile)
           .set({
             gradYear: studentProfile.gradYear,
             wam: studentProfile.wam,

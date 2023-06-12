@@ -45,7 +45,7 @@ export interface JbToken {
 
 export interface StudentBase extends StudentZID, JbToken {}
 
-export interface StudentProfile {
+export interface StudentProfileInfo {
   gradYear: number;
   wam: WamRequirements;
   workingRights: WorkingRights;

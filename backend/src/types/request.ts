@@ -14,7 +14,7 @@ import {
   Logo,
   Offset,
   StudentZID,
-  StudentProfile,
+  StudentProfileInfo,
   Year,
 } from './shared';
 
@@ -68,7 +68,7 @@ export interface SearchJobRequest extends Request<QueryStringParams>, StudentZID
 
 export interface StudentGetProfileRequest extends Request, StudentZID, JbToken {}
 export interface StudentEditProfileRequest
-  extends Request<Record<string, never>, never, StudentProfile>,
+  extends Request<Record<string, never>, never, StudentProfileInfo>,
   StudentZID,
   JbToken {}
 
