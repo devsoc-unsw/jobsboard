@@ -12,7 +12,7 @@ export default class StudentProfile {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ default: 2023 })
+  @Column({ nullable: true })
   public gradYear: number;
 
   @Column({
