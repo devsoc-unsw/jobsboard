@@ -429,20 +429,6 @@ export default class StudentFunctions {
           .where('id = :id', { id: student.studentProfile.id })
           .execute();
 
-        // verify student profile has been updated
-        const newStudent = await AppDataSource.getRepository(Student)
-          .createQueryBuilder()
-          .leftJoinAndSelect('Student.studentProfile', 'studentProfile')
-          .where('Student.zID = :zID', { zID: studentZID })
-          .getOneOrFail();
-
-        if (!StudentFunctions.isProfileUpdated(req.body, newStudent.studentProfile)) {
-          return {
-            status: StatusCodes.FORBIDDEN,
-            msg: { token: req.newJbToken },
-          };
-        }
-
         Logger.Info(LM, `STUDENT=${studentZID} sucessfully edited their profile`);
 
         return { status: StatusCodes.OK, msg: undefined };
