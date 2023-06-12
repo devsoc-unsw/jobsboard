@@ -374,7 +374,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
             .andWhere('CompanyAccount.verified = :verified', { verified: true })
             .getOne(),
-          `Couldn't find any verified companies for COMPANY_ACCOUNT=${req.params.companyAccountID}.`,
+          `Couldn't find a verified company for COMPANY_ACCOUNT=${req.params.companyAccountID}.`,
         );
 
         await AppDataSource.createQueryBuilder()
@@ -390,12 +390,17 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .where('company.id = :companyId', { companyId: pendingCompany.id })
           .execute();
 
-        // TODO:
-        // send an email confirming that the account has been unverified
-        // await MailFunctions.AddMailToQueue(
-        //   pendingCompany.username,
-        //   'CSESoc Jobs Board - Your account has been unverified'
-        // );
+        // send an email confirming that the company has been unverified
+        await MailFunctions.AddMailToQueue(
+          pendingCompany.username,
+          'CSESoc Jobs Board - Your account has been unverified',
+          `
+          Your company account has been unverified. If you believe that there has been an error or you would like to understand the reasons behind the unverification, we encourage you to get in touch with us.
+          <br>
+          <p>Best regards,</p>
+          <p>CSESoc Jobs Board Administrator</p>
+          `,
+        );
         Logger.Info(`Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`);
         return {
           status: 200,
