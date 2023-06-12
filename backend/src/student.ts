@@ -18,7 +18,6 @@ import {
 
 import {
   StudentBase,
-  StudentProfileInfo,
 } from './types/shared';
 
 import {
@@ -376,14 +375,6 @@ export default class StudentFunctions {
       },
       () => ({ status: StatusCodes.BAD_REQUEST, msg: { token: req.newJbToken } }),
       next,
-    );
-  }
-
-  private static isProfileUpdated(studentProfile: StudentProfileInfo, newProfile: StudentProfile) {
-    return (
-      studentProfile.gradYear === newProfile.gradYear
-      && studentProfile.wam === newProfile.wam
-      && studentProfile.workingRights === newProfile.workingRights
     );
   }
 
