@@ -44,6 +44,9 @@ describe("student profiles", () => {
         .expect(StatusCodes.OK)
         .end(function (_, res) {
           expect(res.status).to.equal(StatusCodes.OK);
+          expect(res.msg.studentProfile.gradYear).to.equal(null);
+          expect(res.msg.studentProfile.wam).to.equal("none");
+          expect(res.msg.studentProfile.gradYear).to.equal("no_wr");
           done();
         });
     });
@@ -53,13 +56,16 @@ describe("student profiles", () => {
         .put('/student/profile/edit')
         .set('Authorization', this.token)
         .send({
-          gradYear: (new Date()).getFullYear() + 1,
+          gradYear: 2023,
           wam: "HD",
           workingRights: "aus_ctz"
         })
         .expect(StatusCodes.OK)
         .end(function (_, res) {
           expect(res.status).to.equal(StatusCodes.OK);
+          expect(res.msg.studentProfile.gradYear).to.equal(2023);
+          expect(res.msg.studentProfile.wam).to.equal("HD");
+          expect(res.msg.studentProfile.gradYear).to.equal("aus_ctz");
           done();
         });
     });
