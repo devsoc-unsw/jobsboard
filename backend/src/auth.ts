@@ -47,7 +47,7 @@ export default class Auth {
             .where('Student.zID = :zID', { zID: msg.zID })
             .getOne();
 
-          if (studentQuery === null) {
+          if (!studentQuery) {
             // never logged on here before
             Logger.Info(LM, `Creating new student for STUDENT=${msg.zID}`);
             await StudentFunctions.CreateStudent({
