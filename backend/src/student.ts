@@ -317,34 +317,13 @@ export default class StudentFunctions {
   }
 
   public static async CreateStudent(info: StudentBase) {
-    let student = await AppDataSource.getRepository(Student)
-      .createQueryBuilder()
-      .where('Student.zID = :zID', { zID: info.studentZID })
-      .getOne();
+    Logger.Info(LM, `Creating new student record with profile for STUDENT=${info.studentZID}`);
+    const student = new Student();
+    student.zID = info.studentZID;
+    student.latestValidToken = info.newJbToken;
+    student.studentProfile = new StudentProfile();
 
-    if (!student) {
-      student = new Student();
-      student.zID = info.studentZID;
-      student.latestValidToken = info.newJbToken;
-    }
-
-    await this.CreateStudentProfile(student);
-
-    Logger.Info(LM, `Created student record with profile record for STUDENT=${info.studentZID}`);
-  }
-
-  public static async CreateStudentProfile(queriedStudent: Student) {
-    if (queriedStudent.studentProfile !== undefined) {
-      Logger.Info(LM, `Found existing student profile for STUDENT=${queriedStudent.zID}`);
-      return queriedStudent.studentProfile;
-    }
-
-    // eslint-disable-next-line no-param-reassign
-    queriedStudent.studentProfile = new StudentProfile();
-    await AppDataSource.manager.save(queriedStudent);
-
-    Logger.Info(LM, `Created student profile record for STUDENT=${queriedStudent.zID}`);
-    return queriedStudent.studentProfile;
+    await AppDataSource.manager.save(student);
   }
 
   public static async GetStudentProfile(
@@ -364,8 +343,9 @@ export default class StudentFunctions {
           .where('Student.zID = :zID', { zID: req.studentZID })
           .getOneOrFail();
 
-        if (student.studentProfile === undefined) {
-          student.studentProfile = await StudentFunctions.CreateStudentProfile(student);
+        if (!student.studentProfile) {
+          Logger.Info(LM, `Creating new student profile record for STUDENT=${req.studentZID}`);
+          student.studentProfile = new StudentProfile();
         }
 
         return {
