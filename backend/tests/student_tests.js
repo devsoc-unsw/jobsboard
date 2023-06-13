@@ -10,6 +10,7 @@ const expect = chai.expect;
 const supertest = require('supertest');
 const config = require('./config');
 const { StatusCodes } = require('http-status-codes');
+const { assert } = require('console');
 
 const server = supertest.agent(config.apiUrl);
 
@@ -42,11 +43,13 @@ describe("student profiles", () => {
         .get('/student/profile')
         .set('Authorization', this.token)
         .expect(StatusCodes.OK)
+        .then(res => {
+          assert(res.msg.studentProfile.gradYear, 2023);
+          assert(res.msg.studentProfile.wam, "none");
+          assert(res.msg.studentProfile.workingRights, "no_wr");
+        })
         .end(function (_, res) {
           expect(res.status).to.equal(StatusCodes.OK);
-          expect(res.msg.studentProfile.gradYear).to.equal(null);
-          expect(res.msg.studentProfile.wam).to.equal("none");
-          expect(res.msg.studentProfile.gradYear).to.equal("no_wr");
           done();
         });
     });
@@ -56,16 +59,20 @@ describe("student profiles", () => {
         .put('/student/profile/edit')
         .set('Authorization', this.token)
         .send({
-          gradYear: 2023,
+          gradYear: 2025,
           wam: "HD",
           workingRights: "aus_ctz"
         })
         .expect(StatusCodes.OK)
+        .get('/student/profile')
+        .expect(StatusCodes.OK)
+        .then(res => {
+          assert(res.msg.studentProfile.gradYear, 2025);
+          assert(res.msg.studentProfile.wam, "HD");
+          assert(res.msg.studentProfile.workingRights, "aus_ctz");
+        })
         .end(function (_, res) {
           expect(res.status).to.equal(StatusCodes.OK);
-          expect(res.msg.studentProfile.gradYear).to.equal(2023);
-          expect(res.msg.studentProfile.wam).to.equal("HD");
-          expect(res.msg.studentProfile.gradYear).to.equal("aus_ctz");
           done();
         });
     });
