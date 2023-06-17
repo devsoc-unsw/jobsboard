@@ -12,7 +12,7 @@ export default class StudentProfile {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ default: () => 'YEAR(CURRENT_DATE())' })
+  @Column({ default: () => "DATE_PART('YEAR', CURRENT_DATE)" })
   public gradYear: number;
 
   @Column({
