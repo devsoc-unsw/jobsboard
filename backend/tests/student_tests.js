@@ -38,24 +38,19 @@ describe("student profiles", () => {
         .then((response) => response.body.token);
     });
 
-    it('permits viewing the student profile with a valid token', function (done) {
-      server
+    it('permits viewing the student profile with a valid token', async function () {
+      const res = await server
         .get('/student/profile')
         .set('Authorization', this.token)
-        .expect(StatusCodes.OK)
-        .then(res => {
-          assert(res.msg.studentProfile.gradYear, 2023);
-          assert(res.msg.studentProfile.wam, "none");
-          assert(res.msg.studentProfile.workingRights, "no_wr");
-        })
-        .end(function (_, res) {
-          expect(res.status).to.equal(StatusCodes.OK);
-          done();
-        });
+        .expect(StatusCodes.OK);
+
+      expect(res.body.studentProfile.gradYear).to.equal((new Date()).getFullYear());
+      expect(res.body.studentProfile.wam).to.equal("none");
+      expect(res.body.studentProfile.workingRights).to.equal("no_wr");
     });
 
-    it('permits updating the default student profile after authenticating', function (done) {
-      server
+    it('permits updating the default student profile after authenticating', async function () {
+      await server
         .put('/student/profile/edit')
         .set('Authorization', this.token)
         .send({
@@ -63,18 +58,16 @@ describe("student profiles", () => {
           wam: "HD",
           workingRights: "aus_ctz"
         })
-        .expect(StatusCodes.OK)
+        .expect(StatusCodes.OK);
+
+      const res = await server
         .get('/student/profile')
-        .expect(StatusCodes.OK)
-        .then(res => {
-          assert(res.msg.studentProfile.gradYear, 2025);
-          assert(res.msg.studentProfile.wam, "HD");
-          assert(res.msg.studentProfile.workingRights, "aus_ctz");
-        })
-        .end(function (_, res) {
-          expect(res.status).to.equal(StatusCodes.OK);
-          done();
-        });
+        .set('Authorization', this.token)
+        .expect(StatusCodes.OK);
+
+      expect(res.body.studentProfile.gradYear).to.equal(2025);
+      expect(res.body.studentProfile.wam).to.equal("HD");
+      expect(res.body.studentProfile.workingRights).to.equal("aus_ctz");
     });
   });
 });
