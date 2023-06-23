@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import Company from './company';
+import type Company from './company';
 
 @Entity()
 export default class CompanyAccount {
@@ -20,7 +20,7 @@ export default class CompanyAccount {
   @Column()
   public hash: string;
 
-  @OneToOne((_) => Company, (company) => company.companyAccount, {
+  @OneToOne('Company', (company: Company) => company.companyAccount, {
     cascade: true,
     onDelete: 'CASCADE',
   })

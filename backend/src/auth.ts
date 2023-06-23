@@ -10,6 +10,7 @@ import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
 import { AuthRequest } from './types/request';
 import ev from './environment';
+import StudentFunctions from './student';
 
 const LM = new LogModule('AUTH');
 
@@ -46,13 +47,13 @@ export default class Auth {
             .where('Student.zID = :zID', { zID: msg.zID })
             .getOne();
 
-          if (studentQuery === null) {
+          if (!studentQuery) {
             // never logged on here before
-            const student: EStudent = new EStudent();
-            student.zID = msg.zID;
-            student.latestValidToken = token as string;
-            await AppDataSource.manager.save(student);
-            Logger.Info(LM, `Created student record for STUDENT=${msg.zID}`);
+            Logger.Info(LM, `Creating new student for STUDENT=${msg.zID}`);
+            await StudentFunctions.CreateStudent({
+              studentZID: msg.zID,
+              newJbToken: token as string,
+            });
           } else {
             await AppDataSource.createQueryBuilder()
               .update(EStudent)

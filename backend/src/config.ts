@@ -10,6 +10,7 @@ import Company from './entity/company';
 import CompanyAccount from './entity/company_account';
 import Job from './entity/job';
 import Student from './entity/student';
+import StudentProfile from './entity/student_profile';
 import MailRequest from './entity/mail_request';
 import Logs from './entity/logs';
 import Statistics from './entity/statistics';
@@ -21,6 +22,7 @@ export const activeEntities = [
   CompanyAccount,
   Job,
   Student,
+  StudentProfile,
   AdminAccount,
   MailRequest,
   Logs,

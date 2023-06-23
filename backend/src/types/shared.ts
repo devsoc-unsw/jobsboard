@@ -43,6 +43,14 @@ export interface JbToken {
   newJbToken: string;
 }
 
+export interface StudentBase extends StudentZID, JbToken {}
+
+export interface StudentProfileInfo {
+  gradYear: number;
+  wam: WamRequirements;
+  workingRights: WorkingRights;
+}
+
 export interface JobID {
   jobID: string;
 }

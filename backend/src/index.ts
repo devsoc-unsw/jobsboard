@@ -43,6 +43,8 @@ import {
   UpdateCompanyDetailsRequest,
   VerifyCompanyAccountRequest,
   SearchJobRequest,
+  StudentGetProfileRequest,
+  StudentEditProfileRequest,
 } from './types/request';
 
 const LM = new LogModule('INDEX');
@@ -466,6 +468,38 @@ app.get(
   (req: StudentFeaturedJobsRequest, res, next) => {
     (async () => {
       await StudentFunctions.GetFeaturedJobs(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.get(
+  '/student/profile',
+  cors(corsOptions),
+  (req: AuthoriseStudentRequest, res, next) => {
+    (async () => {
+      await Middleware.authoriseStudentMiddleware(req, res, next);
+    })();
+  },
+  (req: StudentGetProfileRequest, res, next) => {
+    (async () => {
+      await StudentFunctions.GetStudentProfile(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.put(
+  '/student/profile/edit',
+  cors(corsOptions),
+  (req: AuthoriseStudentRequest, res, next) => {
+    (async () => {
+      await Middleware.authoriseStudentMiddleware(req, res, next);
+    })();
+  },
+  (req: StudentEditProfileRequest, res, next) => {
+    (async () => {
+      await StudentFunctions.EditStudentProfile(req, res, next);
     })();
   },
   Middleware.genericLoggingMiddleware,
