@@ -36,17 +36,6 @@ services:
       - 8081:80
     expose:
       - 8081
-  frontend-vue:
-    build:
-      context: ./frontend_vue
-      dockerfile: dev.dockerfile
-    image: webpersonal.azurecr.io/jb-frontend:latest
-    volumes:
-      - ./frontend/src:/app/src
-    ports:
-      - 3001:3001
-    expose:
-      - 3001
   db:
     image: postgres:14.7-alpine # this is the image that we want to run (aka app)
     restart: always
