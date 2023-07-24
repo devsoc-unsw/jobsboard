@@ -160,9 +160,9 @@
     glob "7.1.7"
 
 "@next/font@^13.0.7":
-  version "13.4.10"
-  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.4.10.tgz#7633d1a87117eb7ca431d0d93c6b167159e0c8dc"
-  integrity sha512-BqV71ikHIFh+PZLpCR0nMZnlg/3Hcuw9qIUN42I4iCpneDHHiViUtanUeE113gy0Wm9oePTGX5OeKnPbSNnnHA==
+  version "13.4.12"
+  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.4.12.tgz#6b6f8f870241baaf9f7f4245e874cf3cf95e35ae"
+  integrity sha512-w/ygNFuscvvFKFTMoIqhU8Kaq1wM6x4XEu9bwzJaj8G7aloH866TUPeCgiKf+M/ACpMKfRahQa06REcg6T3CyA==
 
 "@next/swc-android-arm-eabi@13.2.4":
   version "13.2.4"
@@ -2462,9 +2462,9 @@ postcss@8.4.14:
     source-map-js "^1.0.2"
 
 postcss@^8.4.20, postcss@^8.4.23:
-  version "8.4.26"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.26.tgz#1bc62ab19f8e1e5463d98cf74af39702a00a9e94"
-  integrity sha512-jrXHFF8iTloAenySjM/ob3gSj7pCu0Ji49hnjqzsgSRa50hkWCKD0HQ+gMNJkW38jBI68MpAAg7ZWwHwX8NMMw==
+  version "8.4.27"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.27.tgz#234d7e4b72e34ba5a92c29636734349e0d9c3057"
+  integrity sha512-gY/ACJtJPSmUFPDCHtX78+01fHa64FaU4zaaWfuh1MhGJISufJAH4cun6k/8fwsHYeK4UQmENQK+tRLCFJE8JQ==
   dependencies:
     nanoid "^3.3.6"
     picocolors "^1.0.0"
