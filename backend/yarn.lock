@@ -1122,7 +1122,7 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
   integrity sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
 
-"@types/node@*", "@types/node@>=14":
+"@types/node@*", "@types/node@>=16":
   version "20.4.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.4.tgz#c79c7cc22c9d0e97a7944954c9e663bcbd92b0cb"
   integrity sha512-CukZhumInROvLq3+b5gLev+vgpsIqC2D0deQr/yS1WnxvmYLlJXZpaQrQiseMY+6xusl79E04UjWoqyr+t1/Ew==
@@ -3379,13 +3379,13 @@ language-tags@=1.0.5:
   dependencies:
     language-subtag-registry "~0.3.2"
 
-ldapts@^4.0.0:
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/ldapts/-/ldapts-4.2.6.tgz#608727b754367fb399fd3a97a6a7bcea208f580e"
-  integrity sha512-r1eOj2PtTJi+9aZxLirktoHntuYXlbQD9ZXCjiZmJx0VBQtBcWc+rueqABuh/AxMcFHNPDSJLJAXxoj5VevTwQ==
+ldapts@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ldapts/-/ldapts-5.0.0.tgz#522460903445609cf9d533f8e750b45db03426f5"
+  integrity sha512-52osg7079Llu6UgOEy+qvaDcZNt94qAuibBHoumSaWRuAyKCovgSnI+Meu9I6gzW+OnubIvicavSPVm2c1EZ+w==
   dependencies:
     "@types/asn1" ">=0.2.0"
-    "@types/node" ">=14"
+    "@types/node" ">=16"
     "@types/uuid" ">=9"
     asn1 "~0.2.6"
     debug "~4.3.4"
