@@ -29,7 +29,7 @@
     "react-quill": "^2.0.0",
     "sharp": "^0.31.3",
     "swiper": "^8.4.5",
-    "universal-cookie": "^4.0.4"
+    "universal-cookie": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "18.11.18",
