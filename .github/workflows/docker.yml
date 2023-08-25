@@ -27,12 +27,12 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.component }}
-          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/dev' }}
+          push: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main') }}
           platforms: linux/amd64
           file: ${{ matrix.component }}/Dockerfile
           tags: |
