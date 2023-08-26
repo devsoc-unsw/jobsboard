@@ -8,7 +8,13 @@ import Image from 'next/image';
 import JobBoard, { BoardStatus } from 'components/JobBoard/JobBoard';
 import api from 'config/api';
 import base64 from 'config/base64';
-import { CompanyHiddenJobsPayload, CompanyJobsPayload, HiddenJob, Job } from 'types/api';
+import {
+  CompanyHiddenJobsPayload,
+  CompanyJobsPayload,
+  CompanyLogoStatusPayload,
+  HiddenJob,
+  Job
+} from 'types/api';
 
 const CompanyDashboardPage = () => {
   const { apiToken } = useContext(AppContext);
@@ -46,12 +52,14 @@ const CompanyDashboardPage = () => {
 
   const checkCompanyLogoStatus = async () => {
     try {
-      // TODO check this route exists?
-      await api.get('/company/logo/status', {
+      const res = await api.get<CompanyLogoStatusPayload>('/company/logo/status', {
         headers: {
           Authorization: apiToken
         }
       });
+      if (!res.data.found) {
+        setOpenModal(true);
+      }
     } catch (e) {
       setOpenModal(true);
     }
