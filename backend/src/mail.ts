@@ -5,7 +5,7 @@ import { AppDataSource } from './config';
 import { Logger, LogModule } from './logging';
 import Helpers from './helpers';
 import MailRequest from './entity/mail_request';
-import ev from './environment';
+import { env } from './environment';
 
 const LM = new LogModule('MAIL');
 
@@ -43,17 +43,17 @@ export default class MailFunctions {
     const mailSendingIntervalRate = (1000 * 60 * 60 * 24) / limitOfEmailsPerDay;
     Logger.Info(LM, `Mail sending rate set to once every ${mailSendingIntervalRate} ms.`);
     const transportOptions = {
-      host: ev.data().MAIL_SMTP_SERVER,
-      port: ev.data().MAIL_SMTP_SERVER_PORT,
+      host: env.MAIL_SMTP_SERVER,
+      port: env.MAIL_SMTP_SERVER_PORT,
       secure: false,
       auth: {
-        user: ev.data().MAIL_USERNAME,
-        pass: ev.data().MAIL_PASSWORD,
+        user: env.MAIL_USERNAME,
+        pass: env.MAIL_PASSWORD,
       },
       requireTLS: true,
     };
     const mailTransporter = nodemailer.createTransport(transportOptions);
-    if (ev.data().NODE_ENV === 'production') {
+    if (env.NODE_ENV === 'production') {
       mailTransporter.verify((error: Error, _: boolean) => {
         if (error) {
           Logger.Error(LM, `Mail verification unsuccessful. Reason: ${error.message}`);
@@ -71,7 +71,7 @@ export default class MailFunctions {
       if (mailRequest == null) throw new Error('No mail request to send');
 
       try {
-        if (ev.data().NODE_ENV === 'production') {
+        if (env.NODE_ENV === 'production') {
           mailTransporter.sendMail(
             {
               from: mailRequest.sender,
@@ -83,10 +83,13 @@ export default class MailFunctions {
             () => Logger.Info(LM, `Successfully sent EMAIL=${mailRequest.id}`),
           );
         } else {
-          Logger.Info(LM, `NODE_ENV is not production (currently ${
-            ev.data().NODE_ENV
-          }), therefore no email will be sent. Here is the email that would have been sent:
-                      ${JSON.stringify(mailRequest)}`);
+          Logger.Info(
+            LM,
+            `NODE_ENV is not production (currently ${
+              env.NODE_ENV
+            }), therefore no email will be sent. Here is the email that would have been sent:
+                      ${JSON.stringify(mailRequest)}`,
+          );
         }
         await AppDataSource.createQueryBuilder()
           .update(MailRequest)
@@ -109,7 +112,7 @@ export default class MailFunctions {
     try {
       // check parameters
       try {
-        Helpers.requireParameters(ev.data().MAIL_USERNAME);
+        Helpers.requireParameters(env.MAIL_USERNAME);
       } catch (error) {
         Logger.Error(LM, '[DEBUG] Mail username parameter checking failed');
       }
@@ -129,7 +132,7 @@ export default class MailFunctions {
         Logger.Error(LM, '[DEBUG] Content parameter checking failed');
       }
       const newMailRequest: MailRequest = new MailRequest();
-      newMailRequest.sender = ev.data().MAIL_USERNAME;
+      newMailRequest.sender = env.MAIL_USERNAME;
       newMailRequest.recipient = recipient;
       newMailRequest.subject = subject;
       newMailRequest.content = content;
@@ -139,8 +142,8 @@ export default class MailFunctions {
 
       // send a copy of this email to the admin
       const newMailRequestForAdmin: MailRequest = new MailRequest();
-      newMailRequestForAdmin.sender = ev.data().MAIL_USERNAME;
-      newMailRequestForAdmin.recipient = ev.data().MAIL_USERNAME;
+      newMailRequestForAdmin.sender = env.MAIL_USERNAME;
+      newMailRequestForAdmin.recipient = env.MAIL_USERNAME;
       newMailRequestForAdmin.subject = subject;
       newMailRequestForAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
 
@@ -154,7 +157,7 @@ export default class MailFunctions {
 
       // send a copy of this email to the csesoc admin
       const newMailRequestForCsesocAdmin: MailRequest = new MailRequest();
-      newMailRequestForCsesocAdmin.sender = ev.data().MAIL_USERNAME;
+      newMailRequestForCsesocAdmin.sender = env.MAIL_USERNAME;
       newMailRequestForCsesocAdmin.recipient = 'careers@csesoc.org.au';
       newMailRequestForCsesocAdmin.subject = subject;
       newMailRequestForCsesocAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":

@@ -9,7 +9,7 @@ import JWT, { IToken, AccountType } from './jwt';
 import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
 import { AuthRequest } from './types/request';
-import ev from './environment';
+import { env } from './environment';
 import StudentFunctions from './student';
 
 const LM = new LogModule('AUTH');
@@ -192,7 +192,7 @@ export default class Auth {
 
   // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
-    if (ev.data().NODE_ENV !== 'development') {
+    if (env.NODE_ENV !== 'development') {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
         // check if it matches the zID format, throw otherwise.
         Helpers.doesMatchZidFormat(zID);

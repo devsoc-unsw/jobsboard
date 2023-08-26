@@ -7,7 +7,7 @@ import 'reflect-metadata';
 import Auth from './auth';
 import seedDB from './dev';
 import { Logger, LogModule } from './logging';
-import ev from './environment';
+import { env } from './environment';
 import Middleware from './middleware';
 import { AppDataSource } from './config';
 import AdminFunctions from './admin';
@@ -50,7 +50,7 @@ import {
 const LM = new LogModule('INDEX');
 
 const app = express();
-const port = ev.data().SERVER_PORT;
+const port = env.SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
 app.use(
   express.urlencoded({
@@ -61,7 +61,7 @@ app.use(
 app.use(helmet());
 
 let corsOptions;
-if (ev.data().NODE_ENV !== 'development') {
+if (env.NODE_ENV !== 'development') {
   // assuming production, set up a particular config and allow only requests from
   // the current URL to be consumed
   const whitelist = ['https://jobsboard.csesoc.unsw.edu.au'];
@@ -505,7 +505,7 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-if (ev.data().NODE_ENV === 'development') {
+if (env.NODE_ENV === 'development') {
   app.post('/email', (req, res) => {
     (async () => {
       await MailFunctions.SendTestEmail(req, res);
@@ -516,12 +516,12 @@ if (ev.data().NODE_ENV === 'development') {
 
 app.listen(port, () => {
   (async () => {
-    if (ev.data().NODE_ENV === 'development') {
+    if (env.NODE_ENV === 'development') {
       await bootstrap();
     } else {
       await AppDataSource.initialize();
     }
-    if (ev.data().NODE_ENV === 'production') {
+    if (env.NODE_ENV === 'production') {
       MailFunctions.InitMailQueueScheduler(2000);
     }
     Logger.Info(LM, `SERVER STARTED AT PORT=${port}`);
