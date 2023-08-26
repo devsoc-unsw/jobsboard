@@ -1,77 +1,28 @@
+/* eslint-disable import/prefer-default-export */
+
 import z from 'zod';
 import dotenv from 'dotenv';
+import { createEnv } from '@t3-oss/env-core';
 
-// ensure relevant environment variables exist
-const readerSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production']),
-  SERVER_PORT: z.string().min(1),
-  DB_HOST: z.string().min(1),
-  DB_PORT: z.string().min(1),
-  DB_USER: z.string().min(1),
-  DB_PASSWORD: z.string().min(1),
-  DB_NAME: z.string().min(1),
-  MAIL_USERNAME: z.string().min(1),
-  MAIL_PASSWORD: z.string().min(1),
-  MAIL_SMTP_SERVER: z.string().min(1),
-  MAIL_SMTP_SERVER_PORT: z.string().min(1),
+dotenv.config();
+
+export const env = createEnv({
+  server: {
+    NODE_ENV: z.enum(['development', 'production']),
+    SERVER_PORT: z.coerce.number(),
+    DB_HOST: z.string(),
+    DB_PORT: z.coerce.number(),
+    DB_USER: z.string(),
+    DB_PASSWORD: z.string(),
+    DB_NAME: z.string(),
+    MAIL_USERNAME: z.string(),
+    MAIL_PASSWORD: z.string(),
+    MAIL_SMTP_SERVER: z.string(),
+    MAIL_SMTP_SERVER_PORT: z.coerce.number(),
+    BUCKET_NAME: z.string(),
+    BUCKET_REGION: z.string(),
+    BUCKET_ACCESS_KEY: z.string(),
+    BUCKET_SECRET_ACCESS_KEY: z.string(),
+  },
+  runtimeEnv: process.env,
 });
-
-// ensure relavant environment variables are of the correct type
-const envSchema = z.object({
-  NODE_ENV: z.string().min(1),
-  SERVER_PORT: z.number(),
-  DB_HOST: z.string().min(1),
-  DB_PORT: z.number(),
-  DB_USER: z.string().min(1),
-  DB_PASSWORD: z.string().min(1),
-  DB_NAME: z.string().min(1),
-  MAIL_USERNAME: z.string().min(1),
-  MAIL_PASSWORD: z.string().min(1),
-  MAIL_SMTP_SERVER: z.string().min(1),
-  MAIL_SMTP_SERVER_PORT: z.number(),
-});
-
-type EV = z.infer<typeof envSchema>;
-
-class Environment {
-  public static data(): EV {
-    if (!Environment.ev) {
-      Environment.ev = Environment.parse();
-    }
-    return Environment.ev;
-  }
-
-  private static parse(): EV {
-    dotenv.config();
-
-    const preprocessed = readerSchema.safeParse(process.env);
-    if (!preprocessed.success) {
-      throw new Error('Unable to read environment variables. Exiting.');
-    }
-
-    const parsed: EV = {
-      NODE_ENV: preprocessed.data.NODE_ENV,
-      SERVER_PORT: parseInt(preprocessed.data.SERVER_PORT, 10),
-      DB_HOST: preprocessed.data.DB_HOST,
-      DB_PORT: parseInt(preprocessed.data.DB_PORT, 10),
-      DB_USER: preprocessed.data.DB_USER,
-      DB_PASSWORD: preprocessed.data.DB_PASSWORD,
-      DB_NAME: preprocessed.data.DB_NAME,
-      MAIL_USERNAME: preprocessed.data.MAIL_USERNAME,
-      MAIL_PASSWORD: preprocessed.data.MAIL_PASSWORD,
-      MAIL_SMTP_SERVER: preprocessed.data.MAIL_SMTP_SERVER,
-      MAIL_SMTP_SERVER_PORT: parseInt(preprocessed.data.MAIL_SMTP_SERVER_PORT, 10),
-    };
-
-    const validated = envSchema.safeParse(parsed);
-    if (!validated.success) {
-      throw new Error('Unable to parse environment variables into the correct types. Exiting.');
-    }
-
-    return validated.data;
-  }
-
-  private static ev: EV;
-}
-
-export default Environment;

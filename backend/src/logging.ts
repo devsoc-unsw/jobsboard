@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 
 import winston from 'winston';
-import ev from './environment';
+import { env } from './environment';
 
 // Name of the module that wish to contain logging statements
 export class LogModule {
@@ -41,7 +41,7 @@ export class Logger {
   // i.e. if logLevel is set to Info, only Info, Warn and Error logs will be produced.
   private static CreateLogger = (logLevel?: LogLevel, where?: LogLocation) => {
     const getLogLevel = () => {
-      if (ev.data().NODE_ENV === 'production') {
+      if (env.NODE_ENV === 'production') {
         return LogLevel.Info;
       }
       return logLevel || LogLevel.Info;
@@ -55,7 +55,7 @@ export class Logger {
 
       const consoleTransport = new winston.transports.Console();
 
-      if (ev.data().NODE_ENV === 'production' || !where) {
+      if (env.NODE_ENV === 'production' || !where) {
         return [consoleTransport];
       }
 
