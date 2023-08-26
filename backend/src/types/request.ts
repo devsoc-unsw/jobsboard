@@ -118,7 +118,7 @@ export interface CompanyUploadLogoRequest
   extends Request<Record<string, never>, never, Logo>,
   CompanyAccountID {}
 
-export interface CheckCompanyLogoRequest extends Request, CompanyAccountID {}
+export interface CheckCompanyLogoRequest extends Request, CompanyAccountID, JbToken {}
 
 interface UpdateCompanyBody extends CompanyBase, Logo {}
 export interface UpdateCompanyDetailsRequest

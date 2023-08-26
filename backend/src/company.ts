@@ -826,11 +826,11 @@ export default class CompanyFunctions {
           `Failed to find logo for COMPANY=${req.companyAccountID}.`,
         );
 
-        if (!companyLogo) {
-          return { status: StatusCodes.NOT_FOUND, msg: undefined };
-        }
+        const found = !!companyLogo;
+        const msg = found ? 'Found logo for' : 'Did not find logo for';
+        Logger.Info(LM, `${msg} COMPANY=${req.companyAccountID}`);
 
-        return { status: StatusCodes.OK, msg: undefined };
+        return { status: StatusCodes.OK, msg: { found } };
       },
       () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
