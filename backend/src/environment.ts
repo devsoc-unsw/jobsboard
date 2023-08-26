@@ -19,10 +19,6 @@ export const env = createEnv({
     MAIL_PASSWORD: z.string(),
     MAIL_SMTP_SERVER: z.string(),
     MAIL_SMTP_SERVER_PORT: z.coerce.number(),
-    BUCKET_NAME: z.string(),
-    BUCKET_REGION: z.string(),
-    BUCKET_ACCESS_KEY: z.string(),
-    BUCKET_SECRET_ACCESS_KEY: z.string(),
   },
   runtimeEnv: process.env,
 });
