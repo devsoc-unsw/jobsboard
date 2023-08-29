@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { Brackets } from 'typeorm';
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Job from './entity/job';
 import Company from './entity/company';
@@ -7,7 +8,7 @@ import CompanyAccount from './entity/company_account';
 import Statistics from './entity/statistics';
 import Helpers, { IResponseWithStatus } from './helpers';
 import MailFunctions from './mail';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import {
   AdminJobRequest,
   GeneralAdminRequest,
@@ -15,7 +16,10 @@ import {
   UnverifyCompanyAccountRequest,
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
-} from './interfaces/interfaces';
+} from './types/request';
+import { env } from './environment';
+
+const LM = new LogModule('ADMIN');
 
 export default class AdminFunctions {
   public static async ApproveJobRequest(
@@ -26,16 +30,13 @@ export default class AdminFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`Admin ID=${req.adminID} attempting to approve JOB=${req.params.jobID}`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to approve JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobID = Number(req.params.jobID);
         if (Number.isNaN(jobID)) {
-          Logger.Info(`Rejected jobID ${jobID} as it is not a numeric value`);
-          return {
-            status: 400,
-            msg: undefined,
-          } as IResponseWithStatus;
+          Logger.Info(LM, `Rejected jobID ${jobID} as it is not a numeric value`);
+          return { status: StatusCodes.BAD_REQUEST, msg: undefined };
         }
 
         const jobToApprove = await Helpers.doSuccessfullyOrFail(
@@ -98,20 +99,16 @@ export default class AdminFunctions {
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        Logger.Info(`Admin ID=${req.adminID} approved JOB=${req.params.jobID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} approved JOB=${req.params.jobID}`);
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -124,15 +121,12 @@ export default class AdminFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
         Helpers.requireParameters(req.params.jobID);
         const jobID = Number(req.params.jobID);
         if (Number.isNaN(jobID)) {
-          return {
-            status: 400,
-            msg: undefined,
-          } as IResponseWithStatus;
+          return { status: StatusCodes.BAD_REQUEST, msg: undefined };
         }
 
         const jobToReject = await Helpers.doSuccessfullyOrFail(
@@ -174,20 +168,16 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        Logger.Info(`Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -200,8 +190,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`ADMIN=${req.adminID} attempting to query pending jobs`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `ADMIN=${req.adminID} attempting to query pending jobs`);
         const pendingJobs = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Job)
             .createQueryBuilder()
@@ -228,19 +218,14 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           "Couldn't find any pending job requests.",
         );
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            pendingJobs,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, pendingJobs },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -253,8 +238,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`ADMIN=${req.adminID} attempting to query pending companies`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `ADMIN=${req.adminID} attempting to query pending companies`);
         const pendingCompanyVerifications = await Helpers.doSuccessfullyOrFail(async () => {
           const pendingCompanyAccounts = await AppDataSource.getRepository(CompanyAccount)
             .createQueryBuilder()
@@ -265,19 +250,14 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           return pendingCompanyAccounts;
         }, "Couldn't find any pending company verifications.");
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            pendingCompanyVerifications,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, pendingCompanyVerifications },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -290,8 +270,9 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(
+          LM,
           `Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`,
         );
         const pendingCompany = await Helpers.doSuccessfullyOrFail(
@@ -338,20 +319,16 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        Logger.Info(`Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -427,8 +404,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`Admin ID=${req.adminID} attempting to query all companies`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to query all companies`);
 
         const companyAccounts = await AppDataSource.getRepository(CompanyAccount)
           .createQueryBuilder()
@@ -447,18 +424,14 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         }));
 
         return {
-          status: 200,
-          msg: {
-            companies: fixedCompanies,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { companies: fixedCompanies },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -471,9 +444,9 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { companyID } = req.params;
-        Logger.Info(`Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
         const company = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Company)
             .createQueryBuilder()
@@ -534,6 +507,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         Helpers.isDateInTheFuture(msg.expiry);
         Helpers.validApplicationLink(msg.applicationLink);
         Logger.Info(
+          LM,
           `Attempting to create job for COMPANY=${companyID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`,
         );
 
@@ -555,7 +529,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         newJob.adminCreated = true;
 
         await MailFunctions.AddMailToQueue(
-          process.env.MAIL_USERNAME,
+          env.MAIL_USERNAME,
           'CSESoc Jobs Board - CSESoc has created a job on your behalf',
           `
         Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
@@ -571,6 +545,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         const newJobID: number = company.jobs[company.jobs.length - 1].id;
         Logger.Info(
+          LM,
           `Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`,
         );
 
@@ -584,18 +559,14 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         );
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -608,8 +579,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`Retrieving the number of verified companies as ADMIN=${req.adminID}`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(LM, `Retrieving the number of verified companies as ADMIN=${req.adminID}`);
 
         const verifiedCompanies = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(CompanyAccount)
@@ -622,20 +593,16 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         const numVerifiedCompanies = verifiedCompanies.length;
 
         Logger.Info(
+          LM,
           `Successfully retrived the number of verified comapanies as ADMIN=${req.adminID}`,
         );
 
         return {
-          status: 200,
-          msg: {
-            num: numVerifiedCompanies,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { num: numVerifiedCompanies },
+        };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -648,8 +615,9 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(
+          LM,
           `Retrieving the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
             req.adminID
           }`,
@@ -692,33 +660,28 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             .execute();
 
           Logger.Info(
+            LM,
             `Sucessfully retrieved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
               req.adminID
             }`,
           );
           return {
-            status: 200,
-            msg: {
-              numJobPosts: numJobsPostsinYear,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.OK,
+            msg: { numJobPosts: numJobsPostsinYear },
+          };
         }
         Logger.Info(
+          LM,
           `Sucessfully retriveved the number of approved jobs in YEAR=${new Date().getFullYear()} as ADMIN=${
             req.adminID
           }`,
         );
         return {
-          status: 200,
-          msg: {
-            numJobPosts: numApprovedJobs.numJobPosts,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { numJobPosts: numApprovedJobs.numJobPosts },
+        };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -731,11 +694,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { adminID } = req;
         Helpers.requireParameters(adminID);
 
-        Logger.Info(`ADMIN=${adminID} attempting to list all hidden jobs in the database`);
+        Logger.Info(LM, `ADMIN=${adminID} attempting to list all hidden jobs in the database`);
 
         const hiddenJobs = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Job)
@@ -782,22 +745,20 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           resMap.get(key).push(job);
         });
 
-        Logger.Info(`ADMIN=${adminID} successfully to retrieved all the hidden jobs`);
+        Logger.Info(LM, `ADMIN=${adminID} successfully to retrieved all the hidden jobs`);
 
         return {
-          status: 200,
+          status: StatusCodes.OK,
           msg: {
             token: req.newJbToken,
             hiddenJobs: resMap,
           },
-        } as IResponseWithStatus;
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }

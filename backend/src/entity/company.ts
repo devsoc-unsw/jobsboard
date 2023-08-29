@@ -8,8 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import Job from './job';
-import CompanyAccount from './company_account';
+import type Job from './job';
+import type CompanyAccount from './company_account';
 
 @Entity()
 export default class Company {
@@ -29,25 +29,26 @@ export default class Company {
   public description: string;
 
   @Column({
-    type: 'bytea',
+    type: 'text',
     nullable: true,
   })
-  public logo: Buffer;
+  public logo: string;
 
   @Column({
     default: false,
   })
   public sponsor: boolean;
 
-  @OneToMany((_) => Job, (job) => job.company, {
+  @OneToMany('Job', (job: Job) => job.company, {
     cascade: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn()
   public jobs: Job[];
 
-  // ! this is a depdency cycle problem
-  @OneToOne((_) => CompanyAccount, (companyAccount) => companyAccount.company)
+  // ! dependency cycle resolved using fix:
+  // https://orkhan.gitbook.io/typeorm/docs/relations-faq#avoid-circular-import-errors
+  @OneToOne('CompanyAccount', (companyAccount: CompanyAccount) => companyAccount.company)
   public companyAccount: CompanyAccount;
 
   @CreateDateColumn()

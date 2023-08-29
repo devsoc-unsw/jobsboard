@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 import { AppDataSource } from './config';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
 import AdminAccount from './entity/admin_account';
 import Company from './entity/company';
 import CompanyAccount from './entity/company_account';
@@ -17,6 +17,9 @@ import {
 } from './types/job-field';
 import { AdminAccountInterface, CompanyAccountInterface } from './tests/test-types';
 import testdata from './tests/default_test_data.json';
+import { env } from './environment';
+
+const LM = new LogModule('DEV');
 
 const CreateAdminAccounts = async (admins: AdminAccountInterface[]) => {
   const promises = [];
@@ -81,10 +84,10 @@ const CreateTestObjectsFromJSON = async () => {
 };
 
 export default async function seedDB() {
-  Logger.Info('SEEDING DATABASE');
+  Logger.Info(LM, 'SEEDING DATABASE');
   // clear all tables
-  if (process.env.NODE_ENV === 'development') {
-    Logger.Info('Clearing all tables.');
+  if (env.NODE_ENV === 'development') {
+    Logger.Info(LM, 'Clearing all tables.');
     await AppDataSource.synchronize(true);
   }
 
@@ -360,5 +363,5 @@ export default async function seedDB() {
 
   await CreateTestObjectsFromJSON();
 
-  Logger.Info('FINISHED SEEDING');
+  Logger.Info(LM, 'FINISHED SEEDING');
 }

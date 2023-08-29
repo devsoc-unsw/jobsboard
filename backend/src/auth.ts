@@ -1,30 +1,18 @@
 import { Response, NextFunction } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import AdminAccount from './entity/admin_account';
 import CompanyAccount from './entity/company_account';
 import EStudent from './entity/student';
 import Helpers, { IResponseWithStatus } from './helpers';
-import JWT from './jwt';
-import Logger from './logging';
+import JWT, { IToken, AccountType } from './jwt';
+import { Logger, LogModule } from './logging';
 import Secrets from './secrets';
-import { AuthRequest } from './interfaces/interfaces';
+import { AuthRequest } from './types/request';
+import { env } from './environment';
+import StudentFunctions from './student';
 
-// auth token data structures
-interface IToken {
-  id: string;
-  type: AccountType;
-  lastRequestTimestamp: number;
-  ipAddress: string;
-}
-
-// differentiating between account types
-enum AccountType {
-  Admin,
-  Student,
-  Company,
-}
-
-export { IToken, AccountType };
+const LM = new LogModule('AUTH');
 
 export default class Auth {
   // Student-based authentication functions
@@ -36,13 +24,13 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = req.body;
         Helpers.requireParameters(msg.zID);
         Helpers.requireParameters(msg.password);
         const result = await Auth.authenticateStudent(msg.zID, msg.password);
         if (result === true) {
-          Logger.Info(`Successfully authenticated STUDENT=${msg.zID}`);
+          Logger.Info(LM, `Successfully authenticated STUDENT=${msg.zID}`);
 
           const rawToken: IToken = {
             id: msg.zID,
@@ -59,13 +47,13 @@ export default class Auth {
             .where('Student.zID = :zID', { zID: msg.zID })
             .getOne();
 
-          if (studentQuery === null) {
+          if (!studentQuery) {
             // never logged on here before
-            const student: EStudent = new EStudent();
-            student.zID = msg.zID;
-            student.latestValidToken = token as string;
-            await AppDataSource.manager.save(student);
-            Logger.Info(`Created student record for STUDENT=${msg.zID}`);
+            Logger.Info(LM, `Creating new student for STUDENT=${msg.zID}`);
+            await StudentFunctions.CreateStudent({
+              studentZID: msg.zID,
+              newJbToken: token as string,
+            });
           } else {
             await AppDataSource.createQueryBuilder()
               .update(EStudent)
@@ -75,16 +63,14 @@ export default class Auth {
           }
 
           return {
-            status: 200,
-            msg: {
-              token,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.OK,
+            msg: { token },
+          };
         }
-        Logger.Info(`Failed to authenticate STUDENT=${msg.zID}`);
+        Logger.Info(LM, `Failed to authenticate STUDENT=${msg.zID}`);
         throw new Error('Invalid credentials');
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -98,7 +84,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
@@ -115,11 +101,12 @@ export default class Auth {
             !Secrets.compareHash(companyQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
           ) {
             Logger.Info(
+              LM,
               `Failed to authenticate COMPANY=${msg.username} due to INVALID CREDENTIALS`,
             );
             throw new Error('Invalid credentials');
           }
-          Logger.Info(`Successfully authenticated COMPANY=${msg.username}`);
+          Logger.Info(LM, `Successfully authenticated COMPANY=${msg.username}`);
           const rawToken: IToken = {
             id: companyQuery.id.toString(),
             type: AccountType.Company,
@@ -134,16 +121,14 @@ export default class Auth {
             .execute();
           // credentials match, so grant them a token
           return {
-            status: 200,
-            msg: {
-              token,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.OK,
+            msg: { token },
+          };
         } catch (error) {
-          return { status: 401, msg: undefined } as IResponseWithStatus;
+          return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
         }
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -157,7 +142,7 @@ export default class Auth {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = { username: req.body.username, password: req.body.password };
         Helpers.requireParameters(msg.username);
         Helpers.requireParameters(msg.password);
@@ -172,10 +157,13 @@ export default class Auth {
           if (
             !Secrets.compareHash(adminQuery.hash.valueOf(), Secrets.hash(msg.password).valueOf())
           ) {
-            Logger.Info(`Failed to authenticate ADMIN=${msg.username} due to invalid credentials`);
+            Logger.Info(
+              LM,
+              `Failed to authenticate ADMIN=${msg.username} due to invalid credentials`,
+            );
             throw new Error('Invalid credentials');
           }
-          Logger.Info(`Successfully authenticated ADMIN=${msg.username}`);
+          Logger.Info(LM, `Successfully authenticated ADMIN=${msg.username}`);
           // credentials match, so grant them a token
           const rawToken: IToken = {
             id: adminQuery.id.toString(),
@@ -190,23 +178,21 @@ export default class Auth {
             .where('id = :id', { id: adminQuery.id })
             .execute();
           return {
-            status: 200,
-            msg: {
-              token,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.OK,
+            msg: { token },
+          };
         } catch (error) {
-          return { status: 401, msg: undefined } as IResponseWithStatus;
+          return { status: StatusCodes.UNAUTHORIZED, msg: undefined };
         }
       },
-      () => ({ status: 400, msg: undefined } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
 
   // private functions to assist previous authentication functions
   private static async authenticateStudent(zID: string, password: string): Promise<boolean> {
-    if (process.env.NODE_ENV !== 'development') {
+    if (env.NODE_ENV !== 'development') {
       if (/^[a-zA-Z0-9]+$/.test(zID)) {
         // check if it matches the zID format, throw otherwise.
         Helpers.doesMatchZidFormat(zID);
@@ -222,19 +208,22 @@ export default class Auth {
         });
 
         if (verifyResponse.ok) {
-          Logger.Info(`STUDENT=${zID} is logged in`);
+          Logger.Info(LM, `STUDENT=${zID} is logged in`);
           return true;
         }
 
-        if (verifyResponse.status === 401) {
-          Logger.Info(`Failed to login STUDENT=${zID} due to INCORRECT PASSWORD`);
+        if (verifyResponse.status === StatusCodes.UNAUTHORIZED) {
+          Logger.Info(LM, `Failed to login STUDENT=${zID} due to INCORRECT PASSWORD`);
         } else {
-          Logger.Info(`Failed to login STUDENT=${zID} due to ERROR CODE ${verifyResponse.status}`);
+          Logger.Info(
+            LM,
+            `Failed to login STUDENT=${zID} due to ERROR CODE ${verifyResponse.status}`,
+          );
         }
         return false;
       }
       // if unexpected characters are found, immediately reject
-      Logger.Info(`Failed to login STUDENT=${zID} due to INVALID FORMAT`);
+      Logger.Info(LM, `Failed to login STUDENT=${zID} due to INVALID FORMAT`);
       return false;
     }
     return true;

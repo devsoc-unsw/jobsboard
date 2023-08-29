@@ -48,6 +48,7 @@ const StudentDashboardPage = () => {
     getJobs();
   }, []);
 
+  // TODO: remove lines 51-79 and replace with Fuse for fuzzy search
   const getValue = (object: any, path: string): any => {
     if (!path) return object;
     const properties = path.split('.');
@@ -56,11 +57,24 @@ const StudentDashboardPage = () => {
     return getValue(object[indexKey], properties.join('.'));
   };
 
-  const searchKeys = ['role', 'jobType', 'company.name', 'company.location', 'mode'];
+  const searchKeys = [
+    'role',
+    'jobType',
+    'mode',
+    'company.name',
+    'company.location',
+    'company.logo'
+  ];
+
   const filteredJobs = jobs.filter((job) => {
     return searchKeys.some((key) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-      return getValue(job, key).toLowerCase().includes(query);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+      const val = getValue(job, key);
+      if (val) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        return val.toLowerCase().includes(query);
+      }
+      return val;
     });
   });
 

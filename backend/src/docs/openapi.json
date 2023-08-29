@@ -917,6 +917,83 @@
             }
           }
         }
+      },
+      "/student/job/:queryString": {
+        "get": {
+          "summary": "Returns a filtered list of job posts corresponding to student query",
+          "description": "Query the database to find all the approved job posts corresponding to the constructed query string, ranked by company name, role, job mode, then job type",
+          "tags": [
+            "student"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "queryString",
+              "required": true,
+              "schema": {
+                "type": "string"
+              },
+              "description": "a Fuse.js query string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the relevant job posts",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Job"
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to query the database and find relevant job posts"
+            }
+          }
+        }
+      },
+      "/student/profile": {
+        "get": {
+          "summary": "Returns a student profile",
+          "description": "Query the database to find the student profile corresponding to the student zID",
+          "tags": [
+            "student"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved the student profile",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/StudentProfile"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to query the database and find the student profile"
+            }
+          }
+        },
+        "put": {
+          "summary": "Edits a student profile",
+          "description": "Updates the database with student profile details",
+          "tags": [
+            "student"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully edited the student profile"
+            },
+            "400": {
+              "description": "Failed to update the database with new details"
+            }
+          }
+        }
       }
     },
     "components": {
@@ -1443,6 +1520,52 @@
             "username": "A Good Company",
             "hash": "4d30494cCb4b10792FE7CBbaA2CCF861dAa0e5ad951ebC7F5ce281B8b0dAec54",
             "company": 1
+          }
+        },
+        "Student": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "zID": {
+              "type": "string"
+            },
+            "latestValidToken": {
+              "type": "string"
+            },
+            "studentProfile": {
+              "type": "integer"
+            }
+          },
+          "example": {
+            "id": 1,
+            "zID": "z5555555",
+            "latestValidToken": "some string",
+            "studentProfile": 1
+          }
+        },
+        "StudentProfile": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "gradYear": {
+              "type": "integer"
+            },
+            "wam": {
+              "$ref": "#/components/schemas/WamRequirements"
+            },
+            "workingRights": {
+              "$ref": "#/components/schemas/WorkingRights"
+            }
+          },
+          "example": {
+            "id": 1,
+            "startYear": 2023,
+            "wam": "HD",
+            "workingRights": "no_wr"
           }
         }
       }

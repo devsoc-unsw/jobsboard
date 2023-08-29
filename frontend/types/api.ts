@@ -97,6 +97,10 @@ export type CompanyJobsPayload = {
   companyJobs: Job[];
 };
 
+export type CompanyLogoStatusPayload = {
+  found: boolean;
+};
+
 export type HiddenJob = Job & {
   approved: boolean;
   deleted: boolean;

@@ -1,5 +1,4 @@
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
@@ -7,7 +6,8 @@ import 'reflect-metadata';
 
 import Auth from './auth';
 import seedDB from './dev';
-import Logger from './logging';
+import { Logger, LogModule } from './logging';
+import { env } from './environment';
 import Middleware from './middleware';
 import { AppDataSource } from './config';
 import AdminFunctions from './admin';
@@ -44,22 +44,25 @@ import {
   VerifyCompanyAccountRequest,
   UnverifyCompanyAccountRequest,
   SearchJobRequest,
-} from './interfaces/interfaces';
+  StudentGetProfileRequest,
+  StudentEditProfileRequest,
+} from './types/request';
 
-dotenv.config();
-Logger.Init();
+const LM = new LogModule('INDEX');
 
 const app = express();
-const port = process.env.SERVER_PORT;
+const port = env.SERVER_PORT;
 app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({
-  limit: '5mb',
-  extended: true,
-}));
+app.use(
+  express.urlencoded({
+    limit: '5mb',
+    extended: true,
+  }),
+);
 app.use(helmet());
 
 let corsOptions;
-if (process.env.NODE_ENV !== 'development') {
+if (env.NODE_ENV !== 'development') {
   // assuming production, set up a particular config and allow only requests from
   // the current URL to be consumed
   const whitelist = ['https://jobsboard.csesoc.unsw.edu.au'];
@@ -67,8 +70,7 @@ if (process.env.NODE_ENV !== 'development') {
     origin: (origin: string, callback: (error: Error, status?: boolean) => void) => {
       if (whitelist.indexOf(origin) !== -1) {
         callback(null, true);
-      }
-      else {
+      } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
@@ -484,7 +486,39 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
-if (process.env.NODE_ENV === 'development') {
+app.get(
+  '/student/profile',
+  cors(corsOptions),
+  (req: AuthoriseStudentRequest, res, next) => {
+    (async () => {
+      await Middleware.authoriseStudentMiddleware(req, res, next);
+    })();
+  },
+  (req: StudentGetProfileRequest, res, next) => {
+    (async () => {
+      await StudentFunctions.GetStudentProfile(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.put(
+  '/student/profile/edit',
+  cors(corsOptions),
+  (req: AuthoriseStudentRequest, res, next) => {
+    (async () => {
+      await Middleware.authoriseStudentMiddleware(req, res, next);
+    })();
+  },
+  (req: StudentEditProfileRequest, res, next) => {
+    (async () => {
+      await StudentFunctions.EditStudentProfile(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+if (env.NODE_ENV === 'development') {
   app.post('/email', (req, res) => {
     (async () => {
       await MailFunctions.SendTestEmail(req, res);
@@ -495,15 +529,14 @@ if (process.env.NODE_ENV === 'development') {
 
 app.listen(port, () => {
   (async () => {
-    if (process.env.NODE_ENV === 'development') {
+    if (env.NODE_ENV === 'development') {
       await bootstrap();
-    }
-    else {
+    } else {
       await AppDataSource.initialize();
     }
-    if (process.env.NODE_ENV === 'production') {
+    if (env.NODE_ENV === 'production') {
       MailFunctions.InitMailQueueScheduler(2000);
     }
-    Logger.Info(`SERVER STARTED AT PORT=${port}`);
+    Logger.Info(LM, `SERVER STARTED AT PORT=${port}`);
   })();
 });

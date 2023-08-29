@@ -267,216 +267,216 @@ describe("authentication", () => {
           }
         );
 
-      it(
-        "fails when requesting to add a job with valid a mailto",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              role: "some generic SWE role",
-              description: "just doing some cool SWE things",
-              applicationLink: "https://some.application.link",
-              expiry: getFutureDateValue(),
-              isPaid: true,
-              additionalInfo: "",
-              jobMode: "onsite",
-              studentDemographic: ["penultimate", "final_year"],
-              jobType: "intern",
-              workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
-            })
-            .expect(200)
-            .end( function (_, res) {
-              expect(res.status).to.equal(403);
-              done();
-            });
-        }
-      );
+        it(
+          "fails when requesting to add a job with valid a mailto",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                role: "some generic SWE role",
+                description: "just doing some cool SWE things",
+                applicationLink: "https://some.application.link",
+                expiry: getFutureDateValue(),
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"      
+              })
+              .expect(200)
+              .end( function (_, res) {
+                expect(res.status).to.equal(403);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails when requesting to add a job with an unsupported protocol (phone)",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              role: "some generic SWE role",
-              description: "just doing some cool SWE things",
-              applicationLink: "call:0298765432",
-              expiry: getFutureDateValue(),
-              isPaid: true,
-              additionalInfo: "",
-              jobMode: "onsite",
-              studentDemographic: ["penultimate", "final_year"],
-              jobType: "intern",
-              workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
-            })
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails when requesting to add a job with an unsupported protocol (phone)",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                role: "some generic SWE role",
+                description: "just doing some cool SWE things",
+                applicationLink: "call:0298765432",
+                expiry: getFutureDateValue(),
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"      
+              })
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails when requesting to add a job with an unsupported protocol (ftp)",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              role: "some generic SWE role",
-              description: "just doing some cool SWE things",
-              applicationLink: "ftp://some.randomweb.server",
-              expiry: getFutureDateValue(),
-              isPaid: true,
-              additionalInfo: "",
-              jobMode: "onsite",
-              studentDemographic: ["penultimate", "final_year"],
-              jobType: "intern",
-              workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
-            })
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails when requesting to add a job with an unsupported protocol (ftp)",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                role: "some generic SWE role",
+                description: "just doing some cool SWE things",
+                applicationLink: "ftp://some.randomweb.server",
+                expiry: getFutureDateValue(),
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"      
+              })
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails to add job with just whitespace in string",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              role: " ",
-              description: "just doing some cool SWE things",
-              expiry: getFutureDateValue(),
-              applicationLink: "http://sample.application.link",
-              isPaid: true,
-              additionalInfo: "",
-              jobMode: "onsite",
-              studentDemographic: ["penultimate", "final_year"],
-              jobType: "intern",
-              workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"
-            })
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails to add job with just whitespace in string",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                role: " ",
+                description: "just doing some cool SWE things",
+                expiry: getFutureDateValue(),
+                applicationLink: "http://sample.application.link",
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"
+              })
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails to add job with empty strings in a field",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              role: "some generic SWE role",
-              description: "",
-              expiry: getFutureDateValue(),
-              applicationLink: "http://sample.application.link",
-              isPaid: true,
-              additionalInfo: "",
-              jobMode: "onsite",
-              studentDemographic: ["penultimate", "final_year"],
-              jobType: "intern",
-              workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
-            })
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails to add job with empty strings in a field",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                role: "some generic SWE role",
+                description: "",
+                expiry: getFutureDateValue(),
+                applicationLink: "http://sample.application.link",
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"      
+              })
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails when requesting to add a job missing the role field",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              description: "just doing some cool SWE things",
-              expiry: getFutureDateValue(),
-              applicationLink: "http://sample.application.link",
-              isPaid: true,
-              additionalInfo: "",
-              jobMode: "onsite",
-              studentDemographic: ["penultimate", "final_year"],
-              jobType: "intern",
-              workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
-            })
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails when requesting to add a job missing the role field",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                description: "just doing some cool SWE things",
+                expiry: getFutureDateValue(),
+                applicationLink: "http://sample.application.link",
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"      
+              })
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails when requesting to add a job missing the description field",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              role: "some generic SWE role",
-              expiry: getFutureDateValue(),
-              applicationLink: "http://sample.application.link",
-              isPaid: true,
-              additionalInfo: "",
-              jobMode: "onsite",
-              studentDemographic: ["penultimate", "final_year"],
-              jobType: "intern",
-              workingRights: ["aus_ctz", "aus_perm_res"],
-              wamRequirements: "C"      
-            })
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails when requesting to add a job missing the description field",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                role: "some generic SWE role",
+                expiry: getFutureDateValue(),
+                applicationLink: "http://sample.application.link",
+                isPaid: true,
+                additionalInfo: "",
+                jobMode: "onsite",
+                studentDemographic: ["penultimate", "final_year"],
+                jobType: "intern",
+                workingRights: ["aus_ctz", "aus_perm_res"],
+                wamRequirements: "C"      
+              })
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails when requesting to add a job with unrelated fields",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({
-              test: "some generic SWE role",
-              undefined: "just doing some cool SWE things",
-            })
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails when requesting to add a job with unrelated fields",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({
+                test: "some generic SWE role",
+                undefined: "just doing some cool SWE things",
+              })
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
 
-      it(
-        "fails when requesting to add a job missing a payload",
-        function (done) {
-          server.put("/jobs")
-            .set('Authorization', this.unverifiedCompanyToken)
-            .send({})
-            .expect(400)
-            .end( function (_, res) {
-              expect(res.status).to.equal(400);
-              done();
-            });
-        }
-      );
+        it(
+          "fails when requesting to add a job missing a payload",
+          function (done) {
+            server.put("/jobs")
+              .set('Authorization', this.unverifiedCompanyToken)
+              .send({})
+              .expect(400)
+              .end( function (_, res) {
+                expect(res.status).to.equal(400);
+                done();
+              });
+          }
+        );
       });
 
       describe("using a verified company account", () => {

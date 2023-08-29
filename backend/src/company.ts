@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { Brackets } from 'typeorm';
+import { StatusCodes } from 'http-status-codes';
 import { AppDataSource } from './config';
 import Company from './entity/company';
 import CompanyAccount from './entity/company_account';
@@ -7,16 +8,14 @@ import Job from './entity/job';
 import Helpers, { IResponseWithStatus } from './helpers';
 import Secrets from './secrets';
 import MailFunctions from './mail';
-import Logger from './logging';
-import { AccountType, IToken } from './auth';
-import JWT from './jwt';
+import { Logger, LogModule } from './logging';
+import JWT, { AccountType, IToken } from './jwt';
 import {
   CompanyInfoRequest,
   CompanyJobsRequest,
   CreateCompanyRequest,
   CreateJobRequest,
   GetHiddenJobsRequest,
-  JobInfo,
   EditJobRequest,
   CompanyGetJobsRequest,
   DeleteJobRequest,
@@ -26,7 +25,10 @@ import {
   CompanyUploadLogoRequest,
   CheckCompanyLogoRequest,
   UpdateCompanyDetailsRequest,
-} from './interfaces/interfaces';
+} from './types/request';
+import { JobInfo } from './types/shared';
+
+const LM = new LogModule('COMPANY');
 
 export default class CompanyFunctions {
   public static async GetCompanyInfo(
@@ -37,8 +39,9 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         Logger.Info(
+          LM,
           `STUDENT=${req.studentZID} getting company info for COMPANY=${req.params.companyID}`,
         );
         const companyInfo = await AppDataSource.getRepository(Company)
@@ -49,19 +52,17 @@ export default class CompanyFunctions {
           .getOne();
 
         return {
-          status: 200,
+          status: StatusCodes.OK,
           msg: {
             token: req.newJbToken,
             companyInfo,
           },
-        } as IResponseWithStatus;
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -74,8 +75,11 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`STUDENT=${req.studentZID} getting jobs for COMPANY=${req.params.companyID}`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(
+          LM,
+          `STUDENT=${req.studentZID} getting jobs for COMPANY=${req.params.companyID}`,
+        );
         const companyJobs = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
           .leftJoinAndSelect('Job.company', 'company')
@@ -100,19 +104,17 @@ export default class CompanyFunctions {
           .getMany();
 
         return {
-          status: 200,
+          status: StatusCodes.OK,
           msg: {
             token: req.newJbToken,
             companyJobs,
           },
-        } as IResponseWithStatus;
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -125,7 +127,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const msg = {
           location: req.body.location,
           name: req.body.name,
@@ -141,6 +143,7 @@ export default class CompanyFunctions {
         Helpers.requireParameters(msg.logo);
 
         Logger.Info(
+          LM,
           `Attempting to create company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
         );
         // check if the company account exists with the same name
@@ -156,16 +159,13 @@ export default class CompanyFunctions {
           .getOne();
         if (companyAccountUsernameSearchResult !== null || companyNameSearchResult !== null) {
           // company exists, send conflict error
-          return {
-            status: 409,
-            msg: undefined,
-          } as IResponseWithStatus;
+          return { status: StatusCodes.CONFLICT, msg: undefined };
         }
 
         const newCompany = new Company();
         newCompany.name = msg.name;
         newCompany.location = msg.location;
-        newCompany.logo = Buffer.from(msg.logo, 'utf8');
+        newCompany.logo = msg.logo;
 
         const newCompanyAccount = new CompanyAccount();
         newCompanyAccount.username = msg.username;
@@ -179,6 +179,7 @@ export default class CompanyFunctions {
         await companyAccountRepository.save(newCompanyAccount);
 
         Logger.Info(
+          LM,
           `Created company with USERNAME=${msg.username} NAME=${msg.name} LOCATION=${msg.location}`,
         );
 
@@ -195,15 +196,9 @@ export default class CompanyFunctions {
         <p>CSESoc Jobs Board Administrator</p>
         `,
         );
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -216,14 +211,12 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         if (req.companyAccountID === undefined) {
           return {
-            status: 401,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.UNAUTHORIZED,
+            msg: { token: req.newJbToken },
+          };
         }
         // ensure required parameters are present
         const msg = {
@@ -250,6 +243,7 @@ export default class CompanyFunctions {
         Helpers.validApplicationLink(msg.applicationLink);
 
         Logger.Info(
+          LM,
           `Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`,
         );
 
@@ -278,11 +272,9 @@ export default class CompanyFunctions {
         // prevent job from being posted since the provided company account is not verified
         if (companyAccount === null) {
           return {
-            status: 403,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.FORBIDDEN,
+            msg: { token: req.newJbToken },
+          };
         }
 
         // add the new job to the list and commit to db
@@ -292,7 +284,7 @@ export default class CompanyFunctions {
         // get the supposed id for the new job and check if it's queryable from the db
         const newJobID = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
 
-        Logger.Info(`Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
+        Logger.Info(LM, `Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
 
         await AppDataSource.getRepository(Job)
           .createQueryBuilder()
@@ -313,19 +305,14 @@ export default class CompanyFunctions {
         `,
         );
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            id: newJobID,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, id: newJobID },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -338,11 +325,14 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const companyID = req.companyAccountID;
         Helpers.requireParameters(companyID);
 
-        Logger.Info(`COMPANY_ACCOUNT=${req.companyID} attempting to list all of its hidden jobs`);
+        Logger.Info(
+          LM,
+          `COMPANY_ACCOUNT=${req.companyID} attempting to list all of its hidden jobs`,
+        );
 
         const hiddenJobs = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
@@ -376,23 +366,19 @@ export default class CompanyFunctions {
           .getMany();
 
         Logger.Info(
+          LM,
           `COMPANY_ACCOUNT=${req.companyID} successfully to retrieved all of its hidden jobs`,
         );
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            hiddenJobs,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, hiddenJobs },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -427,7 +413,7 @@ export default class CompanyFunctions {
   public static async EditJob(this: void, req: EditJobRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const companyId = req.companyAccountID;
         Helpers.requireParameters(companyId);
 
@@ -463,7 +449,7 @@ export default class CompanyFunctions {
         Helpers.isDateInTheFuture(jobInfo.expiry);
         Helpers.validApplicationLink(jobInfo.applicationLink);
 
-        Logger.Info(`COMPANY=${companyId} attempting to edit JOB=${jobInfo.id}`);
+        Logger.Info(LM, `COMPANY=${companyId} attempting to edit JOB=${jobInfo.id}`);
 
         // verify that job x belongs to the company
         const oldJob = await AppDataSource.getRepository(Job)
@@ -475,11 +461,9 @@ export default class CompanyFunctions {
 
         if (oldJob === null) {
           return {
-            status: 403,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.FORBIDDEN,
+            msg: { token: req.newJbToken },
+          };
         }
 
         // update the db
@@ -510,24 +494,16 @@ export default class CompanyFunctions {
 
         if (!CompanyFunctions.isJobUpdated(newJob, jobInfo)) {
           return {
-            status: 403,
-            msg: {
-              token: req.newJbToken,
-            },
-          } as IResponseWithStatus;
+            status: StatusCodes.FORBIDDEN,
+            msg: { token: req.newJbToken },
+          };
         }
 
-        Logger.Info(`COMPANY=${companyId} sucessfully edited JOB=${jobInfo.id}`);
+        Logger.Info(LM, `COMPANY=${companyId} sucessfully edited JOB=${jobInfo.id}`);
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -540,8 +516,11 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(`COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`);
+      async (): Promise<IResponseWithStatus> => {
+        Logger.Info(
+          LM,
+          `COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`,
+        );
         const companyJobs = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Job)
             .createQueryBuilder()
@@ -597,19 +576,14 @@ export default class CompanyFunctions {
         });
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-            companyJobs: fixedCompanyJobs,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken, companyJobs: fixedCompanyJobs },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -622,43 +596,44 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
-        Logger.Info(
-          `COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`,
-        );
-        const jobToDelete = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .leftJoinAndSelect('Job.company', 'company')
-            .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
-            .andWhere('Job.id = :jobID', { jobID: req.params.jobID })
-            .andWhere('Job.deleted = :deleted', { deleted: false })
-            .getOne(),
-          `Failed to find JOB=${req.params.jobID} for COMPANY_ACCOUNT=${req.companyAccountID}`,
-        );
+      async (): Promise<IResponseWithStatus> => {
+        const { companyAccountID, params } = req;
+        const { jobID } = params;
 
-        // found a valid job that can be deleted
+        Logger.Info(LM, `COMPANY=${companyAccountID} attempting to mark JOB=${jobID} as deleted`);
+
+        const jobToDelete = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect('Job.company', 'company')
+          .where('company.id = :id', { id: parseInt(companyAccountID, 10) })
+          .andWhere('Job.id = :jobID', { jobID })
+          .andWhere('Job.deleted = :deleted', { deleted: false })
+          .getOne();
+
+        if (!jobToDelete) {
+          throw Error(`Could not find removeable JOB=${jobID} for COMPANY=${companyAccountID}`);
+        }
+
         await AppDataSource.createQueryBuilder()
           .update(Job)
           .set({ deleted: true })
-          .where('id = :id', { id: jobToDelete.id })
+          .where('id = :id', { id: jobID })
           .execute();
 
-        Logger.Info(`COMPANY=${req.companyAccountID} marked JOB=${req.params.jobID} as deleted`);
+        Logger.Info(
+          LM,
+          `COMPANY=${req.companyAccountID} marked JOB=${req.params.jobID} as deleted`,
+        );
 
         return {
-          status: 200,
-          msg: {
-            token: req.newJbToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -671,11 +646,12 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         // check for required params
         const receipientEmail = req.body.username;
         Helpers.requireParameters(receipientEmail);
         Logger.Info(
+          LM,
           `Attempting to send an email to company with USERNAME=${receipientEmail} to reset their password`,
         );
         // check if company with provided username exists
@@ -712,17 +688,12 @@ export default class CompanyFunctions {
         <p>The JobsBoard Team</p>
         `,
         );
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
       () => ({
-        status: 400,
-        msg: {
-          token: req.newJbToken,
-        },
-      } as IResponseWithStatus),
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
       next,
     );
   }
@@ -735,11 +706,11 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { username } = req.params;
         Helpers.requireParameters(username);
 
-        Logger.Info(`Retrieving paswsword reset token for COMPANY=${username} `);
+        Logger.Info(LM, `Retrieving paswsword reset token for COMPANY=${username} `);
 
         const resetToken = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(CompanyAccount)
@@ -754,16 +725,11 @@ export default class CompanyFunctions {
         Helpers.requireParameters(resetToken.latestValidResetToken);
 
         return {
-          status: 200,
-          msg: {
-            token: resetToken.latestValidResetToken,
-          },
-        } as IResponseWithStatus;
+          status: StatusCodes.OK,
+          msg: { token: resetToken.latestValidResetToken },
+        };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -776,7 +742,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         // check if required parameters are supplied
         const msg = {
           newPassword: req.body.newPassword,
@@ -794,7 +760,7 @@ export default class CompanyFunctions {
           `Failed to find company account with ID=${jwt.id}`,
         );
 
-        Logger.Info(`Attempting to reset password for COMPANY=${companyAccount.id}`);
+        Logger.Info(LM, `Attempting to reset password for COMPANY=${companyAccount.id}`);
         // update the company's password with the new password
         await AppDataSource.createQueryBuilder()
           .update(CompanyAccount)
@@ -802,7 +768,7 @@ export default class CompanyFunctions {
           .where('id = :id', { id: companyAccount.id })
           .execute();
 
-        Logger.Info(`Password for COMPANY=${companyAccount.id} updated`);
+        Logger.Info(LM, `Password for COMPANY=${companyAccount.id} updated`);
 
         await AppDataSource.createQueryBuilder()
           .update(CompanyAccount)
@@ -810,15 +776,9 @@ export default class CompanyFunctions {
           .where('id = :id', { id: companyAccount.id })
           .execute();
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -826,33 +786,25 @@ export default class CompanyFunctions {
   public static async UploadLogo(req: CompanyUploadLogoRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { companyAccountID } = req;
 
         Helpers.requireParameters(companyAccountID);
         Helpers.requireParameters(req.body.logo);
 
-        Logger.Info(`COMPANY=${companyAccountID} attempting to upload a logo`);
+        Logger.Info(LM, `COMPANY=${companyAccountID} attempting to upload a logo`);
 
         await AppDataSource.createQueryBuilder()
           .update(Company)
-          .set({
-            logo: Buffer.from(req.body.logo, 'utf8'),
-          })
+          .set({ logo: req.body.logo })
           .where('id = :id', { id: companyAccountID })
           .execute();
 
-        Logger.Info(`COMPANY=${companyAccountID} successfully uploaded a logo`);
+        Logger.Info(LM, `COMPANY=${companyAccountID} successfully uploaded a logo`);
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -865,7 +817,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const companyLogo = await Helpers.doSuccessfullyOrFail(
           async () => AppDataSource.getRepository(Company)
             .createQueryBuilder()
@@ -875,22 +827,13 @@ export default class CompanyFunctions {
           `Failed to find logo for COMPANY=${req.companyAccountID}.`,
         );
 
-        if (!companyLogo) {
-          return {
-            status: 404,
-            msg: undefined,
-          } as IResponseWithStatus;
-        }
+        const found = !!companyLogo;
+        const msg = found ? 'Found logo for' : 'Did not find logo for';
+        Logger.Info(LM, `${msg} COMPANY=${req.companyAccountID}`);
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: { found } };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }
@@ -903,7 +846,7 @@ export default class CompanyFunctions {
   ) {
     await Helpers.catchAndLogError(
       res,
-      async () => {
+      async (): Promise<IResponseWithStatus> => {
         const { companyAccountID } = req;
 
         // check if required parameters are supplied
@@ -916,7 +859,7 @@ export default class CompanyFunctions {
         // ? not sure if the sponsor status can be directly changed by the company itself
         // Helpers.requireParameters(req.body.sponsor);
 
-        Logger.Info(`COMPANY=${companyAccountID} attempting to update its details`);
+        Logger.Info(LM, `COMPANY=${companyAccountID} attempting to update its details`);
 
         await AppDataSource.createQueryBuilder()
           .update(Company)
@@ -929,17 +872,11 @@ export default class CompanyFunctions {
           .where('id = :id', { id: companyAccountID })
           .execute();
 
-        Logger.Info(`COMPANY=${companyAccountID} successfully updated it's details`);
+        Logger.Info(LM, `COMPANY=${companyAccountID} successfully updated it's details`);
 
-        return {
-          status: 200,
-          msg: undefined,
-        } as IResponseWithStatus;
+        return { status: StatusCodes.OK, msg: undefined };
       },
-      () => ({
-        status: 400,
-        msg: undefined,
-      } as IResponseWithStatus),
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }

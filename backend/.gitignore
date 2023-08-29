@@ -1,2 +1,3 @@
 # ignore db directories
 db
+**/*.log

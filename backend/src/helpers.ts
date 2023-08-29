@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
-import Logger from './logging';
+import { StatusCodes } from 'http-status-codes';
+import { Logger, LogModule } from './logging';
 import {
   JobMode,
   JobType,
@@ -8,9 +9,11 @@ import {
   WorkingRights,
 } from './types/job-field';
 
+const LM = new LogModule('HELPERS');
+
 interface IResponseWithStatus {
   msg: unknown;
-  status: number;
+  status: StatusCodes;
 }
 
 export default class Helpers {
@@ -55,7 +58,7 @@ export default class Helpers {
     {
       const res = await func();
       if (res === undefined) {
-        Logger.Error(failMessage);
+        Logger.Error(LM, failMessage);
         throw new Error(failMessage);
       }
       return res;
@@ -73,10 +76,10 @@ export default class Helpers {
     }
     catch (error: unknown) {
       if (error instanceof Error) {
-        Logger.Error(`EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
+        Logger.Error(LM, `EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
       }
       else {
-        Logger.Error('Unknown error was thrown');
+        Logger.Error(LM, 'Unknown error was thrown');
       }
       response = funcOnError();
     }
@@ -89,7 +92,7 @@ export default class Helpers {
       }
     }
     else {
-      Logger.Error('Not performing any further action as headers are already sent.');
+      Logger.Error(LM, 'Not performing any further action as headers are already sent.');
     }
     if (next) next();
   }
@@ -100,9 +103,16 @@ export default class Helpers {
     }
   }
 
-  public static isDateInTheFuture(val: number) {
-    if (val <= Date.now()) {
-      throw new Error(`Attempted to create a job post with a date in the past=${val}`);
+  public static isDateInTheFuture(value: number) {
+    if (value <= Date.now()) {
+      throw new Error(`Attempted to create a job post with a date in the past=${value}`);
+    }
+  }
+
+  public static isValidGradYear(value: number): void {
+    this.requireParameters(value);
+    if (value < (new Date()).getFullYear()) {
+      throw new Error(`Graduation year occurred in the past=${value}`);
     }
   }
 

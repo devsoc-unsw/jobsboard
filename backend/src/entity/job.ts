@@ -1,7 +1,7 @@
 import {
   Column, Entity, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn,
 } from 'typeorm';
-import Company from './company';
+import type Company from './company';
 import {
   JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements,
 } from '../types/job-field';
@@ -95,7 +95,7 @@ export default class Job {
   })
   public expiry: Date;
 
-  @ManyToOne((_) => Company, (company) => company.jobs)
+  @ManyToOne('Company', (company: Company) => company.jobs)
   public company: Company;
 
   @CreateDateColumn()
