@@ -42,6 +42,7 @@ import {
   StudentPaginatedJobsRequest,
   UpdateCompanyDetailsRequest,
   VerifyCompanyAccountRequest,
+  UnverifyCompanyAccountRequest,
   SearchJobRequest,
   StudentGetProfileRequest,
   StudentEditProfileRequest,
@@ -361,6 +362,18 @@ app.patch(
   (req: VerifyCompanyAccountRequest, res, next) => {
     (async () => {
       await AdminFunctions.VerifyCompanyAccount(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.patch(
+  '/admin/company/:companyAccountID/unverify',
+  cors(corsOptions),
+  Middleware.authoriseAdminMiddleware,
+  (req: UnverifyCompanyAccountRequest, res, next) => {
+    (async () => {
+      await AdminFunctions.UnverifyCompanyAccount(req, res, next);
     })();
   },
   Middleware.genericLoggingMiddleware,

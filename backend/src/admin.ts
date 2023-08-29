@@ -13,6 +13,7 @@ import {
   AdminJobRequest,
   GeneralAdminRequest,
   VerifyCompanyAccountRequest,
+  UnverifyCompanyAccountRequest,
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
 } from './types/request';
@@ -332,6 +333,70 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     );
   }
 
+  public static async UnverifyCompanyAccount(
+    this: void,
+    req: UnverifyCompanyAccountRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async () => {
+        Logger.Info(
+          LM,
+          `Admin ID=${req.adminID} attempting to unverify COMPANY=${req.params.companyAccountID}`,
+        );
+        const pendingCompany = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder()
+            .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
+            .andWhere('CompanyAccount.verified = :verified', { verified: true })
+            .getOne(),
+          `Couldn't find a verified company for COMPANY_ACCOUNT=${req.params.companyAccountID}.`,
+        );
+
+        await AppDataSource.createQueryBuilder()
+          .update(CompanyAccount)
+          .set({ verified: false })
+          .where('id = :id', { id: pendingCompany.id })
+          .execute();
+
+        // Unapprove all jobs associated with company
+        await AppDataSource.createQueryBuilder()
+          .update(Job)
+          .set({ approved: false })
+          .where('company.id = :companyId', { companyId: pendingCompany.id })
+          .execute();
+
+        // send an email confirming that the company has been unverified
+        await MailFunctions.AddMailToQueue(
+          pendingCompany.username,
+          'CSESoc Jobs Board - Your account has been unverified',
+          `
+          Your company account has been unverified. If you believe that there has been an error or you would like to understand the reasons behind the unverification, we encourage you to get in touch with us.
+          <br>
+          <p>Best regards,</p>
+          <p>CSESoc Jobs Board Administrator</p>
+          `,
+        );
+        Logger.Info(LM, `Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`);
+        return {
+          status: 200,
+          msg: {
+            token: req.newJbToken,
+          },
+        } as IResponseWithStatus;
+      },
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      } as IResponseWithStatus),
+      next,
+    );
+  }
+
   public static async ListAllCompaniesAsAdmin(
     this: void,
     req: GeneralAdminRequest,
@@ -353,6 +418,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           id: companyAccount.company.id,
           name: companyAccount.company.name,
           location: companyAccount.company.location,
+          logo: companyAccount.company.logo,
+          username: companyAccount.username,
+          createdAt: companyAccount.company.createdAt,
+          description: companyAccount.company.description,
         }));
 
         return {

@@ -663,6 +663,32 @@
           }
         }
       },
+      "/admin/company/:companyID/unverify": {
+        "patch": {
+          "summary": "Unverify a company account and unapprove all associated jobs as an admin",
+          "description": "Unverify a company account corresponding to 'companyID' and unapprove all associated jobs logged in as an admin",
+          "tags": [
+            "admin"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "companyID",
+              "type": "integer",
+              "required": true,
+              "example": 1
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Company corresponding to companyID has been successfully unverified"
+            },
+            "400": {
+              "description": "Missing parameters or invalid credentials"
+            }
+          }
+        }
+      },
       "/job/admin/hidden": {
         "get": {
           "summary": "Returns a list of all hidden jobs",
