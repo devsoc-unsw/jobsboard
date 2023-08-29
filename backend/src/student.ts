@@ -9,11 +9,11 @@ import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
 
 import {
-  JobMode,
-  StudentDemographic,
-  JobType,
+  // JobMode,
+  // StudentDemographic,
+  // JobType,
   WorkingRights,
-  WamRequirements,
+  // WamRequirements,
 } from './types/job-field';
 
 import { StudentBase } from './types/shared';
@@ -31,47 +31,47 @@ const LM = new LogModule('STUDENT');
 
 const paginatedJobLimit = 10;
 
-const MapJobsToObjects = (jobs: Job[]) => jobs.map((job: Job) => {
-  const newCompany: {
-    name: string;
-    description: string;
-    location: string;
-  } = {
-    name: job.company.name,
-    description: job.company.description,
-    location: job.company.location,
-  };
+// const MapJobsToObjects = (jobs: Job[]) => jobs.map((job: Job) => {
+//   const newCompany: {
+//     name: string;
+//     description: string;
+//     location: string;
+//   } = {
+//     name: job.company.name,
+//     description: job.company.description,
+//     location: job.company.location,
+//   };
 
-  const newJob: {
-    applicationLink: string;
-    company: typeof newCompany;
-    description: string;
-    role: string;
-    id: number;
-    mode: JobMode;
-    studentDemographic: StudentDemographic[];
-    jobType: JobType;
-    workingRights: WorkingRights[];
-    additionalInfo: string;
-    wamRequirements: WamRequirements;
-    isPaid: boolean;
-  } = {
-    applicationLink: job.applicationLink,
-    company: newCompany,
-    description: job.description,
-    role: job.role,
-    id: job.id,
-    mode: job.mode,
-    studentDemographic: job.studentDemographic,
-    jobType: job.jobType,
-    workingRights: job.workingRights,
-    additionalInfo: job.additionalInfo,
-    wamRequirements: job.wamRequirements,
-    isPaid: job.isPaid,
-  };
+//   const newJob: {
+//     applicationLink: string;
+//     company: typeof newCompany;
+//     description: string;
+//     role: string;
+//     id: number;
+//     mode: JobMode;
+//     studentDemographic: StudentDemographic[];
+//     jobType: JobType;
+//     workingRights: WorkingRights[];
+//     additionalInfo: string;
+//     wamRequirements: WamRequirements;
+//     isPaid: boolean;
+//   } = {
+//     applicationLink: job.applicationLink,
+//     company: newCompany,
+//     description: job.description,
+//     role: job.role,
+//     id: job.id,
+//     mode: job.mode,
+//     studentDemographic: job.studentDemographic,
+//     jobType: job.jobType,
+//     workingRights: job.workingRights,
+//     additionalInfo: job.additionalInfo,
+//     wamRequirements: job.wamRequirements,
+//     isPaid: job.isPaid,
+//   };
 
-  return newJob;
-});
+//   return newJob;
+// });
 
 export default class StudentFunctions {
   public static async GetPaginatedJobs(
@@ -286,7 +286,7 @@ export default class StudentFunctions {
           .andWhere('Job.expiry > :expiry', { expiry: new Date() })
           .getMany();
 
-        const fixedJobs = MapJobsToObjects(allJobs);
+        // const fixedJobs = MapJobsToObjects(allJobs);
         const options = {
           // weight of keys are normalised back to [0, 1]
           keys: [
@@ -308,7 +308,8 @@ export default class StudentFunctions {
             },
           ],
         };
-        const fuseInstance = new Fuse(fixedJobs, options);
+
+        const fuseInstance = new Fuse(allJobs, options);
         const filteredResult = fuseInstance.search(queryString);
 
         return {
