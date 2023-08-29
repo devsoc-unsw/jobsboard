@@ -15,7 +15,7 @@ const RecruitmentModal = ({ open, onClose }: RecruitmentModalProps) => {
         {/* <!-- Modal header --> */}
         <div className="flex justify-between items-center p-5 rounded-t border-b dark:border-gray-600">
           <h2 className="text-xl font-bold text-jb-headings dark:text-white">
-            Are you looking to get involved?
+            👋 &nbsp; Are you looking to get involved?
           </h2>
           <button
             type="button"
@@ -28,7 +28,7 @@ const RecruitmentModal = ({ open, onClose }: RecruitmentModalProps) => {
         {/* <!-- Modal body --> */}
         <div className="flex items-start flex-col p-6 space-y-6 text-jb-subheadings text-lg text-justify">
           <p>
-            Here at Jobsboard, we pride ourselves on our great work ethic, teamwork and camaraderie.
+            Here at Jobsboard, we pride ourselves on our great work ethic, teamwork and comradery.
             Some of our members have even gone on to work for companies such as Canva and Optiver!
             As such, we are always on the look out for keen-minded individuals who are as passionate
             about the project as we are. If you have experience in the following, do consider
@@ -38,7 +38,7 @@ const RecruitmentModal = ({ open, onClose }: RecruitmentModalProps) => {
             <div>
               <p className="font-bold text-jb-headings text-xl">Frontend</p>
               <ul className="text-left ml-5">
-                <li>VueJS</li>
+                <li>React (NextJS)</li>
                 <li>Tailwind CSS</li>
                 <li>TypeScript</li>
               </ul>
@@ -47,16 +47,18 @@ const RecruitmentModal = ({ open, onClose }: RecruitmentModalProps) => {
               <p className="font-bold text-jb-headings text-xl">Backend</p>
               <ul className="text-left ml-5">
                 <li>TypeScript</li>
-                <li>PostgreSQL</li>
+                <li>ExpressJS</li>
+                <li>PostgreSQL (TypeORM)</li>
               </ul>
             </div>
           </div>
           <p>
             Additionally, if you have prior experience writing unit tests using Jest, end-to-end
-            testing using Cypress, Docker or Kubernetes, that would be a bonus.
+            testing using Cypress or other technologies such as Docker or Kubernetes, that would be
+            a bonus.
           </p>
           <p>
-            If you are looking for a frontend role, you are required to complete the Vue Frontend
+            If you are looking for a frontend role, you are required to complete the Frontend
             Assessment, which can be found&nbsp;
             <a
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
