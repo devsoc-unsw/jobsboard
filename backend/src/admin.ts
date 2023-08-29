@@ -343,6 +343,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       res,
       async () => {
         Logger.Info(
+          LM,
           `Admin ID=${req.adminID} attempting to unverify COMPANY=${req.params.companyAccountID}`,
         );
         const pendingCompany = await Helpers.doSuccessfullyOrFail(
@@ -378,7 +379,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           <p>CSESoc Jobs Board Administrator</p>
           `,
         );
-        Logger.Info(`Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`);
+        Logger.Info(LM, `Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`);
         return {
           status: 200,
           msg: {
