@@ -597,26 +597,27 @@ export default class CompanyFunctions {
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        Logger.Info(
-          LM,
-          `COMPANY=${req.companyAccountID} attempting to mark JOB=${req.params.jobID} as deleted`,
-        );
-        const jobToDelete = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .leftJoinAndSelect('Job.company', 'company')
-            .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
-            .andWhere('Job.id = :jobID', { jobID: req.params.jobID })
-            .andWhere('Job.deleted = :deleted', { deleted: false })
-            .getOne(),
-          `Failed to find JOB=${req.params.jobID} for COMPANY_ACCOUNT=${req.companyAccountID}`,
-        );
+        const { companyAccountID, params } = req;
+        const { jobID } = params;
 
-        // found a valid job that can be deleted
+        Logger.Info(LM, `COMPANY=${companyAccountID} attempting to mark JOB=${jobID} as deleted`);
+
+        const jobToDelete = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .leftJoinAndSelect('Job.company', 'company')
+          .where('company.id = :id', { id: parseInt(companyAccountID, 10) })
+          .andWhere('Job.id = :jobID', { jobID })
+          .andWhere('Job.deleted = :deleted', { deleted: false })
+          .getOne();
+
+        if (!jobToDelete) {
+          throw Error(`Could not find removeable JOB=${jobID} for COMPANY=${companyAccountID}`);
+        }
+
         await AppDataSource.createQueryBuilder()
           .update(Job)
           .set({ deleted: true })
-          .where('id = :id', { id: jobToDelete.id })
+          .where('id = :id', { id: jobID })
           .execute();
 
         Logger.Info(
