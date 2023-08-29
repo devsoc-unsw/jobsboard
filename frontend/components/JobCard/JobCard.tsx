@@ -39,13 +39,13 @@ const JobCard = ({
           {logo ? (
             <Image
               src={logo}
-              className="m-auto my-4 object-contain"
+              className="m-auto my-4 object-contain rounded-lg"
               alt={company}
               width={180}
               height={100}
             />
           ) : (
-            <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
+            <FontAwesomeIcon icon={faBuilding} size="8x" className="my-4" />
           )}
         </div>
         <h3 className="text-xl text-left font-bold mx-4 mb-4">{role}</h3>

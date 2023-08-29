@@ -16,9 +16,7 @@ import {
   WamRequirements,
 } from './types/job-field';
 
-import {
-  StudentBase,
-} from './types/shared';
+import { StudentBase } from './types/shared';
 
 import {
   StudentPaginatedJobsRequest,
@@ -91,21 +89,31 @@ export default class StudentFunctions {
 
         const jobs = await AppDataSource.getRepository(Job)
           .createQueryBuilder('job')
-          .innerJoinAndSelect('job.company', 'company')
+          .leftJoinAndSelect('job.company', 'company')
+          .select(['job', 'company'])
           .where('job.approved = :approved', { approved: true })
           .andWhere('job.hidden = :hidden', { hidden: false })
           .andWhere('job.deleted = :deleted', { deleted: false })
           .andWhere('job.expiry > :expiry', { expiry: new Date() })
+          .select([
+            'job.id',
+            'job.role',
+            'job.jobType',
+            'job.workingRights',
+            'job.mode',
+            'job.expiry',
+            'company.name',
+            'company.logo',
+            'company.location',
+          ])
           .take(paginatedJobLimit)
           .skip(parseInt(offset, 10))
           .orderBy('job.expiry', 'ASC')
           .getMany();
 
-        const fixedJobs = MapJobsToObjects(jobs);
-
         return {
           status: StatusCodes.OK,
-          msg: { jobs: fixedJobs },
+          msg: { jobs },
         };
       },
       () => ({
