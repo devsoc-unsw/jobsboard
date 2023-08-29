@@ -112,7 +112,13 @@ const StudentJobPage = ({ params }: StudentJobPageProps) => {
           <div className="flex md:flex-col justify-center mb-10">
             <div className="flex flex-col md:flex-row md:items-center max-h-screen overflow-y-auto mr-6 sticky md:static top-6 self-start md:self-auto">
               {job.company.logo ? (
-                <Image width={300} height={300} src={job.company.logo} alt={job.company.name} />
+                <Image
+                  width={180}
+                  height={100}
+                  src={job.company.logo}
+                  alt={job.company.name}
+                  className="m-auto my-4 object-contain rounded-lg"
+                />
               ) : (
                 <FontAwesomeIcon icon={faBuilding} size="8x" className="mb-2" />
               )}
