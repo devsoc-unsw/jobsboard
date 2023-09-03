@@ -304,6 +304,12 @@ export default class CompanyFunctions {
           isPaid: req.body.isPaid,
         };
 
+        Helpers.requireParameters(msg.role);
+        Helpers.requireParameters(msg.description);
+        Helpers.requireParameters(msg.applicationLink);
+        Helpers.requireParameters(msg.expiry);
+        Helpers.requireParameters(msg.isPaid);
+
         Logger.Info(
           LM,
           `Attempting to create job for COMPANY=${msg.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`,

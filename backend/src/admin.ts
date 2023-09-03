@@ -466,6 +466,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           isPaid: req.body.isPaid,
         };
 
+        Helpers.requireParameters(msg.role);
+        Helpers.requireParameters(msg.description);
+        Helpers.requireParameters(msg.applicationLink);
+        Helpers.requireParameters(msg.expiry);
+        Helpers.requireParameters(msg.isPaid);
+
         Logger.Info(LM, `Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
 
         const company = await AppDataSource.getRepository(Company)
