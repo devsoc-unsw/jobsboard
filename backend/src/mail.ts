@@ -114,22 +114,22 @@ export default class MailFunctions {
       try {
         Helpers.requireParameters(env.MAIL_USERNAME);
       } catch (error) {
-        Logger.Error(LM, '[DEBUG] Mail username parameter checking failed');
+        Logger.Error(LM, 'Mail username parameter checking failed');
       }
       try {
         Helpers.requireParameters(recipient);
       } catch (error) {
-        Logger.Error(LM, '[DEBUG] Recipient parameter checking failed');
+        Logger.Error(LM, 'Recipient parameter checking failed');
       }
       try {
         Helpers.requireParameters(subject);
       } catch (error) {
-        Logger.Error(LM, '[DEBUG] Subject parameter checking failed');
+        Logger.Error(LM, 'Subject parameter checking failed');
       }
       try {
         Helpers.requireParameters(content);
       } catch (error) {
-        Logger.Error(LM, '[DEBUG] Content parameter checking failed');
+        Logger.Error(LM, 'Content parameter checking failed');
       }
       const newMailRequest: MailRequest = new MailRequest();
       newMailRequest.sender = env.MAIL_USERNAME;
@@ -138,7 +138,7 @@ export default class MailFunctions {
       newMailRequest.content = content;
 
       await AppDataSource.manager.save(newMailRequest);
-      Logger.Info(LM, '[DEBUG] Saved user mail request');
+      Logger.Debug(LM, 'Saved user mail request');
 
       // send a copy of this email to the admin
       const newMailRequestForAdmin: MailRequest = new MailRequest();
@@ -153,7 +153,7 @@ export default class MailFunctions {
       `;
 
       await AppDataSource.manager.save(newMailRequestForAdmin);
-      Logger.Info(LM, '[DEBUG] Saved admin mail request');
+      Logger.Debug(LM, 'Saved admin mail request');
 
       // send a copy of this email to the csesoc admin
       const newMailRequestForCsesocAdmin: MailRequest = new MailRequest();
@@ -168,7 +168,7 @@ export default class MailFunctions {
       `;
 
       await AppDataSource.manager.save(newMailRequestForCsesocAdmin);
-      Logger.Info(LM, '[DEBUG] Saved CSESoc admin mail request');
+      Logger.Debug(LM, 'Saved CSESoc admin mail request');
 
       return true;
     } catch (error: unknown) {

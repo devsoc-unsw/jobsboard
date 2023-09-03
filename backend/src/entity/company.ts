@@ -8,8 +8,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 import type Job from './job';
 import type CompanyAccount from './company_account';
+
+type ZID = string;
 
 @Entity()
 export default class Company {
@@ -50,6 +53,13 @@ export default class Company {
   // https://orkhan.gitbook.io/typeorm/docs/relations-faq#avoid-circular-import-errors
   @OneToOne('CompanyAccount', (companyAccount: CompanyAccount) => companyAccount.company)
   public companyAccount: CompanyAccount;
+
+  @Column({
+    type: 'text',
+    array: true,
+    default: [],
+  })
+  public studentSubscribers: ZID[];
 
   @CreateDateColumn()
     createdAt: Date;

@@ -49,6 +49,7 @@ export interface StudentProfileInfo {
   gradYear: number;
   wam: WamRequirements;
   workingRights: WorkingRights;
+  subscribedCompanies: number[];
 }
 
 export interface JobID {
