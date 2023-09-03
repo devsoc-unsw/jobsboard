@@ -1,5 +1,5 @@
-backend/ @csesoc/jobs-board-leads
-frontend/ @csesoc/jobs-board-leads
+backend/ @csesoc/jobsboard-leads
+frontend/ @csesoc/jobsboard-leads
 
 .github/ @csesoc/technical
 renovate.json @csesoc/technical
