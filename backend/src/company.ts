@@ -203,23 +203,94 @@ export default class CompanyFunctions {
     );
   }
 
-  public static async CreateJob(
-    this: void,
-    req: CreateJobRequest,
-    res: Response,
-    next: NextFunction,
-  ) {
+  public static async createJob(job: Job, companyAccountID: number, adminCreated: boolean) {
+    const companyAccount = await AppDataSource.getRepository(CompanyAccount)
+      .createQueryBuilder()
+      .leftJoinAndSelect('CompanyAccount.company', 'company')
+      .leftJoinAndSelect('company.jobs', 'job')
+      .where('CompanyAccount.id = :id', { id: companyAccountID })
+      .andWhere('CompanyAccount.verified = :verified', { verified: true })
+      .getOne();
+
+    if (!companyAccount) {
+      throw new Error(`Could not find a verified COMPANY=${companyAccountID} to create a job for`);
+    }
+
+    const { company } = companyAccount;
+    const companyJobs = company.jobs;
+
+    companyJobs.push(job);
+    await AppDataSource.manager.save(companyAccount);
+
+    const newJobID = companyJobs.at(-1).id;
+    const newJob = await AppDataSource.getRepository(Job)
+      .createQueryBuilder()
+      .where('Job.id = :id', { id: newJobID })
+      .getOne();
+
+    if (!newJob) {
+      throw new Error(`Failed to create a new job for COMPANY=${companyAccountID}`);
+    }
+
+    if (adminCreated) {
+      await MailFunctions.AddMailToQueue(
+        companyAccount.username,
+        'CSESoc Jobs Board - CSESoc has created a job on your behalf',
+        `
+      Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
+        <br>
+      <p>Best regards,</p>
+      <p>CSESoc Jobs Board Administrator</p>
+      `,
+      );
+    } else {
+      await MailFunctions.AddMailToQueue(
+        companyAccount.username,
+        'CSESoc Jobsboard - Job Post request submitted',
+        `
+      Thank you for adding a job post to the CSESoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.
+          <br>
+        A result will be sent to you shortly.
+        <br>
+      <p>Best regards,</p>
+      <p>CSESoc Jobsboard</p>
+      `,
+      );
+    }
+
+    const subscribers = company.studentSubscribers;
+    await Promise.all(
+      subscribers.map(async (zID) => {
+        await MailFunctions.AddMailToQueue(
+          Helpers.getEmailFromZID(zID),
+          `CSESoc Jobsboard - Job opening from ${company.name}`,
+          `
+          Hi,
+
+          This is a email to let you kow that ${company.name} to has opened a new position (${job.role}).
+          Visit https://jobsboard.csesoc.unsw.edu.au to check it out!
+          <br>
+
+          If you no longer wish to receive updates from ${company.name}, please update your subscriptions preferences on Jobsboard.
+          <br>
+          <p>Best regards, </p>
+          <p>CSESoc Jobsboard</p>
+        `,
+        );
+      }),
+    );
+
+    Logger.Info(LM, `New JOB=${newJobID} successfully created for COMPANY=${companyAccountID}`);
+
+    return newJobID;
+  }
+
+  public static async CreateJob(req: CreateJobRequest, res: Response, next: NextFunction) {
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        if (req.companyAccountID === undefined) {
-          return {
-            status: StatusCodes.UNAUTHORIZED,
-            msg: { token: req.newJbToken },
-          };
-        }
-        // ensure required parameters are present
         const msg = {
+          companyAccountID: parseInt(req.companyAccountID, 10),
           applicationLink: req.body.applicationLink.trim(),
           description: req.body.description.trim(),
           role: req.body.role.trim(),
@@ -233,18 +304,9 @@ export default class CompanyFunctions {
           isPaid: req.body.isPaid,
         };
 
-        // ? double check data sent from frontend are guaranteed valid before removing
-        Helpers.requireParameters(msg.role);
-        Helpers.requireParameters(msg.description);
-        Helpers.requireParameters(msg.applicationLink);
-        Helpers.requireParameters(msg.expiry);
-        Helpers.requireParameters(msg.isPaid);
-        Helpers.isDateInTheFuture(msg.expiry);
-        Helpers.validApplicationLink(msg.applicationLink);
-
         Logger.Info(
           LM,
-          `Attempting to create job for COMPANY=${req.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`,
+          `Attempting to create job for COMPANY=${msg.companyAccountID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink}`,
         );
 
         const newJob = new Job();
@@ -260,50 +322,8 @@ export default class CompanyFunctions {
         newJob.additionalInfo = msg.additionalInfo;
         newJob.wamRequirements = msg.wamRequirements;
 
-        // get the company and the list of its jobs
-        const companyAccount: CompanyAccount = await AppDataSource.getRepository(CompanyAccount)
-          .createQueryBuilder()
-          .leftJoinAndSelect('CompanyAccount.company', 'company')
-          .leftJoinAndSelect('company.jobs', 'job')
-          .where('CompanyAccount.id = :id', { id: req.companyAccountID })
-          .andWhere('CompanyAccount.verified = :verified', { verified: true })
-          .getOne();
+        const newJobID = await this.createJob(newJob, msg.companyAccountID, false);
 
-        // prevent job from being posted since the provided company account is not verified
-        if (companyAccount === null) {
-          return {
-            status: StatusCodes.FORBIDDEN,
-            msg: { token: req.newJbToken },
-          };
-        }
-
-        // add the new job to the list and commit to db
-        companyAccount.company.jobs.push(newJob);
-        await AppDataSource.manager.save(companyAccount);
-
-        // get the supposed id for the new job and check if it's queryable from the db
-        const newJobID = companyAccount.company.jobs[companyAccount.company.jobs.length - 1].id;
-
-        Logger.Info(LM, `Created JOB=${newJobID} for COMPANY_ACCOUNT=${req.companyAccountID}`);
-
-        await AppDataSource.getRepository(Job)
-          .createQueryBuilder()
-          .where('Job.id = :id', { id: newJobID })
-          .getOne();
-
-        await MailFunctions.AddMailToQueue(
-          companyAccount.username,
-          'CSESoc Jobs Board - Job Post request submitted',
-          `
-        Thank you for adding a job post to the CSESoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.
-            <br>
-          A result will be sent to you shortly.
-          <br>
-        <p>Best regards,</p>
-        <p>Adam Tizzone</p>
-        <p>CSESoc Jobs Board Administrator</p>
-        `,
-        );
         return {
           status: StatusCodes.OK,
           msg: { token: req.newJbToken, id: newJobID },

@@ -50,19 +50,17 @@ export default class Helpers {
     throw new Error(`Invalid mailto or HTTP[S] application link: ${value}`);
   }
 
-  public static async doSuccessfullyOrFail
-    <TReturn>(
+  public static async doSuccessfullyOrFail<TReturn>(
     func: () => Promise<TReturn>,
     failMessage: string,
-  ): Promise<TReturn>
-    {
-      const res = await func();
-      if (res === undefined) {
-        Logger.Error(LM, failMessage);
-        throw new Error(failMessage);
-      }
-      return res;
+  ): Promise<TReturn> {
+    const res = await func();
+    if (res === undefined) {
+      Logger.Error(LM, failMessage);
+      throw new Error(failMessage);
     }
+    return res;
+  }
 
   public static async catchAndLogError(
     res: Response,
@@ -73,12 +71,10 @@ export default class Helpers {
     let response: IResponseWithStatus;
     try {
       response = await func();
-    }
-    catch (error: unknown) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         Logger.Error(LM, `EXCEPTION: ${error.name} - ${error.message}\nSTACK:\n${error.stack}`);
-      }
-      else {
+      } else {
         Logger.Error(LM, 'Unknown error was thrown');
       }
       response = funcOnError();
@@ -86,12 +82,10 @@ export default class Helpers {
     if (!res.headersSent) {
       if (response.msg === undefined) {
         res.sendStatus(response.status);
-      }
-      else {
+      } else {
         res.status(response.status).send(response.msg);
       }
-    }
-    else {
+    } else {
       Logger.Error(LM, 'Not performing any further action as headers are already sent.');
     }
     if (next) next();
@@ -111,7 +105,7 @@ export default class Helpers {
 
   public static isValidGradYear(value: number): void {
     this.requireParameters(value);
-    if (value < (new Date()).getFullYear()) {
+    if (value < new Date().getFullYear()) {
       throw new Error(`Graduation year occurred in the past=${value}`);
     }
   }
@@ -159,6 +153,10 @@ export default class Helpers {
     if (!Object.values(WamRequirements).includes(value)) {
       throw new Error(`Invalid WamRequirements=${value} provided.`);
     }
+  }
+
+  public static getEmailFromZID(zid: string) {
+    return `${zid}@ad.unsw.edu.au`;
   }
 }
 

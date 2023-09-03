@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { WamRequirements, WorkingRights } from '../types/job-field';
 
+type CompanyID = number;
+
 @Entity()
 export default class StudentProfile {
   @PrimaryGeneratedColumn()
@@ -28,6 +30,9 @@ export default class StudentProfile {
     default: WorkingRights.NoWr,
   })
   public workingRights: WorkingRights;
+
+  @Column({ type: 'int', array: true, default: [] })
+  public subscribedCompanies: CompanyID[];
 
   @CreateDateColumn()
     createdAt: Date;

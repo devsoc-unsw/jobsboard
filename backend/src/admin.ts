@@ -17,7 +17,7 @@ import {
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
 } from './types/request';
-import { env } from './environment';
+import CompanyFunctions from './company';
 
 const LM = new LogModule('ADMIN');
 
@@ -379,7 +379,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           <p>CSESoc Jobs Board Administrator</p>
           `,
         );
-        Logger.Info(LM, `Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`);
+        Logger.Info(
+          LM,
+          `Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`,
+        );
+
         return {
           status: 200,
           msg: {
@@ -447,38 +451,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       res,
       async (): Promise<IResponseWithStatus> => {
         const { companyID } = req.params;
-        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
-        const company = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Company)
-            .createQueryBuilder()
-            .where('Company.id = :id', { id: companyID })
-            .getOne(),
-          `Couldn't get request company object ID=${companyID} as Admin ID=${req.adminID}`,
-        );
 
-        // get it's associated company account to verify
-        company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder()
-            .relation(Company, 'companyAccount')
-            .of(company)
-            .loadOne(),
-          `Could not get the related company account for company ID=${company.id}`,
-        );
-
-        company.jobs = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.createQueryBuilder().relation(Company, 'jobs').of(company).loadMany(),
-          `Failed to find jobs for COMPANY_ACCOUNT=${companyID}`,
-        );
-
-        // verify whether the associated company account is verified
-        if (!company.companyAccount.verified) {
-          throw new Error(
-            `Admin ID=${req.adminID} attempted to create a job post for company ID=${companyID} however it was not a verified company`,
-          );
-        }
-
-        // create the job now
-        // ensure required parameters are present
         const msg = {
           applicationLink: req.body.applicationLink.trim(),
           description: req.body.description.trim(),
@@ -493,20 +466,21 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           isPaid: req.body.isPaid,
         };
 
-        Helpers.requireParameters(msg.role);
-        Helpers.requireParameters(msg.description);
-        Helpers.requireParameters(msg.applicationLink);
-        Helpers.requireParameters(msg.expiry);
-        Helpers.requireParameters(msg.isPaid);
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
 
-        Helpers.isValidJobMode(msg.jobMode);
-        Helpers.isValidStudentDemographic(msg.studentDemographic);
-        Helpers.isValidJobType(msg.jobType);
-        Helpers.isValidWorkingRights(msg.workingRights);
-        Helpers.isValidWamRequirement(msg.wamRequirements);
+        const company = await AppDataSource.getRepository(Company)
+          .createQueryBuilder()
+          .leftJoinAndSelect('Company.companyAccount', 'companyAccount')
+          .where('Company.id = :id', { id: companyID })
+          .andWhere('companyAccount.verified = :verified', { verified: true })
+          .getOne();
 
-        Helpers.isDateInTheFuture(msg.expiry);
-        Helpers.validApplicationLink(msg.applicationLink);
+        if (!company) {
+          throw Error(`Could not find COMPANY=${companyID}`);
+        }
+
+        const companyAccountID = company.companyAccount.id;
+
         Logger.Info(
           LM,
           `Attempting to create job for COMPANY=${companyID} with ROLE=${msg.role} DESCRIPTION=${msg.description} applicationLink=${msg.applicationLink} as adminID=${req.adminID}`,
@@ -526,38 +500,9 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         newJob.wamRequirements = msg.wamRequirements;
         // jobs created by admin are implicitly approved
         newJob.approved = true;
-        // mark this job as one that the admin has created
         newJob.adminCreated = true;
 
-        await MailFunctions.AddMailToQueue(
-          env.MAIL_USERNAME,
-          'CSESoc Jobs Board - CSESoc has created a job on your behalf',
-          `
-        Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
-          <br>
-        <p>Best regards,</p>
-        <p>CSESoc Jobs Board Administrator</p>
-        `,
-        );
-
-        company.jobs.push(newJob);
-
-        await AppDataSource.manager.save(company);
-
-        const newJobID: number = company.jobs[company.jobs.length - 1].id;
-        Logger.Info(
-          LM,
-          `Created JOB=${newJobID} for COMPANY_ACCOUNT=${companyID} as adminID=${req.adminID}`,
-        );
-
-        // check to see if that job is queryable
-        await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .where('Job.id = :id', { id: newJobID })
-            .getOne(),
-          `Failed to fetch the newly created JOB=${newJobID}`,
-        );
+        await CompanyFunctions.createJob(newJob, companyAccountID, true);
 
         return {
           status: StatusCodes.OK,

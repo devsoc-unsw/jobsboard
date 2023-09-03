@@ -1,6 +1,7 @@
 import { Response, NextFunction } from 'express';
 import Fuse from 'fuse.js';
 import { StatusCodes } from 'http-status-codes';
+import { In } from 'typeorm';
 import { AppDataSource } from './config';
 import Job from './entity/job';
 import Student from './entity/student';
@@ -20,14 +21,14 @@ import {
   StudentGetProfileRequest,
   StudentEditProfileRequest,
 } from './types/request';
+import Company from './entity/company';
 
 const LM = new LogModule('STUDENT');
 
-const paginatedJobLimit = 10;
-
 export default class StudentFunctions {
+  private static paginatedJobLimit = 10;
+
   public static async GetPaginatedJobs(
-    this: void,
     req: StudentPaginatedJobsRequest,
     res: Response,
     next: NextFunction,
@@ -58,7 +59,7 @@ export default class StudentFunctions {
             'company.logo',
             'company.location',
           ])
-          .take(paginatedJobLimit)
+          .take(this.paginatedJobLimit)
           .skip(parseInt(offset, 10))
           .orderBy('job.expiry', 'ASC')
           .getMany();
@@ -318,8 +319,62 @@ export default class StudentFunctions {
     );
   }
 
+  private static async updateCompanySubscriptions(studentZID: string, companyIDs: number[]) {
+    const newSubscriptions = new Set(companyIDs);
+
+    const resp = await AppDataSource.getRepository(Student)
+      .createQueryBuilder()
+      .leftJoinAndSelect('Student.studentProfile', 'studentProfile')
+      .where('Student.zID = :ZID', { zID: studentZID })
+      .select('studentProfile.id, studentProfile.subscribedCompanies')
+      .getOneOrFail();
+
+    const studentProfileId = resp.studentProfile.id;
+    const currSubscriptions = new Set(resp.studentProfile.subscribedCompanies);
+    const toDelete: number[] = [];
+    const toAdd: number[] = [];
+
+    currSubscriptions.forEach((companyID) => {
+      if (!newSubscriptions.has(companyID)) {
+        toDelete.push(companyID);
+      }
+    });
+
+    newSubscriptions.forEach((companyID) => {
+      if (!currSubscriptions.has(companyID)) {
+        toAdd.push(companyID);
+      }
+    });
+
+    // remove student from companies they are no longer subscribed to
+    await AppDataSource.createQueryBuilder()
+      .update(Company)
+      .set({
+        studentSubscribers: () => `array_remove(studentSubscribers, ${studentZID})`,
+      })
+      .where({ id: In([...toDelete]) })
+      .execute();
+
+    // add student to companies they were previously not subscribed to
+    await AppDataSource.createQueryBuilder()
+      .update(Company)
+      .set({
+        studentSubscribers: () => `array_append(studentSubscribers, ${studentZID})`,
+      })
+      .where({ id: In([...toAdd]) })
+      .execute();
+
+    // update the student's list of subscriptions
+    await AppDataSource.createQueryBuilder()
+      .update(StudentProfile)
+      .set({ subscribedCompanies: toAdd })
+      .where('id = :id', { id: studentProfileId })
+      .execute();
+
+    Logger.Info(LM, `Successfully updated the company watch list of STUDENT=${studentZID}`);
+  }
+
   public static async EditStudentProfile(
-    this: void,
     req: StudentEditProfileRequest,
     res: Response,
     next: NextFunction,
@@ -335,6 +390,7 @@ export default class StudentFunctions {
           gradYear: req.body.gradYear,
           wam: req.body.wam,
           workingRights: req.body.workingRights,
+          subscribedCompanies: req.body.subscribedCompanies,
         };
 
         Helpers.isValidGradYear(studentProfile.gradYear);
@@ -349,6 +405,10 @@ export default class StudentFunctions {
           .where('Student.zID = :zID', { zID: studentZID })
           .getOneOrFail();
 
+        if (!student) {
+          throw Error(`Could not find profile for STUDENT=${studentZID} to update`);
+        }
+
         await AppDataSource.getRepository(StudentProfile)
           .createQueryBuilder()
           .update(StudentProfile)
@@ -359,6 +419,8 @@ export default class StudentFunctions {
           })
           .where('id = :id', { id: student.studentProfile.id })
           .execute();
+
+        await this.updateCompanySubscriptions(studentZID, studentProfile.subscribedCompanies);
 
         Logger.Info(LM, `STUDENT=${studentZID} sucessfully edited their profile`);
 
