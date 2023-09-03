@@ -1,9 +1,9 @@
 {
   "extends": ["config:base"],
   "lockFileMaintenance": { "enabled": true, "automerge": true },
-  "prHourlyLimit": 2,
+  "prHourlyLimit": 5,
   "labels": ["dependencies"],
-  "baseBranches": ["dev"],
+  "reviewersFromCodeOwners": true,
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
@@ -11,22 +11,40 @@
       "automergeType": "branch"
     },
     {
-      "groupName": "docker-github-actions",
-      "matchPackagePatterns": ["docker/*"],
+      "groupName": "ci-actions",
+      "managers": ["github-actions", "dockerfile"],
       "automerge": true,
-      "automergeType": "branch"
+      "automergeType": "branch",
+      "addLabels": ["deps: ci-actions"]
     },
     {
-      "matchUpdateTypes": ["patch"],
-      "groupName": "weekly patch updates",
-      "schedule": ["before 5am every monday"],
-      "addLabels": ["deps: patches"]
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "groupName": "react monorepo with types",
+      "addLabels": ["deps: react"]
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "weekly minor & patch updates",
+      "schedule": ["before 5am every monday"]
     },
     {
       "matchUpdateTypes": ["minor"],
-      "groupName": "weekly minor updates",
-      "schedule": ["before 5am every monday"],
       "addLabels": ["deps: minor"]
     },
+    {
+      "matchUpdateTypes": ["patch"],
+      "addLabels": ["deps: patches"]
+    },
+    {
+      "managers": ["npm"],
+      "addLabels": ["deps: javascript"]
+    }
   ]
 }
