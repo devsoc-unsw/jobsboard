@@ -1303,7 +1303,7 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.4.tgz#0b92dcc0cc1c81f6f306a381f28e31b1a56536e9"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
-"@types/asn1@>=0.2.0":
+"@types/asn1@>=0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@types/asn1/-/asn1-0.2.1.tgz#7053cc66a056f6f425645ec76e23fa028c429756"
   integrity sha512-MgrOWeBGvb9CU43AOMvrr7laqiATS4dApdqnmXl4MLxH6rSXcjSoh12y/9YGv/7Cn63cob5xQjcxVvjnOLmrmw==
@@ -1384,7 +1384,7 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
   integrity sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
 
-"@types/node@*", "@types/node@>=14":
+"@types/node@*", "@types/node@>=16":
   version "20.5.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.9.tgz#a70ec9d8fa0180a314c3ede0e20ea56ff71aed9a"
   integrity sha512-PcGNd//40kHAS3sTlzKB9C9XL4K0sTup8nbG5lC14kzEteTNuAFh9u5nA0o5TWnSG2r/JNPRXFVcHJIIeRlmqQ==
@@ -3747,13 +3747,13 @@ language-tags@=1.0.5:
   dependencies:
     language-subtag-registry "~0.3.2"
 
-ldapts@^4.0.0:
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/ldapts/-/ldapts-4.2.6.tgz#608727b754367fb399fd3a97a6a7bcea208f580e"
-  integrity sha512-r1eOj2PtTJi+9aZxLirktoHntuYXlbQD9ZXCjiZmJx0VBQtBcWc+rueqABuh/AxMcFHNPDSJLJAXxoj5VevTwQ==
+ldapts@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/ldapts/-/ldapts-6.0.0.tgz#f6d5857ef293ef4ecaf3c144bc3f19f77a58efc9"
+  integrity sha512-VI0+pXgs8Ul135oM0SV0LfQj0Ljj0IgktzAIf2aNUBvmu8mIm/Y5ZugwsP+s47is6rd7uX5i9CeQG0t3Y60OAw==
   dependencies:
-    "@types/asn1" ">=0.2.0"
-    "@types/node" ">=14"
+    "@types/asn1" ">=0.2.1"
+    "@types/node" ">=16"
     "@types/uuid" ">=9"
     asn1 "~0.2.6"
     debug "~4.3.4"
