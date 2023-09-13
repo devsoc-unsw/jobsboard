@@ -121,7 +121,7 @@ export default async function seedDB() {
   amazon.hash = Secrets.hash('amazon');
   amazon.verified = true;
   const amazon_ = new Company();
-  amazon_.name = 'amazon';
+  amazon_.name = 'Amazon';
   amazon_.location = 'Sydney';
   amazon.company = amazon_;
 
