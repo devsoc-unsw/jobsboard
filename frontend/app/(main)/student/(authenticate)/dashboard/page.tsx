@@ -54,7 +54,7 @@ const StudentDashboardPage = () => {
       setLoading(false);
     };
     getJobs();
-  }, []);
+  }, [jobs.length]);
 
   // TODO: remove lines 51-79 and replace with Fuse for fuzzy search
   const getValue = (object: any, path: string): any => {
