@@ -22,6 +22,7 @@ const StudentDashboardPage = () => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [jobs, setJobs] = useState<JobWithCompany[]>([]);
+  const [prevCount, setPrevCount] = useState(-1);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
@@ -29,14 +30,22 @@ const StudentDashboardPage = () => {
     const getJobs = async () => {
       // determine whether there is an API key present and redirect if not present
       // load the jobs using the api token
+      if (prevCount === jobs.length) return;
+
       try {
         const res = await api.get<JobsPayload>(`/jobs/${jobs.length}`, {
           headers: {
             Authorization: apiToken
           }
         });
-
-        setJobs(res.data.jobs);
+        const to_add: JobWithCompany[] = [];
+        res.data.jobs.forEach((j) => {
+          if (!jobs.includes(j)) {
+            to_add.push(j);
+          }
+        });
+        setPrevCount(jobs.length);
+        setJobs(jobs.concat(to_add));
       } catch (e) {
         setErrorMsg('Unable to load jobs at this time. Please try again later.');
         setError(true);
@@ -44,7 +53,6 @@ const StudentDashboardPage = () => {
       }
       setLoading(false);
     };
-
     getJobs();
   }, []);
 
