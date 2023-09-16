@@ -223,7 +223,7 @@ const HomePage = () => {
             />
           </div>
           {theme === 'dark' &&
-            <p className="text-lg text-jb-dark-headings font-bold text-center mt-10">
+            <p className="text-xs text-jb-dark-headings font-bold text-center mt-10">
               darkModeSuperior
             </p>
           }
