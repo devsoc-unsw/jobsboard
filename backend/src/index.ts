@@ -65,14 +65,15 @@ let corsOptions;
 if (env.NODE_ENV !== 'development') {
   // assuming production, set up a particular config and allow only requests from
   // the current URL to be consumed
-  const whitelist = ['https://jobsboard.csesoc.unsw.edu.au'];
+  // const whitelist = ['https://jobsboard.csesoc.unsw.edu.au'];
   corsOptions = {
     origin: (origin: string, callback: (error: Error, status?: boolean) => void) => {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+      callback(null, true);
+      // if (whitelist.indexOf(origin) !== -1) {
+      //   callback(null, true);
+      // } else {
+      //   callback(new Error('Not allowed by CORS'));
+      // }
     },
   };
 }
