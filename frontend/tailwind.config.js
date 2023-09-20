@@ -40,7 +40,8 @@ module.exports = {
         'jb-blue': '#3a76f8',
         'jb-green': '#259e3b',
         'jb-red': '#eb5837',
-        'jb-dark-blue': '#0743c5'
+        'jb-dark-blue': '#0743c5',
+        'jb-white': '#F9F7F1',
       },
       rotate: {
         220: '220deg'

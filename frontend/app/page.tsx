@@ -71,7 +71,7 @@ const HomePage = () => {
         <div className="flex justify-around align-middle mx-auto gap-7">
           <div className="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
             <p className="text-lg text-white">CSESoc presents</p>
-            <h1 className="text-[#143A6C] dark:text-[#F9F7F1] font-bold text-6xl leading-[72px] m-0">
+            <h1 className="text-[#143A6C] dark:text-jb-white font-bold text-6xl leading-[72px] m-0">
               Jobsboard
             </h1>
             <p className="text-lg text-white mt-3">
@@ -107,7 +107,7 @@ const HomePage = () => {
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Our Sponsors
           </h3>
-          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
+          <p className="text-lg text-jb-subheadings dark:text-jb-white my-4 mx-16 sm:mx-0">
             We aim to give you a pleasant student working experience by partnering up with only the
             best.
           </p>
@@ -115,11 +115,11 @@ const HomePage = () => {
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Discover Featured Student Jobs and Internships
           </h3>
-          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
+          <p className="text-lg text-jb-subheadings dark:text-jb-white my-4 mx-16 sm:mx-0">
             Spent hours trying to find something that suited you? Look no further, we&apos;ve got
             you covered with some amazing opportunities.
           </p>
-          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
+          <p className="text-lg text-jb-subheadings dark:text-jb-white my-4 mx-16 sm:mx-0">
             Check out the full list of open jobs&nbsp;
             <Link
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
@@ -169,7 +169,7 @@ const HomePage = () => {
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Want to Post a Job?
           </h3>
-          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
+          <p className="text-lg text-jb-subheadings dark:text-jb-white my-4 mx-16 sm:mx-0">
             Are you a company looking to advertise with us? We&apos;d absolutely love to hear from
             you. In the meantime, you can also check out&nbsp;
             <a
@@ -194,7 +194,7 @@ const HomePage = () => {
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Looking for More?
           </h3>
-          <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
+          <p className="text-lg text-jb-subheadings dark:text-jb-white my-4 mx-16 sm:mx-0">
             If you&apos;re a CSE student with a keen interest in Jobsboard and looking to get
             involved, keep an eye out for our recruitment announcements on CSESoc&apos;s socials.
             Otherwise, you can also contribute by suggesting cool new features or even make a pull
@@ -222,11 +222,11 @@ const HomePage = () => {
               }}
             />
           </div>
-          {theme === 'dark' &&
+          {theme === 'dark' && (
             <p className="text-xs text-jb-dark-headings font-bold text-center mt-10">
               darkModeSuperior
             </p>
-          }
+          )}
         </div>
       </div>
     </div>

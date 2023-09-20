@@ -38,7 +38,7 @@ const sponsors = [
 const SponsorCarousel = () => {
   return (
     <div>
-      <div className="relative overflow-hidden grow-0 shrink-0 basis-[230px]">
+      <div className="relative overflow-hidden grow-0 shrink-0 basis-[230px] ">
         <div className={styles.carouselBarLeft} />
         <div className="relative w-[1450px] h-[100px] my-10 grow-0 shrink-0 basis-auto">
           <div className={`${styles.sponsorContainer} ${styles.carouselAnimationFirst}`}>

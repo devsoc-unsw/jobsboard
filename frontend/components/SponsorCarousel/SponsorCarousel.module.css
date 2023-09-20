@@ -44,11 +44,6 @@
 .carouselBarLeft {
   left: 0;
   top: 0;
-  background-image: linear-gradient(
-    to right,
-    #f6f9fc 30%,
-    rgba(255, 255, 255, 0)
-  );
   height: 100%;
   width: 2.5rem;
   position: absolute;
@@ -58,11 +53,6 @@
 .carouselBarRight {
   right: 0;
   top: 0;
-  background-image: linear-gradient(
-    to left,
-    #f6f9fc 30%,
-    rgba(255, 255, 255, 0)
-  );
   height: 100%;
   width: 2.5rem;
   position: absolute;
