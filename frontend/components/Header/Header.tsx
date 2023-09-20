@@ -36,18 +36,16 @@ const Header = ({ style }: HeaderProps) => {
         <Image className="cursor-pointer" src={logo} width={150} alt="CSESoc" />
       </Link>
       <div className="flex justify-evenly items-center gap-5">
-        {inDev && (
-          <button type="button" className="group cursor-pointer relative" onClick={toggleTheme}>
-            {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-            <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
-            {/* Tooltip */}
-            <span
-              className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 p-1 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
-            >
-              {theme === 'light' ? 'Enable Dark Mode' : 'Disable Dark Mode'}
-            </span>
-          </button>
-        )}
+        <button type="button" className="group cursor-pointer relative" onClick={toggleTheme}>
+          {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
+          <Image className="rotate-220" src={moon} alt="Toggle Theme" width={25} />
+          {/* Tooltip */}
+          <span
+            className={`invisible group-hover:visible bg-white text-black font-bold shadow-card w-32 p-1 text-center rounded py-2 absolute z-10 ${styles.tooltipText}`}
+          >
+            {theme === 'light' ? 'Enable Dark Mode' : 'Disable Dark Mode'}
+          </span>
+        </button>
         {!apiToken ? (
           <Link href="/student/login">
             <button
