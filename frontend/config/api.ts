@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://jobsboard.staging.csesoc.unsw.edu.au/api/',
+  baseURL:
+    process.env.NEXT_PUBLIC_API_BASE_URL || 'https://jobsboard.staging.csesoc.unsw.edu.au/api/',
   timeout: 5000,
   headers: { 'Content-Type': 'application/json', Accept: 'application/json' }
 });
