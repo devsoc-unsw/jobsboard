@@ -8,8 +8,6 @@ import StudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
 
-import { WorkingRights } from './types/job-field';
-
 import { StudentBase } from './types/shared';
 
 import {
@@ -155,37 +153,11 @@ export default class StudentFunctions {
         // check if there are enough jobs to feature
         if (jobs.length >= 4) {
           jobs = jobs.slice(0, 4);
-        } else {
-          jobs = jobs.slice(0, jobs.length);
         }
-
-        const featuredJobs = jobs.map((job: Job) => {
-          if (job === null) {
-            return null;
-          }
-          const newJob: {
-            id: number;
-            logo: string;
-            role: string;
-            description: string;
-            workingRights: WorkingRights[];
-            applicationLink: string;
-            company: string;
-          } = {
-            id: job.id,
-            logo: job.company.logo ? job.company.logo.toString() : null,
-            role: job.role,
-            description: job.description,
-            workingRights: job.workingRights,
-            applicationLink: job.applicationLink,
-            company: job.company.name,
-          };
-          return newJob;
-        });
 
         return {
           status: StatusCodes.OK,
-          msg: { token: req.newJbToken, featuredJobs },
+          msg: { token: req.newJbToken, featuredJobs: jobs },
         };
       },
       () => ({
