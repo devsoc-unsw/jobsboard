@@ -20,6 +20,9 @@ export default class AdminAccount {
   @Column({ type: 'text', default: 'no token set' })
   public latestValidToken: string;
 
+  @Column('text', { array: true, default: '{}' })
+  public verifiedCompaniesAddresses: string[];
+
   @CreateDateColumn()
     createdAt: Date;
 
