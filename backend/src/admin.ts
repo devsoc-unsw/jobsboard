@@ -18,6 +18,7 @@ import {
   AdminApprovedJobPostsRequest,
 } from './types/request';
 import { env } from './environment';
+import AdminAccount from './entity/admin_account';
 
 const LM = new LogModule('ADMIN');
 
@@ -759,6 +760,45 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       () => ({
         status: StatusCodes.BAD_REQUEST,
         msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  public static async GetVerifiedCompaniesAddresses(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        const { adminID } = req;
+        Helpers.requireParameters(adminID);
+
+        Logger.Info(LM, `ADMIN=${adminID} attempting to get verified companies email addresses`);
+
+        // Trying to select verifiedCompaniesAddresses returns an object rather than the array...
+        const adminAccount = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(AdminAccount)
+            .createQueryBuilder()
+            // .select('AdminAccount.verifiedCompaniesAddresses')
+            .where('AdminAccount.id = :id', { id: adminID })
+            .getOne(),
+          'Failed to retrieve verified companies email addresses',
+        );
+
+        Logger.Info(LM, `ADMIN=${adminID} successfully retrieved verified companies email addresses`);
+
+        return {
+          status: StatusCodes.OK,
+          msg: { verifiedCompaniesAddresses: adminAccount.verifiedCompaniesAddresses },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: undefined,
       }),
       next,
     );

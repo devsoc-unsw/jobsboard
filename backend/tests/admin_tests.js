@@ -1576,6 +1576,50 @@ describe("admin", () => {
       }
     );
   });
+
+  describe("test getting verified companies addresses", () => {
+    before( async function() {
+      // login as a student
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+    });
+
+    it("fails to get companies addresses using student token", 
+      function (done) {
+        server
+        .get("/admin/verified-companies-addresses")
+        .set("Authorization", this.studentToken)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+
+    it("successfully gets companies addresses using admin token", 
+    function (done) {
+      server
+      .get("/admin/verified-companies-addresses")
+      .set("Authorization", this.adminToken)
+      .expect(200)
+      .end( function(_, res) {
+        expect(res.status).to.equal(200);
+        // TODO: add company addresses
+        expect(res.body.verifiedCompaniesAddresses).to.deep.equal([]);
+        done();
+      });
+    }
+  );
+  });
 });
 
 
