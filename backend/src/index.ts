@@ -41,6 +41,7 @@ import {
   StudentGetJobRequest,
   StudentPaginatedJobsRequest,
   UpdateCompanyDetailsRequest,
+  AdminVerifiedCompaniesAddressesRequest,
   VerifyCompanyAccountRequest,
   UnverifyCompanyAccountRequest,
   SearchJobRequest,
@@ -530,19 +531,22 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
-/*
+// TODO: create new type for GeneralAdminRequest - should take a list
+// Implement AddVerifiedCompaniesAddresses
+// Write tests
 app.post(
   '/admin/verified-companies-addresses/add',
   cors(corsOptions),
   Middleware.authoriseAdminMiddleware,
-  (req: GeneralAdminRequest, res, next) => {
+  (req: AdminVerifiedCompaniesAddressesRequest, res, next) => {
     (async () => {
-      await AdminFunctions.GetVerifiedCompaniesAddresses(req, res, next);
+      await AdminFunctions.AddVerifiedCompaniesAddresses(req, res, next);
     })();
   },
   Middleware.genericLoggingMiddleware,
 );
 
+/*
 app.delete(
   '/admin/verified-companies-addresses/delete',
   cors(corsOptions),
@@ -555,6 +559,7 @@ app.delete(
   Middleware.genericLoggingMiddleware,
 );
 */
+
 if (env.NODE_ENV === 'development') {
   app.post('/email', (req, res) => {
     (async () => {

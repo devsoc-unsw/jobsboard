@@ -1577,48 +1577,107 @@ describe("admin", () => {
     );
   });
 
-  describe("test getting verified companies addresses", () => {
-    before( async function() {
-      // login as a student
-      this.studentToken = await server
-      .post("/authenticate/student")
-      .send({ zID: "literally", password: "anything" })
-      .then(response => response.body.token);
-
-      // login as an admin
-      this.adminToken = await server
-      .post("/authenticate/admin")
-      .send({ username: "admin", password: "incorrect pony plug paperclip" })
-      .then(response => response.body.token);
+  describe("testing verified companies email addresses", () => {
+    describe("test adding verified companies addresses", () => {
+      before( async function() {
+        // login as a student
+        this.studentToken = await server
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+  
+        // login as an admin
+        this.adminToken = await server
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
+      });
+  
+      it("fails to add companies addresses using student token", 
+        function (done) {
+          server
+          .post("/admin/verified-companies-addresses/add")
+          .set("Authorization", this.studentToken)
+          .send({
+            verifiedCompaniesAddresses: ["example@example.com", "example2@example.com", "hi@hi.com"],
+          })
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+        }
+      );
+  
+      it("successfully adds companies addresses using admin token", 
+        function (done) {
+          server
+          .post("/admin/verified-companies-addresses/add")
+          .set("Authorization", this.adminToken)
+          .send({
+            verifiedCompaniesAddresses: ["example@example.com", "example2@example.com", "hi@hi.com"],
+          })
+          .expect(200)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            done();
+          });
+        }
+      );
     });
-
-    it("fails to get companies addresses using student token", 
+  
+    describe("test getting verified companies addresses", () => {
+      before( async function() {
+        // login as a student
+        this.studentToken = await server
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+  
+        // login as an admin
+        this.adminToken = await server
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
+  
+        // add some verified addresses
+        await server
+        .post("/admin/verified-companies-addresses/add")
+        .set("Authorization", this.adminToken)
+        .send({
+          verifiedCompaniesAddresses: ["example@example.com", "example2@example.com", "hi@hi.com"],
+        });
+      });
+  
+      it("fails to get companies addresses using student token", 
+        function (done) {
+          server
+          .get("/admin/verified-companies-addresses")
+          .set("Authorization", this.studentToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+        }
+      );
+  
+      it("successfully gets companies addresses using admin token", 
       function (done) {
         server
         .get("/admin/verified-companies-addresses")
-        .set("Authorization", this.studentToken)
-        .expect(401)
+        .set("Authorization", this.adminToken)
+        .expect(200)
         .end( function(_, res) {
-          expect(res.status).to.equal(401);
+          expect(res.status).to.equal(200);
+          expect(res.body.verifiedCompaniesAddresses).to.deep.members(["example@example.com", "example2@example.com", "hi@hi.com"]);
           done();
         });
       }
     );
+    });
 
-    it("successfully gets companies addresses using admin token", 
-    function (done) {
-      server
-      .get("/admin/verified-companies-addresses")
-      .set("Authorization", this.adminToken)
-      .expect(200)
-      .end( function(_, res) {
-        expect(res.status).to.equal(200);
-        // TODO: add company addresses
-        expect(res.body.verifiedCompaniesAddresses).to.deep.equal([]);
-        done();
-      });
-    }
-  );
+
   });
 });
 
