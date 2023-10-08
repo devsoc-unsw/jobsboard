@@ -838,7 +838,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         // Update verifiedCompaniesAddresses column
         adminAccount.verifiedCompaniesAddresses = allVerifiedAddresses;
-        await AppDataSource.manager.save(adminAccount);
+        await AppDataSource.getRepository(AdminAccount).save(adminAccount);
 
         Logger.Info(LM, `ADMIN=${adminID} successfully added verified companies email addresses`);
 
@@ -886,7 +886,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         // Update verifiedCompaniesAddresses column
         adminAccount.verifiedCompaniesAddresses = allVerifiedAddresses;
-        await AppDataSource.manager.save(adminAccount);
+        await AppDataSource.getRepository(AdminAccount).save(adminAccount);
 
         Logger.Info(LM, `ADMIN=${adminID} successfully deleted verified companies email addresses`);
 
