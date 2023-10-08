@@ -531,9 +531,6 @@ app.get(
   Middleware.genericLoggingMiddleware,
 );
 
-// TODO: create new type for GeneralAdminRequest - should take a list
-// Implement AddVerifiedCompaniesAddresses
-// Write tests
 app.post(
   '/admin/verified-companies-addresses/add',
   cors(corsOptions),
@@ -546,19 +543,17 @@ app.post(
   Middleware.genericLoggingMiddleware,
 );
 
-/*
-app.delete(
+app.post(
   '/admin/verified-companies-addresses/delete',
   cors(corsOptions),
   Middleware.authoriseAdminMiddleware,
-  (req: GeneralAdminRequest, res, next) => {
+  (req: AdminVerifiedCompaniesAddressesRequest, res, next) => {
     (async () => {
-      await AdminFunctions.GetVerifiedCompaniesAddresses(req, res, next);
+      await AdminFunctions.DeleteVerifiedCompaniesAddresses(req, res, next);
     })();
   },
   Middleware.genericLoggingMiddleware,
 );
-*/
 
 if (env.NODE_ENV === 'development') {
   app.post('/email', (req, res) => {

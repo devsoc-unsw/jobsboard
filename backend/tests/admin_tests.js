@@ -1578,6 +1578,49 @@ describe("admin", () => {
   });
 
   describe("testing verified companies email addresses", () => {
+    describe("test getting verified companies addresses", () => {
+      before( async function() {
+        // login as a student
+        this.studentToken = await server
+        .post("/authenticate/student")
+        .send({ zID: "literally", password: "anything" })
+        .then(response => response.body.token);
+  
+        // login as an admin
+        this.adminToken = await server
+        .post("/authenticate/admin")
+        .send({ username: "admin", password: "incorrect pony plug paperclip" })
+        .then(response => response.body.token);
+      });
+  
+      it("fails to get companies addresses using student token", 
+        function (done) {
+          server
+          .get("/admin/verified-companies-addresses")
+          .set("Authorization", this.studentToken)
+          .expect(401)
+          .end( function(_, res) {
+            expect(res.status).to.equal(401);
+            done();
+          });
+        }
+      );
+  
+      it("successfully gets companies addresses using admin token", 
+        function (done) {
+          server
+          .get("/admin/verified-companies-addresses")
+          .set("Authorization", this.adminToken)
+          .expect(200)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            expect(res.body.verifiedCompaniesAddresses.length).to.equal(0);
+            done();
+          });
+        }
+      );
+    });
+
     describe("test adding verified companies addresses", () => {
       before( async function() {
         // login as a student
@@ -1608,25 +1651,67 @@ describe("admin", () => {
           });
         }
       );
-  
+
       it("successfully adds companies addresses using admin token", 
         function (done) {
+          const adminToken = this.adminToken;
+
+          // POST request to add addresses
           server
           .post("/admin/verified-companies-addresses/add")
-          .set("Authorization", this.adminToken)
+          .set("Authorization", adminToken)
           .send({
             verifiedCompaniesAddresses: ["example@example.com", "example2@example.com", "hi@hi.com"],
           })
           .expect(200)
-          .end( function(_, res) {
-            expect(res.status).to.equal(200);
-            done();
+          .end( function(_, addRes) {
+            expect(addRes.status).to.equal(200);
+
+            // GET request to check the addresses have been added
+            server
+            .get("/admin/verified-companies-addresses")
+            .set("Authorization", adminToken)
+            .expect(200)
+            .end( function(_, getRes) {
+              expect(getRes.status).to.equal(200);
+              expect(getRes.body.verifiedCompaniesAddresses).to.deep.members(["example@example.com", "example2@example.com", "hi@hi.com"]);
+              done();
+            });
+          });
+        }
+      );
+
+      it("attempt to add duplicate addresses", 
+        function (done) {
+          const adminToken = this.adminToken;
+
+          // POST request to add addresses
+          server
+          .post("/admin/verified-companies-addresses/add")
+          .set("Authorization", adminToken)
+          .send({
+            verifiedCompaniesAddresses: ["example@example.com", "example2@example.com", "hi@hi.com", "hi@hi.com"],
+          })
+          .expect(200)
+          .end( function(_, addRes) {
+            expect(addRes.status).to.equal(200);
+
+            // GET request to check the addresses have been added
+            server
+            .get("/admin/verified-companies-addresses")
+            .set("Authorization", adminToken)
+            .expect(200)
+            .end( function(_, getRes) {
+              expect(getRes.status).to.equal(200);
+              expect(getRes.body.verifiedCompaniesAddresses).to.deep.members(["example@example.com", "example2@example.com", "hi@hi.com"]);
+              done();
+            });
           });
         }
       );
     });
-  
-    describe("test getting verified companies addresses", () => {
+
+    describe("test deleting verified companies addresses", () => {
       before( async function() {
         // login as a student
         this.studentToken = await server
@@ -1649,11 +1734,14 @@ describe("admin", () => {
         });
       });
   
-      it("fails to get companies addresses using student token", 
+      it("fails to delete companies addresses using student token", 
         function (done) {
           server
-          .get("/admin/verified-companies-addresses")
+          .post("/admin/verified-companies-addresses/delete")
           .set("Authorization", this.studentToken)
+          .send({
+            verifiedCompaniesAddresses: ["example@example.com", "example2@example.com", "hi@hi.com"],
+          })
           .expect(401)
           .end( function(_, res) {
             expect(res.status).to.equal(401);
@@ -1662,22 +1750,51 @@ describe("admin", () => {
         }
       );
   
-      it("successfully gets companies addresses using admin token", 
-      function (done) {
-        server
-        .get("/admin/verified-companies-addresses")
-        .set("Authorization", this.adminToken)
-        .expect(200)
-        .end( function(_, res) {
-          expect(res.status).to.equal(200);
-          expect(res.body.verifiedCompaniesAddresses).to.deep.members(["example@example.com", "example2@example.com", "hi@hi.com"]);
-          done();
-        });
-      }
-    );
+      it("successfully deletes companies addresses using admin token", 
+        function (done) {
+          const adminToken = this.adminToken;
+
+          // POST request to delete addresses
+          server
+          .post("/admin/verified-companies-addresses/delete")
+          .set("Authorization", adminToken)
+          .send({
+            verifiedCompaniesAddresses: ["example@example.com", "hi@hi.com"],
+          })
+          .expect(200)
+          .end( function(_, deleteRes) {
+            expect(deleteRes.status).to.equal(200);
+
+            // GET request to check the addresses have been deleted
+            server
+            .get("/admin/verified-companies-addresses")
+            .set("Authorization", adminToken)
+            .expect(200)
+            .end( function(_, getRes) {
+              expect(getRes.status).to.equal(200);
+              expect(getRes.body.verifiedCompaniesAddresses).to.deep.members(["example2@example.com"]);
+              done();
+            });
+          });
+        }
+      );
+
+      it("attempt to delete non-existent addresses", 
+        function (done) {
+          server
+          .post("/admin/verified-companies-addresses/delete")
+          .set("Authorization", this.adminToken)
+          .send({
+            verifiedCompaniesAddresses: ["example3@example.com"],
+          })
+          .expect(200)
+          .end( function(_, res) {
+            expect(res.status).to.equal(200);
+            done();
+          });
+        }
+      );
     });
-
-
   });
 });
 
