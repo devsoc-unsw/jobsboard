@@ -4,7 +4,6 @@ import React from 'react';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { Assistant } from '@next/font/google';
 import ThemeProvider from 'contexts/ThemeProvider';
-import { getCssText } from 'stitches.config';
 import Footer from 'components/Footer/Footer';
 import AppProvider from '../contexts/AppProvider';
 import 'styles/globals.css';
@@ -33,7 +32,6 @@ const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en">
       <body className={assistant.className}>
-        <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
         <ThemeProvider>
           <AppProvider>
             {children}
