@@ -1,3 +1,5 @@
+'use server';
+
 import React from 'react';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { Assistant } from '@next/font/google';
@@ -7,6 +9,7 @@ import Footer from 'components/Footer/Footer';
 import AppProvider from '../contexts/AppProvider';
 import 'styles/globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import { Metadata } from 'next';
 
 config.autoAddCss = false;
 const assistant = Assistant({
@@ -15,6 +18,13 @@ const assistant = Assistant({
   subsets: ['latin']
 });
 
+export const metadata: Metadata = {
+  title: 'Jobsboard',
+  description: 'Connecting UNSW students with top employers since 2018.',
+  manifest: '/manifest.webmanifest',
+  themeColor: '#2c8bf4',
+};
+
 type RootLayoutProps = {
   children: React.ReactNode;
 };
@@ -22,10 +32,8 @@ type RootLayoutProps = {
 const RootLayout = ({ children }: RootLayoutProps) => {
   return (
     <html lang="en">
-      <head>
-        <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
-      </head>
       <body className={assistant.className}>
+        <style id="stitches" dangerouslySetInnerHTML={{ __html: getCssText() }} />
         <ThemeProvider>
           <AppProvider>
             {children}
