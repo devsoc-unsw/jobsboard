@@ -1647,7 +1647,7 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.4.tgz#0b92dcc0cc1c81f6f306a381f28e31b1a56536e9"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
-"@types/asn1@>=0.2.0":
+"@types/asn1@>=0.2.1":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@types/asn1/-/asn1-0.2.1.tgz#7053cc66a056f6f425645ec76e23fa028c429756"
   integrity sha512-MgrOWeBGvb9CU43AOMvrr7laqiATS4dApdqnmXl4MLxH6rSXcjSoh12y/9YGv/7Cn63cob5xQjcxVvjnOLmrmw==
@@ -1728,7 +1728,7 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-1.3.2.tgz#93e25bf9ee75fe0fd80b594bc4feb0e862111b5a"
   integrity sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==
 
-"@types/node@*", "@types/node@>=14":
+"@types/node@*":
   version "20.5.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.9.tgz#a70ec9d8fa0180a314c3ede0e20ea56ff71aed9a"
   integrity sha512-PcGNd//40kHAS3sTlzKB9C9XL4K0sTup8nbG5lC14kzEteTNuAFh9u5nA0o5TWnSG2r/JNPRXFVcHJIIeRlmqQ==
@@ -1737,6 +1737,11 @@
   version "18.16.16"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.16.16.tgz#3b64862856c7874ccf7439e6bab872d245c86d8e"
   integrity sha512-NpaM49IGQQAUlBhHMF82QH80J08os4ZmyF9MkpCzWAGuOHqE4gTEbhzd7L3l5LmWuZ6E0OiC1FweQ4tsiW35+g==
+
+"@types/node@>=18":
+  version "20.8.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.8.2.tgz#d76fb80d87d0d8abfe334fc6d292e83e5524efc4"
+  integrity sha512-Vvycsc9FQdwhxE3y3DzeIxuEJbWGDsnrxvMADzTDF/lcdR9/K+AQIeAghTQsHtotg/q0j3WEOYS/jQgSdWue3w==
 
 "@types/nodemailer@6.4.9":
   version "6.4.9"
@@ -4208,18 +4213,18 @@ language-tags@=1.0.5:
   dependencies:
     language-subtag-registry "~0.3.2"
 
-ldapts@^4.0.0:
-  version "4.2.6"
-  resolved "https://registry.yarnpkg.com/ldapts/-/ldapts-4.2.6.tgz#608727b754367fb399fd3a97a6a7bcea208f580e"
-  integrity sha512-r1eOj2PtTJi+9aZxLirktoHntuYXlbQD9ZXCjiZmJx0VBQtBcWc+rueqABuh/AxMcFHNPDSJLJAXxoj5VevTwQ==
+ldapts@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/ldapts/-/ldapts-7.0.0.tgz#09b03e5b95d1c05551297491b6cc10d5a8523846"
+  integrity sha512-FPPWizFzbbyg9SLVBXJV9zS/YExONAPdjyliTLesSHDRPg6rwi3Bmh09q6pINTOkNwnSOsZIc8MSsBHxEaKybA==
   dependencies:
-    "@types/asn1" ">=0.2.0"
-    "@types/node" ">=14"
+    "@types/asn1" ">=0.2.1"
+    "@types/node" ">=18"
     "@types/uuid" ">=9"
     asn1 "~0.2.6"
     debug "~4.3.4"
     strict-event-emitter-types "~2.0.0"
-    uuid "~9.0.0"
+    uuid "~9.0.1"
 
 levn@^0.4.1:
   version "0.4.1"
@@ -6053,10 +6058,15 @@ uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-uuid@^9.0.0, uuid@~9.0.0:
+uuid@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
   integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
+
+uuid@~9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
+  integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
