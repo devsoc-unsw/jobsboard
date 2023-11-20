@@ -37,7 +37,7 @@ services:
     expose:
       - 8081
   db:
-    image: postgres:14.7-alpine # this is the image that we want to run (aka app)
+    image: postgres:16.1-alpine # this is the image that we want to run (aka app)
     restart: always
     ports:
       - 5432:5432
