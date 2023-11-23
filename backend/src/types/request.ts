@@ -15,6 +15,7 @@ import {
   Offset,
   StudentZID,
   StudentProfileInfo,
+  VerifiedCompaniesAddresses,
   Year,
 } from './shared';
 
@@ -52,6 +53,9 @@ export interface AdminCreateJobRequest
   AdminRequestBase {}
 
 export interface AdminApprovedJobPostsRequest extends Request<YearParams>, AdminRequestBase {}
+
+export interface AdminVerifiedCompaniesAddressesRequest
+  extends Request<never, never, VerifiedCompaniesAddresses>, AdminRequestBase {}
 
 // * Student
 export interface StudentPaginatedJobsRequest

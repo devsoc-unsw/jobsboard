@@ -994,6 +994,70 @@
             }
           }
         }
+      },
+      "/admin/verified-companies-addresses": {
+        "get": {
+          "summary": "Returns a list of verified companies addresses",
+          "description": "Query the database to get a list of email addresses belonging to verified companies submitted by admin",
+          "tags": [
+            "admin"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successfully retrieved verified companies addresses",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/VerifiedCompaniesAddresses"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Failed to query the database and retrieve verified companies addresses"
+            }
+          }
+        }
+      },
+      "/admin/verified-companies-addresses/add": {
+        "post": {
+          "summary": "Adds email addresses to list of known verified companies addresses",
+          "description": "Inserts specified email addresses into list of addresses belonging to verified companies in database",
+          "tags": [
+            "admin"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/VerifiedCompaniesAddressesBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Successfully added verified companies addresses"
+            },
+            "400": {
+              "description": "Failed to add verified companies addresses"
+            }
+          }
+        }
+      },
+      "/admin/verified-companies-addresses/delete": {
+        "post": {
+          "summary": "Deletes email addresses from list of known verified companies addresses",
+          "description": "Deletes specified email addresses from list of addresses belonging to verified companies in database",
+          "tags": [
+            "admin"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/VerifiedCompaniesAddressesBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Successfully added verified companies addresses"
+            },
+            "400": {
+              "description": "Failed to add verified companies addresses"
+            }
+          }
+        }
       }
     },
     "components": {
@@ -1238,6 +1302,28 @@
                     "format": "date"
                   }
                 }
+              }
+            }
+          }
+        },
+        "VerifiedCompaniesAddressesBody": {
+          "description": "JSON object containing list of email addresses of verified companies",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "verifiedCompaniesAddresses": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "verifiedCompaniesAddresses": ["example@email.com", "example2@email.com"]
               }
             }
           }
@@ -1566,6 +1652,20 @@
             "startYear": 2023,
             "wam": "HD",
             "workingRights": "no_wr"
+          }
+        },
+        "VerifiedCompaniesAddresses": {
+          "type": "object",
+          "properties": {
+            "verifiedCompaniesAddresses": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "example": {
+            "verifiedCompaniesAddresses": ["example@email.com", "example2@email.com"]
           }
         }
       }

@@ -16,8 +16,10 @@ import {
   UnverifyCompanyAccountRequest,
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
+  AdminVerifiedCompaniesAddressesRequest,
 } from './types/request';
 import { env } from './environment';
+import AdminAccount from './entity/admin_account';
 
 const LM = new LogModule('ADMIN');
 
@@ -754,6 +756,143 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             token: req.newJbToken,
             hiddenJobs: resMap,
           },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  public static async GetVerifiedCompaniesAddresses(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        const { adminID } = req;
+        Helpers.requireParameters(adminID);
+
+        Logger.Info(LM, `ADMIN=${adminID} attempting to get verified companies email addresses`);
+
+        const verifiedAddresses = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(AdminAccount)
+            .createQueryBuilder()
+            .select(['AdminAccount.verifiedCompaniesAddresses'])
+            .where('id = :id', { id: adminID })
+            .getOne(),
+          'Failed to retrieve verified companies email addresses',
+        );
+
+        Logger.Info(LM, `ADMIN=${adminID} successfully retrieved verified companies email addresses`);
+
+        return {
+          status: StatusCodes.OK,
+          msg: {
+            verifiedCompaniesAddresses: verifiedAddresses.verifiedCompaniesAddresses,
+            token: req.newJbToken,
+          },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  public static async AddVerifiedCompaniesAddresses(
+    this: void,
+    req: AdminVerifiedCompaniesAddressesRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        const { adminID } = req;
+        Helpers.requireParameters(adminID);
+        Logger.Info(LM, `ADMIN=${adminID} attempting to add verified companies email addresses`);
+
+        const adminAccount = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(AdminAccount)
+            .createQueryBuilder()
+            .where('id = :id', { id: adminID })
+            .getOne(),
+          `Failed to request admin account ID=${adminID}`,
+        );
+
+        const addressesToAdd = req.body.verifiedCompaniesAddresses;
+        Helpers.requireParameters(addressesToAdd);
+
+        // Combine new addresses with existing ones, ensuring no duplicates
+        const allVerifiedAddresses = Array.from(
+          new Set(adminAccount.verifiedCompaniesAddresses.concat(addressesToAdd)),
+        );
+
+        // Update verifiedCompaniesAddresses column
+        adminAccount.verifiedCompaniesAddresses = allVerifiedAddresses;
+        await AppDataSource.getRepository(AdminAccount).save(adminAccount);
+
+        Logger.Info(LM, `ADMIN=${adminID} successfully added verified companies email addresses`);
+
+        return {
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  public static async DeleteVerifiedCompaniesAddresses(
+    this: void,
+    req: AdminVerifiedCompaniesAddressesRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        const { adminID } = req;
+        Helpers.requireParameters(adminID);
+        Logger.Info(LM, `ADMIN=${adminID} attempting to delete verified companies email addresses`);
+
+        const adminAccount = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(AdminAccount)
+            .createQueryBuilder()
+            .where('id = :id', { id: adminID })
+            .getOne(),
+          `Failed to request admin account ID=${adminID}`,
+        );
+
+        const addressesToDelete = req.body.verifiedCompaniesAddresses;
+        Helpers.requireParameters(addressesToDelete);
+
+        // Remove any addresses that appear in addressesToDelete
+        const allVerifiedAddresses = adminAccount.verifiedCompaniesAddresses.filter(
+          (address) => !addressesToDelete.includes(address),
+        );
+
+        // Update verifiedCompaniesAddresses column
+        adminAccount.verifiedCompaniesAddresses = allVerifiedAddresses;
+        await AppDataSource.getRepository(AdminAccount).save(adminAccount);
+
+        Logger.Info(LM, `ADMIN=${adminID} successfully deleted verified companies email addresses`);
+
+        return {
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
         };
       },
       () => ({
