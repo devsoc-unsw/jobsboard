@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 import container from 'styles/container.module.css';
-import logo from 'assets/logos/csesocwhite.png';
+import logo from 'assets/logos/devsoc.png';
 
 const Footer = () => {
   const socials = [
