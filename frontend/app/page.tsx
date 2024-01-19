@@ -70,7 +70,7 @@ const HomePage = () => {
         />
         <div className="flex justify-around align-middle mx-auto gap-7">
           <div className="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
-            <p className="text-lg text-white">CSESoc presents</p>
+            <p className="text-lg text-white">DevSoc presents</p>
             <h1 className="text-[#143A6C] dark:text-[#F9F7F1] font-bold text-6xl leading-[72px] m-0">
               Jobsboard
             </h1>
