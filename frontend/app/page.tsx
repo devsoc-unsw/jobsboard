@@ -204,7 +204,7 @@ const HomePage = () => {
             <Button variant="primary" onClick={() => setOpenModal(true)}>
               Join the Team
             </Button>
-            <a href="https://github.com/csesoc/jobs-board" target="_blank" rel="noreferrer">
+            <a href="https://github.com/devsoc-unsw/jobsboard" target="_blank" rel="noreferrer">
               <Button variant="primary">Source Code</Button>
             </a>
           </div>
