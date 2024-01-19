@@ -196,7 +196,7 @@ const HomePage = () => {
           </h3>
           <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             If you&apos;re a CSE student with a keen interest in Jobsboard and looking to get
-            involved, keep an eye out for our recruitment announcements on CSESoc&apos;s socials.
+            involved, keep an eye out for our recruitment announcements on DevSoc&apos;s socials.
             Otherwise, you can also contribute by suggesting cool new features or even make a pull
             request on the Jobsboard repo.
           </p>
