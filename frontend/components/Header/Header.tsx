@@ -6,7 +6,7 @@ import ThemeContext from 'contexts/ThemeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import logo from 'assets/logos/devsocwhite.svg';
+import logo from 'assets/logos/devsocwhite.png';
 import moon from 'assets/misc/moon.svg';
 import { inDev } from 'config/dev';
 import styles from './styles.module.css';
