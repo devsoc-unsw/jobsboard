@@ -91,12 +91,12 @@ export default class AdminFunctions {
 
         await MailFunctions.AddMailToQueue(
           jobToApprove.company.companyAccount.username,
-          'CSESoc Jobs Board - Job Post request approved',
+          'DevSoc Jobs Board - Job Post request approved',
           `
-        Congratulations! Your job post request titled "${jobToApprove.role}" has been approved. UNSW CSESoc students are now able to view the posting.
+        Congratulations! Your job post request titled "${jobToApprove.role}" has been approved. UNSW CSE students are now able to view the posting.
           <br>
         <p>Best regards,</p>
-        <p>CSESoc Jobs Board Administrator</p>
+        <p>DevSoc Jobs Board Administrators</p>
         `,
         );
         Logger.Info(LM, `Admin ID=${req.adminID} approved JOB=${req.params.jobID}`);
@@ -160,12 +160,12 @@ export default class AdminFunctions {
 
         await MailFunctions.AddMailToQueue(
           jobToReject.company.companyAccount.username,
-          'CSESoc Jobs Board - Job Post request rejected',
+          'DevSoc Jobs Board - Job Post request rejected',
           `
 You job post request titled "${jobToReject.role}" has been rejected as it does not follow our <a href="">job post guidelines</a>. You are more than welcome to re-submit a revised version of the job application that better follows the aforementioned guidelines.
           <br>
         <p>Best regards,</p>
-        <p>CSESoc Jobs Board Administrator</p>
+        <p>DevSoc Jobs Board Administrators</p>
         `,
         );
         Logger.Info(LM, `Admin ID=${req.adminID} attempting to reject JOB=${req.params.jobID}`);
@@ -293,10 +293,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         // send an email confirming that the account has been verified
         await MailFunctions.AddMailToQueue(
           pendingCompany.username,
-          'CSESoc Jobs Board - Success! Your account has been verified',
+          'DevSoc Jobs Board - Success! Your account has been verified',
           `
 
-        Congratulations! Your company account creation has been successful. You are now able to post job requests on the CSESoc Jobs Board. The process for doing so is as follows:
+        Congratulations! Your company account creation has been successful. You are now able to post job requests on the DevSoc Jobs Board. The process for doing so is as follows:
             <ul>
               <li>
                 Log in to the company account portal
@@ -316,7 +316,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             </ul>
           <br>
         <p>Best regards,</p>
-        <p>CSESoc Jobs Board Administrator</p>
+        <p>DevSoc Jobs Board Administrators</p>
         `,
         );
         Logger.Info(LM, `Admin ID=${req.adminID} verified COMPANY=${req.params.companyAccountID}`);
@@ -371,12 +371,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         // send an email confirming that the company has been unverified
         await MailFunctions.AddMailToQueue(
           pendingCompany.username,
-          'CSESoc Jobs Board - Your account has been unverified',
+          'DevSoc Jobs Board - Your account has been unverified',
           `
           Your company account has been unverified. If you believe that there has been an error or you would like to understand the reasons behind the unverification, we encourage you to get in touch with us.
           <br>
           <p>Best regards,</p>
-          <p>CSESoc Jobs Board Administrator</p>
+          <p>DevSoc Jobs Board Administrators</p>
           `,
         );
         Logger.Info(LM, `Admin ID=${req.adminID} unverified COMPANY=${req.params.companyAccountID}`);
@@ -531,12 +531,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         await MailFunctions.AddMailToQueue(
           env.MAIL_USERNAME,
-          'CSESoc Jobs Board - CSESoc has created a job on your behalf',
+          'DevSoc Jobs Board - DevSoc has created a job on your behalf',
           `
-        Congratulations! CSESoc has create a job post on your behalf titled "${newJob.role}". UNSW CSESoc students are now able to view the posting.
+        Congratulations! DevSoc has create a job post on your behalf titled "${newJob.role}". UNSW DevSoc students are now able to view the posting.
           <br>
         <p>Best regards,</p>
-        <p>CSESoc Jobs Board Administrator</p>
+        <p>DevSoc Jobs Board Administrators</p>
         `,
         );
 
