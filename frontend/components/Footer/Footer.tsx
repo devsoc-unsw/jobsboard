@@ -48,7 +48,7 @@ const Footer = () => {
           <Link className="cursor-pointer" href="/team">
             Meet the Team
           </Link>
-          <p className="m-0">&#169; DevSoc UNSW - 2022</p>
+          <p className="m-0">&#169; DevSoc UNSW - 2024</p>
           <div className="flex justify-center py-[15px] gap-5">
             {socials.map((s) => (
               <a href={s.href} target="__blank" key={s.title}>
