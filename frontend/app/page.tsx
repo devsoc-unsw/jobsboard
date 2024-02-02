@@ -70,7 +70,7 @@ const HomePage = () => {
         />
         <div className="flex justify-around align-middle mx-auto gap-7">
           <div className="flex flex-col justify-center text-left sm:justify-center sm:text-center font-bold">
-            <p className="text-lg text-white">CSESoc presents</p>
+            <p className="text-lg text-white">DevSoc presents</p>
             <h1 className="text-[#143A6C] dark:text-[#F9F7F1] font-bold text-6xl leading-[72px] m-0">
               Jobsboard
             </h1>
@@ -105,7 +105,7 @@ const HomePage = () => {
         {/* <!-- Sponsors --> */}
         <div className="my-12 mx-auto">
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
-            Our Sponsors
+            Featuring Jobs From
           </h3>
           <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             We aim to give you a pleasant student working experience by partnering up with only the
@@ -196,7 +196,7 @@ const HomePage = () => {
           </h3>
           <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             If you&apos;re a CSE student with a keen interest in Jobsboard and looking to get
-            involved, keep an eye out for our recruitment announcements on CSESoc&apos;s socials.
+            involved, keep an eye out for our recruitment announcements on DevSoc&apos;s socials.
             Otherwise, you can also contribute by suggesting cool new features or even make a pull
             request on the Jobsboard repo.
           </p>
@@ -204,7 +204,7 @@ const HomePage = () => {
             <Button variant="primary" onClick={() => setOpenModal(true)}>
               Join the Team
             </Button>
-            <a href="https://github.com/csesoc/jobs-board" target="_blank" rel="noreferrer">
+            <a href="https://github.com/devsoc-unsw/jobsboard" target="_blank" rel="noreferrer">
               <Button variant="primary">Source Code</Button>
             </a>
           </div>

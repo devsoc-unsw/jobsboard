@@ -28,12 +28,19 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/jobs-board-${{ matrix.component }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: ${{ matrix.component }}
-          push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/dev' }}
+          push: ${{ github.event_name != 'pull_request' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/main') }}
           platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           file: ${{ matrix.component }}/Dockerfile
           tags: |
             ghcr.io/csesoc/jobs-board-${{ matrix.component }}:${{ github.sha }}

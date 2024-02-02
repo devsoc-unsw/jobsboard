@@ -1,6 +1,6 @@
-backend/ @csesoc/jobsboard-leads
-frontend/ @csesoc/jobsboard-leads
+backend/ @devsoc-unsw/jobsboard-lead
+frontend/ @devsoc-unsw/jobsboard-lead
 
-.github/ @csesoc/technical
-renovate.json @csesoc/technical
-Dockerfile @csesoc/technical
+.github/ @devsoc-unsw/platform-leads
+renovate.json @devsoc-unsw/platform-leads
+Dockerfile @devsoc-unsw/platform-leads
