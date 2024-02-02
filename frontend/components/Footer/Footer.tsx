@@ -1,7 +1,13 @@
 'use client';
 
 import React from 'react';
-import { faDiscord, faFacebook, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import {
+  faDiscord,
+  faFacebook,
+  faGithub,
+  faInstagram,
+  faLinkedin
+} from '@fortawesome/free-brands-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
