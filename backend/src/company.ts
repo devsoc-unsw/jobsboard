@@ -185,15 +185,15 @@ export default class CompanyFunctions {
 
         await MailFunctions.AddMailToQueue(
           newCompanyAccount.username,
-          'Thank you for adding your company to the CSESoc Jobs Board',
+          'Thank you for adding your company to the DevSoc Jobs Board',
           `
-        Thank you for registering your company with the CSESoc Jobs Board. We really appreciate your time and are looking forward to working with you to share amazing opportunities with our students.
+        Thank you for registering your company with the DevSoc Jobs Board. We really appreciate your time and are looking forward to working with you to share amazing opportunities with our students.
             <br>
           Please contact our executive committee at <a href="mailto:careers@csesoc.org.au">careers@csesoc.org.au</a> to verify your company account.
           <br>
         <p>Best regards,</p>
         <p>Adam Tizzone</p>
-        <p>CSESoc Jobs Board Administrator</p>
+        <p>DevSoc Jobs Board Administrator</p>
         `,
         );
         return { status: StatusCodes.OK, msg: undefined };
@@ -293,15 +293,14 @@ export default class CompanyFunctions {
 
         await MailFunctions.AddMailToQueue(
           companyAccount.username,
-          'CSESoc Jobs Board - Job Post request submitted',
+          'DevSoc Jobs Board - Job Post request submitted',
           `
-        Thank you for adding a job post to the CSESoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.
+        Thank you for adding a job post to the DevSoc Jobs Board. As part of our aim to ensure student safety, we check all job posting requests to ensure they follow our guidelines, as the safety of our students is our utmost priority.
             <br>
           A result will be sent to you shortly.
           <br>
         <p>Best regards,</p>
-        <p>Adam Tizzone</p>
-        <p>CSESoc Jobs Board Administrator</p>
+        <p>DevSoc Jobs Board Administrators</p>
         `,
         );
         return {

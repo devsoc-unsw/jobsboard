@@ -6,7 +6,7 @@ import ThemeContext from 'contexts/ThemeContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import logo from 'assets/logos/csesocwhite.png';
+import logo from 'assets/logos/devsocwhite.png';
 import moon from 'assets/misc/moon.svg';
 import { inDev } from 'config/dev';
 import styles from './styles.module.css';
@@ -33,7 +33,7 @@ const Header = ({ style }: HeaderProps) => {
            bg-gradient-to-br from-[#3a76f8] via-[#2c8bf4] to-[#619fcc]"
     >
       <Link href="/">
-        <Image className="cursor-pointer" src={logo} width={150} alt="CSESoc" />
+        <Image className="cursor-pointer" src={logo} width={150} alt="DevSoc" />
       </Link>
       <div className="flex justify-evenly items-center gap-5">
         {inDev && (
