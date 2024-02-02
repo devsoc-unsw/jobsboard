@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { faFacebook, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faDiscord, faFacebook, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -30,6 +30,11 @@ const Footer = () => {
       title: 'Github',
       icon: faGithub,
       href: 'https://github.com/devsoc-unsw'
+    },
+    {
+      title: 'Discord',
+      icon: faDiscord,
+      href: 'https://discord.gg/u9p34WUTcs'
     }
   ];
 
