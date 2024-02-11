@@ -1,14 +1,12 @@
-'use server';
-
 import React from 'react';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { Assistant } from '@next/font/google';
 import ThemeProvider from 'contexts/ThemeProvider';
+import { Metadata } from 'next';
 import Footer from 'components/Footer/Footer';
 import AppProvider from '../contexts/AppProvider';
 import 'styles/globals.css';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Metadata } from 'next';
 
 config.autoAddCss = false;
 const assistant = Assistant({
@@ -21,7 +19,7 @@ export const metadata: Metadata = {
   title: 'Jobsboard',
   description: 'Connecting UNSW students with top employers since 2018.',
   manifest: '/manifest.webmanifest',
-  themeColor: '#2c8bf4',
+  themeColor: '#2c8bf4'
 };
 
 type RootLayoutProps = {
