@@ -50,6 +50,16 @@ module.exports = {
         'btn-hovered': '0 0.125rem 0.625rem 0 rgb(0 0 0 / 50%)',
         card: '-0.125rem 0.25rem 0.625rem rgba(0, 0, 0, 0.15)',
         input: '0 0 0.5rem 0.063rem rgba(0, 0, 0, 0.1);'
+      },
+      keyframes: {
+        pulseShadow: {
+          '0%': {
+            boxShadow: '0 0 0 0px rgba(84, 72, 91, 0.2)'
+          },
+          '100%': {
+            boxShadow: '0 0 0 40px rgba(17, 3, 52, 0)'
+          }
+        }
       }
     }
   },

@@ -1,14 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 import jobsboardLogo from 'assets/logos/JobsboardLogo.png';
-import S from './styles';
 
 const PageLoading = () => (
-  <S.PageWrapper>
-    <S.LoadingLogo>
+  <div className="h-screen flex items-center justify-center flex-col">
+    <div className="w-200 rounded-full animate-[pulseShadow_1.5s_infinite]">
       <Image src={jobsboardLogo} alt="Jobsboard Logo" width={200} height={200} />
-    </S.LoadingLogo>
-  </S.PageWrapper>
+    </div>
+  </div>
 );
 
 export default PageLoading;
