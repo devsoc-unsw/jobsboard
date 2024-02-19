@@ -105,7 +105,7 @@ const HomePage = () => {
         {/* <!-- Sponsors --> */}
         <div className="my-12 mx-auto">
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
-            Featuring Jobs From
+            Our Sponsors
           </h3>
           <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             We aim to give you a pleasant student working experience by partnering up with only the
