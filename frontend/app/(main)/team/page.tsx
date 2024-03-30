@@ -15,6 +15,15 @@ const TeamPage = () => {
         'https://media-exp1.licdn.com/dms/image/D5603AQHM0dMmj2SBaQ/profile-displayphoto-shrink_800_800/0/1666852544286?e=1675900800&v=beta&t=yjcDTMAzz9fQw1HtwQfqU7lEpqfIwdYdVKJa27dFHcg'
     },
     {
+      name: '',
+      title: '',
+      involvement: '',
+      funFact: '',
+      linkedin: '',
+      gh: '',
+      photo: ''
+    },
+    {
       name: 'Darian Lee',
       title: '2022 Jobsboard Director',
       involvement: 'UI Design, Frontend',
@@ -37,7 +46,7 @@ const TeamPage = () => {
     },
     {
       name: 'Matthew Liu',
-      title: '2022 Subcommittee Member & 2023 Jobsboard Director',
+      title: '2023 Jobsboard Director',
       involvement: 'Backend',
       funFact:
         'Aspiring software engineer particularly interested working with the backend. My wildest dream would be to see Arsenal win the Champions League.',
@@ -47,7 +56,7 @@ const TeamPage = () => {
     },
     {
       name: 'Gabriel Ting',
-      title: '2022 Subcommittee Member & 2023 Jobsboard Director',
+      title: '2023 Jobsboard Director',
       involvement: 'Frontend',
       funFact: 'I love circles 🟣 and squares 🟪',
       linkedin: 'https://www.linkedin.com/in/gabriel-ting/',
@@ -56,45 +65,25 @@ const TeamPage = () => {
         'https://media-exp1.licdn.com/dms/image/C5603AQEia_BIGgbOww/profile-displayphoto-shrink_400_400/0/1648716681245?e=1675900800&v=beta&t=k8_6WX-iJCU3Aucwu-Y5i4HpxEwgHxmp3xWjYDNMKFE'
     },
     {
-      name: 'Sunny Wang',
-      title: '2022 Subcommittee Member',
+      name: 'Richard Bao',
+      title: '2024 Jobsboard Director',
       involvement: 'Backend',
       funFact:
-        "I'm not particularly great at anything but can make some pretty good overnight oats",
-      linkedin: 'https://www.linkedin.com/in/sunny-wang-033a19206/',
-      gh: 'https://github.com/casio987',
-      photo: 'https://i.imgur.com/dgSVw0i.png'
+        ' ',
+      linkedin: 'https://www.linkedin.com/in/richard-bao/',
+      gh: 'https://github.com/RichardBao1',
+      photo: ''
     },
     {
-      name: 'Sam Yu',
-      title: '2022 Subcommittee Member',
+      name: 'Flynn Lambrechts',
+      title: '2024 Jobsboard Director',
       involvement: 'Frontend',
       funFact:
-        'Hello! When I am not doing work for university or Jobsboard I like to either go out and play badminton with my local club or spend my time watching netflix.',
-      linkedin: 'https://www.linkedin.com/in/jihaoy/',
-      gh: 'https://github.com/samyu1204',
+        ' ',
+      linkedin: 'https://imgur.com/a/u3KaIoH',
+      gh: 'https://www.linkedin.com/in/flynn-lambrechts/',
       photo:
-        'https://media-exp1.licdn.com/dms/image/C5603AQGOTWqiNSHQ4Q/profile-displayphoto-shrink_800_800/0/1638537862485?e=1675900800&v=beta&t=nPyJMOsT3-_vwN7CitrMKojC8ErpDUtHNzCquk-3X0U'
-    },
-    {
-      name: 'Avijit Prasad',
-      title: '2022 Subcommittee Member',
-      involvement: 'Backend',
-      funFact: "I enjoy visiting beaches and playing football when I'm not working on Jobsboard 🏖️",
-      linkedin: 'https://www.linkedin.com/in/avijits01/',
-      gh: 'https://github.com/avijits01',
-      photo:
-        'https://media-exp1.licdn.com/dms/image/C4D03AQFwMbHUdLJcnw/profile-displayphoto-shrink_800_800/0/1653646210650?e=1675900800&v=beta&t=aBoKXt7hWkmq790EDvj9E8sYu71irdj6BEEzar04_9Y'
-    },
-    {
-      name: 'Adrian Tan',
-      title: '2022 Subcommittee Member',
-      involvement: 'Frontend',
-      funFact: 'Passionate about exploring outdoors 🗻 and taking photos 📸',
-      linkedin: 'https://www.linkedin.com/in/adriantan09/',
-      gh: 'https://github.com/adriantan09',
-      photo:
-        'https://media-exp1.licdn.com/dms/image/C5603AQHbFz34aec_Dw/profile-displayphoto-shrink_800_800/0/1607509426101?e=1675900800&v=beta&t=xV5okatq0vZ650ZCQTRNcSCmvUE9CuUxgSd22YtUGYI'
+        ''
     }
   ];
 
