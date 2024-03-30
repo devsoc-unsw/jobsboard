@@ -68,8 +68,7 @@ const TeamPage = () => {
       name: 'Richard Bao',
       title: '2024 Jobsboard Director',
       involvement: 'Backend',
-      funFact:
-        ' ',
+      funFact: ' ',
       linkedin: 'https://www.linkedin.com/in/richard-bao/',
       gh: 'https://github.com/RichardBao1',
       photo: ''
@@ -78,12 +77,10 @@ const TeamPage = () => {
       name: 'Flynn Lambrechts',
       title: '2024 Jobsboard Director',
       involvement: 'Frontend',
-      funFact:
-        ' ',
+      funFact: ' ',
       linkedin: 'https://imgur.com/a/u3KaIoH',
       gh: 'https://www.linkedin.com/in/flynn-lambrechts/',
-      photo:
-        ''
+      photo: ''
     }
   ];
 
