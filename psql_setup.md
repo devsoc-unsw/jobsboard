@@ -132,7 +132,7 @@ Make sure the in the 'backend.env' file DB_USER field in your backend reflects t
 To see the users in the database
 
 ```
-$ psql
+$ psql jobsboard
 <your username>=# \du
                                 List of roles
     Role name    |                         Attributes                         
@@ -141,15 +141,15 @@ $ psql
  <another user>  | Superuser, Create role, Create DB, Replication, Bypass RLS
 ```
 
-And make sure you choose a user with the attribute Superuser
+And make sure you choose a user with the attribute **Superuser**
 
 ## Optional: Create A jobsboard specific user
 
 If you do not want to leave your normal password in your backend/.env file you can create another user with a different password as follows
 
 ```
-$ psql
-<your username>=# CREATE ROLE jobsboard_user WITH SUPERUSER LOGIN PASSWORD `ilovejobsboard`;
+$ psql jobsboard
+<your username>=# CREATE ROLE jobsboard_user WITH SUPERUSER LOGIN PASSWORD 'ilovejobsboard';
 CREATE ROLE
 <your username>=# \du
                                  List of roles
