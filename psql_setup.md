@@ -158,7 +158,7 @@ jobsboard=# \du
     Role name     |                         Attributes                         
 ------------------+------------------------------------------------------------
  <your username>  | Superuser, Create role, Create DB
- <jobsboard_user> | Superuser
+ jobsboard_user   | Superuser
 ```
 
 Now you can setup you backend/.env file as below
