@@ -133,7 +133,7 @@ To see the users in the database
 
 ```
 $ psql jobsboard
-<your username>=# \du
+jobsboard=# \du
                                 List of roles
     Role name    |                         Attributes                         
 -----------------+------------------------------------------------------------
@@ -143,20 +143,21 @@ $ psql jobsboard
 
 And make sure you choose a user with the attribute **Superuser**
 
+If this doesn't work try below
+
 ## Optional: Create A jobsboard specific user
 
 If you do not want to leave your normal password in your backend/.env file you can create another user with a different password as follows
 
 ```
 $ psql jobsboard
-<your username>=# CREATE ROLE jobsboard_user WITH SUPERUSER LOGIN PASSWORD 'ilovejobsboard';
+jobsboard=# CREATE ROLE jobsboard_user WITH SUPERUSER LOGIN PASSWORD 'ilovejobsboard';
 CREATE ROLE
-<your username>=# \du
+jobsboard=# \du
                                  List of roles
     Role name     |                         Attributes                         
 ------------------+------------------------------------------------------------
  <your username>  | Superuser, Create role, Create DB
- <another user>   | Superuser, Create role, Create DB, Replication, Bypass RLS
  <jobsboard_user> | Superuser
 ```
 
