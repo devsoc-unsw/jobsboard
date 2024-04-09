@@ -84,3 +84,7 @@ export interface AuthBody {
 export interface Year {
   year: string;
 }
+
+export interface VerifiedCompaniesAddresses {
+  verifiedCompaniesAddresses: string[];
+}
