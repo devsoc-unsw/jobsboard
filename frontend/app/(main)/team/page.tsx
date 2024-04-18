@@ -86,10 +86,10 @@ const TeamPage = () => {
       name: 'Emily Ngo',
       title: '2024 Jobsboard Subcommittee',
       involvement: 'Frontend',
-      funFact: ' ',
-      linkedin: '',
-      gh: '',
-      photo: ''
+      funFact: 'Can\'t play basketball but I can spin a ball on my finger 😎😎',
+      linkedin: 'www.linkedin.com/in/emily-ngo-5a81082a4',
+      gh: 'https://github.com/engooo',
+      photo: 'https://media.licdn.com/dms/image/D5603AQGhZk3sCKznCg/profile-displayphoto-shrink_800_800/0/1713444471350?e=1718841600&v=beta&t=PKJW9k6MDTAGA5pxKi4gBgEU9DfCyjmYps2Nr8VGkJQ'
     }
   ];
 
