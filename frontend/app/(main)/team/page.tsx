@@ -81,6 +81,15 @@ const TeamPage = () => {
       linkedin: 'https://imgur.com/a/u3KaIoH',
       gh: 'https://www.linkedin.com/in/flynn-lambrechts/',
       photo: ''
+    },
+    {
+      name: 'Emily Ngo',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Frontend',
+      funFact: ' ',
+      linkedin: '',
+      gh: '',
+      photo: ''
     }
   ];
 
