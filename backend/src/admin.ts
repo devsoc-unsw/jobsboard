@@ -763,4 +763,28 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       next,
     );
   }
+
+  public static async DeleteJob(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        return {
+          status: StatusCodes.OK,
+          msg: {
+            something: "Hello ihjlk",
+          },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
 }

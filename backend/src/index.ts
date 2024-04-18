@@ -476,6 +476,19 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
+
+app.delete(
+  '/admin/company/delete/:jobId',
+  cors(corsOptions),
+  Middleware.authoriseAdminMiddleware,
+  (req: AdminCreateJobRequest, res, next) => {
+    (async () => {
+      res.send("Hello World");
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+)
+
 app.get(
   '/featured-jobs',
   cors(corsOptions),
