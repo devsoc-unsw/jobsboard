@@ -83,12 +83,12 @@ const TeamPage = () => {
       photo: ''
     },
     {
-      name: 'Alec ',
+      name: 'Alec Liu',
       title: '2024 Jobsboard Subcommittee Member',
       involvement: 'Backend',
-      funFact: ' ',
-      linkedin: '',
-      gh: '',
+      funFact: '',
+      linkedin: 'https://www.linkedin.com/in/alec-liu-526b18159/',
+      gh: 'https://github.com/alecliu1204',
       photo: ''
     }
   ];
