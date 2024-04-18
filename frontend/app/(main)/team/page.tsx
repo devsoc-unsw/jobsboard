@@ -81,6 +81,15 @@ const TeamPage = () => {
       linkedin: 'https://imgur.com/a/u3KaIoH',
       gh: 'https://www.linkedin.com/in/flynn-lambrechts/',
       photo: ''
+    },
+    {
+      name: 'Alec ',
+      title: '2024 Jobsboard Subcommittee Member',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: '',
+      gh: '',
+      photo: ''
     }
   ];
 
