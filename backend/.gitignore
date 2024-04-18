@@ -1,3 +1,5 @@
 # ignore db directories
 db
 **/*.log
+# ignore .env
+.env
