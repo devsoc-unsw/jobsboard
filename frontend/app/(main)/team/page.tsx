@@ -80,8 +80,16 @@ const TeamPage = () => {
       funFact: ' ',
       linkedin: 'https://www.linkedin.com/in/flynn-lambrechts/',
       gh: 'https://github.com/flynnlambrechts',
-      photo:
-        'https://media.licdn.com/dms/image/C4D03AQE2Zp0kmjG88g/profile-displayphoto-shrink_800_800/0/1617330448714?e=1718841600&v=beta&t=2WcPeCLEmOl_0Mv3duajr9pSqtre2pSZwLWWP-NzeSM'
+      photo:  'https://media.licdn.com/dms/image/C4D03AQE2Zp0kmjG88g/profile-displayphoto-shrink_800_800/0/1617330448714?e=1718841600&v=beta&t=2WcPeCLEmOl_0Mv3duajr9pSqtre2pSZwLWWP-NzeSM'
+    },
+    {
+      name: 'Alec Liu',
+      title: '2024 Jobsboard Subcommittee Member',
+      involvement: 'Backend',
+      funFact: '',
+      linkedin: 'https://www.linkedin.com/in/alec-liu-526b18159/',
+      gh: 'https://github.com/alecliu1204',
+      photo: ''
     }
   ];
 
