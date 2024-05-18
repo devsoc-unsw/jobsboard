@@ -131,7 +131,7 @@ const AdminCompanyPage = () => {
             description: pendingCompany.company.description,
             createdAt: pendingCompany.company.createdAt,
             logo: pendingCompany.company.logo,
-            official: pendingCompany.company.official
+            official: false
           }))
         );
       } catch (e) {

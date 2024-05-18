@@ -52,8 +52,8 @@ export default class Company {
   public companyAccount: CompanyAccount;
 
   @CreateDateColumn()
-    createdAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-    updatedAt: Date;
+  updatedAt: Date;
 }
