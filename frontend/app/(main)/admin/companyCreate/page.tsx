@@ -57,7 +57,7 @@ const CompanySignupPage = () => {
     const convertedFile = await base64(logo);
     try {
       await api.put(
-        '/unofficial-company',
+        '/admin/company',
         {
           name,
           location,
@@ -87,7 +87,7 @@ const CompanySignupPage = () => {
 
   return (
     <div className="h-full flex flex-col justify-center items-center py-16">
-      <h1 className="font-bold text-3xl text-jb-headings my-4">Unofficial Company Sign Up</h1>
+      <h1 className="font-bold text-3xl text-jb-headings my-4">Create Company</h1>
 
       {/* <!-- Success/Error Alert --> */}
       {alertOpen && (
@@ -173,18 +173,8 @@ const CompanySignupPage = () => {
         </div>
       </form>
 
-      <p className="text-lg text-jb-subheadings text-center mb-6">
-        Already have an account?&nbsp;
-        <Link
-          className="text-jb-textlink font-bold transition-colors duration-200 ease-linear
-                    cursor-pointer hover:text-jb-textlink-hovered"
-          href="/company/login"
-        >
-          Company Login
-        </Link>
-      </p>
       <Button variant="primary" onClick={performSignup} loading={loading}>
-        Sign Up
+        Create
       </Button>
     </div>
   );

@@ -236,17 +236,6 @@ app.put(
 );
 
 app.put(
-  '/unofficial-company',
-  cors(corsOptions),
-  (req: CreateUnofficialCompanyRequest, res, next) => {
-    (async () => {
-      await AdminFunctions.CreateUnofficialCompany(req, res, next);
-    })();
-  },
-  Middleware.genericLoggingMiddleware,
-);
-
-app.put(
   '/company/update/logo',
   cors(corsOptions),
   Middleware.authoriseCompanyMiddleware,
@@ -487,6 +476,18 @@ app.put(
   },
   Middleware.genericLoggingMiddleware,
 );
+
+app.put(
+  '/admin/company',
+  cors(corsOptions),
+  (req: CreateUnofficialCompanyRequest, res, next) => {
+    (async () => {
+      await AdminFunctions.CreateUnofficialCompany(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
 
 app.get(
   '/featured-jobs',
