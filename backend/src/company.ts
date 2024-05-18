@@ -25,6 +25,7 @@ import {
   CompanyUploadLogoRequest,
   CheckCompanyLogoRequest,
   UpdateCompanyDetailsRequest,
+  CreateUnofficialCompanyRequest,
 } from './types/request';
 import { JobInfo } from './types/shared';
 
@@ -171,6 +172,7 @@ export default class CompanyFunctions {
         newCompanyAccount.username = msg.username;
         newCompanyAccount.hash = Secrets.hash(msg.password);
         newCompanyAccount.company = newCompany;
+        newCompanyAccount.official = true;
         newCompany.companyAccount = newCompanyAccount;
 
         const companyAccountRepository = AppDataSource.getRepository(CompanyAccount);
@@ -792,6 +794,7 @@ export default class CompanyFunctions {
         Helpers.requireParameters(req.body.logo);
 
         Logger.Info(LM, `COMPANY=${companyAccountID} attempting to upload a logo`);
+
 
         await AppDataSource.createQueryBuilder()
           .update(Company)

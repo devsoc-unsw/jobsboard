@@ -296,7 +296,7 @@ const PostJobForm = ({ admin }: PostJobFormProps) => {
               </option>
               {Object.values(verifiedCompanies).map((company) => (
                 <option key={company.id} value={company.id}>
-                  {company.name} - {company.location}
+                  {company.name} - {company.location} - {company.official ? 'Official' : 'Unofficial'}
                 </option>
               ))}
             </select>

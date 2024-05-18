@@ -16,6 +16,7 @@ import {
   StudentZID,
   StudentProfileInfo,
   Year,
+  UnofficialCompanyAccountInfo,
 } from './shared';
 
 export interface JobIDParams extends ParamsDictionary, JobID {}
@@ -91,6 +92,8 @@ export interface CompanyInfoRequest extends Request<CompanyIdParams>, StudentZID
 export type CompanyJobsRequest = CompanyInfoRequest;
 
 export type CreateCompanyRequest = Request<Record<string, never>, never, CompanyAccountInfo>;
+
+export type CreateUnofficialCompanyRequest =  Request<Record<string, never>, never, UnofficialCompanyAccountInfo>;
 
 export interface CreateJobRequest
   extends Request<Record<string, never>, never, JobInfo>,

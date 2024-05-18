@@ -16,6 +16,7 @@ import {
   UnverifyCompanyAccountRequest,
   AdminCreateJobRequest,
   AdminApprovedJobPostsRequest,
+  CreateUnofficialCompanyRequest,
 } from './types/request';
 import { env } from './environment';
 
@@ -760,6 +761,96 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         status: StatusCodes.BAD_REQUEST,
         msg: { token: req.newJbToken },
       }),
+      next,
+    );
+  }
+
+  public static async DeleteJob(
+    this: void,
+    req: GeneralAdminRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        return {
+          status: StatusCodes.OK,
+          msg: {
+            something: "Hello ihjlk",
+          },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  public static async CreateUnofficialCompany(
+    this: void,
+    req: CreateUnofficialCompanyRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        const msg = {
+          location: req.body.location,
+          name: req.body.name,
+          logo: req.body.logo,
+        };
+
+        Helpers.requireParameters(msg.name);
+        Helpers.requireParameters(msg.location);
+        Helpers.requireParameters(msg.logo);
+
+        Logger.Info(
+          LM,
+          `Attempting to create unofficial company with NAME=${msg.name} LOCATION=${msg.location}`,
+        );
+        
+        // check if the company account exists with the same name
+        // using the original typeorm OR convention fails to construct a suitable MySQL
+        // query, so we have to do this in two separate queries
+        const companyNameSearchResult = await AppDataSource.getRepository(Company)
+          .createQueryBuilder('company')
+          .where('company.name = :name', { name: msg.name })
+          .getOne();
+        if (companyNameSearchResult !== null) {
+          // company exists, send conflict error
+          return { status: StatusCodes.CONFLICT, msg: undefined };
+        }
+
+        const newCompany = new Company();
+        newCompany.name = msg.name;
+        newCompany.location = msg.location;
+        newCompany.logo = msg.logo;
+
+        const newCompanyAccount = new CompanyAccount();
+        newCompanyAccount.username = '';
+        newCompanyAccount.hash = '';
+        newCompanyAccount.company = newCompany;
+        newCompanyAccount.official = false;
+        newCompanyAccount.verified = true;
+        newCompany.companyAccount = newCompanyAccount;
+
+        const companyAccountRepository = AppDataSource.getRepository(CompanyAccount);
+
+        // ? does the single save also add newCompany to the db? (need investigation)
+        await companyAccountRepository.save(newCompanyAccount);
+
+        Logger.Info(
+          LM,
+          `Created unofficial company with NAME=${msg.name} LOCATION=${msg.location}`,
+        );
+
+        return { status: StatusCodes.OK, msg: undefined };
+      },
+      () => ({ status: StatusCodes.BAD_REQUEST, msg: undefined }),
       next,
     );
   }

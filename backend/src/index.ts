@@ -46,6 +46,7 @@ import {
   SearchJobRequest,
   StudentGetProfileRequest,
   StudentEditProfileRequest,
+  CreateUnofficialCompanyRequest,
 } from './types/request';
 
 const LM = new LogModule('INDEX');
@@ -229,6 +230,17 @@ app.put(
   (req: CreateCompanyRequest, res, next) => {
     (async () => {
       await CompanyFunctions.CreateCompany(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.put(
+  '/unofficial-company',
+  cors(corsOptions),
+  (req: CreateUnofficialCompanyRequest, res, next) => {
+    (async () => {
+      await AdminFunctions.CreateUnofficialCompany(req, res, next);
     })();
   },
   Middleware.genericLoggingMiddleware,
