@@ -792,9 +792,6 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           `Attempting to create unofficial company with NAME=${msg.name} LOCATION=${msg.location}`,
         );
 
-        // check if the company account exists with the same name
-        // using the original typeorm OR convention fails to construct a suitable MySQL
-        // query, so we have to do this in two separate queries
         const companyNameSearchResult = await AppDataSource.getRepository(Company)
           .createQueryBuilder('company')
           .where('company.name = :name', { name: msg.name })
@@ -819,7 +816,6 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         const companyAccountRepository = AppDataSource.getRepository(CompanyAccount);
 
-        // ? does the single save also add newCompany to the db? (need investigation)
         await companyAccountRepository.save(newCompanyAccount);
 
         Logger.Info(
