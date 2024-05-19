@@ -1,12 +1,8 @@
 'use client';
 
 import React, { useContext, useState } from 'react';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AxiosError } from 'axios';
 import AppContext from 'contexts/AppContext';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Alert, { AlertType } from 'components/Alert/Alert';
 import api from 'config/api';

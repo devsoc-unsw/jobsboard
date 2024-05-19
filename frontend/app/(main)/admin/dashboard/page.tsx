@@ -192,7 +192,7 @@ const AdminDashboardPage = () => {
       <div className="flex flex-col justify-center items-center bg-white p-6 mx-[30%] mt-6 lg:mx-[25%] rounded-md shadow-card mb-10">
         <h3 className="text-2xl font-bold text-jb-headings">Create Unofficial Company</h3>
         <p className="text-md text-jb-subheadings pt-2 pb-5">
-          Create a company{' '}
+          Create a company
           <span className="text-jb-textlink font-bold"> that hasn't signed up</span> to post jobs on
           their behalf.
         </p>
