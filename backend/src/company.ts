@@ -25,7 +25,6 @@ import {
   CompanyUploadLogoRequest,
   CheckCompanyLogoRequest,
   UpdateCompanyDetailsRequest,
-  CreateUnofficialCompanyRequest,
 } from './types/request';
 import { JobInfo } from './types/shared';
 
@@ -385,11 +384,10 @@ export default class CompanyFunctions {
   }
 
   private static isJobUpdated(newJob: Job, jobInfo: JobInfo) {
-    const areArraysEquals = (a: unknown[], b: unknown[]) =>
-      Array.isArray(a) &&
-      Array.isArray(b) &&
-      a.length === b.length &&
-      a.every((val, index) => val === b[index]);
+    const areArraysEquals = (a: unknown[], b: unknown[]) => Array.isArray(a)
+      && Array.isArray(b)
+      && a.length === b.length
+      && a.every((val, index) => val === b[index]);
 
     if (!areArraysEquals(newJob.studentDemographic, jobInfo.studentDemographic)) {
       return false;
@@ -399,16 +397,16 @@ export default class CompanyFunctions {
     }
 
     return (
-      newJob !== null &&
-      newJob.role === jobInfo.role &&
-      newJob.description === jobInfo.description &&
-      newJob.applicationLink === jobInfo.applicationLink &&
-      new Date(newJob.expiry).valueOf() === new Date(jobInfo.expiry).valueOf() &&
-      newJob.mode === jobInfo.jobMode &&
-      newJob.jobType === jobInfo.jobType &&
-      newJob.isPaid === jobInfo.isPaid &&
-      newJob.additionalInfo === jobInfo.additionalInfo &&
-      newJob.wamRequirements === jobInfo.wamRequirements
+      newJob !== null
+      && newJob.role === jobInfo.role
+      && newJob.description === jobInfo.description
+      && newJob.applicationLink === jobInfo.applicationLink
+      && new Date(newJob.expiry).valueOf() === new Date(jobInfo.expiry).valueOf()
+      && newJob.mode === jobInfo.jobMode
+      && newJob.jobType === jobInfo.jobType
+      && newJob.isPaid === jobInfo.isPaid
+      && newJob.additionalInfo === jobInfo.additionalInfo
+      && newJob.wamRequirements === jobInfo.wamRequirements
     );
   }
 
@@ -524,31 +522,30 @@ export default class CompanyFunctions {
           `COMPANY_ACCOUNT=${req.companyAccountID} attempting to list all of its jobs`,
         );
         const companyJobs = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .leftJoinAndSelect('Job.company', 'company')
-              .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
-              .andWhere('Job.deleted = :deleted', { deleted: false })
-              .andWhere('Job.expiry > :expiry', { expiry: new Date() })
-              .orderBy('Job.createdAt', 'DESC')
-              .select([
-                'Job.id',
-                'Job.role',
-                'Job.description',
-                'Job.applicationLink',
-                'Job.approved',
-                'Job.hidden',
-                'Job.expiry',
-                'Job.mode',
-                'Job.studentDemographic',
-                'Job.jobType',
-                'Job.workingRights',
-                'Job.wamRequirements',
-                'Job.additionalInfo',
-                'Job.isPaid',
-              ])
-              .getMany(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .leftJoinAndSelect('Job.company', 'company')
+            .where('company.id = :id', { id: parseInt(req.companyAccountID, 10) })
+            .andWhere('Job.deleted = :deleted', { deleted: false })
+            .andWhere('Job.expiry > :expiry', { expiry: new Date() })
+            .orderBy('Job.createdAt', 'DESC')
+            .select([
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.applicationLink',
+              'Job.approved',
+              'Job.hidden',
+              'Job.expiry',
+              'Job.mode',
+              'Job.studentDemographic',
+              'Job.jobType',
+              'Job.workingRights',
+              'Job.wamRequirements',
+              'Job.additionalInfo',
+              'Job.isPaid',
+            ])
+            .getMany(),
           `Failed to find jobs for COMPANY=${req.companyAccountID}`,
         );
 
@@ -659,11 +656,10 @@ export default class CompanyFunctions {
         );
         // check if company with provided username exists
         const companyAccountUsernameSearchResult = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder('company_account')
-              .where('company_account.username = :username', { username: receipientEmail })
-              .getOne(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder('company_account')
+            .where('company_account.username = :username', { username: receipientEmail })
+            .getOne(),
           `Failed to find company account with USERNAME=${receipientEmail}`,
         );
         // create new token
@@ -717,12 +713,11 @@ export default class CompanyFunctions {
         Logger.Info(LM, `Retrieving paswsword reset token for COMPANY=${username} `);
 
         const resetToken = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder('company_account')
-              .select(['company_account.latestValidResetToken'])
-              .where('company_account.username = :username', { username })
-              .getOne(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder('company_account')
+            .select(['company_account.latestValidResetToken'])
+            .where('company_account.username = :username', { username })
+            .getOne(),
           `Failed to find password reset token for COMPANY=${username}`,
         );
 
@@ -758,11 +753,10 @@ export default class CompanyFunctions {
         const jwt: IToken = JWT.get(req.get('Authorization'));
         // get the id of the company making this request
         const companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder('company_account')
-              .where('company_account.id = :id', { id: jwt.id })
-              .getOne(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder('company_account')
+            .where('company_account.id = :id', { id: jwt.id })
+            .getOne(),
           `Failed to find company account with ID=${jwt.id}`,
         );
 
@@ -825,12 +819,11 @@ export default class CompanyFunctions {
       res,
       async (): Promise<IResponseWithStatus> => {
         const companyLogo = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Company)
-              .createQueryBuilder()
-              .select(['Company.logo'])
-              .where('Company.id = :id', { id: parseInt(req.companyAccountID, 10) })
-              .getOne(),
+          async () => AppDataSource.getRepository(Company)
+            .createQueryBuilder()
+            .select(['Company.logo'])
+            .where('Company.id = :id', { id: parseInt(req.companyAccountID, 10) })
+            .getOne(),
           `Failed to find logo for COMPANY=${req.companyAccountID}.`,
         );
 

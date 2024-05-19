@@ -43,23 +43,23 @@ export interface AdminJobRequest extends Request<JobIDParams>, AdminRequestBase 
 
 export interface VerifyCompanyAccountRequest
   extends Request<CompanyAccountIdParams>,
-    AdminRequestBase {}
+  AdminRequestBase {}
 
 export interface UnverifyCompanyAccountRequest
   extends Request<CompanyAccountIdParams>,
-    AdminRequestBase {}
+  AdminRequestBase {}
 
 export interface AdminCreateJobRequest
   extends Request<JobIDParams, never, JobInfo>,
-    AdminRequestBase {}
+  AdminRequestBase {}
 
 export interface AdminApprovedJobPostsRequest extends Request<YearParams>, AdminRequestBase {}
 
 // * Student
 export interface StudentPaginatedJobsRequest
   extends Request<PaginatedJobsParams>,
-    StudentZID,
-    JbToken {}
+  StudentZID,
+  JbToken {}
 
 export interface StudentGetJobRequest extends Request<JobIDParams>, StudentZID, JbToken {}
 
@@ -74,8 +74,8 @@ export interface SearchJobRequest extends Request<QueryStringParams>, StudentZID
 export interface StudentGetProfileRequest extends Request, StudentZID, JbToken {}
 export interface StudentEditProfileRequest
   extends Request<Record<string, never>, never, StudentProfileInfo>,
-    StudentZID,
-    JbToken {}
+  StudentZID,
+  JbToken {}
 
 // * Company
 interface CompanyResetPasswordEmailBody {
@@ -95,15 +95,15 @@ export type CompanyJobsRequest = CompanyInfoRequest;
 export type CreateCompanyRequest = Request<Record<string, never>, never, CompanyAccountInfo>;
 
 export type CreateUnofficialCompanyRequest = Request<
-  Record<string, never>,
-  never,
-  UnofficialCompanyAccountInfo
+Record<string, never>,
+never,
+UnofficialCompanyAccountInfo
 >;
 
 export interface CreateJobRequest
   extends Request<Record<string, never>, never, JobInfo>,
-    CompanyAccountID,
-    JbToken {}
+  CompanyAccountID,
+  JbToken {}
 
 export interface GetHiddenJobsRequest extends Request, CompanyAccountID, CompanyID, JbToken {}
 
@@ -115,23 +115,23 @@ export interface DeleteJobRequest extends Request<JobIDParams>, CompanyAccountID
 
 export interface CompanyResetPasswordEmailRequest
   extends Request<Record<string, never>, never, CompanyResetPasswordEmailBody>,
-    JbToken {}
+  JbToken {}
 
 export type CompanyGetResetTokenRequest = Request<CompanyResetEmailParams>;
 
 export type CompanyResetPasswordRequest = Request<
-  Record<string, never>,
-  never,
-  CompanyResetPasswordBody
+Record<string, never>,
+never,
+CompanyResetPasswordBody
 >;
 
 export interface CompanyUploadLogoRequest
   extends Request<Record<string, never>, never, Logo>,
-    CompanyAccountID {}
+  CompanyAccountID {}
 
 export interface CheckCompanyLogoRequest extends Request, CompanyAccountID, JbToken {}
 
 interface UpdateCompanyBody extends CompanyBase, Logo {}
 export interface UpdateCompanyDetailsRequest
   extends Request<Record<string, never>, never, UpdateCompanyBody>,
-    CompanyAccountID {}
+  CompanyAccountID {}

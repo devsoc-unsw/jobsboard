@@ -488,7 +488,6 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-
 app.get(
   '/featured-jobs',
   cors(corsOptions),

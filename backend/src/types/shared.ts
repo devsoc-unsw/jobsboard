@@ -1,4 +1,6 @@
-import { JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements } from './job-field';
+import {
+  JobMode, StudentDemographic, JobType, WorkingRights, WamRequirements,
+} from './job-field';
 
 export interface JobBase {
   id: number;

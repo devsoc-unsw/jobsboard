@@ -41,28 +41,25 @@ export default class AdminFunctions {
         }
 
         const jobToApprove = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .where('Job.approved = :approved', { approved: false })
-              .andWhere('Job.hidden = :hidden', { hidden: false })
-              .andWhere('Job.id = :id', { id: jobID })
-              .getOne(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .where('Job.approved = :approved', { approved: false })
+            .andWhere('Job.hidden = :hidden', { hidden: false })
+            .andWhere('Job.id = :id', { id: jobID })
+            .getOne(),
           `Failed to find job ID=${jobID}`,
         );
 
         jobToApprove.company = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToApprove).loadOne(),
+          async () => AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToApprove).loadOne(),
           `Failed to find company record owning JOB=${jobID}`,
         );
 
         jobToApprove.company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.createQueryBuilder()
-              .relation(Company, 'companyAccount')
-              .of(jobToApprove.company)
-              .loadOne(),
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Company, 'companyAccount')
+            .of(jobToApprove.company)
+            .loadOne(),
           `Failed to find company account owning JOB=${jobID}`,
         );
 
@@ -134,28 +131,25 @@ export default class AdminFunctions {
         }
 
         const jobToReject = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .where('Job.approved = :approved', { approved: false })
-              .andWhere('Job.hidden = :hidden', { hidden: false })
-              .andWhere('Job.id = :id', { id: jobID })
-              .getOne(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .where('Job.approved = :approved', { approved: false })
+            .andWhere('Job.hidden = :hidden', { hidden: false })
+            .andWhere('Job.id = :id', { id: jobID })
+            .getOne(),
           `Failed to find job ID=${jobID}`,
         );
 
         jobToReject.company = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToReject).loadOne(),
+          async () => AppDataSource.createQueryBuilder().relation(Job, 'company').of(jobToReject).loadOne(),
           `Failed to find company record owning JOB=${jobID}`,
         );
 
         jobToReject.company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.createQueryBuilder()
-              .relation(Company, 'companyAccount')
-              .of(jobToReject.company)
-              .loadOne(),
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Company, 'companyAccount')
+            .of(jobToReject.company)
+            .loadOne(),
           `Failed to find company account owning JOB=${jobID}`,
         );
 
@@ -200,29 +194,28 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       async (): Promise<IResponseWithStatus> => {
         Logger.Info(LM, `ADMIN=${req.adminID} attempting to query pending jobs`);
         const pendingJobs = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .select([
-                'Job.id',
-                'Job.role',
-                'Job.description',
-                'Job.applicationLink',
-                'Job.approved',
-                'Job.hidden',
-                'Job.expiry',
-                'Job.mode',
-                'Job.studentDemographic',
-                'Job.jobType',
-                'Job.workingRights',
-                'Job.wamRequirements',
-                'Job.additionalInfo',
-                'Job.isPaid',
-              ])
-              .where('Job.approved = :approved', { approved: false })
-              .andWhere('Job.hidden = :hidden', { hidden: false })
-              .innerJoinAndSelect('Job.company', 'c')
-              .getMany(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .select([
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.applicationLink',
+              'Job.approved',
+              'Job.hidden',
+              'Job.expiry',
+              'Job.mode',
+              'Job.studentDemographic',
+              'Job.jobType',
+              'Job.workingRights',
+              'Job.wamRequirements',
+              'Job.additionalInfo',
+              'Job.isPaid',
+            ])
+            .where('Job.approved = :approved', { approved: false })
+            .andWhere('Job.hidden = :hidden', { hidden: false })
+            .innerJoinAndSelect('Job.company', 'c')
+            .getMany(),
           "Couldn't find any pending job requests.",
         );
         return {
@@ -284,12 +277,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           `Admin ID=${req.adminID} attempting to verify COMPANY=${req.params.companyAccountID}`,
         );
         const pendingCompany = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder()
-              .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
-              .andWhere('CompanyAccount.verified = :verified', { verified: false })
-              .getOne(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder()
+            .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
+            .andWhere('CompanyAccount.verified = :verified', { verified: false })
+            .getOne(),
           `Couldn't find any pending company verifications for COMPANY_ACCOUNT=${req.params.companyAccountID}.`,
         );
 
@@ -356,12 +348,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           `Admin ID=${req.adminID} attempting to unverify COMPANY=${req.params.companyAccountID}`,
         );
         const pendingCompany = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder()
-              .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
-              .andWhere('CompanyAccount.verified = :verified', { verified: true })
-              .getOne(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder()
+            .where('CompanyAccount.id = :id', { id: req.params.companyAccountID })
+            .andWhere('CompanyAccount.verified = :verified', { verified: true })
+            .getOne(),
           `Couldn't find a verified company for COMPANY_ACCOUNT=${req.params.companyAccountID}.`,
         );
 
@@ -400,13 +391,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           },
         } as IResponseWithStatus;
       },
-      () =>
-        ({
-          status: 400,
-          msg: {
-            token: req.newJbToken,
-          },
-        }) as IResponseWithStatus,
+      () => ({
+        status: 400,
+        msg: {
+          token: req.newJbToken,
+        },
+      }) as IResponseWithStatus,
       next,
     );
   }
@@ -463,27 +453,24 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         const { companyID } = req.params;
         Logger.Info(LM, `Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
         const company = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Company)
-              .createQueryBuilder()
-              .where('Company.id = :id', { id: companyID })
-              .getOne(),
+          async () => AppDataSource.getRepository(Company)
+            .createQueryBuilder()
+            .where('Company.id = :id', { id: companyID })
+            .getOne(),
           `Couldn't get request company object ID=${companyID} as Admin ID=${req.adminID}`,
         );
 
         // get it's associated company account to verify
         company.companyAccount = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.createQueryBuilder()
-              .relation(Company, 'companyAccount')
-              .of(company)
-              .loadOne(),
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Company, 'companyAccount')
+            .of(company)
+            .loadOne(),
           `Could not get the related company account for company ID=${company.id}`,
         );
 
         company.jobs = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.createQueryBuilder().relation(Company, 'jobs').of(company).loadMany(),
+          async () => AppDataSource.createQueryBuilder().relation(Company, 'jobs').of(company).loadMany(),
           `Failed to find jobs for COMPANY_ACCOUNT=${companyID}`,
         );
 
@@ -569,11 +556,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
 
         // check to see if that job is queryable
         await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .where('Job.id = :id', { id: newJobID })
-              .getOne(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .where('Job.id = :id', { id: newJobID })
+            .getOne(),
           `Failed to fetch the newly created JOB=${newJobID}`,
         );
 
@@ -602,11 +588,10 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         Logger.Info(LM, `Retrieving the number of verified companies as ADMIN=${req.adminID}`);
 
         const verifiedCompanies = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder('ca')
-              .where('ca.verified = :verified', { verified: true })
-              .getMany(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder('ca')
+            .where('ca.verified = :verified', { verified: true })
+            .getMany(),
           'Failed to retrive the number of verified comapnies',
         );
 
@@ -647,12 +632,11 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         Helpers.requireParameters(yearToSearch);
 
         const numApprovedJobs = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Statistics)
-              .createQueryBuilder('s')
-              .select(['s.numJobPosts'])
-              .where('s.year = :year', { year: yearToSearch })
-              .getOne(),
+          async () => AppDataSource.getRepository(Statistics)
+            .createQueryBuilder('s')
+            .select(['s.numJobPosts'])
+            .where('s.year = :year', { year: yearToSearch })
+            .getOne(),
           `Failed to retrieve the number of approved job posts for YEAR=${yearToSearch}`,
         );
 
@@ -660,13 +644,12 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         if (numApprovedJobs === null) {
           // query all jobs => update statistics table => return value
           const allApprovedJobs = await Helpers.doSuccessfullyOrFail(
-            async () =>
-              AppDataSource.getRepository(Job)
-                .createQueryBuilder('j')
-                .select(['j.id', 'j.createdAt'])
-                .where('j.approved = :approved', { approved: true })
-                .andWhere('j.deleted = :deleted', { deleted: false })
-                .getMany(),
+            async () => AppDataSource.getRepository(Job)
+              .createQueryBuilder('j')
+              .select(['j.id', 'j.createdAt'])
+              .where('j.approved = :approved', { approved: true })
+              .andWhere('j.deleted = :deleted', { deleted: false })
+              .getMany(),
             'Failed to retrive the number of approved posts in the db',
           );
 
@@ -723,38 +706,37 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
         Logger.Info(LM, `ADMIN=${adminID} attempting to list all hidden jobs in the database`);
 
         const hiddenJobs = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(Job)
-              .createQueryBuilder()
-              .leftJoinAndSelect('Job.company', 'company')
-              .where(
-                new Brackets((q) => {
-                  q.where('Job.deleted = :deleted', { deleted: true })
-                    .orWhere('Job.expiry <= :expiry', { expiry: new Date() })
-                    .orWhere('Job.hidden = :hidden', { hidden: true });
-                }),
-              )
-              .select([
-                'company.name',
-                'Job.id',
-                'Job.role',
-                'Job.description',
-                'Job.applicationLink',
-                'Job.approved',
-                'Job.hidden',
-                'Job.mode',
-                'Job.studentDemographic',
-                'Job.jobType',
-                'Job.workingRights',
-                'Job.wamRequirements',
-                'Job.additionalInfo',
-                'Job.isPaid',
-                'Job.expiry',
-                'Job.deleted',
-              ])
-              .orderBy('company.name', 'ASC')
-              .orderBy('Job.createdAt', 'DESC')
-              .getMany(),
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .leftJoinAndSelect('Job.company', 'company')
+            .where(
+              new Brackets((q) => {
+                q.where('Job.deleted = :deleted', { deleted: true })
+                  .orWhere('Job.expiry <= :expiry', { expiry: new Date() })
+                  .orWhere('Job.hidden = :hidden', { hidden: true });
+              }),
+            )
+            .select([
+              'company.name',
+              'Job.id',
+              'Job.role',
+              'Job.description',
+              'Job.applicationLink',
+              'Job.approved',
+              'Job.hidden',
+              'Job.mode',
+              'Job.studentDemographic',
+              'Job.jobType',
+              'Job.workingRights',
+              'Job.wamRequirements',
+              'Job.additionalInfo',
+              'Job.isPaid',
+              'Job.expiry',
+              'Job.deleted',
+            ])
+            .orderBy('company.name', 'ASC')
+            .orderBy('Job.createdAt', 'DESC')
+            .getMany(),
           'Failed to find jobs',
         );
 

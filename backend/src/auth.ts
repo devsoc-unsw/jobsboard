@@ -90,11 +90,10 @@ export default class Auth {
         Helpers.requireParameters(msg.password);
         // check if account exists
         const companyQuery = await Helpers.doSuccessfullyOrFail(
-          async () =>
-            AppDataSource.getRepository(CompanyAccount)
-              .createQueryBuilder()
-              .where('CompanyAccount.username = :username', { username: msg.username })
-              .getOne(),
+          async () => AppDataSource.getRepository(CompanyAccount)
+            .createQueryBuilder()
+            .where('CompanyAccount.username = :username', { username: msg.username })
+            .getOne(),
           `Couldn't find company with username: ${msg.username}`,
         );
         try {
