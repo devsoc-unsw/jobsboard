@@ -15,6 +15,7 @@ import {
   VerifyCompanyAccountRequest,
   UnverifyCompanyAccountRequest,
   AdminCreateJobRequest,
+  AdminDeleteJobRequest,
   AdminApprovedJobPostsRequest,
 } from './types/request';
 import { env } from './environment';
@@ -557,6 +558,75 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
             .where('Job.id = :id', { id: newJobID })
             .getOne(),
           `Failed to fetch the newly created JOB=${newJobID}`,
+        );
+
+        return {
+          status: StatusCodes.OK,
+          msg: { token: req.newJbToken },
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  public static async DeleteJobOnBehalfOfExistingCompany(
+    this: void,
+    req: AdminDeleteJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        const { companyID, jobId } = req.params;
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find company ID=${companyID}`);
+        const company = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(Company)
+            .createQueryBuilder()
+            .where('Company.id = :id', { id: companyID })
+            .getOne(),
+          `Couldn't get request company object ID=${companyID} as Admin ID=${req.adminID}`,
+        );
+
+        // get it's associated company account to verify
+        company.companyAccount = await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.createQueryBuilder()
+            .relation(Company, 'companyAccount')
+            .of(company)
+            .loadOne(),
+          `Could not get the related company account for company ID=${company.id}`,
+        );
+
+        // delete this job in the company's jobs relation
+        await AppDataSource.getRepository(Company)
+          .createQueryBuilder('company')
+          .delete()
+          .relation(Company, 'companyAccount')
+          .of(company)
+          .where('Job.id = :id', { id: jobId }),
+        );
+
+        // verify whether the associated company account is verified
+        if (!company.companyAccount.verified) {
+          throw new Error(
+            `Admin ID=${req.adminID} attempted to create a job post for company ID=${companyID} however it was not a verified company`,
+          );
+        }
+
+        await AppDataSource.manager.save(company);
+
+
+        // check to see if that job is queryable
+        await Helpers.doSuccessfullyOrFail(
+          async () => AppDataSource.getRepository(Job)
+            .createQueryBuilder()
+            .where('Job.id = :id', { id: jobId })
+            .getOne(),
+          `Successfully deleted the JOB=${jobId}`,
         );
 
         return {
