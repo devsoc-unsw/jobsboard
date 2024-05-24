@@ -476,17 +476,18 @@ app.put(
   Middleware.genericLoggingMiddleware,
 );
 
-// app.delete(
-//   '/admin/company/:companyID/jobs/jobId',
-//   cors(corsOptions),
-//   Middleware.authoriseAdminMiddleware,
-//   (req: AdminCreateJobRequest, res, next) => {
-//     (async () => {
-//       await AdminFunctions.DeleteJobOnBehalfOfExistingCompany(req, res, next);
-//     })();
-//   },
-//   Middleware.genericLoggingMiddleware,
-// );
+app.delete(
+  '/admin/job/:jobId',
+  cors(corsOptions),
+  Middleware.authoriseAdminMiddleware,
+  (req: AdminCreateJobRequest, res, next) => {
+    (async () => {
+      await AdminFunctions.DeleteJobOnBehalfOfExistingCompany(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
 app.get(
   '/featured-jobs',
   cors(corsOptions),
