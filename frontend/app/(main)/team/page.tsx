@@ -82,6 +82,16 @@ const TeamPage = () => {
       gh: 'https://github.com/flynnlambrechts',
       photo:
         'https://media.licdn.com/dms/image/C4D03AQE2Zp0kmjG88g/profile-displayphoto-shrink_800_800/0/1617330448714?e=1718841600&v=beta&t=2WcPeCLEmOl_0Mv3duajr9pSqtre2pSZwLWWP-NzeSM'
+    },
+    {
+      name: 'Keven Liu',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/keven-liu/',
+      gh: 'https://github.com/kevenliu8',
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQH7BnTkutqVfA/profile-displayphoto-shrink_800_800/0/1702717954720?e=1721865600&v=beta&t=cteMQzQxWi6G4s1m5seHZu0vG8yVtXGiPih8XMAkq1c'
     }
   ];
 
