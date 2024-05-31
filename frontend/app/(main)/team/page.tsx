@@ -78,18 +78,38 @@ const TeamPage = () => {
       title: '2024 Jobsboard Director',
       involvement: 'Frontend',
       funFact: ' ',
-      linkedin: 'https://imgur.com/a/u3KaIoH',
-      gh: 'https://www.linkedin.com/in/flynn-lambrechts/',
+      linkedin: 'https://www.linkedin.com/in/flynn-lambrechts/',
+      gh: 'https://github.com/flynnlambrechts',
+      photo:
+        'https://media.licdn.com/dms/image/C4D03AQE2Zp0kmjG88g/profile-displayphoto-shrink_800_800/0/1617330448714?e=1718841600&v=beta&t=2WcPeCLEmOl_0Mv3duajr9pSqtre2pSZwLWWP-NzeSM'
+    },
+    {
+      name: 'Han Hanh',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/hanhanh2705/',
+      gh: 'https://github.com/hanhnguyengiahan',
       photo: ''
     },
     {
       name: 'Emily Ngo',
       title: '2024 Jobsboard Subcommittee',
       involvement: 'Frontend',
-      funFact: 'Can\'t play basketball but I can spin a ball on my finger 😎😎',
+      funFact: 'Cannot play basketball but I can spin a ball on my finger 😎😎',
       linkedin: 'www.linkedin.com/in/emily-ngo-5a81082a4',
       gh: 'https://github.com/engooo',
       photo: 'https://media.licdn.com/dms/image/D5603AQGhZk3sCKznCg/profile-displayphoto-shrink_800_800/0/1713444471350?e=1718841600&v=beta&t=PKJW9k6MDTAGA5pxKi4gBgEU9DfCyjmYps2Nr8VGkJQ'
+    },
+    {
+      name: 'Keven Liu',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/keven-liu/',
+      gh: 'https://github.com/kevenliu8',
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQH7BnTkutqVfA/profile-displayphoto-shrink_800_800/0/1702717954720?e=1721865600&v=beta&t=cteMQzQxWi6G4s1m5seHZu0vG8yVtXGiPih8XMAkq1c'
     }
   ];
 
