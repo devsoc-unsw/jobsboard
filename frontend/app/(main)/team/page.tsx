@@ -97,9 +97,10 @@ const TeamPage = () => {
       title: '2024 Jobsboard Subcommittee',
       involvement: 'Frontend',
       funFact: 'Cannot play basketball but I can spin a ball on my finger 😎😎',
-      linkedin: 'www.linkedin.com/in/emily-ngo-5a81082a4',
+      linkedin: 'https://www.linkedin.com/in/emily-ngo-5a81082a4/',
       gh: 'https://github.com/engooo',
-      photo: 'https://media.licdn.com/dms/image/D5603AQGhZk3sCKznCg/profile-displayphoto-shrink_800_800/0/1713444471350?e=1718841600&v=beta&t=PKJW9k6MDTAGA5pxKi4gBgEU9DfCyjmYps2Nr8VGkJQ'
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQF1PKv5ieD_dA/profile-displayphoto-shrink_200_200/0/1713459424740?e=1722470400&v=beta&t=Ku3w_Qbr59tZeCRqVE2RcsD4YcWqsXpPRLMVORVUnkU'
     },
     {
       name: 'Keven Liu',
