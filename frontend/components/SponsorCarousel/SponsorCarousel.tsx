@@ -19,11 +19,10 @@ const Images = () => {
   return (
     <>
       {sponsors.map(({ company, logo }) => (
-        <div className="grow-1 shrink-1 basis-[200px] min-w-0 m-5" key={company}>
+        <div className="grow-1 shrink-1 basis-[300px] min-w-0 m-5">
           <Image
             className="select-none pointer-events-none object-contain w-full"
-            width={100}
-            height={100}
+            layout="responsive"
             src={logo}
             loading="lazy"
             alt={company}
