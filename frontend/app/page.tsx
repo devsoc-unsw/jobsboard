@@ -151,6 +151,9 @@ const HomePage = () => {
               loop
               autoplay
               modules={[Pagination, Navigation]}
+              style={{
+                padding: '0 25px'
+              }}
             >
               {featuredJobs.map((job) => (
                 <SwiperSlide key={job.id}>
