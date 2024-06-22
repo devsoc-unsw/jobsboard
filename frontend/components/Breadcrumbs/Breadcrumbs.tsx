@@ -83,6 +83,12 @@ const Breadcrumbs = () => {
         { name: 'Dashboard', link: '/admin/dashboard' },
         { name: 'Post Job', link: pathname }
       ];
+    } else if (pathname === '/admin/companyCreate') {
+      breadcrumb = [
+        { name: 'Home', link: '/' },
+        { name: 'Dashboard', link: '/admin/dashboard' },
+        { name: 'Create Company', link: pathname }
+      ];
     }
     return breadcrumb;
   };
