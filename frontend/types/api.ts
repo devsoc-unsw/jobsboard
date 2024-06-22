@@ -126,6 +126,7 @@ export type AdminCompany = {
   username: string;
   createdAt: string;
   description: string;
+  official: boolean;
 };
 
 export type AdminPendingCompaniesPayload = {

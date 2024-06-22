@@ -171,6 +171,7 @@ export default class CompanyFunctions {
         newCompanyAccount.username = msg.username;
         newCompanyAccount.hash = Secrets.hash(msg.password);
         newCompanyAccount.company = newCompany;
+        newCompanyAccount.official = true;
         newCompany.companyAccount = newCompanyAccount;
 
         const companyAccountRepository = AppDataSource.getRepository(CompanyAccount);

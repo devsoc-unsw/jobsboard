@@ -35,6 +35,12 @@ export interface CompanyAccountInfo {
   logo?: string;
 }
 
+export interface UnofficialCompanyAccountInfo {
+  location: string;
+  name: string;
+  logo?: string;
+}
+
 export interface StudentZID {
   studentZID: string;
 }

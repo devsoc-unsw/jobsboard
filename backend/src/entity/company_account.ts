@@ -38,6 +38,11 @@ export default class CompanyAccount {
   @Column({ type: 'text', default: 'no token set' })
   public latestValidResetToken: string;
 
+  @Column({
+    default: true,
+  })
+  public official: boolean;
+
   @CreateDateColumn()
     createdAt: Date;
 
