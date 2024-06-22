@@ -132,6 +132,7 @@ const HomePage = () => {
           </p>
           {featuredJobs.length ? (
             <Swiper
+              className="swiper-container"
               slidesPerView={1}
               navigation
               pagination={{
