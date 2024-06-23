@@ -84,6 +84,16 @@ const TeamPage = () => {
         'https://media.licdn.com/dms/image/C4D03AQE2Zp0kmjG88g/profile-displayphoto-shrink_800_800/0/1617330448714?e=1718841600&v=beta&t=2WcPeCLEmOl_0Mv3duajr9pSqtre2pSZwLWWP-NzeSM'
     },
     {
+      name: 'Brian Nhan',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Frontend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/briannhan/',
+      gh: 'https://github.com/brnhan',
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQHzNvWNa9xfEg/profile-displayphoto-shrink_800_800/0/1680748247930?e=1720656000&v=beta&t=V0e93sDY_5rjVVaOOGNCjERw78ebQeJWGrodBB7dXAo'
+    },
+    {
       name: 'Han Hanh',
       title: '2024 Jobsboard Subcommittee',
       involvement: 'Backend',
