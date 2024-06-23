@@ -92,6 +92,25 @@ const TeamPage = () => {
       gh: 'https://github.com/brnhan',
       photo:
         'https://media.licdn.com/dms/image/D5603AQHzNvWNa9xfEg/profile-displayphoto-shrink_800_800/0/1680748247930?e=1720656000&v=beta&t=V0e93sDY_5rjVVaOOGNCjERw78ebQeJWGrodBB7dXAo'
+    },
+    {
+      name: 'Han Hanh',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/hanhanh2705/',
+      gh: 'https://github.com/hanhnguyengiahan',
+      photo: ''
+    },
+    {
+      name: 'Keven Liu',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/keven-liu/',
+      gh: 'https://github.com/kevenliu8',
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQH7BnTkutqVfA/profile-displayphoto-shrink_800_800/0/1702717954720?e=1721865600&v=beta&t=cteMQzQxWi6G4s1m5seHZu0vG8yVtXGiPih8XMAkq1c'
     }
   ];
 

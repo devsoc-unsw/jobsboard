@@ -689,6 +689,29 @@
           }
         }
       },
+      "/admin/company": {
+        "put": {
+          "summary": "Create an unofficial company account",
+          "description": "Create a company but with limited account details",
+          "tags": [
+            "admin"
+          ],
+          "requestBody": {
+            "$ref": "#/components/requestBodies/CreateUnofficialCompanyBody"
+          },
+          "responses": {
+            "200": {
+              "description": "Company has been successfully created"
+            },
+            "400": {
+              "description": "Missing parameters"
+            },
+            "409": {
+              "description": "Conflicting company name"
+            }
+          }
+        }
+      },
       "/job/admin/hidden": {
         "get": {
           "summary": "Returns a list of all hidden jobs",
@@ -1049,6 +1072,33 @@
                   "name": "Projects Incorporated",
                   "username": "poggers",
                   "password": "password"
+                }
+              }
+            }
+          }
+        },
+        "CreateUnofficialCompanyBody": {
+          "description": "JSON object containing a company's location and name",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "logo": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "location": "Sydeny",
+                  "name": "Projects Incorporated",
+                  "logo": "[long encoded image text]"
                 }
               }
             }

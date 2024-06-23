@@ -130,7 +130,8 @@ const AdminCompanyPage = () => {
             name: pendingCompany.company.name,
             description: pendingCompany.company.description,
             createdAt: pendingCompany.company.createdAt,
-            logo: pendingCompany.company.logo
+            logo: pendingCompany.company.logo,
+            official: false
           }))
         );
       } catch (e) {
