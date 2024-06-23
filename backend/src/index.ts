@@ -477,7 +477,7 @@ app.put(
 );
 
 app.delete(
-  '/admin/job/:jobId',
+  '/admin/jobs/:jobId',
   cors(corsOptions),
   Middleware.authoriseAdminMiddleware,
   (req: AdminCreateJobRequest, res, next) => {

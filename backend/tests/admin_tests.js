@@ -1091,7 +1091,7 @@ describe("admin", () => {
           role: "some generic SWE role",
           description: "just doing some cool SWE things",
           applicationLink: "https://some.application.link",
-          expiry: (new Date(2000, 01, 01)).valueOf(),
+          expiry: (new Date(2000, 1, 1)).valueOf(),
           isPaid: true,
           additionalInfo: "",
           jobMode: "onsite",
@@ -1575,6 +1575,151 @@ describe("admin", () => {
         });
       }
     );
+  });
+
+  describe("delete jobs on behalf of a company", () => {
+    before( async function() {
+      // login as a student
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+      
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+
+      const newCompanyCredentials = {
+        username: "testingoncemore@testing.com",
+        password: "testPassword",
+        location: "Sydney",
+        name: "Test Test COmpany",
+        logo: Buffer.from("test string", 'utf8').toString('base64'),   // base64 encoded string
+      };
+
+      await server
+      .put("/company")
+      .send(newCompanyCredentials)
+      .expect(200);
+
+      // approve said company
+      const pendingCompanies = await server
+      .get("/admin/pending/companies")
+      .set('Authorization', this.adminToken)
+      .expect(200)
+      .then(response => response.body);
+
+      const pendingCompany = pendingCompanies.pendingCompanyVerifications.find((company) => company.company.name === newCompanyCredentials.name);
+
+      this.companyID = pendingCompany.id;
+
+      await server
+        .patch(`/admin/company/${this.companyID}/verify`)
+        .set('Authorization', this.adminToken)
+        .expect(200);
+      
+      // login as a verified company 
+      this.companyToken = await server
+      .post("/authenticate/company")
+      .send({ username: "testingoncemore@testing.com", password: "testPassword" })
+      .then(response => response.body.token);
+
+      // Add job to company and approve
+      this.jobID = await server
+      .put("/jobs")
+      .set('Authorization', this.companyToken)
+      .send({
+        role: "sample role title",
+        description: "sample role description",
+        applicationLink: "http://sample.application.link",
+        expiry: getFutureDateValue(),
+        isPaid: true,
+        additionalInfo: "",
+        jobMode: "onsite",
+        studentDemographic: ["penultimate", "final_year"],
+        jobType: "intern",
+        workingRights: ["aus_ctz", "aus_perm_res"],
+        wamRequirements: "C"
+      })
+      .expect(200)
+      .then(response => response.body.id);
+
+      server
+      .patch(`/job/${this.jobID}/approve`)
+      .set('Authorization', this.adminToken)
+      .expect(200)
+    });
+
+    it(
+      "fail to delete jobs while unauthenticated",
+      function (done) {
+        server
+        .delete(`/admin/jobs/${this.jobID}`)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fail to delete jobs while authenticated as a student",
+      function (done) {
+        server
+        .delete(`/admin/jobs/${this.jobID}`)
+        .set('Authorization', this.studentToken)
+        .expect(401)
+        .end( function(_, res) {
+          expect(res.status).to.equal(401);
+          done();
+        });
+      }
+    );
+
+    it("fails to delete jobs due to invalid job id", 
+      function (done) {
+        server
+        .patch("/admin/jobs/9999")
+        .set("Authorization", this.adminToken)
+        .expect(400)
+        .end( function(_, res) {
+          expect(res.status).to.equal(400);
+          done();
+        });
+      }
+    );
+
+    it(
+      "succeeds delete jobs while authenticated as an admin and verify the job deletion from the company's perspective",
+      function (done) {
+        server
+        .delete(`/admin/jobs/${this.jobID}`)
+        .set('Authorization', this.adminToken)
+        .expect(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+
+        // Verify the job deletion from the company's perspective
+        server
+        .get(`/company/${this.companyID}/jobs`)
+        .set('Authorization', this.companyToken)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) return done(err);
+
+          const jobs = res.body.jobs;
+
+          const deletedJob = jobs.find(job => job.id == this.jobID);
+
+          expect(deletedJob).to.be.undefined;
+          expect(jobs.length).to.equal(0);
+          done();
+        })
+      });
+    });
   });
 });
 
