@@ -193,7 +193,7 @@ const HomePage = () => {
               <Button variant="primary">Post a Job</Button>
             </Link>
           </div>
-          
+
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Looking for More?
           </h3>
