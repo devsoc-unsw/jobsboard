@@ -1710,7 +1710,7 @@ describe("admin", () => {
         .end(function(err, res) {
           if (err) return done(err);
 
-          const jobs = res.body.jobs;
+          const jobs = res.body[0].jobs;
 
           const deletedJob = jobs.find(job => job.id == this.jobID);
 
