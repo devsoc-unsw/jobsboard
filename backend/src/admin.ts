@@ -582,46 +582,53 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
     await Helpers.catchAndLogError(
       res,
       async (): Promise<IResponseWithStatus> => {
-        const { jobId } = req.params;
-        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find job ID=${jobId}`);
-        const job = await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .where('job.id = :id', { id: jobId })
-            .getOne(),
-          `Couldn't get request job object ID=${jobId} as Admin ID=${req.adminID}`,
-        );
-
-
-        // delete this job in the company's jobs relation
-        await AppDataSource.getRepository(Job)
+        const { jobID } = req.params;
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find job ID=${jobID}`);
+        const jobToDelete = await AppDataSource.getRepository(Job)
           .createQueryBuilder()
-          .softDelete()
-          .where('job.id = :id', { id: jobId })
-          .execute()
-        ;
+          .where('Job.id = :jobID', { jobID })
+          .getOne();
 
-        
-        await AppDataSource.manager.save(job);
+        if (!jobToDelete) {
+          throw Error(`Could not find removeable JOB=${jobID}`);
+        }
 
+        await AppDataSource.createQueryBuilder()
+          .update(Job)
+          .set({ deleted: true })
+          .where('id = :id', { id: jobID })
+          .execute();
 
-        // check to see if that job is queryable
-        await Helpers.doSuccessfullyOrFail(
-          async () => AppDataSource.getRepository(Job)
-            .createQueryBuilder()
-            .where('Job.id = :id', { id: jobId })
-            .getOne(),
-          `Successfully deleted the JOB=${jobId}`,
+        Logger.Info(
+          LM,
+          `ADMIN=${req.adminID} marked JOB=${req.params.jobID} as deleted`,
         );
 
+
+        // // check to see if that job is queryable
+        // await Helpers.doSuccessfullyOrFail(
+        //   async () => AppDataSource.getRepository(Job)
+        //     .createQueryBuilder()
+        //     .where('Job.id = :id', { id: jobID })
+        //     .getOne(),
+        //   `Successfully deleted the JOB=${jobID}`,
+        // );
+        
+        // job.company.companyAccount = await Helpers.doSuccessfullyOrFail(
+        //   async () => AppDataSource.createQueryBuilder()
+        //     .relation(Company, 'companyAccount')
+        //     .of(job.company)
+        //     .loadOne(),
+        //   `There's no other company account owning this JOB=${jobID}`,
+        // );
         return {
           status: StatusCodes.OK,
-          msg: { token: req.newJbToken },
+          msg: 'Job successfully deleted',
         };
       },
       () => ({
         status: StatusCodes.BAD_REQUEST,
-        msg: { token: req.newJbToken },
+        msg: undefined,
       }),
       next,
     );

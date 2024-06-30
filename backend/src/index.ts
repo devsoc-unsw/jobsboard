@@ -46,6 +46,7 @@ import {
   SearchJobRequest,
   StudentGetProfileRequest,
   StudentEditProfileRequest,
+  AdminDeleteJobRequest,
 } from './types/request';
 
 const LM = new LogModule('INDEX');
@@ -477,10 +478,10 @@ app.put(
 );
 
 app.delete(
-  '/admin/jobs/:jobId',
+  '/admin/jobs/:jobID',
   cors(corsOptions),
   Middleware.authoriseAdminMiddleware,
-  (req: AdminCreateJobRequest, res, next) => {
+  (req: AdminDeleteJobRequest, res, next) => {
     (async () => {
       await AdminFunctions.DeleteJobOnBehalfOfExistingCompany(req, res, next);
     })();
