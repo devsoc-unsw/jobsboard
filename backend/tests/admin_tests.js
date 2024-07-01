@@ -1386,7 +1386,6 @@ describe('admin', () => {
         .post('/authenticate/student')
         .send({ zID: 'literally', password: 'anything' })
         .then((response) => response.body.token);
-
       // login as an admin
       this.adminToken = await server
         .post('/authenticate/admin')
@@ -1435,7 +1434,7 @@ describe('admin', () => {
           role: 'sample role title',
           description: 'sample role description',
           applicationLink: 'http://sample.application.link',
-          expiry: '2024-06-30',
+          expiry: getFutureDateValue(),
           isPaid: true,
           additionalInfo: '',
           jobMode: 'onsite',
@@ -1446,9 +1445,11 @@ describe('admin', () => {
         })
         .expect(200)
         .then((response) => response.body.id);
-      console.log('admin token before: ', this.adminToken);
-      console.log('job id before: ', this.jobID);
-      server.patch(`/job/${this.jobID}/approve`).set('Authorization', this.adminToken).expect(200);
+      await server
+        .patch(`/job/${this.jobID}/approve`)
+        .set('Authorization', this.adminToken)
+        .expect(200);
+      await server.get(`/job/${this.jobID}`).set('Authorization', this.studentToken).expect(200);
     });
 
     it('fail to delete jobs while unauthenticated', function (done) {
@@ -1494,34 +1495,39 @@ describe('admin', () => {
         });
     });
 
-    it("succeeds delete jobs while authenticated as an admin and verify the job deletion from the student's perspective", function (done) {
+    it("successfully delete jobs while authenticated as an admin and verify the job deletion from the student's perspective", function (done) {
+      const self = this;
+
       server
         .get(`/job/${this.jobID}`)
         .set('Authorization', this.studentToken)
         .expect(200)
-        .end(function (_, res) {
-          expect(res.status).to.equal(200);
-          // expect(res.body.job.length).to.equal(1);
-          // console.log('hhuhuhuhuhuhu');
-          console.log('admin token after: ', this.adminToken);
-          console.log('job id: ', this.jobID);
-          server
-            .delete(`/admin/jobs/${this.jobID}`)
-            .set('Authorization', this.adminToken)
-            .expect(200);
+        .end(function (err, res) {
+          if (err) return done(err);
 
-          // Verify the job deletion from the company's perspective
+          const job = res.body.job;
+          expect(job).not.to.be.null;
+
+          // delete the job as an admin
           server
-            .get(`/job/${this.jobID}`)
-            .set('Authorization', this.studentToken)
+            .delete(`/admin/jobs/${self.jobID}`)
+            .set('Authorization', self.adminToken)
             .expect(200)
             .end(function (err, res) {
               if (err) return done(err);
 
-              const jobs = res.body.job;
+              expect(res.status).to.equal(200);
 
-              expect(jobs).to.be.undefined;
-              done();
+              // verify the job is deleted
+              server
+                .get(`/job/${self.jobID}`)
+                .set('Authorization', self.studentToken)
+                .expect(200)
+                .end(function (err, res) {
+                  if (err) return done(err);
+                  expect(res.body.job).to.be.null;
+                  done();
+                });
             });
         });
     });
