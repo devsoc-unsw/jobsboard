@@ -1532,4 +1532,88 @@ describe('admin', () => {
         });
     });
   });
+
+  describe("create job post as a unofficial company while logged in as an admin", () => {
+    before( async function() {
+      this.studentToken = await server
+      .post("/authenticate/student")
+      .send({ zID: "literally", password: "anything" })
+      .then(response => response.body.token);
+
+      // login as an admin
+      this.adminToken = await server
+      .post("/authenticate/admin")
+      .send({ username: "admin", password: "incorrect pony plug paperclip" })
+      .then(response => response.body.token);
+
+      const newCompanyCredentials = {
+        location: "Sydney",
+        name: "Some Unofficial Company Name",
+        logo: Buffer.from("test string", 'utf8').toString('base64'),   // base64 encoded string
+      };
+
+      await server
+      .put("/admin/company")
+      .send(newCompanyCredentials)
+      .expect(200);
+
+
+      const companies = await server
+      .get("/admin/companies")
+      .set('Authorization', this.adminToken)
+      .expect(200)
+      .then(response => response.body);
+
+      const pendingCompany = companies.companies.find((company) => company.name === newCompanyCredentials.name);
+      this.companyID = pendingCompany.id;
+      
+    });
+
+    it(
+      "creates a valid job using a valid admin account with a valid unofficial company id",
+      function (done) {
+        server
+        .put(`/admin/company/${this.companyID}/jobs`)
+        .set('Authorization', this.adminToken)
+        .send({
+          role: "some role",
+          description: "some role description",
+          applicationLink: "https://some.application.link",
+          expiry: getFutureDateValue(),
+          isPaid: true,
+          additionalInfo: "",
+          jobMode: "onsite",
+          studentDemographic: ["penultimate", "final_year"],
+          jobType: "intern",
+          workingRights: ["aus_ctz", "aus_perm_res"],
+          wamRequirements: "C"
+        })
+        .expect(200)
+        .end( function(_, res) {
+          expect(res.status).to.equal(200);
+          done();
+        });
+      }
+    );
+
+    it(
+      "fails to add unofficial company when name already exists",
+      function (done) {
+        server
+        .put("/admin/company")
+        .send(
+          {
+            location: "Canberra",
+            name: "Some Unofficial Company Name",
+            logo: Buffer.from("test string", 'utf8').toString('base64'),
+          }
+        )
+        .expect(409)
+        .end( function(_, res) {
+          expect(res.status).to.equal(409);
+          done();
+        });
+      }
+    );
+  }); 
 });

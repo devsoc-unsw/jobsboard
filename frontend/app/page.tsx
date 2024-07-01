@@ -105,7 +105,7 @@ const HomePage = () => {
         {/* <!-- Sponsors --> */}
         <div className="my-12 mx-auto">
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
-            Our Sponsors
+            Featuring Jobs From
           </h3>
           <p className="text-lg text-jb-subheadings dark:text-jb-dark-subheadings my-4 mx-16 sm:mx-0">
             We aim to give you a pleasant student working experience by partnering up with only the
@@ -151,6 +151,9 @@ const HomePage = () => {
               loop
               autoplay
               modules={[Pagination, Navigation]}
+              style={{
+                padding: '0 25px'
+              }}
             >
               {featuredJobs.map((job) => (
                 <SwiperSlide key={job.id}>
