@@ -603,24 +603,7 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           LM,
           `ADMIN=${req.adminID} marked JOB=${req.params.jobID} as deleted`,
         );
-
-
-        // // check to see if that job is queryable
-        // await Helpers.doSuccessfullyOrFail(
-        //   async () => AppDataSource.getRepository(Job)
-        //     .createQueryBuilder()
-        //     .where('Job.id = :id', { id: jobID })
-        //     .getOne(),
-        //   `Successfully deleted the JOB=${jobID}`,
-        // );
         
-        // job.company.companyAccount = await Helpers.doSuccessfullyOrFail(
-        //   async () => AppDataSource.createQueryBuilder()
-        //     .relation(Company, 'companyAccount')
-        //     .of(job.company)
-        //     .loadOne(),
-        //   `There's no other company account owning this JOB=${jobID}`,
-        // );
         return {
           status: StatusCodes.OK,
           msg: 'Job successfully deleted',

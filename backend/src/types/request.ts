@@ -57,7 +57,6 @@ export interface AdminDeleteJobRequest
   extends Request<JobIDParams, never>,
   AdminRequestBase {}
 
-
 // * Student
 export interface StudentPaginatedJobsRequest
   extends Request<PaginatedJobsParams>,
