@@ -603,11 +603,8 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
           .where('id = :id', { id: jobID })
           .execute();
 
-        Logger.Info(
-          LM,
-          `ADMIN=${req.adminID} marked JOB=${req.params.jobID} as deleted`,
-        );
-        
+        Logger.Info(LM, `ADMIN=${req.adminID} marked JOB=${req.params.jobID} as deleted`);
+
         return {
           status: StatusCodes.OK,
           msg: 'Job successfully deleted',
