@@ -47,6 +47,8 @@ const ProfileCard = ({
                   icon={faGithub} 
                   size="2x" 
                   className="h-8" />
+
+
                 </a>
               </div>
             </div>
