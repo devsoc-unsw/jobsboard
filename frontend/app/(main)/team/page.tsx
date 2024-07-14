@@ -103,7 +103,36 @@ const TeamPage = () => {
       linkedin: 'https://www.linkedin.com/in/adriantan09/',
       gh: 'https://github.com/adriantan09',
       photo:
-        'https://media-exp1.licdn.com/dms/image/C5603AQHbFz34aec_Dw/profile-displayphoto-shrink_800_800/0/1607509426101?e=1675900800&v=beta&t=xV5okatq0vZ650ZCQTRNcSCmvUE9CuUxgSd22YtUGYI'
+        'https://media.licdn.com/dms/image/C4D03AQE2Zp0kmjG88g/profile-displayphoto-shrink_800_800/0/1617330448714?e=1718841600&v=beta&t=2WcPeCLEmOl_0Mv3duajr9pSqtre2pSZwLWWP-NzeSM'
+    },
+    {
+      name: 'Brian Nhan',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Frontend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/briannhan/',
+      gh: 'https://github.com/brnhan',
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQHzNvWNa9xfEg/profile-displayphoto-shrink_800_800/0/1680748247930?e=1720656000&v=beta&t=V0e93sDY_5rjVVaOOGNCjERw78ebQeJWGrodBB7dXAo'
+    },
+    {
+      name: 'Han Hanh',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/hanhanh2705/',
+      gh: 'https://github.com/hanhnguyengiahan',
+      photo: ''
+    },
+    {
+      name: 'Keven Liu',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: ' ',
+      linkedin: 'https://www.linkedin.com/in/keven-liu/',
+      gh: 'https://github.com/kevenliu8',
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQH7BnTkutqVfA/profile-displayphoto-shrink_800_800/0/1702717954720?e=1721865600&v=beta&t=cteMQzQxWi6G4s1m5seHZu0vG8yVtXGiPih8XMAkq1c'
     }
   ];
 

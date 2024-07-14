@@ -46,8 +46,8 @@ import {
   SearchJobRequest,
   StudentGetProfileRequest,
   StudentEditProfileRequest,
-  CreateUnofficialCompanyRequest,
   AdminDeleteJobRequest,
+  CreateUnofficialCompanyRequest,
 } from './types/request';
 
 const LM = new LogModule('INDEX');
