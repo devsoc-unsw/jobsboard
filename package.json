@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "chai": "^5.1.1",
-    "supertest": "^7.0.0"
-  }
-}
