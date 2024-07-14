@@ -1034,9 +1034,6 @@
               "example": 1
             }
           ],
-          "requestBody": {
-            "$ref": "#/components/requestBodies/CreateJobBody"
-          },
           "responses": {
             "200": {
               "description": "Job successfully deleted"
