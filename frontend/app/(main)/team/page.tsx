@@ -68,18 +68,40 @@ const TeamPage = () => {
       name: 'Richard Bao',
       title: '2024 Jobsboard Director',
       involvement: 'Backend',
-      funFact: ' ',
-      linkedin: 'https://www.linkedin.com/in/richard-bao/',
-      gh: 'https://github.com/RichardBao1',
-      photo: ''
+      funFact:
+        "I'm not particularly great at anything but can make some pretty good overnight oats",
+      linkedin: 'https://www.linkedin.com/in/sunny-wang-033a19206/',
+      gh: 'https://github.com/casio987',
+      photo: 'https://i.imgur.com/dgSVw0i.png'
     },
     {
-      name: 'Flynn Lambrechts',
-      title: '2024 Jobsboard Director',
+      name: 'Sam Yu',
+      title: '2022 Subcommittee Member',
       involvement: 'Frontend',
-      funFact: ' ',
-      linkedin: 'https://www.linkedin.com/in/flynn-lambrechts/',
-      gh: 'https://github.com/flynnlambrechts',
+      funFact:
+        'Hello! When I am not doing work for university or Jobsboard I like to either go out and play badminton with my local club or spend my time watching netflix.',
+      linkedin: 'https://www.linkedin.com/in/jihaoy/',
+      gh: 'https://github.com/samyu1204',
+      photo:
+        'https://media-exp1.licdn.com/dms/image/C5603AQGOTWqiNSHQ4Q/profile-displayphoto-shrink_800_800/0/1638537862485?e=1675900800&v=beta&t=nPyJMOsT3-_vwN7CitrMKojC8ErpDUtHNzCquk-3X0U'
+    },
+    {
+      name: 'Han Hanh',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Backend',
+      funFact: "I enjoy visiting beaches and playing football when I'm not working on Jobsboard 🏖️",
+      linkedin: 'https://www.linkedin.com/in/avijits01/',
+      gh: 'https://github.com/avijits01',
+      photo:
+        'https://media-exp1.licdn.com/dms/image/C4D03AQFwMbHUdLJcnw/profile-displayphoto-shrink_800_800/0/1653646210650?e=1675900800&v=beta&t=aBoKXt7hWkmq790EDvj9E8sYu71irdj6BEEzar04_9Y'
+    },
+    {
+      name: 'Adrian Tan',
+      title: '2022 Subcommittee Member',
+      involvement: 'Frontend',
+      funFact: 'Passionate about exploring outdoors 🗻 and taking photos 📸',
+      linkedin: 'https://www.linkedin.com/in/adriantan09/',
+      gh: 'https://github.com/adriantan09',
       photo:
         'https://media.licdn.com/dms/image/C4D03AQE2Zp0kmjG88g/profile-displayphoto-shrink_800_800/0/1617330448714?e=1718841600&v=beta&t=2WcPeCLEmOl_0Mv3duajr9pSqtre2pSZwLWWP-NzeSM'
     },

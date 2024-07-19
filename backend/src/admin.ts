@@ -15,6 +15,7 @@ import {
   VerifyCompanyAccountRequest,
   UnverifyCompanyAccountRequest,
   AdminCreateJobRequest,
+  AdminDeleteJobRequest,
   AdminApprovedJobPostsRequest,
   CreateUnofficialCompanyRequest,
 } from './types/request';
@@ -571,6 +572,47 @@ You job post request titled "${jobToReject.role}" has been rejected as it does n
       () => ({
         status: StatusCodes.BAD_REQUEST,
         msg: { token: req.newJbToken },
+      }),
+      next,
+    );
+  }
+
+  public static async DeleteJobOnBehalfOfExistingCompany(
+    this: void,
+    req: AdminDeleteJobRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
+    await Helpers.catchAndLogError(
+      res,
+      async (): Promise<IResponseWithStatus> => {
+        const { jobID } = req.params;
+        Logger.Info(LM, `Admin ID=${req.adminID} attempting to find job ID=${jobID}`);
+        const jobToDelete = await AppDataSource.getRepository(Job)
+          .createQueryBuilder()
+          .where('Job.id = :jobID', { jobID })
+          .getOne();
+
+        if (!jobToDelete) {
+          throw Error(`Could not find removeable JOB=${jobID}`);
+        }
+
+        await AppDataSource.createQueryBuilder()
+          .update(Job)
+          .set({ deleted: true })
+          .where('id = :id', { id: jobID })
+          .execute();
+
+        Logger.Info(LM, `ADMIN=${req.adminID} marked JOB=${req.params.jobID} as deleted`);
+
+        return {
+          status: StatusCodes.OK,
+          msg: 'Job successfully deleted',
+        };
+      },
+      () => ({
+        status: StatusCodes.BAD_REQUEST,
+        msg: undefined,
       }),
       next,
     );
