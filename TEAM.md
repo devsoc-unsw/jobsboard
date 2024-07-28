@@ -5,7 +5,7 @@ Jobsboard was created many years ago by [Adam Tizzone](https://github.com/ad-t) 
 ## 2024 Team
 
 - [Flynn Lambrechts](https://github.com/flynnlambrechts), Jobsboard Director
-- [Richard Bao](https://github.com/RichardBao1),
+- [Richard Bao](https://github.com/RichardBao1), Jobsboard Director
 
 ## 2023 Team
 

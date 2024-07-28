@@ -2,7 +2,7 @@
   <h1>DevSoc Jobsboard</h1>
   <h4>Connecting UNSW CSE students with top employers since 2018</h4>
   <p align="center">
-    <img src="https://img.shields.io/badge/-CSESoc-blue" />
+    <img src="https://img.shields.io/badge/DevSoc-%23CE6A6B" />
     <img src="https://img.shields.io/badge/License-MIT-green" />
   </p>
 </div>
