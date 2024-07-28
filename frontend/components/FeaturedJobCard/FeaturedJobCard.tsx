@@ -18,7 +18,7 @@ const FeaturedJobCard = ({ title, description, workingRights, imgSrc }: Featured
     <Link href="/student/login">
       <div className="flex mx-4 mt-8 mb-12 flex-col justify-between shadow-card rounded-lg bg-white relative hover-anim">
         <div>
-          <div className="flex justify-center min-w-0 mx-5">
+          <div className="flex justify-center min-w-0 h-52 mx-5">
             {imgSrc ? (
               <Image
                 src={imgSrc}
@@ -30,7 +30,7 @@ const FeaturedJobCard = ({ title, description, workingRights, imgSrc }: Featured
             ) : (
               <FontAwesomeIcon
                 icon={faBuilding}
-                className="select-none pointer-events-none object-contain w-full py-4 min-h-[180px]"
+                className="select-none pointer-events-none object-contain w-full py-4 min-h-[165px]"
               />
             )}
           </div>
