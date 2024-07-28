@@ -34,7 +34,7 @@ const FeaturedJobCard = ({ title, description, workingRights, imgSrc }: Featured
               />
             )}
           </div>
-          <h3 className="text-xl font-bold mx-4 mb-4">{title}</h3>
+          <h3 className="text-xl font-bold mx-4 mb-4 line-clamp-3">{title}</h3>
           <div className="h-[100px] flex flex-row flex-wrap m-0 justify-center items-center mx-2 my-2 xs:flex-col">
             {workingRights.map((tag) => (
               <div
