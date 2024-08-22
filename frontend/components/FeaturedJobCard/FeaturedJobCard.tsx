@@ -51,21 +51,23 @@ const FeaturedJobCard = ({
           </div>
           <h3 className="text-xl font-bold mx-4 mb-4">{title}</h3>
 
-          <div className="flex items-center mx-4 my-1">
-            <FontAwesomeIcon className="w-4" icon={faClock} />
-            <p className="ml-2">{JobType[jobType as keyof typeof JobType]}</p>
-          </div>
-          <div className="flex items-center mx-4 my-1">
-            <FontAwesomeIcon className="w-4" icon={faLocationDot} />
-            <p className="ml-2">{location}</p>
-          </div>
-          <div className="flex items-center mx-4 my-1 mb-4">
-            <FontAwesomeIcon className="w-4" icon={faAddressCard} />
-            <p className="ml-2">{JobMode[mode as keyof typeof JobMode]}</p>
+          <div className="px-1">
+            <div className="flex items-center mx-4 my-1">
+              <FontAwesomeIcon className="w-4" icon={faClock} />
+              <p className="ml-2">{JobType[jobType as keyof typeof JobType]}</p>
+            </div>
+            <div className="flex items-center mx-4 my-1">
+              <FontAwesomeIcon className="w-4" icon={faLocationDot} />
+              <p className="ml-2">{location}</p>
+            </div>
+            <div className="flex items-center mx-4 my-1 mb-4">
+              <FontAwesomeIcon className="w-4" icon={faAddressCard} />
+              <p className="ml-2">{JobMode[mode as keyof typeof JobMode]}</p>
+            </div>
           </div>
 
           <p
-            className="text-base m-0 py-4 px-5 text-left text-jb-placeholder h-[600px]"
+            className="text-base m-0 py-3 px-5 text-left text-jb-placeholder h-[600px]"
             dangerouslySetInnerHTML={{
               __html: description
             }}
