@@ -248,7 +248,7 @@ export default async function seedDB() {
   job9.wamRequirements = WamRequirements.HD;
   job9.additionalInfo = '';
   job9.isPaid = true;
-  job9.createdAt = new Date('1999-10-10');
+  job9.createdAt = new Date('1984-10-10');
 
   companyAccount.company.jobs = [job1, job2, job3, job4, job5, job6, job7, job8, job9];
 
