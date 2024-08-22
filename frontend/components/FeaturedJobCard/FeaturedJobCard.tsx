@@ -1,20 +1,19 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Image from 'next/image';
-import Link from 'next/link';
-import styles from './styles.module.css';
-import { JobMode, JobType } from 'constants/jobFields';
 import {
   faAddressCard,
   faBuilding,
   faClock,
   faLocationDot
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
+import Link from 'next/link';
+import { JobMode, JobType } from 'constants/jobFields';
+import styles from './styles.module.css';
 
 type FeaturedJobCardProps = {
   title: string;
   description: string;
-  workingRights: string[];
   imgSrc: string;
   jobType: string;
   location: string;

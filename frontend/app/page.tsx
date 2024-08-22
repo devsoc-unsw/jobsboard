@@ -156,7 +156,6 @@ const HomePage = () => {
                   <FeaturedJobCard
                     title={job.role}
                     description={job.description}
-                    workingRights={job.workingRights}
                     imgSrc={job.logo}
                     jobType={job.jobType}
                     mode={job.mode}
