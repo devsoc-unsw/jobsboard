@@ -204,8 +204,7 @@ export default async function seedDB() {
   // following two jobs are used for testing retrieving number of verified job posts
   const job7 = new Job();
   job7.role = 'Security Engineer Intern at Foo';
-  job7.description =
-    'In the midst of the bustling city, a gentle breeze whispered through the trees, carrying with it the faint scent of blooming flowers. The sun, high above, cast soft shadows on the pavement, where people hurried by, each lost in their own thoughts. A dog barked in the distance, breaking the monotony of the day, while birds chirped melodiously from the branches. Amid the urban chaos, there was a sense of calm, a momentary pause in the relentless rush. Time seemed to slow, if only for a brief moment, as the world continued to spin quietly around them.';
+  job7.description = 'In the midst of the bustling city, a gentle breeze whispered through the trees, carrying with it the faint scent of blooming flowers. The sun, high above, cast soft shadows on the pavement, where people hurried by, each lost in their own thoughts. A dog barked in the distance, breaking the monotony of the day, while birds chirped melodiously from the branches. Amid the urban chaos, there was a sense of calm, a momentary pause in the relentless rush. Time seemed to slow, if only for a brief moment, as the world continued to spin quietly around them.';
   job7.applicationLink = 'https://sampleapplicationlink.net';
   job7.company = company;
   job7.approved = true;
@@ -220,10 +219,8 @@ export default async function seedDB() {
   job7.createdAt = new Date('1999-5-10');
 
   const job8 = new Job();
-  job8.role =
-    'Software Engineer Intern at Foo with some very very very very very very very long name so that I can test how it looks on front page';
-  job8.description =
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+  job8.role = 'Software Engineer Intern at Foo with some very very very very very very very long name so that I can test how it looks on front page';
+  job8.description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
   job8.applicationLink = 'https://sampleapplicationlink.net';
   job8.company = company;
   job8.approved = true;
