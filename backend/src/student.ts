@@ -8,7 +8,7 @@ import StudentProfile from './entity/student_profile';
 import Helpers, { IResponseWithStatus } from './helpers';
 import { Logger, LogModule } from './logging';
 
-import { WorkingRights } from './types/job-field';
+import { JobMode, JobType, WorkingRights } from './types/job-field';
 
 import { StudentBase } from './types/shared';
 
@@ -140,8 +140,11 @@ export default class StudentFunctions {
           .createQueryBuilder()
           .select([
             'company.logo',
+            'company.location',
             'Job.id',
             'Job.role',
+            'Job.jobType',
+            'Job.mode',
             'Job.description',
             'Job.workingRights',
             'Job.applicationLink',
@@ -171,6 +174,9 @@ export default class StudentFunctions {
             workingRights: WorkingRights[];
             applicationLink: string;
             company: string;
+            companyLocation: string;
+            jobType: JobType;
+            mode: JobMode;
           } = {
             id: job.id,
             logo: job.company.logo ? job.company.logo.toString() : null,
@@ -179,6 +185,9 @@ export default class StudentFunctions {
             workingRights: job.workingRights,
             applicationLink: job.applicationLink,
             company: job.company.name,
+            companyLocation: job.company.location,
+            jobType: job.jobType,
+            mode: job.mode,
           };
           return newJob;
         });

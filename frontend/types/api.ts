@@ -42,6 +42,9 @@ export type FeaturedJob = {
   workingRights: WorkingRights[];
   applicationLink: string;
   company: string;
+  jobType: JobType;
+  mode: JobMode;
+  companyLocation: string;
 };
 
 export type FeaturedJobsPayload = {
