@@ -5,6 +5,9 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    container:
+      image: docker:20.10 
+      options: --privileged 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

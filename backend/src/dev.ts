@@ -188,7 +188,7 @@ export default async function seedDB() {
 
   const job6 = new Job();
   job6.role = 'Backend Developer';
-  job6.description = 'Java is not poggers';
+  job6.description = 'Example job description';
   job6.applicationLink = 'https://sampleapplicationlink.net';
   job6.company = company;
   job6.approved = false;
@@ -203,8 +203,8 @@ export default async function seedDB() {
 
   // following two jobs are used for testing retrieving number of verified job posts
   const job7 = new Job();
-  job7.role = 'verified job 1';
-  job7.description = 'Java is not poggers';
+  job7.role = 'Security Engineer Intern at Foo';
+  job7.description = 'In the midst of the bustling city, a gentle breeze whispered through the trees, carrying with it the faint scent of blooming flowers. The sun, high above, cast soft shadows on the pavement, where people hurried by, each lost in their own thoughts. A dog barked in the distance, breaking the monotony of the day, while birds chirped melodiously from the branches. Amid the urban chaos, there was a sense of calm, a momentary pause in the relentless rush. Time seemed to slow, if only for a brief moment, as the world continued to spin quietly around them.';
   job7.applicationLink = 'https://sampleapplicationlink.net';
   job7.company = company;
   job7.approved = true;
@@ -219,8 +219,8 @@ export default async function seedDB() {
   job7.createdAt = new Date('1999-5-10');
 
   const job8 = new Job();
-  job8.role = 'verified job 1';
-  job8.description = 'Java is not poggers';
+  job8.role = 'Software Engineer Intern at Foo with some very very very very very very very long name so that I can test how it looks on front page';
+  job8.description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
   job8.applicationLink = 'https://sampleapplicationlink.net';
   job8.company = company;
   job8.approved = true;
@@ -234,7 +234,23 @@ export default async function seedDB() {
   job8.isPaid = true;
   job8.createdAt = new Date('1999-10-10');
 
-  companyAccount.company.jobs = [job1, job2, job3, job4, job5, job6, job7, job8];
+  const job9 = new Job();
+  job9.role = 'Software Engineer Graduate Role at Foo';
+  job9.description = 'Example job description';
+  job9.applicationLink = 'https://sampleapplicationlink.net';
+  job9.company = company;
+  job9.approved = true;
+  job9.expiry = new Date('2030-01-10');
+  job9.mode = JobMode.Remote;
+  job9.studentDemographic = [StudentDemographic.All];
+  job9.jobType = JobType.Intern;
+  job9.workingRights = [WorkingRights.AusCtz, WorkingRights.AusPermRes, WorkingRights.AusStudVisa];
+  job9.wamRequirements = WamRequirements.HD;
+  job9.additionalInfo = '';
+  job9.isPaid = true;
+  job9.createdAt = new Date('1984-10-10');
+
+  companyAccount.company.jobs = [job1, job2, job3, job4, job5, job6, job7, job8, job9];
 
   await AppDataSource.manager.save(companyAccount);
 
@@ -263,7 +279,7 @@ export default async function seedDB() {
   // normal approved job
   const companyAccount3Job1 = new Job();
   companyAccount3Job1.role = 'approved job';
-  companyAccount3Job1.description = 'Java is not poggers';
+  companyAccount3Job1.description = 'Example job description';
   companyAccount3Job1.applicationLink = 'https://sampleapplicationlink.net';
   companyAccount3Job1.company = company3;
   companyAccount3Job1.approved = true;
@@ -284,7 +300,7 @@ export default async function seedDB() {
   // approved but expired job
   const companyAccount3Job2 = new Job();
   companyAccount3Job2.role = 'expired job';
-  companyAccount3Job2.description = 'Java is not poggers';
+  companyAccount3Job2.description = 'Example job description';
   companyAccount3Job2.applicationLink = 'https://sampleapplicationlink.net';
   companyAccount3Job2.company = company3;
   companyAccount3Job2.approved = true;
@@ -305,7 +321,7 @@ export default async function seedDB() {
   // approved but hidden job
   const companyAccount3Job3 = new Job();
   companyAccount3Job3.role = 'hidden job';
-  companyAccount3Job3.description = 'Java is not poggers';
+  companyAccount3Job3.description = 'Example job description';
   companyAccount3Job3.applicationLink = 'https://sampleapplicationlink.net';
   companyAccount3Job3.company = company3;
   companyAccount3Job3.approved = true;
@@ -327,7 +343,7 @@ export default async function seedDB() {
   // approved by deleted job
   const companyAccount3Job4 = new Job();
   companyAccount3Job4.role = 'deleted job';
-  companyAccount3Job4.description = 'Java is not poggers';
+  companyAccount3Job4.description = 'Example job description';
   companyAccount3Job4.applicationLink = 'https://sampleapplicationlink.net';
   companyAccount3Job4.company = company3;
   companyAccount3Job4.approved = true;

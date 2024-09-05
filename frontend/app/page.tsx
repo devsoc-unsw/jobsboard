@@ -137,6 +137,7 @@ const HomePage = () => {
               pagination={{
                 clickable: true
               }}
+              autoHeight
               breakpoints={{
                 640: {
                   slidesPerView: 2
@@ -148,20 +149,17 @@ const HomePage = () => {
                   slidesPerView: 4
                 }
               }}
-              loop
-              autoplay
               modules={[Pagination, Navigation]}
-              style={{
-                padding: '0 25px'
-              }}
             >
               {featuredJobs.map((job) => (
                 <SwiperSlide key={job.id}>
                   <FeaturedJobCard
                     title={job.role}
                     description={job.description}
-                    workingRights={job.workingRights}
                     imgSrc={job.logo}
+                    jobType={job.jobType}
+                    mode={job.mode}
+                    location={job.companyLocation}
                   />
                 </SwiperSlide>
               ))}
