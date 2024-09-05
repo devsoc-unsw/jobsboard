@@ -1017,7 +1017,36 @@
             }
           }
         }
-      }
+      },
+      "/admin/jobs/:jobID": {
+        "delete": {
+          "summary": "Delete job on behalf of existing company",
+          "description": "Delete a job post corresponding to jobID as an admin on behalf of the company",
+          "tags": [
+            "admin"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "jobID",
+              "type": "integer",
+              "required": true,
+              "example": 1
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Job successfully deleted"
+            },
+            "400": {
+              "description": "No job corresponds to jobID or database query failed"
+            },
+            "401": {
+              "description": "Unable to authorise the caller's credentials (not logged in as an admin)"
+            }
+          }
+        }
+      } 
     },
     "components": {
       "requestBodies": {
@@ -1620,4 +1649,5 @@
         }
       }
     }
+    
   }

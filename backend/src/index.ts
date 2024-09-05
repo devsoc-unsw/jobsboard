@@ -46,6 +46,7 @@ import {
   SearchJobRequest,
   StudentGetProfileRequest,
   StudentEditProfileRequest,
+  AdminDeleteJobRequest,
   CreateUnofficialCompanyRequest,
 } from './types/request';
 
@@ -483,6 +484,18 @@ app.put(
   (req: CreateUnofficialCompanyRequest, res, next) => {
     (async () => {
       await AdminFunctions.CreateUnofficialCompany(req, res, next);
+    })();
+  },
+  Middleware.genericLoggingMiddleware,
+);
+
+app.delete(
+  '/admin/jobs/:jobID',
+  cors(corsOptions),
+  Middleware.authoriseAdminMiddleware,
+  (req: AdminDeleteJobRequest, res, next) => {
+    (async () => {
+      await AdminFunctions.DeleteJobOnBehalfOfExistingCompany(req, res, next);
     })();
   },
   Middleware.genericLoggingMiddleware,

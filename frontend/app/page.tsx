@@ -137,6 +137,7 @@ const HomePage = () => {
               pagination={{
                 clickable: true
               }}
+              autoHeight
               breakpoints={{
                 640: {
                   slidesPerView: 2
@@ -148,8 +149,6 @@ const HomePage = () => {
                   slidesPerView: 4
                 }
               }}
-              loop
-              autoplay
               modules={[Pagination, Navigation]}
               style={{
                 padding: '0 25px'
@@ -160,8 +159,10 @@ const HomePage = () => {
                   <FeaturedJobCard
                     title={job.role}
                     description={job.description}
-                    workingRights={job.workingRights}
                     imgSrc={job.logo}
+                    jobType={job.jobType}
+                    mode={job.mode}
+                    location={job.companyLocation}
                   />
                 </SwiperSlide>
               ))}
@@ -185,7 +186,7 @@ const HomePage = () => {
             </a>
             &nbsp;that have partnered with us.
           </p>
-          <div className="flex flex-row items-center justify-evenly mt-8 mb-28 mx-24 sm:mb-8 sm:flex-col sm:gap-4">
+          <div className="flex items-center justify-center gap-5 mt-8 mb-28 mx-24 sm:mb-8 sm:flex-col sm:gap-4">
             <Link href="/company/signup">
               <Button variant="primary">Join Us</Button>
             </Link>
@@ -203,7 +204,7 @@ const HomePage = () => {
             Otherwise, you can also contribute by suggesting cool new features or even make a pull
             request on the Jobsboard repo.
           </p>
-          <div className="mt-8 flex justify-center gap-5 mb-28 mx-24 sm:m-0">
+          <div className="flex items-center justify-center gap-5 mt-8 mb-28 mx-24 sm:mb-8 sm:flex-col sm:gap-4">
             <Button variant="primary" onClick={() => setOpenModal(true)}>
               Join the Team
             </Button>
