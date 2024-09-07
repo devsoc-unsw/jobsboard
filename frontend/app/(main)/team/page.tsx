@@ -125,6 +125,16 @@ const TeamPage = () => {
       photo: ''
     },
     {
+      name: 'Emily Ngo',
+      title: '2024 Jobsboard Subcommittee',
+      involvement: 'Frontend',
+      funFact: 'Cannot play basketball but I can spin a ball on my finger 😎😎',
+      linkedin: 'https://www.linkedin.com/in/emily-ngo-5a81082a4/',
+      gh: 'https://github.com/engooo',
+      photo:
+        'https://media.licdn.com/dms/image/D5603AQF1PKv5ieD_dA/profile-displayphoto-shrink_200_200/0/1713459424740?e=1722470400&v=beta&t=Ku3w_Qbr59tZeCRqVE2RcsD4YcWqsXpPRLMVORVUnkU'
+    },
+    {
       name: 'Keven Liu',
       title: '2024 Jobsboard Subcommittee',
       involvement: 'Backend',
