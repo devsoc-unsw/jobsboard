@@ -47,11 +47,34 @@ const HomePage = () => {
   return (
     <div className="text-center">
       <RecruitmentModal open={openModal} onClose={() => setOpenModal(false)} />
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '1rem 2rem',
+          background: '#F76B15',
+          zIndex: 101
+        }}
+      >
+        <span>
+          ⚠ Jobsboard has been retired and is no longer being maintained. Advertisers can{' '}
+          <a
+            style={{ fontWeight: '600', textDecoration: 'underline' }}
+            href="https://devsoc.app/about-us"
+          >
+            contact DevSoc ⎋
+          </a>{' '}
+          for alternative ways to reach students.
+        </span>
+      </div>
       <Header
         style={{
           background: 'transparent',
           position: 'absolute',
-          top: 0,
+          top: '4rem',
           zIndex: 100,
           width: '100%'
         }}
@@ -175,7 +198,7 @@ const HomePage = () => {
             you. In the meantime, you can also check out&nbsp;
             <a
               className="text-jb-textlink font-bold transition-colors duration-200 ease-linear cursor-pointer hover:text-jb-textlink-hovered"
-              href="https://www.csesoc.unsw.edu.au/sponsors"
+              href="https://devsoc.app/supporters"
               target="_blank"
               rel="noreferrer"
             >
