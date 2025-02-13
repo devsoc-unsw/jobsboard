@@ -47,18 +47,27 @@ const HomePage = () => {
   return (
     <div className="text-center">
       <RecruitmentModal open={openModal} onClose={() => setOpenModal(false)} />
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        padding: '1rem 2rem',
-        background: '#F76B15',
-        zIndex: 101,
-      }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '1rem 2rem',
+          background: '#F76B15',
+          zIndex: 101
+        }}
+      >
         <span>
-          ⚠  Jobsboard has been retired and is no longer being maintained. Advertisers can <a style={{fontWeight: '600', textDecoration: 'underline'}} href='https://devsoc.app/about-us'>contact DevSoc ⎋</a> for alternative ways to reach students.
+          ⚠ Jobsboard has been retired and is no longer being maintained. Advertisers can{' '}
+          <a
+            style={{ fontWeight: '600', textDecoration: 'underline' }}
+            href="https://devsoc.app/about-us"
+          >
+            contact DevSoc ⎋
+          </a>{' '}
+          for alternative ways to reach students.
         </span>
       </div>
       <Header
