@@ -158,7 +158,7 @@ export default class MailFunctions {
       // send a copy of this email to the csesoc admin
       const newMailRequestForCsesocAdmin: MailRequest = new MailRequest();
       newMailRequestForCsesocAdmin.sender = env.MAIL_USERNAME;
-      newMailRequestForCsesocAdmin.recipient = 'careers@csesoc.org.au';
+      newMailRequestForCsesocAdmin.recipient = 'contact@devsoc.app';
       newMailRequestForCsesocAdmin.subject = subject;
       newMailRequestForCsesocAdmin.content = `The following was sent to "${recipient}" with subject "${subject}":
 
