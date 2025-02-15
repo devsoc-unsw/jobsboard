@@ -46,7 +46,30 @@ const HomePage = () => {
 
   return (
     <div className="text-center">
-      <RecruitmentModal open={openModal} onClose={() => setOpenModal(false)} />
+      <RecruitmentModal open={openModal} onClose={() => setOpenModal(false)}/>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '1rem 2rem',
+          background: '#F76B15',
+          zIndex: 101
+        }}
+      >
+        <span>
+          ⚠ Jobsboard has been retired and is no longer being maintained. Advertisers can{' '}
+          <a
+            style={{fontWeight: '600', textDecoration: 'underline'}}
+            href="https://devsoc.app/about-us"
+          >
+            contact DevSoc ⎋
+          </a>{' '}
+          for alternative ways to reach students.
+        </span>
+      </div>
       <Header
         style={{
           background: 'transparent',
@@ -98,7 +121,7 @@ const HomePage = () => {
               </Link>
             </div>
           </div>
-          <Image alt="Jobsboard" width={200} src={JobsboardLogo} className="sm:hidden" />
+          <Image alt="Jobsboard" width={200} src={JobsboardLogo} className="sm:hidden"/>
         </div>
       </div>
       <div className={container.pageContainer}>
@@ -111,7 +134,7 @@ const HomePage = () => {
             We aim to give you a pleasant student working experience by partnering up with only the
             best.
           </p>
-          <SponsorCarousel />
+          <SponsorCarousel/>
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Discover Featured Student Jobs and Internships
           </h3>
@@ -168,7 +191,7 @@ const HomePage = () => {
               ))}
             </Swiper>
           ) : (
-            <div className="mb-28" />
+            <div className="mb-28"/>
           )}
           <h3 className="font-bold text-3xl mb-0 text-jb-headings dark:text-jb-dark-headings">
             Want to Post a Job?
